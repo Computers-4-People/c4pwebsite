@@ -14,8 +14,8 @@ function App() {
       <BrowserRouter>
           <Navbar/>
           <Homepage />
-        <div style={{backgroundImage: 'url("/background.jpg")'}} className="bg-cover bg-center bg-fixed bg-no-repeat" />
-        <img src='background.jpg' alt="" className='bg-cover bg-center  bg-no-repeat'></img>
+        <div style={{backgroundImage: 'url("/background.jpg")'}} className="bg-cover bg-center bg-absolute bg-no-repeat" />
+        <img src='background.jpg' alt="" className='-z-10absolute bg-cover bg-center  bg-no-repeat'></img>
         
           <Routes>
             <Route path='/'>
