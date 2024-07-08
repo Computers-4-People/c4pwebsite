@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Navbar from './components/navbar/navbar';
+import Navbar from './components/navbar'
 import {BrowserRouter} from 'react-router-dom/'
 import { useState } from 'react';
 
