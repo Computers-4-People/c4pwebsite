@@ -21,7 +21,7 @@ export default function Navbar() {
                         <Link class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
                     </div>
             </div>
-            <div class='relative right-0 text: green-500 bg:green-500 rounded flex justify-evenly border:gray-900'  >
+            <div class='absolute right-0 z-5'>
             {isMenuVisible && <DropdownMenu/>}
             </div>
         </div>

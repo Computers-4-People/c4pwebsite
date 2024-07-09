@@ -1,12 +1,13 @@
 import React from "react";
-
+import BackgroundImage from '../background.jpg';
 export default function Homepage() {
+    console.log(BackgroundImage);
     return (
-        <div>
-            <h1 class="font-mono text-justify absolute inset-x-20 inset-y-60 center text-8xl">
+        <div style={{backgroundImage: `url('${BackgroundImage}')`}} className="bg-cover bg-center bg-absolute bg-no-repeat">
+            <div class="font-mono text-justify absolute inset-x-20 inset-y-60 center text-8xl">
                 <div class='text-green-800'>TRANSFORM A LIFE</div>
                 <div class='text-white'>WITH TECHNOLOGY</div>
-            </h1>
+            </div>
         </div>
     )
 }
