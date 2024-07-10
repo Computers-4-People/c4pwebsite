@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
 export default function Footer () {
-    return(<div class="fixed bottom-0 w-full text-white bg-gray-900 flex justify-between">
+    return(<div class="static bottom-0 w-full text-white bg-gray-900 flex justify-between">
         <div>
             <div class='font-bold text-l'>Computers 4 People</div>
             <div>About us</div>
