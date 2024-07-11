@@ -34,8 +34,22 @@ export default function Homepage() {
             </div>
             <div className='h-screen text-black'>
                 <h2>Give Unused Tech a Second Chance</h2>
-                <p>Thanks to the [refurbished] laptop i received from Computers 4 People; I can now create artwork every night when I get home!</p>
-                <p>-Mallika</p>
+                <div className='grid grid-rows-6 grid-cols-6'>
+                    <img src="../secondchance.png" className='col-span-3 row-span-3'/>
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-3 text-center text-2xl'>
+                        <p>Thanks to the [refurbished] laptop I received from </p> <p>Computers 4 People; I can now create artwork</p> <p>every night when I get home!</p>
+                        <p className=''>-Mallika</p>
+                        {/* <div className='flex justify-evenly text-xl'>
+                            <Link className='bg-[#0FE006] rounded'>🤍 Donate your ewaste</Link>
+                            <Link>Become a Partner</Link>
+
+                        </div> */}
+                    </div>
+                    <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 text-center text-xl'>
+                            <Link className='bg-[#0FE006] rounded h-14 pr-3 pt-3'>🤍 Donate your ewaste</Link>
+                            <Link className='border-2 border-black rounded h-14 pr-3 pt-3'>Become a Partner</Link>
+                    </div>
+                </div>
             </div>
         </div>
     )
