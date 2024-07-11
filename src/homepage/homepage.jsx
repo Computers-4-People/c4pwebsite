@@ -16,7 +16,7 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
-            <div className='bg-cover h-screen bg-gray-900 text-white p-60 text-9xl text-center table-auto align-middle'>
+            <div className='bg-cover h-1/4 bg-gray-900 text-white p-40 text-9xl text-center table-auto align-middle'>
                 <p>10,000,000 hours of connectivity provided</p>
             </div>
             <div className='bg-cover h-screen text-black grid-rows-2'>
