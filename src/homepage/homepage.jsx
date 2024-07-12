@@ -58,9 +58,9 @@ export default function Homepage() {
                     <h2 className="col-span-2 text-6xl font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-96">
-                        <Link className="border border-black">BECOME AN EWASTE DROP-OFF SITE</Link>
-                        <Link className="border border-black">SPONSOR DIGITAL ACCESS</Link>
-                        <Link className="border border-black">VOLUNTEER</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">BECOME AN EWASTE DROP-OFF SITE</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">SPONSOR DIGITAL ACCESS</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">VOLUNTEER</Link>
                     </div>
                 </div>
             </div>
