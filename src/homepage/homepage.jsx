@@ -35,10 +35,10 @@ export default function Homepage() {
                 </div>
             </div>
             <div className='h-screen text-black'>
-                <h2>Give Unused Tech a Second Chance</h2>
+                <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                 <div className='grid grid-rows-6 grid-cols-6'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-3 text-center text-2xl'>
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-2xl'>
                         <p>Thanks to the [refurbished] laptop I received from </p> <p>Computers 4 People; I can now create artwork</p> <p>every night when I get home!</p>
                         <p className=''>-Mallika</p>
                         {/* <div className='flex justify-evenly text-xl'>
@@ -50,6 +50,17 @@ export default function Homepage() {
                     <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 text-center text-xl gap-3'>
                             <Link className='bg-[#0FE006] rounded h-14 pr-3 pt-3'>🤍 Donate your ewaste</Link>
                             <Link className='border-2 border-black rounded h-14 pr-3 pt-3'>Become a Partner</Link>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-cover h-screen">
+                <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
+                    <h2 className="col-span-2 text-6xl font-bold">Ways to Get Involved</h2>
+                    <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
+                    <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-96">
+                        <Link className="border border-black">BECOME AN EWASTE DROP-OFF SITE</Link>
+                        <Link className="border border-black">SPONSOR DIGITAL ACCESS</Link>
+                        <Link className="border border-black">VOLUNTEER</Link>
                     </div>
                 </div>
             </div>
