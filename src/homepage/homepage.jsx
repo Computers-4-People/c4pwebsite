@@ -11,13 +11,13 @@ export default function Homepage() {
     return (
         <div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${BackgroundImage}')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 font-mono font-bold text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
+                <div class="ml-20 font-family: ui-monospace font-bold text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-4 row-start-3 text-justify'>
-                        <p class='text-green-800 col-span-2 object-fill mb-10'>TRANSFORM A LIFE </p>
+                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TRANSFORM A LIFE </p>
                         <p class='text-white col-span-2'>WITH TECHNOLOGY</p>
                     </div>
                     <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
-                        <Link className="bg-green-500 h-10 rounded">🤍 Donate your ewaste</Link>
+                        <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
                         <Link className='border-2 border-white text-white h-10'> Discover our programs </Link>
                     </div>
                 </div>
@@ -58,9 +58,9 @@ export default function Homepage() {
                     <h2 className="col-span-2 text-6xl font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-96">
-                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">BECOME AN EWASTE DROP-OFF SITE</Link>
-                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">SPONSOR DIGITAL ACCESS</Link>
-                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5">VOLUNTEER</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className="mb-10" src="../handshake.png"></img>SPONSOR DIGITAL ACCESS</Link>
+                        <Link className="border border-black shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
                     </div>
                 </div>
             </div>
