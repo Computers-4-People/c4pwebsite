@@ -40,7 +40,7 @@ export default function Homepage() {
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
                     <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-2xl'>
                         <p>Thanks to the [refurbished] laptop I received from </p> <p>Computers 4 People; I can now create artwork</p> <p>every night when I get home!</p>
-                        <p className=''>-Mallika</p>
+                        <p className='text-right'>-Mallika</p>
                         {/* <div className='flex justify-evenly text-xl'>
                             <Link className='bg-[#0FE006] rounded'>🤍 Donate your ewaste</Link>
                             <Link>Become a Partner</Link>
