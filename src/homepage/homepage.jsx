@@ -18,7 +18,7 @@ export default function Homepage() {
                     </div>
                     <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
                         <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 border-white text-white h-10'> Discover our programs </Link>
+                        <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@ export default function Homepage() {
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
                     <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl'/>
-                    <img src='../refurbishment.jpg' className='m-4 w-64 object-fit rounded-2xl'></img>
+                    <img src='../refurbishment.jpg' className='m-4 w-64 object-cover rounded-2xl'></img>
                     <img srs='../recipient.png' className='m-4 w-64 rounded-2xl' />
                     <img src="../catalyst.jpg" className='m-4 w-64 rounded-2xl'/>
                 </div>
