@@ -55,7 +55,7 @@ export default function Homepage() {
             </div>
             <div className="bg-cover h-screen">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
-                    <h2 className="col-span-2 text-6xl font-bold">Ways to Get Involved</h2>
+                    <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
