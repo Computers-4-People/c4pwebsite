@@ -29,7 +29,7 @@ export default function Homepage() {
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
                     <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl'/>
-                    <img src='../refurbishment.jpg' className='m-4 w-64 object-cover rounded-2xl'></img>
+                    <img src='../refurbishment.jpg' className='m-4 w-64 object-cover object-center static rounded-2xl'></img>
                     <img srs='../recipient.png' className='m-4 w-64 rounded-2xl' />
                     <img src="../catalyst.jpg" className='m-4 w-64 rounded-2xl'/>
                 </div>
