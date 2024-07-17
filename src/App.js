@@ -13,14 +13,15 @@ function App() {
     <div className="app">
       <BrowserRouter>
           <Navbar/>
-          <Homepage />
+          
         {/* <div style={{backgroundImage: 'url("/background.jpg")'}} className="bg-cover bg-center bg-absolute bg-no-repeat" /> */}
         {/* <img src='background.jpg' alt="" className='-z-10absolute bg-cover bg-center  bg-no-repeat'></img> */}
         
           <Routes>
-            <Route path='/'>
+            <Route path='/' element={<Homepage/>}>
+              {/* <Homepage /> */}
             </Route>
-           <Route path="/apply">
+           <Route path="/waste">
            </Route>         
          </Routes>
          <Footer/>

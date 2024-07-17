@@ -20,13 +20,13 @@ export default function Navbar() {
 
     return (
         <div>
-            <div className="bg-gray-900">
+            <div onMouseLeave={handleMouseLeave} className="bg-gray-900">
                 {/* <NavLink to={"/apply"}>Apply For A Computer </NavLink> */}
                 {/* <div> Computers4People </div> */}
                     <div class='flex justify-end items-center space-x-20 h-20'>
                     <img src='c4plogo.png' class='position absolute left-0 h-20'></img>
-                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['Programs'])} onMouseLeave={handleMouseLeave} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
-                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['About'])} onMouseLeave={handleMouseLeave} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
+                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['Programs'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
+                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['About'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
                         <Link class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
                     </div>
             </div>
