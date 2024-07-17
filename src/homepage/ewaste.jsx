@@ -33,7 +33,7 @@ export default function Ewaste () {
                     and we'll handle the rest for you.
                 </p>
             </div>
-            <div className="bg-cover h-screen">
+                        <div className="bg-cover h-screen">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
