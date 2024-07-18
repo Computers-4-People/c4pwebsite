@@ -51,10 +51,14 @@ export default function Refurbished() {
                 </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2>Giving Devices a Second Chance</h2>
-                <p>Each device has a unique story before reaching its new home.</p>
-                <div>
-
+                <h2 className='text-3xl font-bold'>Giving Devices a Second Chance</h2>
+                <p className='text-2xl'>Each device has a unique story before reaching its new home.</p>
+                <div className='m-11 flex justify-start h-96'>
+                    <img src={`../refurbished/Images/donors.jpg`} className='m-4 w-56 rounded-2xl'/>
+                    <img src='../refurbished/Images/ambasadors.jpg' className='m-4 w-56 object-cover object-center static rounded-2xl'></img>
+                    <img src='../refurbished/Images/devices.JPG' className='m-4 w-56 rounded-2xl' />
+                    <img src="../refurbished/Images/recipients.jpg" className='m-4 w-56 rounded-2xl'/>
+                    <img src="../refurbished/Images/catalyst.png" className='m-4 w-56 rounded-2xl'/>
                 </div>
             </div>
             <div className='bg-cover h-screen'>
