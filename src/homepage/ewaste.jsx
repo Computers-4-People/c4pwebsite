@@ -6,14 +6,19 @@ export default function Ewaste () {
     return (
         <div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${BackgroundImage}')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 font-family: ui-monospace font-bold text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-3 text-justify'>
-                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TRANSFORM A LIFE </p>
-                        <p class='text-white col-span-2'>WITH TECHNOLOGY</p>
+                <div class="ml-20 font-family: ui-monospace text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
+                    <div className='col-start-1 col-end-4 row-start-1 mt-36 text-justify font-bold'>
+                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TURN E-WASTE </p>
+                        <p class='text-white col-span-2'>INTO OPPORTUNITIES</p>
                     </div>
-                    <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
-                        <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
+                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-xl gap-3'>
+                        <p>
+                            Join us in tackling a staggering issue: every year, the US generates 6.9 million tons
+                            of electronic waste. At Computers4People, we're on a mission to make a
+                            difference. We collect unused devices, refurbishing what we can for communities
+                            in need and responsibly recycle the rest, turning e-waste into new products for a
+                            sustainable future.
+                        </p>
                     </div>
                 </div>
             </div>
