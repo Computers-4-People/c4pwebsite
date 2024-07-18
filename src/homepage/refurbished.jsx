@@ -20,7 +20,7 @@ export default function Refurbished() {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className='bg-cover h-screen'>
                 <h2>
                     Supporing Underserved Communities with free computers
                 </h2>
@@ -31,7 +31,7 @@ export default function Refurbished() {
                     at their disposal.
                 </p>
             </div>
-            <div>
+            <div className='bg-cover h-screen'>
                 <h2>Our Devices come from Generous Donors</h2>
                 <p>Our devices come from individuals and organizations who generously
                     provide their unused equipment to us. Each device undergoes a meticulous
@@ -40,14 +40,14 @@ export default function Refurbished() {
                     a waiting period for computer applicants.
                 </p>
             </div>
-            <div>
+            <div className='bg-cover h-screen'>
                 <h2>Giving Devices a Second Chance</h2>
                 <p>Each device has a unique story before reaching its new home.</p>
                 <div>
 
                 </div>
             </div>
-            <div>
+            <div className='bg-cover h-screen'>
                 <h2>About our devices</h2>
                 <p>Our computers and tablets are digital tools in an optimal condition.</p>
                 <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
