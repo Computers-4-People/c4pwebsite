@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 
 export default function Footer () {
-    return(<div class="static bottom-0 w-full text-white bg-gray-900 grid grid-cols-4 grid-rows-flow">
-        <div>
+    return(<div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-4 h-64">
+        <div className='grid gaps-4'>
             <div class='font-bold text-l'>Computers 4 People</div>
             <div>About us</div>
             <div>Blog</div>
@@ -10,7 +10,7 @@ export default function Footer () {
             <div>Press & Media</div>
             <div>Team</div>
         </div>
-        <div>
+        <div className='grid gaps-4'>
             <div  class='font-bold text-l'> Programs & Initiatives</div> 
             <div>
                 Refurbished Devices
@@ -28,7 +28,7 @@ export default function Footer () {
                 Become a Dropoff Site
             </div>
         </div>
-        <div>
+        <div className='grid gaps-4'>
             <div  class='font-bold text-l'>Support</div>
                 <Link>
                     Contact Us
@@ -46,7 +46,7 @@ export default function Footer () {
                     <p>Make a Financial Contribution</p>
                 </Link>
         </div>
-        <div>
+        <div className='grid gaps-4'>
             <div  class='font-bold text-l'>Policies</div>
                 <div>
                     Privacy
