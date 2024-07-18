@@ -19,8 +19,8 @@ export default function Navbar() {
     const handleMouseLeave = () => { setMenuVisible(false) };
 
     return (
-        <div>
-            <div onMouseLeave={handleMouseLeave} className="bg-gray-900">
+        <div onMouseLeave={handleMouseLeave}>
+            <div className="bg-gray-900">
                 {/* <NavLink to={"/apply"}>Apply For A Computer </NavLink> */}
                 {/* <div> Computers4People </div> */}
                     <div class='flex justify-end items-center space-x-20 h-20'>
