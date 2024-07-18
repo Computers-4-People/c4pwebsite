@@ -1,5 +1,5 @@
 import React from "react";
-import BackgroundImage from '../background.jpg'
+import BackgroundImage from '../ewaste-bg.jpg'
 import { Link } from "react-router-dom";
 
 export default function Ewaste () {
@@ -18,11 +18,13 @@ export default function Ewaste () {
                 </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
-                <p>Someone's disregard electronics can become a lifeline for others.</p>
-                <dv>
-
-                </dv>
+                <div>
+                    <h2>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <p>Someone's disregard electronics can become a lifeline for others.</p>
+                </div>
+                <div>
+                    
+                </div>
             </div>
             <div className='bg-cover h-screen'>
                 <h2>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>

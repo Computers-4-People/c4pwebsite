@@ -21,24 +21,34 @@ export default function Refurbished() {
                 </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2>
-                    Supporing Underserved Communities with free computers
-                </h2>
-                <p>Forty-one percent of adults with lower incomes do not own a desktop or laptop computer,
-                    limiting their access to economic, educational, and social opportunities.
-                    Computers4People provides refurbished laptops, desktops, all-in-ones, and tablets at
-                    no cost to individuals and organizations in need to help people grasp the resources
-                    at their disposal.
-                </p>
+                <div className='grid grid-rows-6 grid-cols-6 mt-20'>
+                    <img src='../refurbished/Images/recipient.jpg' alt="" className='col-span-3 row-start-1 row-span-2'/>
+                    <div className='col-start-4 col-end-6 row-start-1 row-end-3 object-center text-center text-justify mt-20'>
+                        <h2 className='text-2xl font-bold mb-5'>
+                            Supporing Underserved Communities with free computers
+                        </h2>
+                        <p>Forty-one percent of adults with lower incomes do not own a desktop or laptop computer,
+                            limiting their access to economic, educational, and social opportunities.
+                            Computers4People provides refurbished laptops, desktops, all-in-ones, and tablets at
+                            no cost to individuals and organizations in need to help people grasp the resources
+                            at their disposal.
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2>Our Devices come from Generous Donors</h2>
-                <p>Our devices come from individuals and organizations who generously
-                    provide their unused equipment to us. Each device undergoes a meticulous
-                    refurbishing and data wiping process to be in optimal condition before being
-                    matched to a recipient. Due to our reliance on donated devices, there may be
-                    a waiting period for computer applicants.
-                </p>
+                <div className='grid grid-rows-6 grid-cols-6 mt-20'>
+                    <img src="../refurbished/Images/luis.png" alt="" className='col-span-3 row-start-1 row-span-2' />
+                    <div className='col-start-4 col-end-6 row-start-1 row-end-3 object-center text-center text-justify mt-20'>
+                        <h2 className='text-2xl font-bold mb-5'>Our Devices come from Generous Donors</h2>
+                        <p>Our devices come from individuals and organizations who generously
+                            provide their unused equipment to us. Each device undergoes a meticulous
+                            refurbishing and data wiping process to be in optimal condition before being
+                            matched to a recipient. Due to our reliance on donated devices, there may be
+                            a waiting period for computer applicants.
+                        </p>
+                    </div>
+                </div>
             </div>
             <div className='bg-cover h-screen'>
                 <h2>Giving Devices a Second Chance</h2>
