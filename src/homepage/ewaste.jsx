@@ -24,16 +24,16 @@ export default function Ewaste () {
             </div>
             <div className='bg-cover h-screen'>
                 <div>
-                    <h2>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
-                    <p>Someone's disregard electronics can become a lifeline for others.</p>
+                    <h2 className='text-3xl font-bold'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <p className='text-2xl'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
                 <div>
                     
                 </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
-                <p>
+                <h2 className='text-3xl font-bold'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
+                <p className='text-justify'>
                     E-waste recycling can be challenging with limited centers and sometimes associated fees.
                     Computers4People provides a hassle-free, complimentary, service with convenient
                     drop-off points in NJ, NYC, and Massachusetts. Simply drop off your e-waste,
