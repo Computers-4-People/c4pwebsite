@@ -24,11 +24,17 @@ export default function Ewaste () {
             </div>
             <div className='bg-cover h-screen'>
                 <div>
-                    <h2 className='text-3xl font-bold'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <h2 className='text-3xl font-bold mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-2xl'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
                 <div>
-                    
+                    <div className='m-11 flex justify-start h-96'>
+                        <img src={`../refurbished/Images/donors.jpg`} className='m-4 w-56 rounded-2xl'/>
+                        <img src='../refurbished/Images/ambasadors.jpg' className='m-4 w-56 object-cover object-center static rounded-2xl'></img>
+                        <img src='../refurbished/Images/devices.JPG' className='m-4 w-56 rounded-2xl' />
+                        <img src="../refurbished/Images/recipients.jpg" className='m-4 w-56 rounded-2xl'/>
+                        <img src="../refurbished/Images/catalyst.png" className='m-4 w-56 rounded-2xl'/>
+                    </div>      
                 </div>
             </div>
             <div className='bg-cover h-screen'>
