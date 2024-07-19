@@ -32,13 +32,18 @@ export default function Ewaste () {
                 </div>
             </div>
             <div className='bg-cover h-screen'>
-                <h2 className='text-3xl font-bold'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
-                <p className='text-justify'>
-                    E-waste recycling can be challenging with limited centers and sometimes associated fees.
-                    Computers4People provides a hassle-free, complimentary, service with convenient
-                    drop-off points in NJ, NYC, and Massachusetts. Simply drop off your e-waste,
-                    and we'll handle the rest for you.
-                </p>
+                <div className='grid grid-rows-6 grid-cols-6 mt-20'>
+                <img src="../refurbished/Images/luis.png" alt="" className='col-span-3 row-start-1 row-span-2' />
+                    <div className='col-span-2 mt-10'>
+                        <h2 className='text-3xl font-bold'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
+                        <p className='text-justify'>
+                            E-waste recycling can be challenging with limited centers and sometimes associated fees.
+                            Computers4People provides a hassle-free, complimentary, service with convenient
+                            drop-off points in NJ, NYC, and Massachusetts. Simply drop off your e-waste,
+                            and we'll handle the rest for you.
+                    </p>
+                    </div>
+                </div>
             </div>
             <div className="bg-cover h-screen">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
