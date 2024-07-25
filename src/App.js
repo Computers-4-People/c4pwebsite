@@ -4,6 +4,7 @@ import Footer from './components/footer';
 import Homepage from './homepage/homepage';
 import Ewaste from './homepage/ewaste';
 import Refurbished from './homepage/refurbished';
+import DSClasses from './homepage/dsclasses';
 
 // import background from './background.jpg'
 import './App.css';
@@ -23,7 +24,9 @@ function App() {
             <Route path="/ewaste" element={<Ewaste />}>
            </Route>  
            <Route path="/refurbishment" element={<Refurbished />}>
-            </Route>       
+            </Route>
+            <Route path="/dataskills" element={<DSClasses />}>
+              </Route>       
          </Routes>
          <Footer/>
          {/* </div> */}
