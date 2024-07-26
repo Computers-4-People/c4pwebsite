@@ -28,7 +28,32 @@ export default function Homepage() {
             <div className='bg-cover h-screen text-black'>
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
-                    <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' />
+                    {/* <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' /> */}
+                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                        <div className='absolute bottom-0 left-2 -mb-12 group-hover:mb-1  transition-all duration-1000 overflow-hidden'>
+                           <h3>TEST</h3>
+                           <p>testtestsetstestsetsetsetsets</p>
+                        </div>
+                    </div>
+                    {/* absolute bottom-2 left-2 top-auto  group-hover:top-0 group-hover:bottom-auto  */}
+                    {/* <div className='group m-4 w-64 text-white rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                        <div className='absolute bottom-2 left-2 group-hover:top-2 group-hover:left-2 group-hover:bottom-auto transition-all duration-1000 ease-in-out'>
+                            TEST
+                        </div>
+                    </div> */}
+                            {/* <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+            <div className='absolute top-auto bottom-2 left-2 transition-all duration-500 ease-in-out group-hover:top-2 group-hover:bottom-auto'>
+                Donation
+            </div>
+        </div> */}
+                    <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+            <div className='absolute bottom-2 left-2 transition-all duration-500 ease-in-out group-hover:top-2 group-hover:left-2 group-hover:bottom-auto'>
+                Donation
+            </div>
+        </div>
+                    {/* <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+            <p className='text-white text-lg font-bold absolute inset-0 flex items-center justify-center group-hover:top-2 group-hover:left-2 transition-all duration-400'>Donation</p>
+        </div> */}
                     <img src='../refurbishment.jpg' className='m-4 w-64 object-cover object-center static rounded-2xl hover:grayscale transition duration-400'></img>
                     <img src='../recipient.png' className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' />
                     <img src="../catalyst.jpg" className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400'/>
