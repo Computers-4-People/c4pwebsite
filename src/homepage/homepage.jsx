@@ -30,9 +30,15 @@ export default function Homepage() {
                 <div className='m-11 flex justify-start'>
                     {/* <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' /> */}
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
-                        <div className='absolute bottom-0 left-2 -mb-12 group-hover:mb-1  transition-all duration-1000 overflow-hidden'>
+                        <div className='absolute bottom-0 top-auto left-2 -mb-12 group-hover:mb-1 transition-all duration-1000 overflow-hidden'>
                            <h3>TEST</h3>
                            <p>testtestsetstestsetsetsetsets</p>
+                        </div>
+                    </div>
+                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                        <div className='h-full static left-2 bottom-2 '>
+                           <h3 className=''>TEST</h3>
+                           <p className='transform translate-y-full group-hover:translate-y-1/4 transition-all duration-1000 overflow-hidden'>testtestsetstestsetsetsetsets</p>
                         </div>
                     </div>
                     {/* absolute bottom-2 left-2 top-auto  group-hover:top-0 group-hover:bottom-auto  */}
@@ -46,11 +52,11 @@ export default function Homepage() {
                 Donation
             </div>
         </div> */}
-                    <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                    {/* <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
             <div className='absolute bottom-2 left-2 transition-all duration-500 ease-in-out group-hover:top-2 group-hover:left-2 group-hover:bottom-auto'>
                 Donation
             </div>
-        </div>
+        </div> */}
                     {/* <div className='group m-4 w-64 h-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
             <p className='text-white text-lg font-bold absolute inset-0 flex items-center justify-center group-hover:top-2 group-hover:left-2 transition-all duration-400'>Donation</p>
         </div> */}
