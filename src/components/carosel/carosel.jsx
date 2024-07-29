@@ -14,7 +14,10 @@ export default function Carosel ({ blocks }, interval = 0) {
     return (
         <div className='overflow-hidden whitespace-nowrap mx-auto relative'>
             {/* <button onClick={prevSlide}></button> */}
-            <span className='inline-block pl-[100%]' style={{animation: 'ticker 5s linear infinite'}}>TEST</span>
+            <span className='inline-block inline-flex space-x-5 pl-[100%] mb-14' style={{animation: 'ticker 20s linear infinite'}}>
+                <div className='h-64 w-64 bg-gray-300 rounded-xl'>This is a test</div>
+                <div className='h-64 w-64 bg-gray-300 rounded-xl'>This is a test</div>
+            </span>
             <style>
                 {`
                     @keyframes ticker{
