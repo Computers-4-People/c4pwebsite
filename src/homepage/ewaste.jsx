@@ -47,7 +47,7 @@ export default function Ewaste () {
                             Computers4People provides a hassle-free, complimentary, service with convenient
                             drop-off points in NJ, NYC, and Massachusetts. Simply drop off your e-waste,
                             and we'll handle the rest for you.
-                    </p>
+                        </p>
                     </div>
                 </div>
             </div>
