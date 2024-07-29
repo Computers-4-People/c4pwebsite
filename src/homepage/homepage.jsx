@@ -2,6 +2,7 @@ import React from "react";
 import BackgroundImage from '../background.jpg';
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
+import Carosel from "../components/carosel/carosel";
 export default function Homepage() {
     console.log(BackgroundImage);
     //  absolute inset-x-20 inset-y-80 center
@@ -98,6 +99,9 @@ export default function Homepage() {
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
                     </div>
                 </div>
+            </div>
+            <div className='bg-cover'>
+                <Carosel></Carosel>
             </div>
         </div>
     )
