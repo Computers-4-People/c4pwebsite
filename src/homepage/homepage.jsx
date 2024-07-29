@@ -9,10 +9,10 @@ export default function Homepage() {
     // "text-2xl my-10 grid grid-cols-2 gap-4 rows-start-5"
     //'grid grid-cols-2 mb-4 col-span-4 rows-span-4'
     return (
-        <div>
+        <div className='font-sans'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${BackgroundImage}')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 font-family: ui-monospace font-bold text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-3 text-justify'>
+                <div class="ml-20 font-bold grid grid-cols-6 grid-rows-6 justify-items-stretch">
+                    <div className='col-start-1 col-end-4 row-start-2 text-justify font-title text-8xl'>
                         <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TRANSFORM A LIFE </p>
                         <p class='text-white col-span-2'>WITH TECHNOLOGY</p>
                     </div>
@@ -20,9 +20,9 @@ export default function Homepage() {
                         <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
                         <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div> */}
-                    <div className='mt-10 row-start-4 col-span-4 row-span-2  flex flex-row justify-items-start flex-wrap text-center text-xl'>
-                        <Link className="bg-[#0FE006] h-10 mr-3 h-13 w-72 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white h-13 w-72 text-white h-10'> Discover our programs </Link>
+                    <div className='mt-10 row-start-3 col-span-4 row-span-2  flex flex-row justify-items-start flex-wrap text-center text-xl'>
+                        <Link className="bg-[#0FE006] h-10 mr-3 h-13 w-64 rounded">🤍 Donate your ewaste</Link>
+                        <Link className='border-2 rounded border-white h-13 w-64 text-white h-10'> Discover our programs </Link>
                     </div>
                 </div>
             </div>

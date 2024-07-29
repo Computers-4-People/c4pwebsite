@@ -6,7 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      
+    },
+    fontFamily: {
+      'sans': 'Roboto',
+      'title': '"Bebas Neue"'
     },
   },
   plugins: [
