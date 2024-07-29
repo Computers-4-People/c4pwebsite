@@ -21,8 +21,8 @@ export default function Homepage() {
                         <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div> */}
                     <div className='mt-10 row-start-3 col-span-4 row-span-2  flex flex-row justify-items-start flex-wrap text-center text-xl'>
-                        <Link className="bg-[#0FE006] h-10 mr-3 h-13 w-64 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white h-13 w-64 text-white h-10'> Discover our programs </Link>
+                        <Link className="bg-[#0FE006] h-10 mr-3 h-13 w-64 rounded pt-1">🤍 Donate your ewaste</Link>
+                        <Link className='border-2 rounded border-white h-13 w-64 text-white h-10 pt-1'> Discover our programs </Link>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@ export default function Homepage() {
                     </div>
                     <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 text-center text-xl gap-3'>
                             <Link className='bg-[#0FE006] rounded h-14 pr-3 pt-3'>🤍 Donate your ewaste</Link>
-                            <Link className='border-2 border-black rounded h-14 pr-3 pt-3'>Become a Partner</Link>
+                            <Link className='border-2 border-black rounded h-14 pr-1 pt-3'>Become a Partner</Link>
                     </div>
                 </div>
             </div>
