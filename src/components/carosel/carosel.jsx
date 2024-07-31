@@ -6,6 +6,7 @@ export default function Carosel ({ blocks }, interval = 0) {
             prevIndex === blocks.length -1 ? 0 : prevIndex + 1
         )
     }
+    
     const prevSlide = () => {
         setCurrentIndex((prevIndex) => prevIndex === 0 ? blocks.length - 1 : prevIndex - 1
         )
