@@ -11,6 +11,9 @@ module.exports = {
       'sans': 'Roboto',
       'title': '"Bebas Neue"'
     },
+    transitionProperty: {
+      'grid': 'grid'
+    },
   },
   plugins: [
     require('tailwindcss-animated')
