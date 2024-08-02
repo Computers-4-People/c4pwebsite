@@ -34,20 +34,37 @@ export default function Homepage() {
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
                     {/* <img src={`../donation.jpg`} className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' /> */}
-                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                    {/* <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
                         <div className='absolute h-full bg-black bottom-0 top-auto left-2 -mb-12 group-hover:mb-1 transition-all duration-1000 overflow-hidden'>
                            <h3>TEST</h3>
                            <p>testtestsetstestsetsetsetsets</p>
                         </div>
-                    </div>
-                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
-                        <div className='absolute h-0 bottom-0 left-2 group-hover:h-full duration-1000 overflow-hidden'>
+                    </div> */}
+                    {/* <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                        <div className='absolute bottom-0 h-0 left-2 w-full group-hover:h-full duration-1000 overflow-hidden'>
                            <div className='row-start-6 group-hover:row-start-1'>
-                            <h3 className='font-bold text-xl'><p>Starts</p> <p>With a Donation</p></h3>
+                           <h3 className='font-bold text-xl'><p>Starts</p> <p>With a Donation</p></h3>
                             <p>testtestsetstestsetsetsetsets</p>
                            </div>
                         </div>
+                    </div> */}
+                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
+                        <div className='absolute bottom-0 duration-1000 overflow-hidden'>
+                           {/* <div className='row-start-6 group-hover:row-start-1'> */}
+                           <h3 className='font-bold text-xl'><p>Starts</p> <p>With a Donation</p></h3>
+                            <p className='h-0 left-2 w-full group-hover:h-96 duration-1000'>testtestsetstestsetsetsetsets</p>
+                           {/* </div> */}
+                        </div>
                     </div>
+            {/* <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative overflow-hidden' style={{ backgroundImage: "url('../donation.jpg')" }}>
+            <h3 className='relative bottom-0 left-2 font-bold text-xl'>
+                <p>Starts</p>
+                <p>With a Donation</p>
+            </h3>
+            <div className='absolute bottom-0 left-2 w-full group-hover:-translate-y-full transition-transform duration-1000'>
+                <p>testtestsetstestsetsetsetsets</p>
+            </div>
+        </div> */}
                     {/* <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
                         <div className='h-full static left-2 bottom-2 '>
                            <h3 className=''>TEST</h3>
