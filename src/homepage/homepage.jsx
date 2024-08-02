@@ -49,10 +49,10 @@ export default function Homepage() {
                         </div>
                     </div> */}
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative' style={{ backgroundImage: "url('../donation.jpg')" }}>
-                        <div className='absolute bottom-0 duration-1000 overflow-hidden'>
+                        <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
                            {/* <div className='row-start-6 group-hover:row-start-1'> */}
-                           <h3 className='font-bold text-xl'><p>Starts</p> <p>With a Donation</p></h3>
-                            <p className='h-0 left-2 w-full group-hover:h-96 duration-1000'>testtestsetstestsetsetsetsets</p>
+                           <h3 className='font-bold text-xl '><p>Starts</p> <p>With a Donation</p></h3>
+                            <p className='h-0 left-2 w-full group-hover:h-32 border-t-4 duration-1000'>testtestsetstestsetsetsetsets</p>
                            {/* </div> */}
                         </div>
                     </div>
