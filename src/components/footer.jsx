@@ -63,7 +63,7 @@ export default function Footer () {
     //             </div>
     //         </div>
     //     </div>
-    <div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-4 h-96 p-10 text-justify">
+    <div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-5 h-96 p-10 text-justify">
         <div className='grid gap-5'>
             <div class='font-bold text-xl'>Computers 4 People</div>
             <div>About us</div>
@@ -122,6 +122,11 @@ export default function Footer () {
                 <div>
                     Shipping
                 </div>
+        </div>
+        <div>
+            <div>Join our NewsLetter</div>
+            <textarea name="" id=""></textarea>
+            <div>Follow Us</div>
         </div>
     </div>
     )
