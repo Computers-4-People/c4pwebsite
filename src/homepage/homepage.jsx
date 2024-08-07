@@ -109,8 +109,8 @@ export default function Homepage() {
                         </div> */}
                     </div>
                     <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3'>
-                            <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-3'>🤍 Donate your ewaste</Link>
-                            <Link className='border-2 border-black rounded h-12 pr-1 pt-3'>Become a Partner</Link>
+                            <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-2.5'>🤍 Donate your ewaste</Link>
+                            <Link className='border-2 border-black rounded h-12 pr-1 pt-2.5'>Become a Partner</Link>
                     </div>
                 </div>
             </div>
