@@ -99,8 +99,8 @@ export default function Homepage() {
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                 <div className='grid grid-rows-6 grid-cols-6'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-2xl'>
-                        <p>Thanks to the [refurbished] laptop I received from </p> <p>Computers 4 People; I can now create artwork</p> <p>every night when I get home!</p>
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl'>
+                        <p>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                         <p className='text-right'>-Mallika</p>
                         {/* <div className='flex justify-evenly text-xl'>
                             <Link className='bg-[#0FE006] rounded'>🤍 Donate your ewaste</Link>
@@ -108,9 +108,9 @@ export default function Homepage() {
 
                         </div> */}
                     </div>
-                    <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 text-center text-xl gap-3'>
-                            <Link className='bg-[#0FE006] rounded h-14 pr-3 pt-3'>🤍 Donate your ewaste</Link>
-                            <Link className='border-2 border-black rounded h-14 pr-1 pt-3'>Become a Partner</Link>
+                    <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3'>
+                            <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-3'>🤍 Donate your ewaste</Link>
+                            <Link className='border-2 border-black rounded h-12 pr-1 pt-3'>Become a Partner</Link>
                     </div>
                 </div>
             </div>
