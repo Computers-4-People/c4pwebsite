@@ -1,7 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 export default function Carosel ({ blocks }, interval = 0) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
+
+    useEffect (() => {
+
+    }, [])
     const nextSlide = () => { 
         setCurrentIndex((prevIndex) => 
             prevIndex === blocks.length -1 ? 0 : prevIndex + 1
@@ -42,16 +46,17 @@ export default function Carosel ({ blocks }, interval = 0) {
         <div className='overflow-x-hidden relative flex  mx-auto relative w-full' 
         onMouseEnter={() => setIsHovered(true)} 
         onMouseLeave={() => setIsHovered(false)}>
+
      <div className='mb-14 ' 
-           style={{animation: `ticker 10s  linear infinite whitespace-nowrap ${isHovered ? 'paused' : ''}`}}>
+           style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
        <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
        <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
        <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
        {/* <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
-       {/* Duplicate items for seamless loop */}
+       {/* figure out how to add whitespace-nowrap */}
        </div>
      <div className='absolute top-0 mb-14 ' 
-           style={{animation: `ticker2 10s linear infinite whitespace-nowrap ${isHovered ? 'paused' : ''}`}}>
+           style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
         <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
         <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
         <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span>
