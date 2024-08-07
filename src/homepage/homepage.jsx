@@ -21,9 +21,9 @@ export default function Homepage() {
                         <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
                         <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div> */}
-                    <div className='mt-10 row-start-3 col-span-4 row-span-2  flex flex-row justify-items-start flex-wrap text-center text-2xl'>
-                        <Link className="bg-[#0FE006] h-10 mr-3 h-11 w-64 rounded pt-2 pr-2">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white h-11 w-64 text-white h-10 pt-1 pr-1'> Discover our programs </Link>
+                    <div className='mt-10 row-start-3 col-span-4 row-span-2 flex flex-row justify-items-start flex-wrap text-center text-2xl w-128'>
+                        <Link className="bg-[#0FE006] h-10 mr-3 h-11 rounded pt-1.5 px-4">🤍 Donate your ewaste</Link>
+                        <Link className='border-2 rounded border-white h-11 text-white h-10 pt-1.5 px-4'> Discover our programs </Link>
                     </div>
                 </div>
             </div>
