@@ -73,8 +73,8 @@ export default function Homepage() {
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                 <div className='grid grid-rows-6 grid-cols-6'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl'  >
-                        <p style={{ backgroundImage: "url('../quotes.png')" }}>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }}>
+                        <p>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                         <p className='text-right italic'>-Mallika</p>
                         {/* <div className='flex justify-evenly text-xl'>
                             <Link className='bg-[#0FE006] rounded'>🤍 Donate your ewaste</Link>
