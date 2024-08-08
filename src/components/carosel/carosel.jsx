@@ -18,53 +18,23 @@ export default function Carosel ({ blocks }, interval = 0) {
     }
 
     return (
-        // <div className='overflow-hidden w-screen whitespace-nowrap mx-auto relative' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-        //     {/* <button onClick={prevSlide}></button> */}
-        //     <span className='inline-block inline-flex justify-evenly space-x-5 pl-[100%] mb-14' style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''}`}}>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //         <div className='h-64 w-96 bg-gray-300 rounded-xl'>This is a test</div>
-        //     </span>
-        //     <style>
-        //         {`
-        //             @keyframes ticker{
-        //                 0% {transform: translateX(0);}
-        //                 100% {transform: translateX(-100%);}
-        //             }
-        //             span:hover {
-        //                 animation-play-state: paused;
-        //             }
-        //         `}
-        //     </style>
-        //     {/* <button onClick={nextSlide}></button> */}
-        // </div>
         <div className='overflow-x-hidden relative flex mb-20 relative w-full' 
         onMouseEnter={() => setIsHovered(true)} 
         onMouseLeave={() => setIsHovered(false)}>
 
      <div className='' style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
-       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}><h3 className=''></h3></span>
-       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}><img src="" alt="" /></span>
-       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
-       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
-       {/* <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
-       {/* figure out how to add whitespace-nowrap */}
+       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}><h3 className=''></h3></span>
+       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}><img src="" alt="" /></span>
+       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
+       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
+
        </div>
      <div className='absolute top-0' 
            style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
-        {/* <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'><h3 className=''></h3></span>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span> */}
-            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
-        {/* <span className='h-64 w-96 bg-blue-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
+            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
      </div>
 
      <style>
