@@ -49,17 +49,17 @@ export default function Carosel ({ blocks }, interval = 0) {
 
      <div className='' 
            style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'><h3 className=''>Computers4People Officially open a second office</h3></span>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'>This is a test</span>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'>This is a test</span>
+       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'><h3 className=''></h3></span>
+       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'><img src="" alt="" /></span>
+       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'></span>
        {/* <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
        {/* figure out how to add whitespace-nowrap */}
        </div>
      <div className='absolute top-0' 
            style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'><h3 className=''>Computers4People Officially open a second office</h3></span>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'>This is a test</span>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'>This is a test</span>
+        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'><h3 className=''></h3></span>
+        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span>
+        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span>
         {/* <span className='h-64 w-96 bg-blue-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
      </div>
      <style>
