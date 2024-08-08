@@ -47,21 +47,26 @@ export default function Carosel ({ blocks }, interval = 0) {
         onMouseEnter={() => setIsHovered(true)} 
         onMouseLeave={() => setIsHovered(false)}>
 
-     <div className='' 
-           style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'><h3 className=''></h3></span>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'><img src="" alt="" /></span>
-       <span className='h-64 w-96 bg-gray-200  mx-5 inline-block pt-5'></span>
+     <div className='' style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
+       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../haverhill.png')" }}><h3 className=''></h3></span>
+       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../bayonne.png')" }}><img src="" alt="" /></span>
+       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../hce.png')" }}></span>
+       <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../hpl.png')" }}></span>
        {/* <span className='h-64 w-96 bg-gray-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
        {/* figure out how to add whitespace-nowrap */}
        </div>
      <div className='absolute top-0' 
            style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'><h3 className=''></h3></span>
+        {/* <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'><h3 className=''></h3></span>
         <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span>
-        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span>
+        <span className='h-64 w-96 bg-gray-200 mx-5 inline-block pt-5'></span> */}
+            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../haverhill.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../bayonne.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../hce.png')" }}></span>
+            <span className='h-64 w-80 bg-gray-200  mx-5 inline-block pt-5' style={{ backgroundImage: "url('../hpl.png')" }}></span>
         {/* <span className='h-64 w-96 bg-blue-300 rounded-xl mx-10 inline-block'>This is a test</span> */}
      </div>
+
      <style>
        {`
          @keyframes ticker {
