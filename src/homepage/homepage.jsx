@@ -66,7 +66,7 @@ export default function Homepage() {
                 <div className='grid grid-rows-6 grid-cols-6 relative'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
                 <div className='absolute inset-0 col-start-4 col-end-6 row-start-1 row-end-4 bg-contain bg-top bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }} />
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
+                    <div className='z-10 col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
                         <p >Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                         <p className='text-right italic'>-Mallika</p>
                     </div>
