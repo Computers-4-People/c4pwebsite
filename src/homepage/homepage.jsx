@@ -35,24 +35,28 @@ export default function Homepage() {
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
                     <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 60%), url('../donation.jpg')` }}>
+                        <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Starts</p> <p>With a Donation</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.</p>
                         </div>
                     </div>
                     <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../refurbishment.jpg')` }}>
+                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Undergoes</p> <p>Refurbishment</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.</p>
                         </div>
                     </div>
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../recipient.png')` }}>
+                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Match</p> <p>With a Recipient</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Devices are redistributed to people in underserved communities.</p>
                         </div>
                     </div>
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../catalyst.jpg')` }}>
+                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Becomes</p> <p>Catalyst for Change</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>People use these devices to open opportunities in jobs, education, telehealth, and beyond!</p>
