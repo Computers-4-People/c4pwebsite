@@ -108,7 +108,7 @@ export default function Footer () {
                     <p>Make a Financial Contribution</p>
                 </Link>
         </div>
-        <div className='grid gaps-4'>
+        <div className='w-40 grid gaps-4 border-r-2'>
             <div  class='font-bold text-xl'>Policies</div>
                 <div>
                     Privacy
@@ -123,10 +123,12 @@ export default function Footer () {
                     Shipping
                 </div>
         </div>
-        <div>
-            <div>Join our NewsLetter</div>
-            <textarea name="" id=""></textarea>
-            <div>Follow Us</div>
+        <div className='justify-self-start'>
+            <div className='text-center'>Join our Newsletter</div>
+            <div className='mt-2'>
+                <textarea className='h-7' name="" id=""> </textarea> <button className='h-7 bg-[#0FE006]'>Subscribe</button>
+            </div>
+            <div className='text-center'>Follow Us</div>
         </div>
     </div>
     )
