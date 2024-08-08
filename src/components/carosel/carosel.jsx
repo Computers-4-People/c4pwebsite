@@ -18,23 +18,23 @@ export default function Carosel ({ blocks }, interval = 0) {
     }
 
     return (
-        <div className='overflow-x-hidden relative flex mb-20 relative w-full' 
+    <div className='overflow-x-hidden relative flex mb-20 relative w-full' 
         onMouseEnter={() => setIsHovered(true)} 
         onMouseLeave={() => setIsHovered(false)}>
 
-     <div className='' style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
-       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}><h3 className=''></h3></span>
-       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}><img src="" alt="" /></span>
-       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
-       <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
+     <div className='flex justify-around' style={{animation: `ticker 10s linear infinite ${isHovered ? 'paused' : ''} `}}>
+       <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}><h3 className=''></h3></div>
+       <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}><img src="" alt="" /></div>
+       <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></div>
+       <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></div>
 
        </div>
-     <div className='absolute top-0' 
-           style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
-            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></span>
-            <span className='h-64 w-80 bg-gray-200 mx-5 inline-block pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></span>
+     <div className='flex justify-around absolute top-0' 
+           style={{animation: ` ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
+            <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}></div>
+            <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}></div>
+            <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></div>
+            <div className='h-64 w-80 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hpl.png')" }}></div>
      </div>
 
      <style>

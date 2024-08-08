@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom"
+import {FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaYoutube} from 'react-icons/fa'
+import {FaXTwitter} from 'react-icons/fa6'
 
 export default function Footer () {
     return(
@@ -63,8 +65,8 @@ export default function Footer () {
     //             </div>
     //         </div>
     //     </div>
-    <div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-5 h-96 p-10 text-justify">
-        <div className='grid gap-5'>
+    <div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-5 h-72 p-10 text-justify">
+        <div className='grid gap-3'>
             <div class='font-bold text-xl'>Computers 4 People</div>
             <div>About us</div>
             <div>Blog</div>
@@ -72,7 +74,7 @@ export default function Footer () {
             <div>Press & Media</div>
             <div>Team</div>
         </div>
-        <div className='grid gap-5'>
+        <div className='grid gap-3'>
             <div  class='font-bold text-xl'> Programs & Initiatives</div> 
             <div>
                 Refurbished Devices
@@ -90,7 +92,7 @@ export default function Footer () {
                 Become a Dropoff Site
             </div>
         </div>
-        <div className='grid gaps-4'>
+        <div className='grid gaps-3'>
             <div  class='font-bold text-xl'>Support</div>
                 <Link>
                     Contact Us
@@ -108,7 +110,7 @@ export default function Footer () {
                     <p>Make a Financial Contribution</p>
                 </Link>
         </div>
-        <div className='w-40 grid gaps-4 border-r-2'>
+        <div className='w-40 grid gaps-3 border-r-2'>
             <div  class='font-bold text-xl'>Policies</div>
                 <div>
                     Privacy
@@ -123,12 +125,25 @@ export default function Footer () {
                     Shipping
                 </div>
         </div>
-        <div className='justify-self-start'>
-            <div className='text-center'>Join our Newsletter</div>
-            <div className='mt-2'>
-                <textarea className='h-7' name="" id=""> </textarea> <button className='h-7 bg-[#0FE006]'>Subscribe</button>
+        <div className='justify-self-start border-left w-96 transform -translate-x-10'>
+            <div>
+                <div className='w-5/6 text-center text-xl font-bold italic'>Join our Newsletter</div>
+                <div className='mt-2'>
+                    <form className='relative'>
+                        <input className='h-7 w-2/3 rounded' type="text" name="email" value=""/>
+                        <input className='h-7 w-1/3 transform -translate-x-20 bg-[#0FE006] text-black rounded' type="submit" value="Submit"/>
+                    </form>
+                </div>
             </div>
-            <div className='text-center'>Follow Us</div>
+            <div className='row-start-2 text-xl mt-10 font-bold text-center w-5/6'>Follow Us</div>
+            <div className='w-5/6 flex justify-around'>
+                <a href=""> <FaFacebook size={30} /></a>
+                <a href=""> <FaInstagram size={30} /></a>
+                <a href=""> <FaXTwitter size={30} /></a>   
+                <a href=""> <FaLinkedin size={30} ></FaLinkedin></a>
+                <a href=""> <FaTiktok size={30} ></FaTiktok></a>
+                <a href=""> <FaYoutube size={30} ></FaYoutube></a>
+            </div>
         </div>
     </div>
     )
