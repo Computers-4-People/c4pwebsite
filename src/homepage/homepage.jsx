@@ -27,9 +27,10 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
-            <div className='bg-cover bg-gray-900 p-16 text-white text-9xl whitespace-nowrap'>
+            <div className='bg-cover bg-gray-900 p-16 text-white text-9xl whitespace-nowrap overflow-hidden'>
                 <p>10,000,000 hours of connectivity provided</p>
             </div>
+            
             <div className='bg-cover h-screen text-black'>
                 <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
                 <div className='m-11 flex justify-start'>
@@ -59,18 +60,15 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
+
             <div className='h-screen text-black'>
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
-                <div className='grid grid-rows-6 grid-cols-6'>
+                <div className='grid grid-rows-6 grid-cols-6 relative'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }}>
-                        <p>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
+                <div className='absolute inset-0 col-start-4 col-end-6 row-start-1 row-end-4 bg-contain bg-top bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }} />
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
+                        <p >Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                         <p className='text-right italic'>-Mallika</p>
-                        {/* <div className='flex justify-evenly text-xl'>
-                            <Link className='bg-[#0FE006] rounded'>🤍 Donate your ewaste</Link>
-                            <Link>Become a Partner</Link>
-
-                        </div> */}
                     </div>
                     <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3'>
                             <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-2.5'>🤍 Donate your ewaste</Link>
@@ -78,6 +76,36 @@ export default function Homepage() {
                     </div>
                 </div>
             </div>
+
+            <div className='h-screen text-black'>
+    <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
+
+    <div className='grid grid-rows-6 grid-cols-6'>
+        <img src="../secondchance.png" className='col-span-3 row-span-3' />
+
+        {/* Container for the background image and specific content */}
+        <div className="col-start-4 col-end-6 row-span-3 relative">
+            {/* Content Divs */}
+            <div className="text-center text-xl relative z-10">
+                <p>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
+                <p className='text-right italic'>-Mallika</p>
+            </div>
+
+            {/* Links Div */}
+            <div className='grid grid-cols-2 items-center text-center text-xl gap-3 mt-4 relative z-10'>
+                <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-2.5'>🤍 Donate your ewaste</Link>
+                <Link className='border-2 border-black rounded h-12 pr-1 pt-2.5'>Become a Partner</Link>
+            </div>
+
+            {/* Background Image Div */}
+            <div
+                className="absolute top-0 left-0 w-full h-full bg-contain bg-top bg-no-repeat z-0"
+                style={{ backgroundImage: "url('../quotes.png')" }}
+            ></div>
+        </div>
+    </div>
+</div>
+
             <div className="bg-cover h-screen">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
