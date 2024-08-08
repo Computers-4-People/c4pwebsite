@@ -35,36 +35,26 @@ export default function Homepage() {
                 <div className='m-11 flex justify-start'>
                     <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: "url('../donation.jpg')" }}>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           {/* <div className='row-start-6 group-hover:row-start-1'> */}
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Starts</p> <p>With a Donation</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.</p>
-                           {/* </div> */}
                         </div>
                     </div>
-                      <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: "url('../refurbishment.jpg')" }}>
+                    <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: "url('../refurbishment.jpg')" }}>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           {/* <div className='row-start-6 group-hover:row-start-1'> */}
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Undergoes</p> <p>Refurbishment</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.</p>
-                           {/* </div> */}
                         </div>
                     </div>
-                    {/* <img src='../recipient.png' className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400' /> */}
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: "url('../recipient.png')" }}>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           {/* <div className='row-start-6 group-hover:row-start-1'> */}
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Match</p> <p>With a Recipient</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Devices are redistributed to people in underserved communities.</p>
-                           {/* </div> */}
                         </div>
                     </div>
-                    {/* <img src="../catalyst.jpg" className='m-4 w-64 rounded-2xl hover:grayscale transition duration-400'/> */}
                     <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: "url('../catalyst.jpg')" }}>
                         <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           {/* <div className='row-start-6 group-hover:row-start-1'> */}
                            <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Becomes</p> <p>Catalyst for Change</p></h3>
                             <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>People use these devices to open opportunities in jobs, education, telehealth, and beyond!</p>
-                           {/* </div> */}
                         </div>
                     </div>
                 </div>
@@ -73,7 +63,7 @@ export default function Homepage() {
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                 <div className='grid grid-rows-6 grid-cols-6'>
                     <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }}>
+                    <div className='col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }}>
                         <p>Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                         <p className='text-right italic'>-Mallika</p>
                         {/* <div className='flex justify-evenly text-xl'>
