@@ -12,8 +12,20 @@ export default function Navbar() {
         About: ['Our Story', 'Mission', 'Vision', 'Values'],
         Get_Involved: ['Make a financial contribution', 'Volunteer', 'Become a Drop-Off Site']
     };
-    const handleMouseEnter = (items) => { 
-        setDropdownContent(items);
+    function handleMouseEnter(items) { 
+        let dropCont;
+        if (items[0] === 'Refurbished Devices'){
+            dropCont = 
+            <div className='w-96 h-48 p-5'>
+                <ul className='h-full w-1/2 flex flex-col justify-between text-l font-bold font-sans border-r-2 border-black '>
+                    <li>Refurbished Devices</li>
+                    <li>Digital Skills Courses</li>
+                    <li>Ewaste Recycling</li>
+                </ul>
+            </div>
+        }; 
+
+        setDropdownContent(dropCont);
         setMenuVisible(true)
      };
     const handleMouseLeave = () => { setMenuVisible(false) };
@@ -32,8 +44,10 @@ export default function Navbar() {
             </div>
             <div class='absolute right-0 z-5'>
             {/* {isMenuVisible && <DropdownMenu/>} */}
-            {isMenuVisible && (<div onMouseEnter={() => setMenuVisible(true)} className='bg-white rounded m-2 text-bold flex flex-col w-96 mr-20'> 
-                {dropdownContent.map((item) => (<Link className='m-2 ml-10 w-40'>{item}</Link>))}
+            {/* text-bold flex flex-col w-96  */}
+            {isMenuVisible && (<div onMouseEnter={() => setMenuVisible(true)} className='bg-white rounded m-2 mr-40'> 
+                {/* {dropdownContent.map((item) => (<Link className='m-2 ml-10 w-40'>{item}</Link>))} */}
+                {dropdownContent}
             </div>)}
             </div>
         </div>
