@@ -136,8 +136,8 @@ export default function Footer () {
                 </div>
             </div>
             <div className='row-start-2 text-xl mt-10 font-bold text-center w-5/6'>Follow Us</div>
-            <div className='w-5/6 flex justify-around'>
-                <a href=""> <FaFacebook size={30} /></a>
+            <div className='w-5/6 flex justify-around mt-2'>
+                <a href="" className=''> <FaFacebook size={30} /></a>
                 <a href=""> <FaInstagram size={30} /></a>
                 <a href=""> <FaXTwitter size={30} /></a>   
                 <a href=""> <FaLinkedin size={30} ></FaLinkedin></a>
