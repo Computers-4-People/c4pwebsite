@@ -60,6 +60,9 @@ export default function Navbar() {
                 <div className='font-bold'>Careers</div>
                 <div></div>
             </div>
+            if (items[0] === 'Make a financial contribution'){
+                
+            }
         } 
 
         setDropdownContent(dropCont);
