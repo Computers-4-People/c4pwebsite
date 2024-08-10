@@ -22,12 +22,45 @@ export default function Navbar() {
                     <li>Digital Skills Courses</li>
                     <li>Ewaste Recycling</li>
                 </ul>
-                <div className='bg-gray-500'>
-                    <p>Fill out an application for a refurbished device.</p>
+                <div className='px-5 self-end'>
+                    <p className=''>Fill out an application for a refurbished device.</p>
                     <Link></Link>
                 </div>
             </div>
-        }; 
+        }
+        if (items[0] === 'Our Story') {
+            dropCont=
+            <div className='h-48 p-5 grid gap-10 grid-cols-3'>
+                    <div>
+                        <ul className='h-full flex flex-col justify-between'>
+                            <li>Mission & History</li>
+                            <li>
+                                Our Story
+                            </li>
+                            <li>
+                                Mission
+                            </li>
+                            <li>
+                                Vision
+                            </li>
+                            <li>
+                                Values
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                    <ul className='h-full flex flex-col justify-between'>
+                        <li>Press & Media</li>
+                        <li>Team Members</li>
+                        <li>Board Members</li>
+                        <li>Headquarters</li>
+                        <li>Massachusetts</li>
+                    </ul>
+                </div>
+                <div className='font-bold'>Careers</div>
+                <div></div>
+            </div>
+        } 
 
         setDropdownContent(dropCont);
         setMenuVisible(true)
