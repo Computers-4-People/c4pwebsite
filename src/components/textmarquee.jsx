@@ -1,36 +1,39 @@
 import React from 'react';
 
-const Marquee = ({ text, duration = '10s', className = '' }) => {
+export default function Marquee({ text, duration = 10 }) {
   const marqueeStyle = {
     display: 'inline-block',
-    paddingLeft: '100%', // Start outside the screen
-    animation: `marquee ${duration} linear infinite`,
+    whiteSpace: 'nowrap',
+    animation: `marquee ${duration}s linear infinite`,
   };
 
   const marqueeContainerStyle = {
     overflow: 'hidden',
-    whiteSpace: 'nowrap',
     display: 'flex',
+    alignItems: 'center',
   };
 
   return (
-    <div className={`bg-cover bg-black p-16 text-white text-9xl ${className}`} style={marqueeContainerStyle}>
+    <div
+      className="relative w-full bg-black text-white p-16 text-9xl"
+      style={marqueeContainerStyle}
+    >
+      <div style={marqueeStyle} className="marquee-content">
+        <span>{text}</span>
+        <span style={{ paddingLeft: '20%' }}>{text}</span> {/* Duplicate text */}
+      </div>
       <style>
         {`
           @keyframes marquee {
-            0% {
-              transform: translateX(0%);
-            }
-            100% {
-              transform: translateX(-100%);
-            }
+            0% { transform: translateX(100%); } /* Start off-screen on the right */
+            100% { transform: translateX(-150%); } /* Move off-screen to the left */
+          }
+
+          .marquee-content {
+            width: 220%; /* Total width should be twice the original text width */
           }
         `}
       </style>
-      <p style={marqueeStyle}>{text}</p>
-      <p style={marqueeStyle}>{text}</p> {/* Duplicate text for continuous effect */}
     </div>
   );
-};
-
-export default Marquee;
+}
