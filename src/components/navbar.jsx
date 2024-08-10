@@ -30,7 +30,7 @@ export default function Navbar() {
         }
         if (items[0] === 'Our Story') {
             dropCont=
-            <div className='h-48 p-5 grid gap-10 grid-cols-4'>
+            <div className='h-48 p-5 grid gap-10 grid-cols-5'>
                     <div>
                         <ul className='h-full flex flex-col justify-between'>
                             <li>Mission & History</li>
@@ -57,8 +57,8 @@ export default function Navbar() {
                         <li>Massachusetts</li>
                     </ul>
                 </div>
-                <div className='font-bold'>Careers</div>
-                <div></div>
+                <div className='font-bold border-r-2'>Careers</div>
+                <div className='cols-span-2'></div>
             </div>
             if (items[0] === 'Make a financial contribution'){
                 
