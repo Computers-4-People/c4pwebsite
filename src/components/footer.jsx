@@ -139,12 +139,12 @@ export default function Footer () {
                 </div>
                 <div className='row-start-2 text-xl mt-10 font-bold text-center w-5/6'>Follow Us</div>
                 <div className='w-5/6 flex justify-around mt-2'>
-                    <a href="" className=''> <FaFacebook size={30} /></a>
-                    <a href=""> <FaInstagram size={30} /></a>
-                    <a href=""> <FaXTwitter size={30} /></a>   
-                    <a href=""> <FaLinkedin size={30} ></FaLinkedin></a>
-                    <a href=""> <FaTiktok size={30} ></FaTiktok></a>
-                    <a href=""> <FaYoutube size={30} ></FaYoutube></a>
+                    <a href="https://www.facebook.com/Computers4People" className=''> <FaFacebook size={30} /></a>
+                    <a href="https://www.instagram.com/computers4people/"> <FaInstagram size={30} /></a>
+                    <a href="https://twitter.com/Computer4people"> <FaXTwitter size={30} /></a>   
+                    <a href="https://www.linkedin.com/company/computers4people"> <FaLinkedin size={30} ></FaLinkedin></a>
+                    <a href="https://www.tiktok.com/@computers4people"> <FaTiktok size={30} ></FaTiktok></a>
+                    <a href="https://www.youtube.com/@Computers4People"> <FaYoutube size={30} ></FaYoutube></a>
                 </div>
             </div>
         </div>
