@@ -5,6 +5,9 @@ import Homepage from './homepage/homepage';
 import Ewaste from './homepage/ewaste';
 import Refurbished from './homepage/refurbished';
 import DSClasses from './homepage/dsclasses';
+import about from './homepage/about';
+import blog from './homepage/blog';
+
 
 // import background from './background.jpg'
 import './App.css';
