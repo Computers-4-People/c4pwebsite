@@ -30,7 +30,7 @@ export default function Carosel ({ blocks }, interval = 0) {
 
         </div>
       <div className='flex h-full w-full justify-around absolute top-0' 
-            style={{animation: ` ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
+            style={{animation: `ticker2 10s linear infinite  ${isHovered ? 'paused' : ''}`}}>
               <div className='h-full w-1/4 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../haverhill.png')" }}></div>
               <div className='h-full w-1/4 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../bayonne.png')" }}></div>
               <div className='h-full w-1/4 bg-gray-200 mx-5 pt-5 bg-contain bg-center bg-no-repeat' style={{ backgroundImage: "url('../hce.png')" }}></div>
@@ -48,10 +48,11 @@ export default function Carosel ({ blocks }, interval = 0) {
             100% {transform: translateX(0%)}
         }
          span:hover {
-           animation-play-state: paused;
+           animation-delay: 250ms;
          }
        `}
      </style>
+     {/* animation-play-state: paused; */}
    </div>
     ) 
 }
