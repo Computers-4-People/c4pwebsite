@@ -30,7 +30,7 @@ export default function Navbar() {
         }
         if (items[0] === 'Our Story') {
             dropCont=
-            <div className='h-48 p-5 grid gap-10 grid-cols-3'>
+            <div className='h-48 p-5 grid gap-10 grid-cols-4'>
                     <div>
                         <ul className='h-full flex flex-col justify-between'>
                             <li>Mission & History</li>
@@ -71,21 +71,22 @@ export default function Navbar() {
     const handleMouseLeave = () => { setMenuVisible(false) };
 
     return (
-        <div onMouseLeave={handleMouseLeave}>
-            <div className="bg-gray-900 relative">
+        <div className='fixed z-10 w-full"'onMouseLeave={handleMouseLeave}>
+            <div className="bg-gray-900 fixed z-10 w-full">
                 {/* <NavLink to={"/apply"}>Apply For A Computer </NavLink> */}
                 {/* <div> Computers4People </div> */}
-                    <div class='flex justify-end items-center space-x-20 h-20'>
-                    <img src='c4plogo.png' className='position absolute ml-3 h-5/6 w-3/12 mt-3 left-0 h-20'></img>
+                <img src='c4plogo.png' className='fixed ml-3 mt-3 left-0 h-20' />
+                    <div class='flex justify-end items-center relative space-x-20 h-20'>
+                    {/* <img src='c4plogo.png' className='position absolute ml-3 mt-3 left-0 h-20' /> */}
                         <Link onMouseEnter={() => handleMouseEnter(dropdownItems['Programs'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
                         <Link onMouseEnter={() => handleMouseEnter(dropdownItems['About'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
                         <Link class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
                     </div>
             </div>
-            <div class='absolute right-0 z-5'>
+            <div class='fixed top-20 right-0 z-5'>
             {/* {isMenuVisible && <DropdownMenu/>} */}
             {/* text-bold flex flex-col w-96  */}
-            {isMenuVisible && (<div onMouseEnter={() => setMenuVisible(true)} className='bg-white w-auto rounded m-2 mr-40'> 
+            {isMenuVisible && (<div onMouseEnter={() => setMenuVisible(true)} className='bg-white w-auto rounded m-2'> 
                 {/* {dropdownContent.map((item) => (<Link className='m-2 ml-10 w-40'>{item}</Link>))} */}
                 {dropdownContent}
             </div>)}
