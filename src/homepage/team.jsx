@@ -3,7 +3,7 @@
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
 import Carosel from "../components/carosel/carosel";
-export default function Homepage() {
+export default function Team() {
     //  absolute inset-x-20 inset-y-80 center
     //  p-60 pl-10 text-6xl font-bold flex-row
     // "text-2xl my-10 grid grid-cols-2 gap-4 rows-start-5"
