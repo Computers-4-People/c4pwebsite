@@ -76,7 +76,9 @@ export default function Navbar() {
                 {/* <NavLink to={"/apply"}>Apply For A Computer </NavLink> */}
                 {/* <div> Computers4People </div> */}
                     <div class='flex justify-end items-center space-x-20 h-20'>
-                    <img src='c4plogo.png' className='position absolute ml-3 h-5/6 w-3/12 mt-3 left-0 h-20'></img>
+                    <Link to='/'>
+                    <img src='c4plogo.png' className='ml-3 h-full w-3/12 mt-3' alt='C4P Logo'></img>
+                    </Link>
                         <Link onMouseEnter={() => handleMouseEnter(dropdownItems['Programs'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
                         <Link onMouseEnter={() => handleMouseEnter(dropdownItems['About'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
                         <Link class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>

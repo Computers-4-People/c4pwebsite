@@ -6,6 +6,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        c4p:{DEFAULT:"#17de43", 
+          hover:"#00624b"
+        },
+      }
     },
     fontFamily: {
       'sans': 'Roboto',
