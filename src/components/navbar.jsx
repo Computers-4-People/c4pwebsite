@@ -16,10 +16,10 @@ export default function Navbar() {
     };
     function handleMouseEnter(items) { 
         let dropCont;
-        if (items[0] === 'Refurbished Devices'){
+        if (items === 'programs'){
             dropCont = 
             <div className='w- h-48 p-5 grid grid-cols-2 justify-end'>
-                <ul className='h-full flex flex-col justify-between text-l font-bold font-sans border-r-2 border-black '>
+                <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-r-2 border-black '>
                     <li>Refurbished Devices</li>
                     <li>Digital Skills Courses</li>
                     <li>Ewaste Recycling</li>
@@ -30,11 +30,11 @@ export default function Navbar() {
                 </div>
             </div>
         }
-        if (items[0] === 'Our Story') {
+        if (items === 'about') {
             dropCont=
             <div className='h-48 p-5 grid gap-5 grid-cols-5' style={{width: '50vw'}}>
                     <div>
-                        <ul className='h-full flex flex-col justify-between'>
+                        <ul className='h-full flex flex-col justify-around'>
                             <li>Mission & History</li>
                             <li>Our Story</li>
                             <li>Mission</li>
@@ -54,13 +54,24 @@ export default function Navbar() {
                 <div className='font-bold border-r-2'>Careers</div>
                 <div className='col-span-2 flex flex-col justify-end p-2 pb-4'>
                     <p className='mx-10 text-center text-l'>Check status, schedule a pickup or enroll in a class!</p>
-                    <span className= 'mx-5 inline-block flex justify-center'><Link className='bg-green-500 px-2 rounded text-xl'>Create Account/Login</Link></span>
+                    <span className= 'mx-5 inline-block flex justify-center'><Link className='bg-green-500 px-10 mt-3 rounded text-xl'>Create Account/Login</Link></span>
                 </div>
             </div>
-            if (items[0] === 'Make a financial contribution'){
-                
-            }
-        } 
+        }
+        if (items === 'involved'){
+            dropCont = 
+            <div className='h-48 grid grid-cols-2 p-5'>
+                <ul className='flex flex-col justify-around border-r-2'>
+                    <li>Make a financial contribution</li>
+                    <li>Volunteer</li>
+                    <li>Become a Drop-Off Site</li>
+                </ul>
+                <div className='flex flex-col justify-end p-2 pb-4'>
+                    <p className='mx-10 text-center text-l'>Schedule a pickup to collect your unused electronics.</p>
+                   <span className='mx-5 inline-block flex justify-center text-xl'><Link className='bg-green-500 rounded mt-3 px-14'>Donate your Ewaste</Link></span>
+                </div>
+            </div>
+        }
 
         setDropdownContent(dropCont);
         setMenuVisible(true)
@@ -75,9 +86,9 @@ export default function Navbar() {
                 <img src='c4plogo.png' className='fixed ml-3 mt-3 left-0 h-20' />
                     <div class='flex justify-end items-center relative space-x-20 h-20 mr-10'>
                     {/* <img src='c4plogo.png' className='position absolute ml-3 mt-3 left-0 h-20' /> */}
-                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['Programs'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
-                        <Link onMouseEnter={() => handleMouseEnter(dropdownItems['About'])} class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
-                        <Link class='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
+                        <Link onMouseEnter={() => handleMouseEnter('programs')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
+                        <Link onMouseEnter={() => handleMouseEnter('about')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
+                        <Link onMouseEnter={() => handleMouseEnter('involved')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
                         <Link className='bg-white text-xl rounded grid grid-cols-2 justify-items-center pr-5'> <FaUser size={20} className='mt-1'/>  Log In</Link>
                     </div>
                     
