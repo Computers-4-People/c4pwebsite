@@ -31,41 +31,24 @@ function App() {
       <BrowserRouter>
           <Navbar/>
           <Routes>
-            <Route path='/' element={<Homepage/>}>
+            <Route path='/' element={<Homepage/>}/>
               {/* <Homepage /> */}
-            </Route>
-            <Route path="/ewaste" element={<Ewaste />}>
-           </Route>  
-           <Route path="/refurbishment" element={<Refurbished />}>
-            </Route>
-            <Route path="/dataskills" element={<DSClasses />}>
-              </Route> 
-            <Route path="/about" element={<About />}>
-              </Route>  
-            <Route path="/blog" element={<Blog />}>
-              </Route>
-            <Route path="/careers" element={<Careers />}>
-              </Route>         
-            <Route path="/contact" element={<Contact />}>
-              </Route>
-            <Route path="/ewastedropoff" element={<Ewastedropoff />}>
-              </Route>
-            <Route path="/financialdonation" element={<Financialdonation />}>
-              </Route>
-            <Route path="/help" element={<Help />}>
-              </Route>
-            <Route path="/impact" element={<Impact />}>
-              </Route>
-            <Route path="/partner" element={<Partner />}>
-              </Route>
-            <Route path="/programs" element={<Programs />}>
-              </Route>
-            <Route path="/socialmedia" element={<Socialmedia />}>
-              </Route>
-            <Route path="/team" element={<Team />}>
-              </Route>
-            <Route path="/volunteer" element={<Volunteer />}>
-              </Route>
+            <Route path="/ewaste" element={<Ewaste />}/>
+           <Route path="/refurbishment" element={<Refurbished />}/>
+            <Route path="/dataskills" element={<DSClasses />}/>
+            <Route path="/about" element={<About />}/>
+            <Route path="/blog" element={<Blog />}/>
+            <Route path="/careers" element={<Careers />}/>         
+            <Route path="/contact" element={<Contact />}/>
+            <Route path="/ewastedropoff" element={<Ewastedropoff />}/>
+            <Route path="/financialdonation" element={<Financialdonation />}/>
+            <Route path="/help" element={<Help />}/>
+            <Route path="/impact" element={<Impact />}/>
+            <Route path="/partner" element={<Partner />}/>
+            <Route path="/programs" element={<Programs />}/>
+            <Route path="/socialmedia" element={<Socialmedia />}/>
+            <Route path="/team" element={<Team />}/>
+            <Route path="/volunteer" element={<Volunteer />}/>
          </Routes>
          <Footer/>
          {/* </div> */}

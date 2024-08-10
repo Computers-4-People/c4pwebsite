@@ -21,8 +21,8 @@ export default function Homepage() {
                         <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div> */}
                     <div className='mt-10 row-start-3 col-span-4 row-span-2 flex flex-row justify-items-start flex-wrap text-center text-xl w-128'>
-                        <Link className="bg-[#0FE006] h-10 mr-3 h-11 rounded-md pt-2 px-5">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded-md border-white h-11 text-white h-10 pt-1.5 px-5'> Discover our programs </Link>
+                        <Link to="/ewaste" className="bg-[#0FE006] h-10 mr-3 h-11 rounded-md pt-2 px-5">🤍 Donate your ewaste</Link>
+                        <Link toclassName='border-2 rounded-md border-white h-11 text-white h-10 pt-1.5 px-5'> Discover our programs </Link>
                     </div>
                 </div>
             </div>
