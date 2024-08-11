@@ -1,6 +1,6 @@
 import { Router, NavLink, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { FaUser} from 'react-icons/fa';
+import { FaUser, FaBars} from 'react-icons/fa';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 // import DropdownMenu from './dropdown';
 
@@ -75,9 +75,10 @@ export default function Navbar() {
                 <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
             </Link>
             <div className="flex flex-wrap items-center space-x-4 md:space-x-8">
-                <Link onMouseEnter={() => handleMouseEnter('programs')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/programs'>Programs</Link>
-                <Link onMouseEnter={() => handleMouseEnter('about')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/about'>About Us</Link>
-                <Link onMouseEnter={() => handleMouseEnter('involved')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/financialdonation'>Get Involved</Link>
+                <FaBars size={40} className='white'/>
+                <Link onMouseEnter={() => handleMouseEnter('programs')} className='px-3 py-2 invisible md:visible rounded text-white text-xl hover:bg-c4p hover:text-black' to='/programs'>Programs</Link>
+                <Link onMouseEnter={() => handleMouseEnter('about')} className='px-3 py-2 invisible md:visible rounded text-white text-xl hover:bg-c4p hover:text-black' to='/about'>About Us</Link>
+                <Link onMouseEnter={() => handleMouseEnter('involved')} className='px-3 py-2 invisible md:visible rounded text-white text-xl hover:bg-c4p hover:text-black' to='/financialdonation'>Get Involved</Link>
                 <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
                     <FaUser size={20} className='mr-2' />
                     Log In
