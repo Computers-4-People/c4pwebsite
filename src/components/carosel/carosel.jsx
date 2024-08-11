@@ -18,7 +18,7 @@ export default function Carosel ({ blocks }, interval = 0) {
     }
 
     return (
-    <div className='overflow-x-hidden relative flex mb-20 relative w-screen' style={{height: `35vh`}} 
+    <div className='overflow-x-hidden relative flex mb-20 relative w-full' style={{height: `35vh`}} 
         onMouseEnter={() => setIsHovered(true)} 
         onMouseLeave={() => setIsHovered(false)}>
 

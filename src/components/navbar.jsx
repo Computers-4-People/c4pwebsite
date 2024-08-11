@@ -10,100 +10,84 @@ export default function Navbar() {
     const [dropdownContent, setDropdownContent] = useState([]);
 
     const dropdownItems = {
-        Programs: ['Refurbished Devices', 'Digital Skills Courses', 'E-Waste Recycling'],
-        About: ['Our Story', 'Mission', 'Vision', 'Values'],
-        Get_Involved: ['Make a financial contribution', 'Volunteer', 'Become a Drop-Off Site']
+        Programs: ['Refurbished Devices', 'Digital Skills Courses', 'EWaste Recycling'],
+        About: ['Mission & History', 'Press & Media', 'Team', 'Careers'],
+        Get_Involved: ['Donate Today', 'Volunteer', 'Become a Drop-Off Site']
     };
     function handleMouseEnter(items) { 
         let dropCont;
-        if (items === 'programs'){
-            dropCont = 
-            <div className='w- h-48 p-5 grid grid-cols-2 justify-end'>
-                <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-r-2 border-black '>
-                    <li>Refurbished Devices</li>
-                    <li>Digital Skills Courses</li>
-                    <li>Ewaste Recycling</li>
-                </ul>
-                <div className='px-5 self-end'>
-                    <p className=''>Fill out an application for a refurbished device.</p>
-                    <Link></Link>
-                </div>
-            </div>
-        }
+    if (items === 'programs') {
+    dropCont =
+    <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
+        <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+            <li><Link to="/refurbished" className="hover:text-c4p">Refurbished Devices</Link></li>
+            <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>
+            <li><Link to="/ewaste" className="hover:text-c4p">EWaste Recycling</Link></li>
+        </ul>
+        <div className='flex flex-col justify-between items-center'>
+            <img src="nav/applyforcomputer.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2"/>
+            <p className='text-center'>Fill out an application for a refurbished device.</p>
+            <Link to="/refurbished" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Apply for a Computer</Link>
+        </div>
+    </div>
+}
         if (items === 'about') {
-            dropCont=
-            <div className='h-48 p-5 grid gap-5 grid-cols-5' style={{width: '50vw'}}>
-                    <div>
-                        <ul className='h-full flex flex-col justify-around'>
-                            <li>Mission & History</li>
-                            <li>Our Story</li>
-                            <li>Mission</li>
-                            <li>Vision</li>
-                            <li>Values</li>
-                        </ul>
-                    </div>
-                    <div>
-                    <ul className='h-full flex flex-col justify-between'>
-                        <li>Press & Media</li>
-                        <li>Team Members</li>
-                        <li>Board Members</li>
-                        <li>Headquarters</li>
-                        <li>Massachusetts</li>
-                    </ul>
-                </div>
-                <div className='font-bold border-r-2'>Careers</div>
-                <div className='col-span-2 flex flex-col justify-end p-2 pb-4'>
-                    <p className='mx-10 text-center text-l'>Check status, schedule a pickup or enroll in a class!</p>
-                    <span className= 'mx-5 inline-block flex justify-center'><Link className='bg-green-500 px-10 mt-3 rounded text-xl'>Create Account/Login</Link></span>
-                </div>
-            </div>
-        }
+            dropCont =
+            <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
+        <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+            <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
+            <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
+            <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
+            <li><Link to="/careers" className="hover:text-c4p">Careers</Link></li>
+        </ul>
+        <div className='flex flex-col justify-between items-center'>
+            <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2"/>
+            <p className='text-center'>Check status, schedule a pickup or enroll in a class!</p>
+            <Link to="/login" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Create Account/Login</Link>
+        </div>
+    </div>
+}
         if (items === 'involved'){
             dropCont = 
-            <div className='h-48 grid grid-cols-2 p-5'>
-                <ul className='flex flex-col justify-around border-r-2'>
-                    <li>Make a financial contribution</li>
-                    <li>Volunteer</li>
-                    <li>Become a Drop-Off Site</li>
-                </ul>
-                <div className='flex flex-col justify-end p-2 pb-4'>
-                    <p className='mx-10 text-center text-l'>Schedule a pickup to collect your unused electronics.</p>
-                   <span className='mx-5 inline-block flex justify-center text-xl'><Link className='bg-green-500 rounded mt-3 px-14'>Donate your Ewaste</Link></span>
-                </div>
-            </div>
-        }
-
+            <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
+        <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+            <li><Link to="/about" className="hover:text-c4p">Donate Today</Link></li>
+            <li><Link to="/press" className="hover:text-c4p">Volunteer</Link></li>
+            <li><Link to="/team" className="hover:text-c4p">Become a Drop-Off Site</Link></li>
+        </ul>
+        <div className='flex flex-col justify-between items-center'>
+            <img src="nav/ewaste.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2"/>
+            <p className='text-center'>Schedule a pickup to collect your unused electronics.</p>
+            <Link to="/ewaste" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Donate your Ewaste</Link>
+        </div>
+    </div>
+    }
         setDropdownContent(dropCont);
         setMenuVisible(true)
      };
     const handleMouseLeave = () => { setMenuVisible(false) };
 
     return (
-        <div className='fixed z-10 w-full"'onMouseLeave={handleMouseLeave}>
-            <div className="bg-gray-900 fixed z-10 w-full">
-                {/* <NavLink to={"/apply"}>Apply For A Computer </NavLink> */}
-                {/* <div> Computers4People </div> */}
-
-                    <div class='flex justify-end items-center relative space-x-20 h-20 mr-10'>
-                    {/* <img src='c4plogo.png' className='position absolute ml-3 mt-3 left-0 h-20' /> */}
-                    <Link to='/'>
-                    <img src='c4plogo.png' className='ml-3 h-full w-3/12 mt-3' alt='C4P Logo'></img>
-                    </Link>
-                        <Link onMouseEnter={() => handleMouseEnter('programs')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/apply'>Programs</Link>
-                        <Link onMouseEnter={() => handleMouseEnter('about')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/programs'>About us</Link>
-                        <Link onMouseEnter={() => handleMouseEnter('involved')} className='m-1 px-2 rounded text-white text-xl hover:bg-[#0FE006] hover:text-black'to='/volunteer'>Get Involved</Link>
-                        <Link className='bg-white text-xl rounded grid grid-cols-2 justify-items-center pr-5'> <FaUser size={20} className='mt-1'/>  Log In</Link>
-                    </div>
-                    
-            </div>
-            <div class='fixed top-20 right-0 z-5'>
-            {/* {isMenuVisible && <DropdownMenu/>} */}
-            {/* text-bold flex flex-col w-96  */}
-            {isMenuVisible && (<div onMouseEnter={() => setMenuVisible(true)} className='bg-white w-auto rounded m-2'> 
-                {/* {dropdownContent.map((item) => (<Link className='m-2 ml-10 w-40'>{item}</Link>))} */}
-                {dropdownContent}
-            </div>)}
+        <div className='fixed z-10 w-full bg-gradient-to-b from-black' onMouseLeave={handleMouseLeave}>
+        <div className="flex justify-between items-center h-16 px-5 md:px-10">
+            <Link to='/' className="flex-shrink-0">
+                <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
+            </Link>
+            <div className="flex flex-wrap items-center space-x-4 md:space-x-8">
+                <Link onMouseEnter={() => handleMouseEnter('programs')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/programs'>Programs</Link>
+                <Link onMouseEnter={() => handleMouseEnter('about')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/about'>About Us</Link>
+                <Link onMouseEnter={() => handleMouseEnter('involved')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/financialcontribution'>Get Involved</Link>
+                <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
+                    <FaUser size={20} className='mr-2' />
+                    Log In
+                </Link>
             </div>
         </div>
-    )
+        {isMenuVisible && (
+            <div className='absolute top-14 right-0 z-5 bg-white w-full md:w-auto rounded m-2 shadow-lg'>
+                {dropdownContent}
+            </div>
+        )}
+    </div>
+);
 }

@@ -44,7 +44,7 @@ export default function Homepage() {
     }
   ];
     return (
-        <div className='font-sans'>
+        <div className='font-sans overflow-x-hidden'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
                 <div class="ml-20 grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-4 row-start-2 text-justify font-title text-8xl'>
@@ -66,7 +66,7 @@ export default function Homepage() {
             </div>
         <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
             <div>
-                <InfoCard cards={cardsData} />
+                <InfoCard cards={cardsData}/>
             </div>
             <div className='h-screen text-black'>
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
@@ -81,7 +81,7 @@ export default function Homepage() {
             </div>
     
             <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3 z-20'>
-                <Link to="/ewaste" className='bg-[#0FE006] rounded h-12 pr-3 pt-2.5 hover:bg-green-800 hover:text-white'>🤍 Donate your ewaste</Link>
+                <Link to="/ewaste" className='bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white'>🤍 Donate your ewaste</Link>
                 <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Become a Partner</Link>
                 </div>
                 </div>
@@ -99,7 +99,7 @@ export default function Homepage() {
                 </div>
             </div>
             <div className='bg-cover'>
-                <Carosel></Carosel>
+                <Carosel/>
             </div>
         </div>
     )

@@ -65,9 +65,9 @@ export default function Footer () {
     //             </div>
     //         </div>
     //     </div>
-    <div>
+    <div >
         <div style={{backgroundImage: `url(../hills.png)`}} ></div>
-        <div class="footer static bottom-0 w-full text-white bg-gray-900 grid grid-cols-5 h-72 p-10 text-justify">
+        <div class="footer overflow-x-hidden static bottom-0 w-full text-white bg-black grid grid-cols-5 p-10 text-justify">
             <div className='grid gap-3'>
                 <div class='font-bold text-xl'>Computers 4 People</div>
                 <div>About us</div>
@@ -132,8 +132,8 @@ export default function Footer () {
                     <div className='w-5/6 text-center text-xl font-bold italic'>Join our Newsletter</div>
                     <div className='mt-2'>
                         <form className='relative'>
-                            <input className='h-7 w-2/3 rounded' type="text" name="email" value=""/>
-                            <input className='h-7 w-1/3 transform -translate-x-20 bg-[#0FE006] text-black rounded' type="submit" value="Submit"/>
+                            {/* <input className='h-7 w-2/3 rounded' type="text" name="email" value=""/>
+                            <input className='h-7 w-1/3 transform -translate-x-20 bg-[#0FE006] text-black rounded' type="submit" value="Submit"/> */}
                         </form>
                     </div>
                 </div>
