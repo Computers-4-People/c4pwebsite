@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-
+import { useState } from "react";
 export default function Footer() {
+    const [newsletterEmail, setNewsletterEmail] = useState('');
     return (
         <div className='relative'>
             <div className='transform translate-y-5'>
@@ -67,10 +68,12 @@ export default function Footer() {
                             </form> */}
                             <form className="relative md:ml-5">
                                 <input
-                                    className="h-7 w-full rounded pr-16 pl-2"
+                                    className="h-7 w-full rounded pr-16 pl-2 text-black"
                                     type="text"
                                     name="email"
                                     placeholder="Your email"
+                                    value={newsletterEmail}
+                                    onChange={(e) => setNewsletterEmail(e.target.value)}
                                 />
                                 <input
                                     className="h-7 w-1/3 md:w-1/2 lg:w-1/4 absolute right-0 top-0 bg-c4p text-black rounded"
