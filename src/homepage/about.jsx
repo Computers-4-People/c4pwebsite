@@ -43,7 +43,7 @@ export default function About() {
     ]
     return (
         <div className='font-sans'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} className=" bg-cover h-screen bg-center bg-relative bg-local bg-no-repeat ">
+            <div className="bg-cover bg-[center] bg-fixed h-screen bg-no-repeat" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} >
                 <div class="ml-20 h-full grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-4 row-start-3 text-justify font-title text-8xl uppercase'>
                         <p class='text-c4p col-span-2 object-fill mb-5'>Unlocking the digital</p>
@@ -95,35 +95,16 @@ export default function About() {
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
-            <div className='h-screen text-black'>
-                <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
-                <div className='grid grid-rows-6 grid-cols-6 relative'>
-                    <img src="../secondchance.png" className='col-span-3 row-span-3'/>
-                <div className='absolute inset-0 col-start-4 col-end-6 row-start-1 row-end-4 bg-contain bg-top bg-no-repeat' style={{ backgroundImage: "url('../quotes.png')" }} />
-                    <div className='z-10 col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
-                        <p >Thanks to the [refurbished] laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
-                        <p className='text-right italic'>-Mallika</p>
-                    </div>
-                    <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3'>
-                            <Link className='bg-[#0FE006] rounded h-12 pr-3 pt-2.5'>🤍 Donate your ewaste</Link>
-                            <Link className='border-2 border-black rounded h-12 pr-1 pt-2.5'>Become a Partner</Link>
-                    </div>
-                </div>
-            </div>
-
             <div className="bg-cover h-screen">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
-                    <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
-                    <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
+                    <h2 className="col-span-2 text-9xl font-title uppercase">How You Can Help</h2>
+                    <p className="col-span-2 text-4xl ml-2">Discover How You Can Contribute to Digital Equity in Your Community</p>
                     <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className="mb-10" src="../handshake.png"></img>SPONSOR DIGITAL ACCESS</Link>
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
                     </div>
                 </div>
-            </div>
-            <div className='bg-cover'>
-                <Carosel></Carosel>
             </div>
         </div>
     )
