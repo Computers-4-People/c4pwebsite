@@ -1,57 +1,103 @@
 import React from "react";
-import BackgroundImage from '../ewaste-bg.jpg'
 import { Link } from "react-router-dom";
+import InfoCard from "../components/infocard";
 
 export default function Ewaste () {
+    const cards = [
+        {
+            titlePart1: "Donors",
+            titlePart2: "Arrange a Pickup",
+            description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in ",
+            image: "/E-waste/arrange-a-pickup.jpg"
+        },
+        {
+            titlePart1: "Ambassadors Provide",
+            titlePart2: "Simple Device Pickup",
+            description: "Ambassadors transport electronic waste to the refurbishing center, where they are catagorized into donatable and non-donatable devices",
+            image: "/E-waste/simple-device-pickup.jpg"
+        },
+        {
+            titlePart1: "Donatable Devices",
+            titlePart2: "are Refurbished & Clean",
+            description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-recepits provided via email.",
+            image: "/E-waste/donatable-devices.jpg"
+        },
+        {
+            titlePart1: "Non-Donatable Devices",
+            titlePart2: "Are Properly Recycled",
+            description: "Non-donatable devices are properly recycled and disposed of with materials that can be reused and transformed into items such as cans and bottles.",
+            image: ""
+        },
+        {
+            titlePart1: "Recipients",
+            titlePart2: "Obtain Computers",
+            description: "Refurbished devices are matched with individuals and organizations in need, fostering digital equity in under-resourced communities.",
+            image: "/E-waste/recipients.jpg"
+        }
+    ]
+    
     return (
         <div>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${BackgroundImage}')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 font-family: ui-monospace text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-1 mt-36 text-justify font-bold'>
-                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TURN E-WASTE </p>
-                        <p class='text-white col-span-2'>INTO OPPORTUNITIES</p>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
+                    <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
+                        <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn E-Waste</p>
+                        <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
                     </div>
-                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-xl gap-3'>
-                        <p>
-                            Join us in tackling a staggering issue: every year, the US generates 6.9 million tons
-                            of electronic waste. At Computers4People, we're on a mission to make a
-                            difference. We collect unused devices, refurbishing what we can for communities
-                            in need and responsibly recycle the rest, turning e-waste into new products for a
-                            sustainable future.
+                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-2xl'>
+                        <p className='mb-10'>
+                            We're on a mission to collect unused devices,
+                            refurbishing what we can for communities and responsibly recycling the rest.
                         </p>
+                        <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
+                        <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
                     </div>
                 </div>
             </div>
-            <div className='bg-cover h-screen'>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
+                    <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
+                        <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
+                        <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
+                    </div>
+                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-2xl'>
+                        <p className='mb-10'>
+                            6.9 million tons of electronic waste is generated each year in the US. 
+                            Computers 4 People collects unused electronic devices and properly recycles or disposes of e-waste. 
+                            Devices that can be refurbished are given back to communities in need, while materials - from non-donatable devices - 
+                            like metal are recycled into new products and processed for reuse.
+                        </p>
+                        <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
+                        <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
+                    </div>
+                </div>
+            </div>
+            <div className='bg-cover'>
                 <div>
                     <h2 className='text-3xl font-bold mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-2xl'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
                 <div>
-                    <div className='m-11 flex justify-start h-96'>
-                        <img src={`../refurbished/Images/donors.jpg`} className='m-4 w-56 rounded-2xl'/>
-                        <img src='../refurbished/Images/ambasadors.jpg' className='m-4 w-56 object-cover object-center static rounded-2xl'></img>
-                        <img src='../refurbished/Images/devices.JPG' className='m-4 w-56 rounded-2xl' />
-                        <img src="../refurbished/Images/recipients.jpg" className='m-4 w-56 rounded-2xl'/>
-                        <img src="../refurbished/Images/catalyst.png" className='m-4 w-56 rounded-2xl'/>
-                    </div>      
+                    <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
             <div className='bg-cover h-screen'>
                 <div className='grid grid-rows-6 grid-cols-6 mt-20'>
-                <img src="../refurbished/Images/luis.png" alt="" className='col-span-3 row-start-1 row-span-2' />
+                <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />
                     <div className='col-span-2 mt-10'>
-                        <h2 className='text-3xl font-bold'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
-                        <p className='text-justify'>
-                            E-waste recycling can be challenging with limited centers and sometimes associated fees.
-                            Computers4People provides a hassle-free, complimentary, service with convenient
-                            drop-off points in NJ, NYC, and Massachusetts. Simply drop off your e-waste,
-                            and we'll handle the rest for you.
-                        </p>
+                        <h2 className='text-7xl font-title'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
+                        <div className='text-2xl'>
+                            <p className='my-5'>
+                                Computers 4 People provices a hassle-free, complimentary services with
+                                convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
+                                your e-waste, and we'll handle the rest for you.
+                            </p>
+                            <p>Tax receipts are provided upon request.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="bg-cover h-screen">
+            <div className="bg-cover">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
