@@ -39,6 +39,7 @@ export default function Navbar() {
             <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
             <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
             <li><Link to="/careers" className="hover:text-c4p">Careers</Link></li>
+            <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
         </ul>
         <div className='flex flex-col justify-between items-center'>
             <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2"/>
@@ -76,7 +77,7 @@ export default function Navbar() {
             <div className="flex flex-wrap items-center space-x-4 md:space-x-8">
                 <Link onMouseEnter={() => handleMouseEnter('programs')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/programs'>Programs</Link>
                 <Link onMouseEnter={() => handleMouseEnter('about')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/about'>About Us</Link>
-                <Link onMouseEnter={() => handleMouseEnter('involved')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/financialcontribution'>Get Involved</Link>
+                <Link onMouseEnter={() => handleMouseEnter('involved')} className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black' to='/financialdonation'>Get Involved</Link>
                 <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
                     <FaUser size={20} className='mr-2' />
                     Log In
