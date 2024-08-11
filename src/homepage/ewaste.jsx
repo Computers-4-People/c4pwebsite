@@ -36,6 +36,8 @@ export default function Ewaste () {
         }
     ]
     
+    const embed = <iframe aria-label='Donate Computers Today!' frameborder="0" style="height:500px;width:99%;border:none;" src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
+    
     return (
         <div className='font-sans mb-20'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
@@ -55,8 +57,9 @@ export default function Ewaste () {
                 </div>
             </div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
-                <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
-                    <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
+                {/* <div class="ml-32 h-full grid grid-cols-2 grid-rows-2 justify-items-stretch"> */}
+                <div className='flex flex-row '>
+                    {/* <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
                         <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
                         <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
                     </div>
@@ -69,7 +72,10 @@ export default function Ewaste () {
                         </p>
                         <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
                         <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
-                    </div>
+                    </div> */}
+                    {/* <iframe aria-label='Donate Computers Today!' frameborder="0" style={{height:'100%', width:'99%'}} src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe> */}
+                    <iframe aria-label='Donate Computers Today!' className='h-screen w-full' src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
+
                 </div>
             </div>
             <div className='bg-cover p-10'>
