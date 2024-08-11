@@ -63,22 +63,35 @@ export default function About() {
                     <li><div className='text-6xl mb-3'>156</div><p className='text-3xl'>Digital Skills Classes</p></li>
                 </ul>
             </div>
-            <div className='bg-cover h-screen font-sans'>
+            <div className='bg-cover font-sans'>
                 <div className='grid grid-rows-1 grid-cols-6 mt-20 align-items-center'>
                 {/* <div className='flex flex-row'> */}
                 <img src="../about/our_vision.png" alt="" className='col-span-3 row-start-1 row-span-2' />
-                    <div className='col-span-2 row-start-1 flex flex-col  justify-center ml-10 mb-14'>
+                    <div className='col-span-3 row-start-1 flex flex-col  justify-center ml-10 mr-5 mb-14'>
                         <h2 className='text-6xl font-bold uppercase'>Our Vision</h2>
-                        <p className='text-4xl text-justify leading-10 mt-6'>
+                        <p className='text-4xl leading-10 mt-6'>
                             A digitally inclusive world where technology bridges divides and a future where every person, 
                             regardless of their background or resources,
-                             has equal and meaningful access to the digital world
+                            has equal and meaningful access to the digital world
                         </p>
                     </div>
                 </div>
             </div>
-            <div className='bg-cover h-screen text-black'>
-                
+            <div className='bg-cover h-screen font-sans'>
+                <div className='grid grid-rows-1 grid-cols-6 mt-20 align-items-center'>
+                {/* <div className='flex flex-row'> */}
+                    <div className='col-span-3 row-start-1 flex flex-col  justify-center ml-10 mr-5 mb-14'>
+                        <h2 className='text-6xl font-bold uppercase'>Our Mission</h2>
+                        <p className='text-4xl leading-10 mt-6'>
+                            To bridge the digital divide by repurosing e-waste into educational tools, 
+                            ensuring equal access to technology for all.
+                        </p>
+                    </div>
+                    <img src="../about/our_mission.png" alt="" className='col-span-3 row-start-1 row-span-2' />
+                </div>
+            </div>
+            <div className='bg-cover text-black'>
+                <h2 className='m-14 text-5xl'>Our History</h2>
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
