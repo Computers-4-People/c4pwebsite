@@ -10,24 +10,25 @@ export default function About() {
     //'grid grid-cols-2 mb-4 col-span-4 rows-span-4'
     return (
         <div className='font-sans'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} className=" bg-cover h-screen bg-center bg-relative bg-local bg-no-repeat ">
                 <div class="ml-20 grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-2 text-justify font-title text-8xl'>
-                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TRANSFORM A LIFE</p>
-                        <p class='text-white col-span-2'>WITH TECHNOLOGY</p>
+                    <div className='col-start-1 col-end-4 row-start-3 text-justify font-title text-8xl uppercase'>
+                        <p class='text-c4p col-span-2 object-fill mb-5'>Unlocking the digital</p>
+                        <p class='text-white col-span-2'>world. est. 2019</p>
                     </div>
                     {/* <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
                         <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
                         <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
                     </div> */}
-                    <div className='mt-10 row-start-3 col-span-4 row-span-2 flex flex-row justify-items-start flex-wrap text-center text-xl w-128'>
-                        <Link className="bg-[#0FE006] h-10 mr-3 h-11 rounded-md pt-2 px-5">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded-md border-white h-11 text-white h-10 pt-1.5 px-5'> Discover our programs </Link>
-                    </div>
                 </div>
             </div>
-            <div className='bg-cover bg-black p-16 text-white text-9xl whitespace-nowrap overflow-hidden'>
-                <p>10,000,000 hours of connectivity provided</p>
+            <div className='bg-cover bg-black p-16 text-white'>
+                <ul className='flex flex-row justify-evenly text-center'>
+                    <li><div className='text-6xl mb-3'>2,196</div><p className='text-3xl'>Computers Donated</p></li>
+                    <li><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of Ewaste Recycled</p></li>
+                    <li><div className='text-6xl mb-3'>1,489,200</div><p className='text-3xl'>Hours of Internet Donated</p></li>
+                    <li><div className='text-6xl mb-3'>156</div><p className='text-3xl'>Digital Skills Classes</p></li>
+                </ul>
             </div>
             
             <div className='bg-cover h-screen text-black'>
