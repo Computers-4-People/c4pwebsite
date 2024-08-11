@@ -38,7 +38,7 @@ export default function Ewaste () {
     
     return (
         <div className='font-sans mb-20'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
                         <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn E-Waste</p>
@@ -54,7 +54,7 @@ export default function Ewaste () {
                     </div>
                 </div>
             </div>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
                         <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
@@ -72,16 +72,16 @@ export default function Ewaste () {
                     </div>
                 </div>
             </div>
-            <div className='bg-cover'>
-                <div>
-                    <h2 className='text-3xl font-bold mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
-                    <p className='text-2xl'>Someone's disregard electronics can become a lifeline for others.</p>
+            <div className='bg-cover p-10'>
+                <div className='pl-14'>
+                    <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
                 <div>
                     <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
-            <div className='bg-cover max-h-screen ' style={{height:'70vh'}}>
+            <div className='bg-cover max-h-screen' style={{height:'60vh'}}>
                 <div className='grid grid-rows-3 grid-cols-6 mt-20'>
                 <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />
                     <div className='col-span-2 mt-10'>
