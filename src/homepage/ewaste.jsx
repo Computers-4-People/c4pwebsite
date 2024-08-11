@@ -72,7 +72,7 @@ export default function Ewaste () {
                     </div>
                 </div>
             </div>
-            <div className='bg-cover h-screen'>
+            <div className='bg-cover'>
                 <div>
                     <h2 className='text-3xl font-bold mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-2xl'>Someone's disregard electronics can become a lifeline for others.</p>
@@ -97,7 +97,7 @@ export default function Ewaste () {
                     </div>
                 </div>
             </div>
-            <div className="bg-cover h-screen">
+            <div className="bg-cover">
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
                     <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
