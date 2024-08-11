@@ -1,24 +1,22 @@
 import React from "react";
-import BackgroundImage from '../ewaste-bg.jpg'
 import { Link } from "react-router-dom";
 
 export default function Ewaste () {
     return (
         <div>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${BackgroundImage}')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 font-family: ui-monospace text-6xl grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-1 mt-36 text-justify font-bold'>
-                        <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TURN E-WASTE </p>
-                        <p class='text-white col-span-2'>INTO OPPORTUNITIES</p>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
+                    <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
+                        <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
+                        <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
                     </div>
-                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-xl gap-3'>
-                        <p>
-                            Join us in tackling a staggering issue: every year, the US generates 6.9 million tons
-                            of electronic waste. At Computers4People, we're on a mission to make a
-                            difference. We collect unused devices, refurbishing what we can for communities
-                            in need and responsibly recycle the rest, turning e-waste into new products for a
-                            sustainable future.
+                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-2xl'>
+                        <p className='mb-10'>
+                            We're on a mission to collect unused devices,
+                            refurbishing what we can for communities and responsibly recycling the rest.
                         </p>
+                        <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
+                        <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
                     </div>
                 </div>
             </div>
