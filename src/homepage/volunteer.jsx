@@ -1,6 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PressCard from '../components/presscard';
+import IconCards from '../components/iconcards';
 export default function Volunteer() {
+    const pressItems1 = [
+        {
+            image: '/volunteer/volunteerbackground.jpg',
+            title: 'Refurbishing laptops, desktops, and all-in-ones',
+            description: '10AM | In-Person',
+            link: 'https://charityquest.io/'
+        },
+        {
+            image: '/volunteer/volunteerbackground.jpg',
+            title: 'Translate a document from English to Spanish',
+            description: '10AM | In-Person',
+            link: 'https://charityquest.io/'
+        },
+        {
+            image: '/volunteer/volunteerbackground.jpg',
+            title: 'Join the Pepper Fest Planning Committee',
+            description: '10AM | In-Person',
+            link: 'https://charityquest.io/'
+        },
+        {
+            image: '/volunteer/volunteerbackground.jpg',
+            title: 'Hang up poster and do outreach',
+            description: '10AM | In-Person',
+            link: 'https://charityquest.io/'
+        },
+    ];
     return (
         <div className='font-sans overflow-x-hidden'>
         <div
@@ -48,7 +76,14 @@ export default function Volunteer() {
                 </div>
             </div>
         </div>
-        <div className='bg-cover font-sans justify-evenly px-4 mt-60 mb-20 sm:px-10 md:px-20 py-10'>
+        <div id="media-highlights" className="mt-60">
+                <h2 className="ml-14 text-3xl md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
+                <p className='ml-14 text-black text-xl md:text-2xl mb-10'>In-person. Online. No Experience Required.</p>
+            </div>
+            <div className="container mx-auto px-4 py-16 relative">
+                <PressCard pressItems={pressItems1} />
+            </div>
+        <div className='bg-cover font-sans justify-evenly px-4 mt-30 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Text Section */}
                 <div className='flex flex-col text-right'>
