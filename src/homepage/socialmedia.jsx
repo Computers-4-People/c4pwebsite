@@ -25,7 +25,7 @@ export default function SocialMedia() {
                         </p>
                         <Link 
                             to="/ewaste" 
-                            className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-3 px-7 hover:bg-c4p-hover hover:text-white"
+                            className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-2 px-7 hover:bg-c4p-hover hover:text-white"
                         >
                             Look at our latest posts
                         </Link>
