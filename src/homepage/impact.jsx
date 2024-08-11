@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
-export default function Volunteer() {
+export default function Impact() {
     const pressItems1 = [
         {
             image: '',
@@ -60,30 +60,45 @@ export default function Volunteer() {
                 </div>
             </div>
         </div>
-        <div className="bg-black p-80">
-            <h2 className="text-white">Hello</h2>
+        <div className="bg-black p-10 md:p-20">
+            <img src="/impact/2023impact.png" className="md:w-3/4 md:m-auto"></img>
         </div>
-        <div id="media-highlights" className="mt-60">
+        <div id="media-highlights" className="mt-20">
                 <h2 className="ml-14 text-3xl md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6">OUR IMPACT REPORTS</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-10'>Check out our impact reports to see how your support has made a difference</p>
             </div>
             <div className="container mx-auto px-4 py-16 relative">
                 <PressCard pressItems={pressItems1} />
             </div>
-        <div className='bg-cover font-sans justify-evenly px-4 mt-30 mb-20 sm:px-10 md:px-20 py-10'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
-                {/* Text Section */}
-                <div className='flex flex-col text-right'>
-                    <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
-                    "Volunteering with Computers 4 People was incredible! I helped by collecting and preparing computers for those in need, while immersing myself in American culture and making lasting friendships."<br/><br/>-Axel, International Volunteer
-                    </p>
-                </div>
-                {/* Image Section */}
-                <div className='flex justify-center'>
-                    <img src="../volunteer/volunteeraxel.png" alt="" className='w-full h-auto md:max-w-md' />
-                </div>
+            <div className='h-screen text-black'>
+    {/* Heading */}
+    <h2 className="ml-14 mb-10 text-5xl text-center font-bold mt-40">Give disregarded Tech a Chance to Improve Lives</h2>
+
+    {/* Content Wrapper */}
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-center'>
+        {/* Image on the Left */}
+        <div className='flex justify-center'>
+            <img src="/impact/recipient.png" className='animate-fade-right animate-once h-auto max-w-full md:max-w-md' />
+        </div>
+
+        {/* Quote and Buttons on the Right */}
+        <div>
+            <div className='bg-contain bg-top bg-no-repeat mb-6 md:mr-40 ' style={{ backgroundImage: "url('../quotes.png')" }}>
+                <p className='p-4 pl-0'>
+                    "Fantastic! My new computer runs smoothly with excellent RAM, something my old one couldn't do. No more crashes during big projects or layout designs! It’s truly made a difference, saving me time and frustration. Thanks Computers 4 People!"<br/><br/>-Natalia
+                </p>
+            </div>
+            <div className='flex space-x-4'>
+                <Link to="/ewaste" className='bg-c4p rounded h-12 px-4 pl-10 pr-10 flex items-center justify-center hover:bg-c4p-hover hover:text-white'>
+                    Donate your device
+                </Link>
+                <Link to="/partner" className='border-2 border-black rounded h-12 px-4 flex items-center justify-center hover:bg-black hover:text-white'>
+                    Make a financial contribution
+                </Link>
             </div>
         </div>
+    </div>
+</div>
         </div>
         )
     }
