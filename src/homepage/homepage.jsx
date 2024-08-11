@@ -45,22 +45,30 @@ export default function Homepage() {
   ];
     return (
         <div className='font-sans overflow-x-hidden'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} className="bg-cover h-screen bg-center bg-fixed bg-relative bg-no-repeat ">
-                <div class="ml-20 grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <h1 className='col-start-1 col-end-4 row-start-2 text-justify font-title text-8xl'>
-                        <p class='text-c4p mb-5 animate-fade-up'>TRANSFORM A LIFE</p>
-                        <p class='text-white animate-fade-up'>WITH TECHNOLOGY</p>
-                    </h1>
-                    {/* <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
-                        <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
-                    </div> */}
-                    <div className='mt-10 row-start-3 col-span-4 row-span-2 flex flex-row justify-items-start flex-wrap text-center text-xl w-128'>
-                        <Link to="/ewaste" className="animate-fade-up bg-c4p h-10 mr-3 h-11 rounded-md pt-2 px-5 hover:bg-c4p-hover hover:text-white">🤍 Donate your ewaste</Link>
-                        <Link to="/programs" className='animate-fade-up border-2 rounded-md border-white h-11 text-white h-10 pt-1.5 px-5 hover:bg-white hover:text-black'> Discover our programs </Link>
-                    </div>
+    <div
+        style={{
+            backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`
+        }}
+        className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
+    >
+        <div className="px-2 sm:px-4 md:px-6 grid grid-cols-1 md:grid-cols-8 grid-rows-auto justify-items-start">
+            <h1 className='col-start-1 md:col-end-4 text-left font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
+                <p className='text-c4p animate-fade-up'>TRANSFORM A LIFE</p>
+                <p className='text-white animate-fade-up'>WITH TECHNOLOGY</p>
+            </h1>
+            <div className="col-start-1 md:col-end-4 animate-fade-up">
+                <div className="flex flex-col md:flex-row">
+                    <Link to="/ewaste" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">🤍 Donate your ewaste</Link>
+                    <Link 
+                        to="/programs" 
+                        className="flex items-center justify-center text-center text-xl border-2 rounded-md border-white h-11 text-white px-7 hover:bg-white hover:text-black w-full md:w-auto"
+                    >
+                        Discover our programs
+                    </Link>
                 </div>
             </div>
+        </div>
+    </div>
             <div>
                 <Textmarquee text="10,000,000 hours of connectivity provided" duration={20} />
             </div>

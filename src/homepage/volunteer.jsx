@@ -19,12 +19,7 @@ export default function Volunteer() {
                         Whether it is refurbishing laptops, sorting donations, assisting with translations, or assisting in event planning. Your efforts make a meaningful difference and help us serve and uplift our community.
                     </p>
                     <div className="flex flex-col md:flex-row">
-                        <Link 
-                            to="/ewaste" 
-                            className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto"
-                        >
-                            Signup to volunteer
-                        </Link>
+                        <a href="https://charityquest.io/" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Signup to volunteer</a>
                         <Link 
                             to="/contact" 
                             className="flex items-center justify-center text-center text-xl border-2 rounded-md border-white h-11 text-white px-7 hover:bg-white hover:text-black w-full md:w-auto"
@@ -53,12 +48,12 @@ export default function Volunteer() {
                 </div>
             </div>
         </div>
-        <div className='bg-cover font-sans justify-evenly px-4 mt-60 sm:px-10 md:px-20 py-10'>
+        <div className='bg-cover font-sans justify-evenly px-4 mt-60 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Text Section */}
                 <div className='flex flex-col text-right'>
                     <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
-                    Volunteering with Computers 4 People was incredible! I helped by collecting and preparing computers for those in need, while immersing myself in American culture and making lasting friendships.<br/><br/>-Axel, International Volunteer
+                    "Volunteering with Computers 4 People was incredible! I helped by collecting and preparing computers for those in need, while immersing myself in American culture and making lasting friendships."<br/><br/>-Axel, International Volunteer
                     </p>
                 </div>
                 {/* Image Section */}
@@ -66,9 +61,6 @@ export default function Volunteer() {
                     <img src="../volunteer/volunteeraxel.png" alt="" className='w-full h-auto md:max-w-md' />
                 </div>
             </div>
-        </div>
-            <div>
-                <h2 className="ml-14 mt-20 mb-20 text-6xl font-bold text-gray">Social Media Live Feed</h2>
         </div>
         </div>
         )

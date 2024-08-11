@@ -38,7 +38,7 @@ export default function Navbar() {
             <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
             <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
             <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
-            <li><Link to="/careers" className="hover:text-c4p">Careers</Link></li>
+            <li><a href="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Careers</a></li>
             <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
         </ul>
         <div className='flex flex-col justify-between items-center'>

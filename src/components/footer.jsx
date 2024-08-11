@@ -17,7 +17,7 @@ export default function Footer() {
                     <div className='font-bold text-xl'>Computers 4 People</div>
                     <div>About us</div>
                     <div>Blog</div>
-                    <div>Help Center</div>
+                    <div><a href="https://computers4people.zohodesk.com/portal/en/home">Help Center</a></div>
                     <div>Press & Media</div>
                     <div>Team</div>
                 </div>
