@@ -2,7 +2,7 @@ import React from 'react';
 
 const InfoCard = ({ cards }) => {
   return (
-    <div className="bg-cover text-black" style={{ width: "90vw", height: "90vh" }}>
+    <div className="bg-cover text-black flex justify-center items-center w-full h-full">
       <div className="m-11 flex flex-col md:flex-row justify-center md:justify-evenly w-full">
         {cards.map((card, index) => (
           <div
@@ -17,9 +17,9 @@ const InfoCard = ({ cards }) => {
             <div className="absolute bottom-0 duration-1000 overflow-hidden ml-5">
               <h3 className="font-bold text-xl uppercase">
                 <p className="text-c4p">{card.titlePart1}</p>
-                <p>{card.titlePart2}</p>
+                <p className="pb-2">{card.titlePart2}</p>
               </h3>
-              <p className="h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
+              <p className="h-2 pt-3 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
                 {card.description}
               </p>
             </div>

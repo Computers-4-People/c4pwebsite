@@ -45,7 +45,7 @@ export default function Homepage() {
   ];
     return (
         <div className='font-sans overflow-x-hidden'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} className="bg-cover h-screen bg-center bg-fixed bg-relative bg-no-repeat ">
                 <div class="ml-20 grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-4 row-start-2 text-justify font-title text-8xl'>
                         <p class='text-c4p mb-5 animate-fade-up'>TRANSFORM A LIFE</p>
@@ -62,7 +62,7 @@ export default function Homepage() {
                 </div>
             </div>
             <div>
-                <Textmarquee text="10,000,000 hours of connectivity provided" duration={15} />
+                <Textmarquee text="10,000,000 hours of connectivity provided" duration={20} />
             </div>
         <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
             <div>
