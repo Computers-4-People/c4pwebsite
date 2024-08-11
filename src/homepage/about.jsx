@@ -1,4 +1,5 @@
  import React from "react";
+ import InfoCard from '../components/infocard.jsx'
 
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
@@ -8,6 +9,38 @@ export default function About() {
     //  p-60 pl-10 text-6xl font-bold flex-row
     // "text-2xl my-10 grid grid-cols-2 gap-4 rows-start-5"
     //'grid grid-cols-2 mb-4 col-span-4 rows-span-4'
+    const cards = [
+        {
+            titlePart1: "Founded by",
+            titlePart2: "A 15-year-old",
+            description: "In 2019, Dylan Zajac founded Computers 4 People after witnessing the lack of acess to technology in under-resourced communities",
+            image: "../about/15-year-old.jpg"
+        },
+        {
+            titlePart1: "To Bridge the Digital",
+            titlePart2: "Gap across NJ & NYC",
+            description: "In 2021, Computers 4 People opened its first office in Hoboken, NJ, and continued its first program: refurbishing and redistributing donated devices to people in need.",
+            image: "../about/digital-gap.jpg"
+        },
+        {
+            titlePart1:"Through Various",
+            titlePart2:"Digital Programs",
+            description:"In 2023, Computers 4 People team quadrupled and the organization added two more programs-digital skills classes and internet access-to better serve the communitiy's needs",
+            image:"../about/digital-programs.jpg"
+        },
+        {
+            titlePart1:"Computers 4 People",
+            titlePart2:"is Serving 3 States",
+            description:"In 2024, Computers 4 People opened a second office in Waltham, MA. This expansion allows us to bring our programs to underserved communities throughout the Bay State.",
+            image:"serving-3-states.jpg"
+        },
+        {
+            titlePart1:"A Leading Force",
+            titlePart2:"in the Northeast",
+            description:"With significant advancements in digital equity and e-waste management, Computers 4 People has become a prominent advocate for tech access in the northeastern US.",
+            image:"leading-force.jpg"
+        }
+    ]
     return (
         <div className='font-sans'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} className=" bg-cover h-screen bg-center bg-relative bg-local bg-no-repeat ">
@@ -45,37 +78,8 @@ export default function About() {
                 </div>
             </div>
             <div className='bg-cover h-screen text-black'>
-                <h2 className='m-14 mt-20 text-5xl font-bold'>Be Part of the Change</h2>
-                <div className='m-11 flex justify-start'>
-                    <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 60%), url('../donation.jpg')` }}>
-                        <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
-                        <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Starts</p> <p>With a Donation</p></h3>
-                            <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.</p>
-                        </div>
-                    </div>
-                    <div className='text-white group h-96 m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../refurbishment.jpg')` }}>
-                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
-                        <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Undergoes</p> <p>Refurbishment</p></h3>
-                            <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.</p>
-                        </div>
-                    </div>
-                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../recipient.png')` }}>
-                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
-                        <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Match</p> <p>With a Recipient</p></h3>
-                            <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>Devices are redistributed to people in underserved communities.</p>
-                        </div>
-                    </div>
-                    <div className='text-white group m-4 w-64 rounded-2xl bg-cover bg-center relative bg-gray' style={{ backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url('../catalyst.jpg')` }}>
-                    <div className='absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500'/>
-                        <div className='absolute bottom-0 duration-1000 overflow-hidden ml-5'>
-                           <h3 className='font-bold text-xl font-bold uppercase'><p className='text-[#0FE006]'>Becomes</p> <p>Catalyst for Change</p></h3>
-                            <p className='h-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm'>People use these devices to open opportunities in jobs, education, telehealth, and beyond!</p>
-                        </div>
-                    </div>
-                </div>
+                
+                <InfoCard cards={cards}></InfoCard>
             </div>
 
             <div className='h-screen text-black'>
