@@ -11,7 +11,7 @@ export default function About() {
     return (
         <div className='font-sans'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} className=" bg-cover h-screen bg-center bg-relative bg-local bg-no-repeat ">
-                <div class="ml-20 grid grid-cols-6 grid-rows-6 justify-items-stretch">
+                <div class="ml-20 h-full grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-4 row-start-3 text-justify font-title text-8xl uppercase'>
                         <p class='text-c4p col-span-2 object-fill mb-5'>Unlocking the digital</p>
                         <p class='text-white col-span-2'>world. est. 2019</p>
@@ -23,7 +23,7 @@ export default function About() {
                 </div>
             </div>
             <div className='bg-cover bg-black p-16 text-white'>
-                <ul className='flex flex-row justify-evenly text-center'>
+                <ul className='flex flex-row justify-evenly text-center flex-wrap'>
                     <li><div className='text-6xl mb-3'>2,196</div><p className='text-3xl'>Computers Donated</p></li>
                     <li><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of Ewaste Recycled</p></li>
                     <li><div className='text-6xl mb-3'>1,489,200</div><p className='text-3xl'>Hours of Internet Donated</p></li>
