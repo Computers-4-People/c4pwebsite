@@ -36,6 +36,7 @@ export default function Navbar() {
             <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
         <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
             <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
+            <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
             <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
             <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
             <li><a href="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Careers</a></li>
