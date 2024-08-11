@@ -37,7 +37,7 @@ export default function Ewaste () {
     ]
     
     return (
-        <div>
+        <div className='font-sans mb-20'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
@@ -81,12 +81,12 @@ export default function Ewaste () {
                     <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
-            <div className='bg-cover h-screen'>
-                <div className='grid grid-rows-6 grid-cols-6 mt-20'>
+            <div className='bg-cover max-h-screen ' style={{height:'70vh'}}>
+                <div className='grid grid-rows-3 grid-cols-6 mt-20'>
                 <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />
                     <div className='col-span-2 mt-10'>
-                        <h2 className='text-7xl font-title'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
-                        <div className='text-2xl'>
+                        <h2 className='text-5xl md:text-7xl font-title'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
+                        <div className='text-xl md:text-2xl'>
                             <p className='my-5'>
                                 Computers 4 People provices a hassle-free, complimentary services with
                                 convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
@@ -97,11 +97,13 @@ export default function Ewaste () {
                     </div>
                 </div>
             </div>
-            <div className="bg-cover">
-                <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
-                    <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
-                    <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
-                    <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
+            <div className="bg-cover mt-10" style={{height: "100vh"}}>
+                <div className="mx-20 grid grid-cols-3 grid-rows-2 h-full">
+                    <div className='self-center col-span-2'>
+                        <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
+                        <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
+                    </div>
+                    <div className="mt-4 self-start col-span-3 grid grid-cols-3 gap-28 h-1/2">
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className="mb-10" src="../handshake.png"></img>SPONSOR DIGITAL ACCESS</Link>
                         <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
