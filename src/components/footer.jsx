@@ -5,7 +5,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 export default function Footer() {
     return (
         <div className='relative'>
-            <div className=''>
+            <div className='transform translate-y-5'>
                 <svg
                     className="w-full h-full"
                     xmlns="http://www.w3.org/2000/svg"
