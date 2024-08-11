@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
-
+import IconCards from "../components/iconcards";
 export default function Ewaste () {
     const cards = [
         {
@@ -103,10 +103,8 @@ export default function Ewaste () {
                         <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
                         <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     </div>
-                    <div className="mt-4 self-start col-span-3 grid grid-cols-3 gap-28 h-1/2">
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className="mb-10" src="../handshake.png"></img>SPONSOR DIGITAL ACCESS</Link>
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
+                    <div className='col-span-3'>
+                        <IconCards className='mt-4 row-start-2 col-span-3' />
                     </div>
                 </div>
             </div>
