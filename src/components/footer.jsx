@@ -8,8 +8,7 @@ export default function Footer() {
             {/* Background Image */}
             <div
                 className="absolute inset-0 opacity-50"
-                style={{backgroundImage: `url(/Nav/checkmark.)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-            ></div>
+                style={{backgroundImage: `url(/Nav/checkmark.)`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
 
             {/* Footer Content */}
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-5 p-10 text-justify">
@@ -52,18 +51,18 @@ export default function Footer() {
                             <input className='h-7 w-1/3 transform -translate-x-2 bg-c4p text-black rounded' type="submit" value="Submit" />
                         </form> */}
                         <form className="relative md:ml-5">
-    <input 
-        className="h-7 w-full rounded pr-16" 
-        type="text" 
-        name="email" 
-        placeholder="Your email" 
-    />
-    <input 
-        className="h-7 w-1/3 md:w-1/2 lg:w-1/4 absolute right-0 top-0 bg-c4p text-black rounded" 
-        type="submit" 
-        value="Submit" 
-    />
-</form>
+                            <input 
+                                className="h-7 w-full rounded pr-16" 
+                                type="text" 
+                                name="email" 
+                                placeholder="Your email" 
+                            />
+                            <input 
+                                className="h-7 w-1/3 md:w-1/2 lg:w-1/4 absolute right-0 top-0 bg-c4p text-black rounded" 
+                                type="submit" 
+                                value="Submit" 
+                            />
+                        </form>
                     </div>
                     <div className='text-xl mt-10 font-bold text-center w-full'>Follow Us</div>
                     <div className='w-full flex justify-around mt-2'>
