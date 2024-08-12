@@ -20,6 +20,7 @@ import Socialmedia from './homepage/socialmedia';
 import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
 import Login from './homepage/login';
+import PageNotFound from './homepage/pagenotfound';
 
 // import background from './background.jpg'
 import './App.css';
@@ -53,6 +54,7 @@ function App() {
             <Route path="/team" element={<Team />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/login" element={<Login />}/>
+            <Route path="*" element={<PageNotFound />}/>
          </Routes>
          <Footer/>
          {/* </div> */}

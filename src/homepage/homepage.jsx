@@ -58,7 +58,7 @@ export default function Homepage() {
             </h1>
             <div className="col-start-1 md:col-end-4 animate-fade-up">
                 <div className="flex flex-col md:flex-row">
-                    <Link to="/ewaste" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">🤍 Donate your ewaste</Link>
+                    <Link to="/ewaste" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">🤍 Donate your computers</Link>
                     <Link 
                         to="/programs" 
                         className="flex items-center justify-center text-center text-xl border-2 rounded-md border-white h-11 text-white px-7 hover:bg-white hover:text-black w-full md:w-auto"
