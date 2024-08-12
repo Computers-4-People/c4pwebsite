@@ -69,9 +69,6 @@ export default function Homepage() {
             </div>
         </div>
     </div>
-            <div>
-                <Textmarquee text="10,000,000 hours of connectivity provided" duration={20} />
-            </div>
         <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
             <div>
                 <InfoCard cards={cardsData}/>
