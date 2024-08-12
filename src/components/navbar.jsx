@@ -183,6 +183,7 @@ export default function Navbar() {
         return item ? item.dropdownContent : null;
     };
 
+
     return (
         <div className='fixed z-10 w-full bg-gradient-to-b from-black text-white'>
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
