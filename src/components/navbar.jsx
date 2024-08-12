@@ -211,8 +211,6 @@ export default function Navbar() {
                                 onClick={() => toggleDropdown(item.key)}
                                 className='w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-100'
                             >
-
-{/* this is another change */}
                                 <span>{item.name}</span>
                                 <span>{openDropdowns[item.key] ? '-' : '+'}</span>
                             </button>
