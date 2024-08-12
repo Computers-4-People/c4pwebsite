@@ -58,7 +58,7 @@ export default function Ewaste () {
             </div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 {/* <div class="ml-32 h-full grid grid-cols-2 grid-rows-2 justify-items-stretch"> */}
-                <div className='flex flex-row '>
+                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
                     {/* <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
                         <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
                         <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
@@ -74,7 +74,7 @@ export default function Ewaste () {
                         <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
                     </div> */}
                     {/* <iframe aria-label='Donate Computers Today!' frameborder="0" style={{height:'100%', width:'99%'}} src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe> */}
-                    <iframe aria-label='Donate Computers Today!' className='h-screen w-full' src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
+                    <iframe aria-label='Donate Computers Today!' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
 
                 </div>
             </div>
