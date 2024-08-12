@@ -56,6 +56,7 @@ export default function Navbar() {
             <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
             <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
             <li><Link to="/ewastedropoff" className="hover:text-c4p">Become a Drop-Off Site</Link></li>
+            <li><Link to="/contact" className="hover:text-c4p">Contact Us</Link></li>
         </ul>
         <div className='flex flex-col justify-between items-center'>
             <img src="nav/ewaste.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2"/>
