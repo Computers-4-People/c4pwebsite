@@ -1,6 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import InfoCard from "../components/infocard";
 export default function Programs() {
+    const cards = [
+        {
+            titlePart1: "Distribution of",
+            titlePart2: "Refurbished Devices",
+            description: "We refurbish donated devices and distribute them to communities in need across NYC, NJ, and MA.",
+            image: "/programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg"
+        },
+        {
+            titlePart1:"Foundational",
+            titlePart2: "Digital Skills",
+            description: "We offer specialized digital courses and PC building classes to equip individuals with digital literacy.",
+            image:"/programs/Programs/Teenagers_Building_PCs_Refurbished.jpg"
+        },
+        {
+            titlePart1:"Affordable",
+            titlePart2: "Internet Access",
+            description: "We assist people in finding affordable Internet programs that meet their needs.",
+            image:"/programs/Programs/Refurbished_Computers.jpg"
+        }
+    ]
     return (
         <div className='font-sans overflow-x-hidden'>
             <div
@@ -32,8 +53,9 @@ export default function Programs() {
                     </div>
                 </div>
             </div>
-            <div>
-                </div>
+            <div className='md:h-screen'>
+                <InfoCard cards={cards} />
+            </div>
         </div>
     )
 }
