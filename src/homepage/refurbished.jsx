@@ -40,9 +40,12 @@ export default function Refurbished() {
         <div className='font-sans overflow-x-hidden'>
         <div
             style={{
-                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`
+                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`,
+                height: '150vh'
             }}
-            className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
+            // className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
+            className="bg-cover h-screen bg-center bg-fixed bg-no-repeat"
+
         >
             <div className="px-4 sm:px-10 md:px-20 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch">
                 <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
@@ -58,7 +61,10 @@ export default function Refurbished() {
                     </div>
                 </div>
             </div>
+            <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
         </div>
+
+        
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}
