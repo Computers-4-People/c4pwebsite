@@ -5,12 +5,12 @@ export default function Programs() {
         <div className='font-sans overflow-x-hidden'>
             <div
                 style={{
-                    backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/press/pressbackground.jpg')`
+                    backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/programs/Programs/Unlocking_Access_To_The_Digital_World.JPG')`
                 }}
-                className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
+                className="bg-cover h-full md:h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
             >
-                <div className="px-4 sm:px-10 md:px-20 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch">
-                    <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
+                <div className="px-4 sm:px-10 md:px-20 grid grid-cols-2 md:grid-cols-6 grid-rows-auto justify-items-stretch mb-20">
+                    <h1 className='col-start-1 md:col-end-5 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
                         <p className='text-c4p animate-fade-up'>UNCOVER POSSIBILITIES</p>
                         <p className='text-white animate-fade-up'>WITH OUR PROGRAMS</p>
                     </h1>

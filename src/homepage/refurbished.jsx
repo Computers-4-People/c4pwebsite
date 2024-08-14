@@ -64,7 +64,6 @@ export default function Refurbished() {
             <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
         </div>
 
-        
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}
