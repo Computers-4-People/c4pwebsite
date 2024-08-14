@@ -53,12 +53,14 @@ export default function Programs() {
                     </div>
                 </div>
             </div>
-            <div className='md:h-screen py-20'>
+            <div className='h-full py-20'>
                 <div className='ml-32'>
                     <h2 className='text-7xl font-title'>Programs tailored to foster growth</h2>
                     <p className='text-2xl'>Our programs are designed to help you achieve full participation in the digital world</p>
                 </div>
-                <InfoCard cards={cards} />
+                <div>
+                    <InfoCard cards={cards} />
+                </div>
             </div>
         </div>
     )
