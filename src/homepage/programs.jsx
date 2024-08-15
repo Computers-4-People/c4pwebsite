@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
+import IconCards from "../components/iconcards";
 export default function Programs() {
     const cards = [
         {
@@ -64,7 +65,7 @@ export default function Programs() {
                 </div>
             </div>
 
-            <div className='h-screen text-black'>
+            <div className='h-full text-black'>
             <div className='grid grid-rows-2 grid-cols-6 relative'>
                 <img src="../Programs/programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png" className=' col-span-2 row-span-3 animate-fade-right animate-once' />
                 <div className='z-10 col-start-3 col-end-6 row-start-1 self-end text-xl bg-contain bg-top bg-no-repeat px-12'>
@@ -77,6 +78,13 @@ export default function Programs() {
                         <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Enroll in a digital class</Link>
                         </div>
                     </div>
+            </div>
+            <div className='h-full bg-cover p-20'>
+                <div className='mb-20'>
+                    <h2 className='text-7xl font-title'>How to Get Involved</h2>
+                    <p className='text-2xl'>Be part of Bridging the Digital Digital Divide</p>
+                </div>
+                <IconCards />
             </div>
         </div>
     )
