@@ -65,16 +65,16 @@ export default function Programs() {
             </div>
 
             <div className='h-screen text-black'>
-            <div className='grid grid-rows-6 grid-cols-6 relative'>
+            <div className='grid grid-rows-2 grid-cols-6 relative'>
                 <img src="../Programs/programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png" className=' col-span-2 row-span-3 animate-fade-right animate-once' />
-                <div className='z-10 col-start-3 col-end-6 row-start-1 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat '>
+                <div className='z-10 col-start-3 col-end-6 row-start-1 self-end text-xl bg-contain bg-top bg-no-repeat px-12'>
                     <h3 className='text-5xl font-title'>Your Chance to Master Technology Can Be Today</h3>
                     <p className='text-2xl'>Everyone, regardless of age, gender or background, can learn technology; take the first step</p>
                 </div>
         
-                <div className='grid grid-cols-2 col-start-3 col-end-6 row-start-2 items-center text-center text-xl gap-3 z-20'>
-                        <Link to="/ewaste" className='bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white'>🤍 Donate your ewaste</Link>
-                        <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Become a Partner</Link>
+                <div className='grid grid-cols-2 col-start-3 col-end-6 row-start-2 self-start mt-4 items-center text-center text-xl gap-3 z-20 px-12'>
+                        <Link to="/ewaste" className='bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white'>Apply for a computer</Link>
+                        <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Enroll in a digital class</Link>
                         </div>
                     </div>
             </div>
