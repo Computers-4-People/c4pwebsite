@@ -19,6 +19,7 @@ import Programs from './homepage/programs';
 import Socialmedia from './homepage/socialmedia';
 import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
+import Pepper from './homepage/pepper';
 import Login from './homepage/login';
 
 // import background from './background.jpg'
@@ -52,6 +53,7 @@ function App() {
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
+            <Route path="/pepper" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>
          </Routes>
          <Footer/>

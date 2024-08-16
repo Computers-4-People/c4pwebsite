@@ -19,7 +19,7 @@ export default function Footer() {
                 </svg>
 
             </div>
-            <div className="w-screen overflow-x-hidden overflow-y-hidden bg-black text-white">
+            <div className="w-full overflow-x-hidden overflow-y-hidden bg-black text-white">
                 {/* Background Image */}
                 <div
                     className="absolute inset-0 opacity-50"
@@ -28,35 +28,33 @@ export default function Footer() {
                 {/* Footer Content */}
                 <div className="relative z-10 grid grid-cols-1 md:grid-cols-5 p-10 text-justify">
                     <div className='grid gap-3'>
-                        <div className='font-bold text-xl'>Computers 4 People</div>
-                        <div>About us</div>
-                        <div>Blog</div>
-                        <div><a href="https://computers4people.zohodesk.com/portal/en/home">Help Center</a></div>
-                        <div>Press & Media</div>
-                        <div>Team</div>
+                        <div className='font-bold text-xl'><Link to="/" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Computers 4 People</Link></div>
+                        <div><Link to="/about" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>About Us</Link></div>
+                        <div><Link to="/blog" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Blog</Link></div>
+                        <div><Link to="/team" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Team</Link></div>
+                        <div><Link to="https://computers4people.zohodesk.com/portal/en/home" className="hover:text-c4p">Help Center</Link></div>
+                        <div><Link to="/contact" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Contact Us</Link></div>
+                        <div><Link to="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Work @ C4P</Link></div>
                     </div>
                     <div className='grid gap-3'>
-                        <div className='font-bold text-xl'>Programs & Initiatives</div>
-                        <div>Refurbished Devices</div>
-                        <div>Digital Skills Classes</div>
-                        <div>PC Building Courses</div>
-                        <div>EWaste Recycling</div>
-                        <div>Become a Dropoff Site</div>
+                        <div className='font-bold text-xl'><Link to="/programs" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Programs</Link></div>
+                        <div><Link to="/refurbished" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Refurbished Devices</Link></div>
+                        <div><Link to="/dsclasses" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Digital Skills Classes</Link></div>
+                        <div><Link to="/dsclasses" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>PC Building Classes</Link></div>
+                        <div><Link to="/ewastedropoff" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>E-Waste Dropoff</Link></div>
+                        <div><Link to="/partner" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Non-Profit Parnter</Link></div>
                     </div>
                     <div className='grid gap-3'>
-                        <div className='font-bold text-xl'>Support</div>
-                        <Link>Contact Us</Link>
-                        <Link>Donate a Device</Link>
-                        <Link>Volunteer</Link>
-                        <Link>Careers</Link>
-                        <Link>Make a Financial Contribution</Link>
+                        <div className='font-bold text-xl'><div><Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Support</Link></div></div>
+                        <div><Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate E-Waste</Link></div>
+                        <div><Link to="/financialdonation" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate Funding</Link></div>
+                        <div><Link to="/volunteer" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Volunteer</Link></div>
+                        <div><Link to="/events" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Events</Link></div>
                     </div>
                     <div className='grid gap-3 border-r-2 pr-4'>
                         <div className='font-bold text-xl'>Policies</div>
                         <div>Privacy</div>
                         <div>Device Guarantee</div>
-                        <div>Returns</div>
-                        <div>Shipping</div>
                     </div>
                     <div className='flex flex-col items-start'>
                         <div className='w-full text-center text-xl font-bold italic'>Join our Newsletter</div>
