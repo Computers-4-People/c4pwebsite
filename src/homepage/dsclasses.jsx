@@ -64,8 +64,8 @@ export default function DSClasses() {
                 </div>
 
                 <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3'>
-                    <img src="../Programs/Digital Skills/Digital_Literacy_Class_Community_Access_Computers_4 People.jpg" alt="" className='object-scale-down h-full col-span-2 p-3' />
-                    <div className='col-start-3 col-span-3 text-xl space-y-5 text-justify m-5'>
+                    <img src="../Programs/Digital Skills/Digital_Literacy_Class_Community_Access_Computers_4 People.jpg" alt="" className='object-scale-down h-full col-span-6 md:col-span-2 p-3' />
+                    <div className='col-span-6 md:col-start-3 md:col-span-3 text-xl space-y-5 text-justify m-5'>
                         <h3 className='text-4xl font-bold text-center'>Digital Skills/Literacy Classes</h3>
                         <p>Our classes teach the foundations of digital skills and literacy,
                             including hardware, software, email, Google Suite, and more.
