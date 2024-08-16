@@ -28,25 +28,25 @@ export default function DSClasses() {
                 </div>
                 
             </div>
-            <div>
+
             <div className='h-full text-black py-20'>
-            <div className='grid grid-rows-2 grid-cols-6 relative'>
-                <img src="../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png" className=' col-span-2 row-span-3 animate-fade-right animate-once' />
-                    <div className='z-10 col-start-3 col-span-4 row-start-1 self-end text-xl bg-top bg-no-repeat pl-12'>
-                        <h3 className='text-5xl font-title'>Collaborating with organizations to offer free digital skills classes to people in need</h3>
-                        <p className='text-2xl'>We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver
-                            digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in
-                            hosting a digital skills class, please reach out to us-we'd love to partner with you.
+                <div className='grid grid-rows-2 grid-cols-6 relative'>
+                    <img src="../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png" className=' col-span-2 row-span-3 animate-fade-right animate-once' />
+                        <div className='z-10 col-start-3 col-span-4 row-start-1 self-end text-xl bg-top bg-no-repeat pl-12'>
+                            <h3 className='text-5xl font-title'>Collaborating with organizations to offer free digital skills classes to people in need</h3>
+                            <p className='text-2xl'>We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver
+                                digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in
+                                hosting a digital skills class, please reach out to us-we'd love to partner with you.
                         </p>
                     </div>
-        
-                </div>
-                </div>
-            </div>
+                    </div>
+             </div>
 
             <div className='h-full bg-cover px-20 pb-10 space-y-10'>
-                <h2>Explore our current digital skills courses</h2>
-                <p>Click to learn more about each course's curriculum and eligibility</p>
+                <div>
+                    <h2 className='text-6xl font-title '>Explore our current digital skills courses</h2>
+                    <p className='text-xl'>Click to learn more about each course's curriculum and eligibility</p>
+                </div>
                 <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{}}>
                     <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt=""
                     className='object-scale-down h-full col-span-6 md:col-span-2 p-3' style={{}} />
@@ -75,6 +75,20 @@ export default function DSClasses() {
                     </div>
                 </div>
             </div>
+
+            <div className='h-full text-black py-20 px-10'>
+                <div className='grid grid-rows-1 grid-cols-6 relative'>
+                        <div className='z-10 col-start-1 col-span-4 row-start-1 self-center text-xl bg-top bg-no-repeat pl-12'>
+                            <h3 className='text-5xl font-title'>A 3-month program to equip people with the skills needed to navigate the digital world</h3>
+                            <p className='text-xl mt-5'>
+                                Our foundational digital skills curriculum spans 14 weeks of in-person instruction.
+                                Upon completion of the course, students receive a certificate and gain access to dozens of
+                                resources that will help them continue their digital skills journey.
+                            </p>
+                        </div>
+                        <img src="../Programs/Digital Skills/PC_Building_Classes_Teenager_Course_Completion.png" className='col-start-5 col-span-2 row-span-3 animate-fade-right animate-once' />
+                    </div>
+             </div>
         </div>
     )
 }
