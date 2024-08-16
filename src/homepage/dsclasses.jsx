@@ -32,20 +32,46 @@ export default function DSClasses() {
             <div className='h-full text-black py-20'>
             <div className='grid grid-rows-2 grid-cols-6 relative'>
                 <img src="../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png" className=' col-span-2 row-span-3 animate-fade-right animate-once' />
-                <div className='z-10 col-start-3 col-span-4 row-start-1 self-end text-xl bg-top bg-no-repeat pl-12'>
-                    <h3 className='text-5xl font-title'>Collaborating with organizations to offer free digital skills classes to people in need</h3>
-                    <p className='text-2xl'>We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver
-                        digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in
-                        hosting a digital skills class, please reach out to us-we'd love to partner with you.
-                    </p>
-                </div>
-        
-                <div className='grid grid-cols-2 col-start-3 col-end-6 row-start-2 self-start mt-4 items-center text-center text-xl gap-3 z-20 px-12'>
-                        <Link to="/ewaste" className='bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white'>Apply for a computer</Link>
-                        <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Enroll in a digital class</Link>
-                        </div>
+                    <div className='z-10 col-start-3 col-span-4 row-start-1 self-end text-xl bg-top bg-no-repeat pl-12'>
+                        <h3 className='text-5xl font-title'>Collaborating with organizations to offer free digital skills classes to people in need</h3>
+                        <p className='text-2xl'>We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver
+                            digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in
+                            hosting a digital skills class, please reach out to us-we'd love to partner with you.
+                        </p>
                     </div>
+        
+                </div>
+                </div>
             </div>
+            <div className='h-full bg-cover px-20'>
+                <h2>Explore our current digital skills courses</h2>
+                <p>Click to learn more about each course's curriculum and eligibility</p>
+                <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{height: '40vh'}}>
+                    <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt=""
+                    className='object-scale-down h-full col-span-2 p-3' />
+                    <div className='col-start-3 col-span-3 text-xl space-y-5'>
+                        <h3 className='text-4xl font-bold text-center'>PC Building Classes</h3>
+                        <p>Computers 4 People's PC Building Classes offer teenagers an opportunity
+                            to delve into the world of technology through a comprehensive and entirely
+                            free 2-hour class.
+                        </p>
+                        <p>Students will be equipped with essential skills that will not only
+                            broaden their horizons but also prepare them for a tech-driven future.
+                        </p>
+                        <p>For ages 13-18</p>
+                    </div>
+                </div>
+                <div className='grid grid-cols-auto shadow-2xl'>
+                    <img src="" alt="" />
+                    <div>
+                        <h3>Digital Skills/Literacy Classes</h3>
+                        <p>Our classes teach the foundations of digital skills and literacy,
+                            including hardware, software, email, Google Suite, and more.
+                        </p>
+                        <p>For all ages.</p>
+                        <p>In-person instruction.</p>
+                    </div>
+                </div>
             </div>
         </div>
     )
