@@ -146,7 +146,9 @@ export default function Navbar() {
                         <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
                         <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
                         <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
-                        <li><Link to="/careers" className="hover:text-c4p">Careers</Link></li>
+                        <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
+                        <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
+                        <li><Link to="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Careers</Link></li>
                     </ul>
                     <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
@@ -158,14 +160,16 @@ export default function Navbar() {
         },
         {
             name: 'Get Involved',
-            path: '/financialcontribution',
+            path: '/financialdonation',
             key: 'involved',
             dropdownContent: (
                 <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
                         <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
                         <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
+                        <li><Link to="/partner" className="hover:text-c4p">Partner</Link></li>
                         <li><Link to="/ewastedropoff" className="hover:text-c4p">Become a Drop-Off Site</Link></li>
+                        <li><Link to="/contact" className="hover:text-c4p">Contact Us</Link></li>
                     </ul>
                     <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/ewaste.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
