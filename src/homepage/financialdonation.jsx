@@ -9,13 +9,14 @@ export default function Financialdonation() {
     //'grid grid-cols-2 mb-4 col-span-4 rows-span-4'
     return (
         <div className='font-sans'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg')`}} className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat ">
-                <div class="flex flex-col justify-center h-full w-1/2 space-y-5 p-14">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg')`}} 
+            className=" bg-cover  md:h-screen h-full  bg-center bg-fixed bg-no-repeat ">
+                <div class="flex flex-col justify-center h-full w-3/4 space-y-5 p-14">
                     <div className='col-start-1 col-end-4 row-start-2 font-title text-8xl'>
                         <p class='text-[#0FE006] col-span-2 object-fill mb-5'>Take Action</p>
                         <p class='text-white col-span-2'>Become a Champion</p>
                     </div>
-                    <p className='text-white text-lg'>Every person deserves equitable access to opportunities. Your 
+                    <p className='text-white text-lg w-1/2'>Every person deserves equitable access to opportunities. Your 
                         donation helps provide essential tech access and make a
                         difference for those in need.
                     </p>
