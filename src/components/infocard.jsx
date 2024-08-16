@@ -7,7 +7,7 @@ const InfoCard = ({ cards }) => {
         {cards.map((card, index) => (
           <div
             key={index}
-            className="text-white group my-4 mx-2 w-full md:w-1/5 rounded-2xl bg-cover bg-center relative bg-gray"
+            className={`text-white group my-4 mx-2 w-full md:w-1/${cards.length} rounded-2xl bg-cover bg-center relative bg-gray`}
             style={{
               height: "60vh", // Set a specific height for the cards
               backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url(${card.image})`,
