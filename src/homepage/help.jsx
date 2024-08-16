@@ -14,30 +14,31 @@ export default function Help() {
             titlePart1: 'Getting Started',
             titlePart2: '',
             description: 'Find guides on setting up your device, troubleshooting issues, and maximizing your tech.',
-            image: ''
+            image: '/Help Center/Recipient_with_Refurbished_Donated_Computer.png'
         },
         {
             titlePart1: 'Donations',
             titlePart2: '',
             description: 'Find articles on donating devices, scheduling pickups, requesting a tax receipt and more.',
-            image: ''
+            image: '/Help Center/Staff_Donated_Computer.jpg'
         },
         {
             titlePart1: 'Digital Skills',
             titlePart2: '',
             description: 'Find answers to all your questions about digital skills and literacy classes, from enrollment to benefits',
-            image: ''
+            image: '/Help Center/Digital_Skills_Class_Digital_Literacy.jpg'
         },
         {
             titlePart1: 'Tech Recycling',
             titlePart2: '',
-            description: 'Learn how we recycle tech, dispose of devices properly, and handle donations.'
+            description: 'Learn how we recycle tech, dispose of devices properly, and handle donations.',
+            image: '/Help Center/Ewaste_Sorted.jpg'
         }
     ]
     return (
         <div className='font-sans'>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/homepage/background.jpeg')`}} 
-            className=" bg-cover h-screen bg-center bg-cover bg-relative bg-local bg-no-repeat flex flex-col justify-center">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Help Center/Ewaste_Sorted.jpg')`}} 
+            className="bg-cover h-screen bg-center bg-local bg-no-repeat flex flex-col justify-center">
                 <div class="flex place-content-center">
                     <div className='text-center font-title text-8xl '>
                         <p class='text-[#0FE006] col-span-2 object-fill mb-5'>Computers4People</p>
