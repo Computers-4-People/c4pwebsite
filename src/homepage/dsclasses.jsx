@@ -15,9 +15,9 @@ export default function DSClasses() {
                         <p className='text-white animate-fade-up'>SKILLS TO THRIVE DIGITALLY</p>
                     </h1>
                     <div className="col-start-1 md:col-end-4 animate-fade-up">
-                        <p className='text-white text-xl md:text-2xl mb-4'>
-                        From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.
-                        </p>
+                            <p className='text-white text-xl md:text-2xl mb-4'>
+                             From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.
+                            </p>
                         <Link 
                             to="/ewaste" 
                             className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-2 px-7 hover:bg-c4p-hover hover:text-white"
@@ -88,6 +88,18 @@ export default function DSClasses() {
                         </div>
                         <img src="../Programs/Digital Skills/PC_Building_Classes_Teenager_Course_Completion.png" className='col-start-5 col-span-2 row-span-3 animate-fade-right animate-once' />
                     </div>
+             </div>
+             <div className='h-full'>
+                <div className='grid grid-rows-1 grid-cols-6 px-20'>
+                    <img src="../Programs/Digital Skills/Digital_Literacy_Classes_Footer.png" alt="" 
+                    className='col-span-2'/>
+                    <div className='col-span-4 flex flex-col justify-center text-xl space-y-5'>
+                        <h2 className='text-7xl font-title'>Watch our latest videos and tutorials on youtube</h2>
+                        <p>Check out our YouTube channel for digital skills classes, tutorials, and more!</p>
+                        <a href="https://youtube.com/@computers4people?feature=shared"
+                        className='border-2 rounded text-center border-black w-1/3'>Learn More</a>
+                    </div>
+                </div>
              </div>
         </div>
     )
