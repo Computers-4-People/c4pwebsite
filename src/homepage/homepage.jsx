@@ -69,26 +69,29 @@ export default function Homepage() {
             </div>
         </div>
     </div>
+
             <div>
                 <Textmarquee text="10,000,000 hours of connectivity provided" duration={20} />
             </div>
+
         <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
             <div>
                 <InfoCard cards={cardsData}/>
             </div>
+
             <div className='h-screen text-black'>
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                     <div className='grid grid-rows-6 grid-cols-6 relative'>
-                    <img src="../secondchance.png" className='col-span-3 row-span-3 animate-fade-right animate-once' />
+                    <img src="../secondchance.png" className='col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once' />
     
-            <div className='absolute inset-0 col-start-4 col-end-6 row-start-1 row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once' style={{ backgroundImage: "url('../quotes.png')" }} />
+            <div className='absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once' style={{ backgroundImage: "url('../quotes.png')" }} />
     
-            <div className='z-10 col-start-4 col-end-6 row-start-2 row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
+            <div className='z-10 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
                 <p>Thanks to the laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
                     <p className='text-right italic'>-Mallika</p>
             </div>
     
-            <div className='grid grid-cols-2 col-start-4 col-end-6 row-start-3 items-center text-center text-xl gap-3 z-20'>
+            <div className='grid grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center text-center text-xl gap-3 z-20'>
                 <Link to="/ewaste" className='bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white'>🤍 Donate your ewaste</Link>
                 <Link to="/partner" className='border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white'>Become a Partner</Link>
                 </div>

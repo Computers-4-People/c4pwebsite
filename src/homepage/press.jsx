@@ -85,7 +85,7 @@ export default function Press() {
                 className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
             >
                 <div className="px-4 sm:px-10 md:px-20 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch">
-                    <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
+                    <h1 className='col-start-1 md:col-end-4 font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
                         <p className='text-c4p animate-fade-up'>DISCOVER OUR LATEST</p>
                         <p className='text-white animate-fade-up'>PRESS & MEDIA HIGHLIGHTS</p>
                     </h1>
@@ -128,7 +128,7 @@ export default function Press() {
             <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Other Ways You can Contribute</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-20'>Explore these opportunities to foster digital equity</p>
             <IconCards />  {/* Use the IconCards component here */}
-        </div>
+            </div>
         </div>
     );
 }
