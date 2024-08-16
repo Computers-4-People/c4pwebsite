@@ -79,12 +79,12 @@ export default function Homepage() {
                 <InfoCard cards={cardsData}/>
             </div>
 
-            <div className='h-screen text-black'>
+            <div className='h-screen text-black p-5 m-5'>
                 <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
                     <div className='grid grid-rows-6 grid-cols-6 relative'>
                     <img src="../secondchance.png" className='col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once' />
     
-            <div className='absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once' style={{ backgroundImage: "url('../quotes.png')" }} />
+            <div className='absolute invisible md:visible inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once' style={{ backgroundImage: "url('../quotes.png')" }} />
     
             <div className='z-10 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat'>
                 <p>Thanks to the laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
