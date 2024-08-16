@@ -43,13 +43,14 @@ export default function DSClasses() {
                 </div>
                 </div>
             </div>
-            <div className='h-full bg-cover px-20'>
+
+            <div className='h-full bg-cover px-20 pb-10 space-y-10'>
                 <h2>Explore our current digital skills courses</h2>
                 <p>Click to learn more about each course's curriculum and eligibility</p>
-                <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{height: '40vh'}}>
+                <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{}}>
                     <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt=""
-                    className='object-scale-down h-full col-span-2 p-3' />
-                    <div className='col-start-3 col-span-3 text-xl space-y-5'>
+                    className='object-scale-down h-full col-span-6 md:col-span-2 p-3' style={{}} />
+                    <div className='col-span-6 md:col-start-3 md:col-span-3 text-xl space-y-5 text-justify m-5'>
                         <h3 className='text-4xl font-bold text-center'>PC Building Classes</h3>
                         <p>Computers 4 People's PC Building Classes offer teenagers an opportunity
                             to delve into the world of technology through a comprehensive and entirely
@@ -61,10 +62,11 @@ export default function DSClasses() {
                         <p>For ages 13-18</p>
                     </div>
                 </div>
-                <div className='grid grid-cols-auto shadow-2xl'>
-                    <img src="" alt="" />
-                    <div>
-                        <h3>Digital Skills/Literacy Classes</h3>
+
+                <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3'>
+                    <img src="../Programs/Digital Skills/Digital_Literacy_Class_Community_Access_Computers_4 People.jpg" alt="" className='object-scale-down h-full col-span-2 p-3' />
+                    <div className='col-start-3 col-span-3 text-xl space-y-5 text-justify m-5'>
+                        <h3 className='text-4xl font-bold text-center'>Digital Skills/Literacy Classes</h3>
                         <p>Our classes teach the foundations of digital skills and literacy,
                             including hardware, software, email, Google Suite, and more.
                         </p>
