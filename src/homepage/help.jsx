@@ -14,25 +14,25 @@ export default function Help() {
             titlePart1: 'Getting Started',
             titlePart2: '',
             description: 'Find guides on setting up your device, troubleshooting issues, and maximizing your tech.',
-            image: '/Help Center/Recipient_with_Refurbished_Donated_Computer.png'
+            image: '../Help Center/Recipient_with_Refurbished_Donated_Computer.png'
         },
         {
             titlePart1: 'Donations',
             titlePart2: '',
             description: 'Find articles on donating devices, scheduling pickups, requesting a tax receipt and more.',
-            image: '/Help Center/Staff_Donated_Computer.jpg'
+            image: '../Help Center/Staff_Donated_Computer.jpg'
         },
         {
             titlePart1: 'Digital Skills',
             titlePart2: '',
             description: 'Find answers to all your questions about digital skills and literacy classes, from enrollment to benefits',
-            image: '/Help Center/Digital_Skills_Class_Digital_Literacy.jpg'
+            image: '../Help Center/Digital_Skills_Class_Digital_Literacy.jpg'
         },
         {
             titlePart1: 'Tech Recycling',
             titlePart2: '',
             description: 'Learn how we recycle tech, dispose of devices properly, and handle donations.',
-            image: '/Help Center/Ewaste_Sorted.jpg'
+            image: '../Help Center/Ewaste_Sorted.jpg'
         }
     ]
     return (
