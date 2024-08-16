@@ -51,7 +51,7 @@ export default function Homepage() {
         }}
         className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
     >
-        <div className="px-2 sm:px-4 md:px-6 grid grid-cols-1 md:grid-cols-8 grid-rows-auto justify-items-start">
+        <div className="px-2 sm:px-4 md:px-6 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-start">
             <h1 className='col-start-1 md:col-end-4 text-left font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
                 <p className='text-c4p animate-fade-up'>TRANSFORM A LIFE</p>
                 <p className='text-white animate-fade-up'>WITH TECHNOLOGY</p>

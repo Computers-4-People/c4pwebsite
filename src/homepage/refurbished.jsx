@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
 import InfoCard from "../components/infocard";
+import FrameWrapper from "../components/frameWrapper";
+
 export default function Refurbished() {
     const cardsData = [
         {
@@ -38,16 +40,16 @@ export default function Refurbished() {
       ];
     return (
         <div className='font-sans overflow-x-hidden'>
-        <div
-            style={{
+        <div style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`,
-                height: '150vh'
+                height: '130vh'
             }}
             // className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
             className="bg-cover h-screen bg-center bg-fixed bg-no-repeat"
 
         >
-            <div className="px-4 sm:px-10 md:px-20 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch">
+            {/* grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch */}
+            <div className="px-4 sm:px-10 md:px-20 flex flex-col justify-center items-start h-full">
                 <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
                     <p className='text-c4p animate-fade-up'>UNLOCKING OPPORTUNITIES,</p>
                     <p className='text-white animate-fade-up'>ONE COMPUTER AT A TIME</p>
@@ -60,8 +62,13 @@ export default function Refurbished() {
                         <a href="" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Apply for a device</a>
                     </div>
                 </div>
+                <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
+}>
+                    <iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
+                </FrameWrapper>
+
             </div>
-            <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
+            {/* <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
         </div>
 
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
