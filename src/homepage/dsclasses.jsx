@@ -1,8 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from "../components/header";
 export default function DSClasses() {
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/Programs/Digital Skills/Digital_Skills_Classes_Community_Access.jpg',
+                titlePart1: 'ACQUIRE THE FOUNDATIONAL',
+                titlePart2: 'SKILLS TO THRIVE DIGITALLY',
+                description: 'From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.'
+            }}
+            />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Programs/Digital Skills/Digital_Skills_Classes_Community_Access.jpg')`
