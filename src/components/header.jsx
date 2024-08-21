@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Header(props) {
     const {bgImage, titlePart1, titlePart2, description, links} = props.props;
 
-    console.log(props);
+    // console.log(links);
 
     return (
         <div
@@ -19,15 +19,21 @@ export default function Header(props) {
                 <p className='text-white animate-fade-up'>{titlePart2}</p>
             </h1>
             <div className="col-start-1 md:col-end-5 animate-fade-up">
-                    <p className='text-white text-xl md:text-2xl mb-4'>
+                <p className='text-white text-xl md:text-2xl mb-4'>
                         {description}
-                    </p>
-                <Link 
-                    to="/ewaste" 
-                    className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-2 px-7 hover:bg-c4p-hover hover:text-white"
-                >
-                    {!Array.isArray() ? links : links.forEach((link) => link)}
-                </Link>
+                </p>
+                {
+                    links && links.length > 0 && 
+                        links.map((link,index) => 
+                        <Link 
+                            key={index}
+                            to={`${link.url}`}
+                            className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-2 px-7 hover:bg-c4p-hover hover:text-white"
+                        >
+                            {link.text}   
+                        </Link>
+                    )
+                }
             </div>
             </div>
         </div>

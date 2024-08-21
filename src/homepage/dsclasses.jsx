@@ -8,7 +8,8 @@ export default function DSClasses() {
                 bgImage: '/Programs/Digital Skills/Digital_Skills_Classes_Community_Access.jpg',
                 titlePart1: 'ACQUIRE THE FOUNDATIONAL',
                 titlePart2: 'SKILLS TO THRIVE DIGITALLY',
-                description: 'From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.'
+                description: 'From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.',
+                links: [{url: '/ewaste', text: 'Discover our Courses'}]
             }}
             />
             <div
