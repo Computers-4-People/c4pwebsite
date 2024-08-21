@@ -28,7 +28,7 @@ export default function Header(props) {
                         <Link 
                             key={index}
                             to={`${link.url}`}
-                            className="block md:inline-block text-center text-xl animate-fade-up bg-c4p h-11 rounded-md pt-2 px-7 hover:bg-c4p-hover hover:text-white"
+                            className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
                         >
                             {link.text}   
                         </Link>
