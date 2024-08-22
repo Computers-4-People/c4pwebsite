@@ -189,7 +189,7 @@ export default function Navbar() {
 
 
     return (
-        <div className='fixed z-10 w-full bg-gradient-to-b from-black text-white'>
+        <div className='fixed z-10 w-full bg-gradient-to-b from-black text-white' onMouseLeave={() => setActiveDropdown(null)}>
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
                 <Link to='/' className="flex-shrink-0">
                     <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
@@ -203,7 +203,6 @@ export default function Navbar() {
                     {menuItems.map(item => (
                         <div key={item.key} className="relative"
                             onMouseEnter={() => setActiveDropdown(item.key)}
-                            onMouseLeave={() => setActiveDropdown(null)}
                         >
                             <Link
                                 className='px-3 py-2 rounded text-white text-xl hover:bg-c4p hover:text-black'
