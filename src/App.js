@@ -54,7 +54,7 @@ function App() {
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
-            <Route path="/pepper" element={<Pepper />}/>
+            {/* <Route path="/pepper" element={<Pepper />}/> */}
             <Route path="/login" element={<Login />}/>
             <Route path='/pepperfest' element={<PepperFest />}/>
          </Routes>

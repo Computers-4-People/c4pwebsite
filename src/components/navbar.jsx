@@ -122,17 +122,17 @@ export default function Navbar() {
             path: '/programs',
             key: 'programs',
             dropdownContent: (
-                <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
-                    <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+                <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
+                    <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black`}>
                         <li><Link to="/refurbished" className="hover:text-c4p">Refurbished Devices</Link></li>
                         <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>
                         <li><Link to="/ewaste" className="hover:text-c4p">EWaste Recycling</Link></li>
                     </ul>
-                    <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
+                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/applyforcomputer.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
                         <p className='text-center'>Fill out an application for a refurbished device.</p>
                         <Link to="/refurbished" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Apply for a Computer</Link>
-                    </div>
+                    </div> */}
                 </div>
             )
         },
@@ -141,8 +141,8 @@ export default function Navbar() {
             path: '/about',
             key: 'about',
             dropdownContent: (
-                <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
-                    <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+                <div className='h-full'>
+                    <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
                         <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
                         <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
                         <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
@@ -150,11 +150,11 @@ export default function Navbar() {
                         <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
                         <li><Link to="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Careers</Link></li>
                     </ul>
-                    <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
+                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
                         <p className='text-center'>Check status, schedule a pickup or enroll in a class!</p>
                         <Link to="/login" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Create Account/Login</Link>
-                    </div>
+                    </div> */}
                 </div>
             )
         },
@@ -163,7 +163,7 @@ export default function Navbar() {
             path: '/financialdonation',
             key: 'involved',
             dropdownContent: (
-                <div className='h-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5'>
+                <div className=''>
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
                         <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
                         <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
@@ -171,11 +171,11 @@ export default function Navbar() {
                         <li><Link to="/ewastedropoff" className="hover:text-c4p">Become a Drop-Off Site</Link></li>
                         <li><Link to="/contact" className="hover:text-c4p">Contact Us</Link></li>
                     </ul>
-                    <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
+                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/ewaste.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
                         <p className='text-center'>Schedule a pickup to collect your unused electronics.</p>
                         <Link to="/ewaste" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Donate your Ewaste</Link>
-                    </div>
+                    </div> */}
                 </div>
             )
         }
@@ -211,7 +211,7 @@ export default function Navbar() {
                                 {item.name}
                             </Link>
                             {activeDropdown === item.key && (
-                                <div className='absolute top-full left-0 bg-white text-black shadow-lg w-screen mt-2 z-20'>
+                                <div className='absolute left-0 bg-white text-black shadow-lg mt-2 z-20 transition-all duration-300' style={{height: '30vh', width: '20vw'}}>
                                     {renderDropdownContent(item.key)}
                                 </div>
                             )}
