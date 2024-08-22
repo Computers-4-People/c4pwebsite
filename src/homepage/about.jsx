@@ -45,7 +45,7 @@ export default function About() {
         <div className='font-sans'>
             <div className="bg-cover bg-[center] bg-fixed h-screen bg-no-repeat" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} >
                 <div class="ml-20 h-full grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-4 row-start-3 text-justify font-title text-8xl uppercase'>
+                    <div className='col-start-1 col-end-5 row-start-3 font-title text-8xl uppercase'>
                         <p class='text-c4p col-span-2 object-fill mb-5'>Unlocking the digital</p>
                         <p class='text-white col-span-2'>world. est. 2019</p>
                     </div>

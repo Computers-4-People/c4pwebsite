@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Testimonial from "../components/testimonial";
+
 export default function Contact() {
     return (
         <div className='font-sans overflow-x-hidden'>
@@ -31,16 +33,21 @@ export default function Contact() {
                     </div>
                 </div>
             </div>
+            <Testimonial props={{
+                title:'test',
+                description:'test',
+                image:'../ewastedropoff/computerhandoff.png'
+            }}/>
             <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}
                 <div className='flex justify-center'>
-                    <img src="../ewastedropoff/computerhandoff.png" alt="" className='h-auto md:max-w-full md:ml-10' />
+                    <img src="../ewastedropoff/computerhandoff.png" alt="" className='object-contain h-3/4 w-3/4' />
                 </div>
                 {/* Text Section */}
                 <div className='flex flex-col justify-center'>
                     <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
-                    You can help provide digital access to your<br/>neighborhood-collect disregarded devices
+                    You can help provide digital access to your neighborhood-collect disregarded devices
                     </h2>
                     <p className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7'>
                      A device has the power to uplift an individual, a family, and a community. By collecting discarded devices, you can help put tools that transform lives into the hands of those in need. Becoming a drop-off site, you will:
