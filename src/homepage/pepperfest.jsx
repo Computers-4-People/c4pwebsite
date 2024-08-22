@@ -36,6 +36,10 @@ export default function PepperFest() {
             image: '../Pepper Fest/Pepper Fest Participants Trying Chili Pepper.png'
         }}/>
     </div>
+    <div class='bg-c4p bg-cover flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
+        <div className='flex flex-row justify-end px-10 items-center border-r-2  w-full'><img src="../Pepper Fest/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
+        <img src="../Pepper Fest/Pepper Fest Prizes.png" className='object-contain h-full w-full' alt=""/>
+    </div>
     </div> 
     )
 }
