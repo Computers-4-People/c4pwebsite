@@ -21,6 +21,7 @@ import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
 import Pepper from './homepage/pepper';
 import Login from './homepage/login';
+import PepperFest from './homepage/pepperfest';
 
 // import background from './background.jpg'
 import './App.css';
@@ -55,6 +56,7 @@ function App() {
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/pepper" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>
+            <Route path='/pepperfest' element={<PepperFest />}/>
          </Routes>
          <Footer/>
          {/* </div> */}

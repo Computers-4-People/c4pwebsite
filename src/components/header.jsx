@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Header(props) {
     const {bgImage, titlePart1, titlePart2, description, links} = props.props;
 
-    // console.log(links);
+    console.log(bgImage);
 
     return (
         <div
