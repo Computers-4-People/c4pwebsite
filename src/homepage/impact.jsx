@@ -43,7 +43,7 @@ export default function Impact() {
                 </h1>
                 <div className="col-start-1 md:col-end-4 animate-fade-up">
                     <p className='text-white text-xl md:text-2xl mb-4'>
-                        Dive into our Impact Reports to see how we’ve driven positive change and made a difference in the communities we serve.
+                        Dive into our Impact Reports to see how we've driven positive change and made a difference in the communities we serve.
                     </p>
                     <div className="flex flex-col md:flex-row">
                         <a href="https://charityquest.io/" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Read our 2023 Impact Report</a>
