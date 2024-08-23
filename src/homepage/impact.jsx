@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
+import Header from "../components/header";
 export default function Impact() {
     const pressItems1 = [
         {
@@ -22,6 +23,13 @@ export default function Impact() {
     ];
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/impact/impactbackground.png',
+                titlePart1: 'Learn About the',
+                titlePart2: `Impact We've Made`,
+                description: `Dive into our Impact Reports to see how we've driven positive change and made a difference in the communities we serve.`,
+                links: [{text: 'Read our 2023 Impact Report'}]
+            }}/> 
         <div
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/impact/impactbackground.png')`
