@@ -27,7 +27,7 @@ export default function Header(props) {
                         links.map(function (link, index){
                             // console.log(link.clickAction)
 
-                            if(link.url)
+                            if(!link.clickAction)
                             {
                                 return(
                                 <Link 
@@ -39,7 +39,7 @@ export default function Header(props) {
                             </Link>
                                 )
                             }
-                            else if (link.clickAction) {
+                            else {
                                 // console.log(link.clickAction);
                                 return(
                                 <button

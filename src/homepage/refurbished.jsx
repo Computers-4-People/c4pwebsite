@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
 import InfoCard from "../components/infocard";
-import FrameWrapper from "../components/frameWrapper";
+// import FrameWrapper from "../components/frameWrapper";
+import Header from '../components/header';
 
 export default function Refurbished() {
     const cardsData = [
@@ -40,6 +41,10 @@ export default function Refurbished() {
       ];
     return (
         <div className='font-sans overflow-x-hidden'>
+            {/* <Header props={{
+                bgImage: '/refurbished/refurbishedbackground.png',
+
+                }}/> */}
         <div style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`,
                 height: '130vh'
@@ -62,10 +67,10 @@ export default function Refurbished() {
                         <a href="" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Apply for a device</a>
                     </div>
                 </div>
-                <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
-}>
+                {/* <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
+{/* }> */}
                     <iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
-                </FrameWrapper>
+                {/* </FrameWrapper> */}
 
             </div>
             {/* <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
