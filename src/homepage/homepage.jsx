@@ -178,34 +178,34 @@ export default function Homepage() {
       titlePart2: "With a Donation",
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../Homepage/starts.jpg",
+      image: "../homepage/starts.jpg",
     },
     {
       titlePart1: "Undergoes",
       titlePart2: "Refurbishment",
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../Homepage/undergoes.jpg",
+      image: "../homepage/undergoes.jpg",
     },
     {
       titlePart1: "Match",
       titlePart2: "With a Recipient",
       description: "Devices are redistributed to people in underserved communities.",
-      image: "../Homepage/match.png",
+      image: "../homepage/match.png",
     },
     {
       titlePart1: "Becomes",
       titlePart2: "Catalyst for Change",
       description:
         "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../Homepage/becomes.jpg",
+      image: "../homepage/becomes.jpg",
     },
     {
       titlePart1: "Equip",
       titlePart2: "People to succeed",
       description:
         "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../Homepage/equip.jpg",
+      image: "../homepage/equip.jpg",
     },
   ];
 
