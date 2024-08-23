@@ -1,5 +1,6 @@
  import React from "react";
- import InfoCard from '../components/infocard.jsx'
+ import InfoCard from '../components/infocard.jsx';
+ import Header from "../components/header.jsx";
 
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
@@ -43,6 +44,12 @@ export default function About() {
     ]
     return (
         <div className='font-sans'>
+            <Header props={{
+                bgImage: '/about/background.jpg',
+                titlePart1: 'Unlocking the Digital',
+                titlePart2: 'world. est. 2019',
+                description: ''
+                }} /> 
             <div className="bg-cover bg-[center] bg-fixed h-screen bg-no-repeat" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} >
                 <div class="ml-20 h-full grid grid-cols-6 grid-rows-6 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-3 font-title text-8xl uppercase'>
