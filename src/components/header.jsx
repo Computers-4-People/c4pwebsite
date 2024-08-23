@@ -24,14 +24,35 @@ export default function Header(props) {
                 </p>
                 {
                     links && links.length > 0 && 
-                        links.map((link,index) => 
-                        <Link 
-                            key={index}
-                            to={`${link.url}`}
-                            className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
-                        >
-                            {link.text}   
-                        </Link>
+                        links.map(function (link, index){
+                            // console.log(link.clickAction)
+
+                            if(link.url)
+                            {
+                                return(
+                                <Link 
+                                key={index}
+                                to={`${link.url}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
+                            >
+                                {link.text}   
+                            </Link>
+                                )
+                            }
+                            else if (link.clickAction) {
+                                // console.log(link.clickAction);
+                                return(
+                                <button
+                                key={index}
+                                onClick={link.clickAction}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
+                            >
+                                {link.text}
+
+                                </button>
+                                )
+                            }
+                        }
                     )
                 }
             </div>
