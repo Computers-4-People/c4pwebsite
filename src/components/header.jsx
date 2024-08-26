@@ -22,18 +22,18 @@ export default function Header(props) {
                 <p className='text-white text-xl md:text-2xl mb-4'>
                         {description}
                 </p>
+                <div className='flex flex-row'>
                 {
                     links && links.length > 0 && 
                         links.map(function (link, index){
                             // console.log(link.clickAction)
-
                             if(!link.clickAction)
                             {
                                 return(
                                 <Link 
                                 key={index}
                                 to={`${link.url}`}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white'}`}
                             >
                                 {link.text}   
                             </Link>
@@ -53,8 +53,10 @@ export default function Header(props) {
                                 )
                             }
                         }
+                        
                     )
                 }
+                </div>
             </div>
             </div>
         </div>
