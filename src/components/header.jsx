@@ -22,7 +22,7 @@ export default function Header(props) {
                 <p className='text-white text-xl md:text-2xl mb-4'>
                         {description}
                 </p>
-                <div className='flex flex-row'>
+                <div className='flex flex-row space-x-5'>
                 {
                     links && links.length > 0 && 
                         links.map(function (link, index){
@@ -33,7 +33,7 @@ export default function Header(props) {
                                 <Link 
                                 key={index}
                                 to={`${link.url}`}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white'}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-white text-white hover:bg-white hover:text-black'}`}
                             >
                                 {link.text}   
                             </Link>
