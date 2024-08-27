@@ -5,9 +5,18 @@ import { LinkedInEmbed } from 'react-social-media-embed';
 import { TikTokEmbed } from 'react-social-media-embed';
 import { XEmbed } from 'react-social-media-embed';
 import { YouTubeEmbed } from 'react-social-media-embed';
+import Header from "../components/header";
+
 export default function SocialMedia() {
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/socialmedia/socialmediabackground.png',
+                titlePart1: 'Follow our Journey.',
+                titlePart2: 'Become part of it.',
+                description: 'Follow us on social media and become part of our journey by sharing photos and stories about how you’re involved with Computers 4 People.',
+                links: [{text: 'Look at our latest posts'}]
+            }}/> 
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/socialmedia/socialmediabackground.png')`

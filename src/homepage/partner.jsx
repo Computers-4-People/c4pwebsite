@@ -1,5 +1,5 @@
 import React from "react";
-
+import Header from "../components/header";
 export default function Refurbished() {
     const scrollToForm = () => {
         document.getElementById("partnership-form").scrollIntoView({ behavior: "smooth" });
@@ -7,6 +7,10 @@ export default function Refurbished() {
 
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{bgImage: '/Become a Partner/partnerbackgroundPNG.PNG', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
+            description: 'Join a network of 300+ non-profit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
+            links: [{text: 'Become a Partner', clickAction: scrollToForm}]
+            }} />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Become a Partner/partnerbackgroundPNG.PNG')`,

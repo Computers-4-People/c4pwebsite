@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
+import Header from "../components/header";
 export default function Ewaste () {
     const cards = [
         {
@@ -37,9 +38,16 @@ export default function Ewaste () {
     ]
     
     const embed = <iframe aria-label='Donate Computers Today!' frameborder="0" style="height:500px;width:99%;border:none;" src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
-    
     return (
         <div className='font-sans mb-20'>
+            <Header props={{
+                bgImage: '/about/serving-3-states.jpg',
+                titlePart1: 'Turn E-Waste',
+                titlePart2: 'into Opportunties',
+                description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning E-waste into tools for a responsible future.</p></div>,
+                links: [{text: 'Schedule an electronics pickup'}]
+
+                }}/>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>

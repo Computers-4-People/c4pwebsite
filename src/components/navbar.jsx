@@ -211,7 +211,7 @@ export default function Navbar() {
                                 {item.name}
                             </Link>
                             {activeDropdown === item.key && (
-                                <div className='absolute left-0 bg-white text-black shadow-lg mt-2 z-20 transition-all duration-300' style={{height: '30vh', width: '20vw'}}>
+                                <div className='absolute left-0 bg-white text-black shadow-lg mt-2 z-20 transition-all duration-300' style={!!activeDropdown ? {height: '30vh', width: '20vw', visibility: "visible"} : {height: '10vh', width: '10vw', visibility: 'invisible'}}>
                                     {renderDropdownContent(item.key)}
                                 </div>
                             )}
