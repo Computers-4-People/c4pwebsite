@@ -10,8 +10,9 @@ export default function Testimonial(props) {
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 items-center'>
             {/* Image Section */}
-            <div className='flex justify-center'>
-                <img src={image} alt="" className='object-contain h-3/4 w-3/4' />
+            {/* For some reason the image had its dimensions previously to h-3/4 w-3/4, consider hard coding the size and adjusting the object- class */}
+            <div className='flex flex-row justify-end'>
+                <img src={image} alt="" className='object-contain  h-full w-full' />
             </div>
             {/* Text Section */}
             <div className='flex flex-col justify-center'>

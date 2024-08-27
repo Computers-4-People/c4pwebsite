@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Header(props) {
-    const {bgImage, titlePart1, titlePart2, description, links} = props.props;
+    const {bgImage, titlePart1, titlePart2, description, links, addenda} = props.props;
 
     console.log(bgImage);
 
