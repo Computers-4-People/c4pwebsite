@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
+import Header from '../components/header.jsx';
 export default function Programs() {
     const cards = [
         {
@@ -25,6 +26,13 @@ export default function Programs() {
     ]
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/programs/Programs/Unlocking_Access_To_The_Digital_World.JPG',
+                titlePart1: 'Uncover Possibilities',
+                titlePart2: 'with Our Programs',
+                description: 'Seize the opportunities at your fingertips with our programs—refurbished devices, affordable broadband, and essential digital skills courses  - are designed to help you become who you’re meant to be in the digital age.',
+                links: [{text: 'Apply for a Computer'}, {text: 'Enroll in a Digital Skills Class'}]
+                }} />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/programs/Programs/Unlocking_Access_To_The_Digital_World.JPG')`
