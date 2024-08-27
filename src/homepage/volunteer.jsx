@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
+import Header from "../components/header";
+
 export default function Volunteer() {
     const pressItems1 = [
         {
@@ -31,6 +33,13 @@ export default function Volunteer() {
     ];
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/volunteer/volunteerbackground.jpg',
+                titlePart1: 'Make an Impact',
+                titlePart2: 'Volunteer with Us',
+                description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or assissting in event planning. Your efforts make a meaningfull difference and help us serve and uplift our community.',
+                links: [{text: 'Signup to Volunteer'}, {text: 'Plan a day of service'}]
+            }} />
         <div
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/volunteer/volunteerbackground.jpg')`
