@@ -26,7 +26,7 @@ export default function Header(props) {
                 {
                     links && links.length > 0 && 
                         links.map(function (link, index){
-                            // console.log(link.clickAction)
+                            console.log(link.clickAction)
                             if(!link.clickAction)
                             {
                                 return(
