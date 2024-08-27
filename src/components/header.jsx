@@ -45,7 +45,7 @@ export default function Header(props) {
                                 <button
                                 key={index}
                                 onClick={link.clickAction}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'bg-white ml-10'}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-white text-white hover:bg-white hover:text-black'}`}
                             >
                                 {link.text}
 
