@@ -148,7 +148,7 @@ export default function Navbar() {
                         <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
                         <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
                         <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
-                        <li><Link to="https://computers4people.zohorecruit.com/jobs/Careers" className="hover:text-c4p">Careers</Link></li>
+                        <li><Link to="https://careers.computers4people.org" className="hover:text-c4p">Careers</Link></li>
                     </ul>
                     {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
