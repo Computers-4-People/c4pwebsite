@@ -1,10 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Testimonial from "../components/testimonial";
+import Header from "../components/header";
 
 export default function Contact() {
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/ewastedropoff/dropoffbackground.jpg',
+                titlePart1: 'Serve your community',
+                titlePart2: 'Become an Electronics Drop-off',
+                description: 'Help close the digital gap -- your location will collect devices, while Computers 4 People handles the rest, refurbishing and redistributing them to those in need.',
+                links: [{text: 'Become a device drop-off site'}, {text: 'Find a drop-off site near me'}]
+            }} />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/ewastedropoff/dropoffbackground.jpg')`

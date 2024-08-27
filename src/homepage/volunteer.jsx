@@ -38,7 +38,7 @@ export default function Volunteer() {
                 titlePart1: 'Make an Impact',
                 titlePart2: 'Volunteer with Us',
                 description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or assissting in event planning. Your efforts make a meaningfull difference and help us serve and uplift our community.',
-                links: [{text: 'Signup to Volunteer'}, {text: 'Plan a day of service'}]
+                links: [{text: 'Signup to Volunteer'}, {text: 'Plan a day of service', url: 'contact'}]
             }} />
         <div
             style={{
