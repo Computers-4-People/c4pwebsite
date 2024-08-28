@@ -5,7 +5,6 @@ export default function Testimonial(props) {
     const {title1, desc1, title2, desc2, image, side} = props.props;
 
     return(
-        <div>
             <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 items-center'>
                     {/* Image Section */}
@@ -23,6 +22,5 @@ export default function Testimonial(props) {
                 </div>
             </div>
         </div>
-    </div> 
     )
 }

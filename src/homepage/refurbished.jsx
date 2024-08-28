@@ -5,6 +5,7 @@ import IconCards from '../components/iconcards';
 import InfoCard from "../components/infocard";
 // import FrameWrapper from "../components/frameWrapper";
 import Header from '../components/header';
+import Testimonial from "../components/testimonial";
 
 export default function Refurbished() {
     const cardsData = [
@@ -75,7 +76,12 @@ export default function Refurbished() {
             </div>
             {/* <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
         </div>
-
+        <Testimonial props={{
+            title2: 'Supporting Underserved Communities with Free Computers',
+            desc2: <p><a href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
+            image: '../refurbished/recipient.jpg',
+            side: 'left'
+        }} />
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}

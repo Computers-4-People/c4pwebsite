@@ -143,6 +143,7 @@ import Carosel from "../components/carosel/carosel";
 import Textmarquee from "../components/textmarquee";
 import InfoCard from "../components/infocard";
 import Header from "../components/header";
+import Testimonial from "../components/testimonial";
 
 export default function Homepage() {
   const animatedElements = useRef([]);
