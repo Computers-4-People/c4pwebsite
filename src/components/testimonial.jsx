@@ -13,17 +13,17 @@ export default function Testimonial(props) {
     // }
     return(
             <div className='bg-cover font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 items-center h-full'>
+                <div className='grid grid-cols-1 lg:grid-cols-3 gap-10 items-center h-full'>
                     {/* Image Section */}
-                    <div className={`${side === 'right' ? 'lg:col-start-2' : 'lg:col-start-1'}`}>
-                        <img src={image} alt="" className='h-full w-full object-scale-down' />
+                    <div className={`${side === 'right' ? 'lg:col-start-3' : 'lg:col-start-1'} h-full w-full lg:h-[40vh] lg:w-[40vw]`}   >
+                        <img src={image} alt="" className='h-full w-full object-cover'/>
                     </div>
                     {/* Text Section */}
-                    <div className={`flex flex-col row-start-1 ${side === 'right' ? 'lg:col-start-1 text-justify' : 'lg:col-start-2'} justify-stretch`}>
-                        <h2 className='text-2xl font-title md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
+                    <div className={`flex flex-col h-3/4 row-start-1 lg:col-span-2 ${side === 'right' ? 'lg:col-start-1 text-justify' : 'lg:col-start-2'}`}>
+                        <h2 className='text-4xl font-title md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6'>
                             {title2}
                         </h2>
-                        <p>
+                        <p className='text-xl'>
                             {desc2}
                         </p>
                 </div>
