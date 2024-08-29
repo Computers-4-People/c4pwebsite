@@ -19,7 +19,7 @@ export default function Testimonial(props) {
                         <img src={image} alt="" className='h-full w-full object-scale-down' />
                     </div>
                     {/* Text Section */}
-                    <div className={`flex flex-col row-start-1 ${side === 'right' ? 'lg:col-start-1' : 'lg:col-start-2'} justify-stretch`}>
+                    <div className={`flex flex-col row-start-1 ${side === 'right' ? 'lg:col-start-1 text-justify' : 'lg:col-start-2'} justify-stretch`}>
                         <h2 className='text-2xl font-title md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
                             {title2}
                         </h2>
