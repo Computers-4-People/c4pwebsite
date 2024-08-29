@@ -12,14 +12,14 @@ export default function Testimonial(props) {
     //     }
     // }
     return(
-            <div className='bg-cover font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
-                <div className='grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-1 gap-10 items-center'>
+            <div className='bg-cover font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 items-center h-full'>
                     {/* Image Section */}
-                    <div className={`bg-black col-start-2`}>
-                        <img src={image} alt="" className='object-contain' />
+                    <div className={`${side === 'right' ? 'col-start-2' : 'col-start-1'}`}>
+                        <img src={image} alt="" className='h-full w-full object-scale-down' />
                     </div>
                     {/* Text Section */}
-                    <div className={` flex-col row-start-1`}>
+                    <div className={`flex flex-col row-start-1 ${side === 'right' ? 'col-start-1' : 'col-start-1'} justify-stretch`}>
                         <h2 className='text-2xl font-title md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
                             {title2}
                         </h2>
