@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from "../components/header";
+import Testimonial from "../components/testimonial";
+
 export default function Ewaste () {
     const cards = [
         {
@@ -95,6 +97,20 @@ export default function Ewaste () {
                     <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
+
+            <Testimonial props={{
+                title2: 'Easy and Convenient Electronics Drop-off sites in your community',
+                desc2: <div>
+                        <p className='my-5'>
+                                Computers 4 People provices a hassle-free, complimentary services with
+                                convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
+                                your e-waste, and we'll handle the rest for you.
+                            </p>
+                            <p>Tax receipts are provided upon request.</p>
+                     </div>,
+                image: '/refurbished/luis.png'
+            }}/>
+
             <div className='bg-cover max-h-screen' style={{height:'60vh'}}>
                 <div className='grid grid-rows-3 grid-cols-6 mt-20'>
                 <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />
