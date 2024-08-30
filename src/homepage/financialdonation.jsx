@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from '../components/header';
+import Testimonial from '../components/testimonial';
 
 export default function Financialdonation() {
     return (
@@ -39,6 +40,21 @@ export default function Financialdonation() {
                     </div>
                 </div>
             </div>
+            <Testimonial props={{
+                title2: 'Computers 4 People is transforming lives through technology every day',
+                desc2: <div className='space-y-7'>
+                        <p className=''>
+                            By providing the tools needed to unlock countless opportunities, Computers 4 People
+                            is changing the course of thousands of lives.
+                        </p>
+                        <p className=''>
+                            Discover the impact we've made.
+                        </p>
+                </div>,
+                side:'right',
+                image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
+                links: [{text:'Learn More'}]
+            }}/>
             <div className='h-full text-black py-20 px-10'>
                 <div className='grid grid-rows-1 grid-cols-6 relative px-20'>
                     <div className='col-span-4 flex flex-col justify-center space-y-10 my-10'>
