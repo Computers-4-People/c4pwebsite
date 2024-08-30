@@ -28,10 +28,7 @@ export default function Testimonial(props) {
                     <p className='text-xl'>
                         {desc2}
                     </p>
-                </div>
-            
-            </div>
-            <div className='flex flex-row space-x-5'>
+                    <div className='mt-8 w-full flex flex-row space-x-4'>
                 {
                     links && links.length > 0 && 
                         links.map(function (link, index){
@@ -42,7 +39,7 @@ export default function Testimonial(props) {
                                 <Link 
                                 key={index}
                                 to={`${link.url}`}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-white text-white hover:bg-white hover:text-black'}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-black text-black hover:bg-black hover:text-white'}`}
                             >
                                 {link.text}   
                             </Link>
@@ -54,7 +51,7 @@ export default function Testimonial(props) {
                                 <button
                                 key={index}
                                 onClick={link.clickAction}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-white text-white hover:bg-white hover:text-black'}`}
+                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-black text-black hover:bg-white hover:text-black'}`}
                             >
                                 {link.text}
 
@@ -66,6 +63,9 @@ export default function Testimonial(props) {
                     )
                 }
                 </div>
+                </div>
+            
+            </div>
         </div>
     )
 }

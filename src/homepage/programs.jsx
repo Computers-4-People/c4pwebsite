@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from '../components/header.jsx';
+import Testimonial from "../components/testimonial.jsx";
 export default function Programs() {
     const cards = [
         {
@@ -72,6 +73,13 @@ export default function Programs() {
                     <InfoCard cards={cards} />
                 </div>
             </div>
+
+            <Testimonial props={{
+                title2: 'Your Chance to Master Technology can Be Today',
+                desc2: 'Everyone, regardless of age, gender or background, can learn technology; take the first step',
+                image: '../Programs/programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
+                links: [{text:'Apply for a computer'}, {text: 'Enroll in a Digital Class'}]
+            }}/>
 
             <div className='h-full text-black'>
             <div className='grid grid-rows-2 grid-cols-6 relative'>
