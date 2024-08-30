@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
 import Header from "../components/header";
+import Testimonial from '../components/testimonial';
+
 export default function Impact() {
     const pressItems1 = [
         {
@@ -51,6 +53,22 @@ export default function Impact() {
                 </div>
             </div>
         </div>
+        <Testimonial props={{
+            title2: `With you we're making big strides`,
+            desc2: 
+            <div className='space-y-10'> 
+                <p>
+                In a world where technology is crucial for education, employment, and connection, the digital divide remains a pressing challenge. Despite this, our mission to tackle e-waste and enhance digital inclusion has made significant strides in transforming discarded tech into valuable resources
+                </p>
+                <p>
+                Thanks to the support of our dedicated partners, Computers 4 People has been able to refurbish and distribute thousands of computing devices, bridging gaps and creating new opportunities for individuals and families.
+                </p>
+                <p>
+                Dive into our latest Impact Report to see how your support has driven meaningful change and empowered communities.
+                </p>
+            </div>,
+            image: '../impact/impactreportbook.png'
+        }}/> 
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}
