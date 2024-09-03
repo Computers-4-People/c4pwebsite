@@ -85,7 +85,8 @@ export default function Press() {
                 titlePart2: 'Press & Media Highlights',
                 description: 'See how Computers 4 People is making headlines and driving change and digital equity.',
                 links: [{text: 'Access our press releases', clickAction: () => handleScroll("press-releases")}, {text: 'View media coverage', clickAction: () => handleScroll("media-highlights")}]
-            }}/> 
+            }}/>
+            
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/press/pressbackground.jpg')`

@@ -13,11 +13,11 @@ export default function Testimonial(props) {
     //     }
     // }
     return(
-        <div className='bg-cover font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
+        <div className='bg-cover font-sans h-96 px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
             {/* <div className='grid grid-cols-1 lg:grid-cols-3 gap-10 items-center h-full  lg:h-[40vh]'> */}
             <div className={`flex flex-col ${side === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center h-full`}>
                 {/* Image Section */}
-                <div className={`${side === 'right' ? 'lg:col-start-3' : 'lg:col-start-1'} h-full w-full`}   >
+                <div className={`${side === 'right' ? 'lg:col-start-3' : 'lg:col-start-1'} h-full w-full flex flex-row justify-center `}   >
                     <img src={image} alt="" className='h-auto w-auto max-h-full max-w-full object-contain'/>
                 </div>
                 {/* Text Section */}

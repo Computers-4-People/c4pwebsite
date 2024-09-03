@@ -101,7 +101,7 @@ export default function Ewaste () {
             <Testimonial props={{
                 title2: 'Easy and Convenient Electronics Drop-off sites in your community',
                 desc2: <div>
-                        <p className='my-5'>
+                            <p className='my-5'>
                                 Computers 4 People provices a hassle-free, complimentary services with
                                 convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
                                 your e-waste, and we'll handle the rest for you.

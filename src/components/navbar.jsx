@@ -165,6 +165,7 @@ export default function Navbar() {
             dropdownContent: (
                 <div className=''>
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+                    {/* <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'> */}
                         <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
                         <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
                         <li><Link to="/partner" className="hover:text-c4p">Partner</Link></li>
@@ -189,7 +190,7 @@ export default function Navbar() {
 
 
     return (
-        <div className='fixed z-10 w-full bg-gradient-to-b from-black text-white' onMouseLeave={() => setActiveDropdown(null)}>
+        <div className='fixed z-100 w-full bg-gradient-to-b from-black text-white' onMouseLeave={() => setActiveDropdown(null)}>
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
                 <Link to='/' className="flex-shrink-0">
                     <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
@@ -211,7 +212,7 @@ export default function Navbar() {
                                 {item.name}
                             </Link>
                             {activeDropdown === item.key && (
-                                <div className='absolute left-0 bg-white text-black shadow-lg mt-2 z-20 transition-all duration-300' style={!!activeDropdown ? {height: '30vh', width: '20vw', visibility: "visible"} : {height: '10vh', width: '10vw', visibility: 'invisible'}}>
+                                <div className='absolute left-0 pl-5 bg-white text-black shadow-lg mt-2 z-20 transition-all duration-300' style={!!activeDropdown ? {height: '30vh', width: '20vw', visibility: "visible"} : {height: '10vh', width: '10vw', visibility: 'invisible'}}>
                                     {renderDropdownContent(item.key)}
                                 </div>
                             )}
