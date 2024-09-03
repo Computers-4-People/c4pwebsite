@@ -148,31 +148,31 @@ import Testimonial from "../components/testimonial";
 export default function Homepage() {
   const animatedElements = useRef([]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-up");
-            observer.unobserve(entry.target); // Stop observing after animation starts
-          }
-        });
-      },
-      {
-        threshold: 0.1, // Adjust this threshold based on when you want the animation to trigger
-      }
-    );
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           entry.target.classList.add("animate-fade-up");
+  //           observer.unobserve(entry.target); // Stop observing after animation starts
+  //         }
+  //       });
+  //     },
+  //     {
+  //       threshold: 0.1, // Adjust this threshold based on when you want the animation to trigger
+  //     }
+  //   );
 
-    animatedElements.current.forEach((el) => {
-      observer.observe(el);
-    });
+  //   animatedElements.current.forEach((el) => {
+  //     observer.observe(el);
+  //   });
 
-    return () => {
-      if (animatedElements.current) {
-        animatedElements.current.forEach((el) => observer.unobserve(el));
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (animatedElements.current) {
+  //       animatedElements.current.forEach((el) => observer.unobserve(el));
+  //     }
+  //   };
+  // }, []);
 
   const cardsData = [
     {
