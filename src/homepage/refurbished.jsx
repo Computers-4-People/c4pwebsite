@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
 import InfoCard from "../components/infocard";
-import FrameWrapper from "../components/frameWrapper";
+// import FrameWrapper from "../components/frameWrapper";
+import Header from '../components/header';
+import Testimonial from "../components/testimonial";
 
 export default function Refurbished() {
     const cardsData = [
@@ -40,6 +42,10 @@ export default function Refurbished() {
       ];
     return (
         <div className='font-sans overflow-x-hidden'>
+            {/* <Header props={{
+                bgImage: '/refurbished/refurbishedbackground.png',
+
+                }}/> */}
         <div style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`,
                 height: '130vh'
@@ -62,15 +68,20 @@ export default function Refurbished() {
                         <a href="" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Apply for a device</a>
                     </div>
                 </div>
-                <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
-}>
+                {/* <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
+{/* }> */}
                     <iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
-                </FrameWrapper>
+                {/* </FrameWrapper> */}
 
             </div>
             {/* <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
         </div>
-
+        <Testimonial props={{
+            title2: 'Supporting Underserved Communities with Free Computers',
+            desc2: <p><a href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
+            image: '../refurbished/recipient.jpg',
+            side: 'left'
+        }} />
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}
@@ -88,6 +99,14 @@ export default function Refurbished() {
                 </div>
             </div>
         </div>
+        <Testimonial props={{
+            title2: 'Our devices come from generous donors',
+            desc2: 'Our devices come from individuals and organizations who generously provide their unused equipment to us.' +
+            'Each device undergoes a meticulous refurbishing and data wiping process to be in optimal condition before being matched to a recipient.' +
+            'Due to our reliance on donated devices, there may be a waiting period for computer applicants.',
+            image: '../refurbished/luis.png',
+            side: 'right'
+        }}/>
         <div className='bg-cover font-sans justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Text Section */}

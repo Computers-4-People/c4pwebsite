@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
+import Header from "../components/header";
 
 export default function Press() {
     const pressItems1 = [
@@ -78,6 +79,14 @@ export default function Press() {
 
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/press/pressbackground.jpg',
+                titlePart1: 'Discover Our Latest',
+                titlePart2: 'Press & Media Highlights',
+                description: 'See how Computers 4 People is making headlines and driving change and digital equity.',
+                links: [{text: 'Access our press releases', clickAction: () => handleScroll("press-releases")}, {text: 'View media coverage', clickAction: () => handleScroll("media-highlights")}]
+            }}/>
+            
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/press/pressbackground.jpg')`

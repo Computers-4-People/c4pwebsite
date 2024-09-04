@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
+import Header from "../components/header";
+import Testimonial from "../components/testimonial";
+
 export default function Volunteer() {
     const pressItems1 = [
         {
@@ -31,6 +34,13 @@ export default function Volunteer() {
     ];
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/volunteer/volunteerbackground.jpg',
+                titlePart1: 'Make an Impact',
+                titlePart2: 'Volunteer with Us',
+                description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or assissting in event planning. Your efforts make a meaningfull difference and help us serve and uplift our community.',
+                links: [{text: 'Signup to Volunteer'}, {text: 'Plan a day of service', url: 'contact'}]
+            }} />
         <div
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/volunteer/volunteerbackground.jpg')`
@@ -58,6 +68,13 @@ export default function Volunteer() {
                 </div>
             </div>
         </div>
+
+        <Testimonial props={{
+            title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',
+            desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
+            image: '../volunteer/volunteersacha.png'
+        }} />
+
         <div className='bg-cover font-sans justify-evenly px-4 mt-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Image Section */}

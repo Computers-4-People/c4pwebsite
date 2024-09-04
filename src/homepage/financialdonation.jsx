@@ -1,9 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from '../components/header';
+import Testimonial from '../components/testimonial';
 
 export default function Financialdonation() {
     return (
         <div className='font-sans'>
+            <Header props={{
+                bgImage: '/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg',
+                titlePart1: 'Take Action',
+                titlePart2: 'Become a Champion',
+                description: 'Every person deserves equitable access to opportunities. Your donation helps provide essential tech access and makes a difference for those in need.',
+                links: [{text: 'Donate Monetarily' }, {text: 'Donate a Device', url: '/ewaste'}]
+            }} />
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg')`}} 
             className="bg-cover md:h-screen h-full bg-center bg-fixed bg-no-repeat">
                 <div className="flex flex-col justify-center h-full w-3/4 space-y-5 p-14">
@@ -31,6 +40,21 @@ export default function Financialdonation() {
                     </div>
                 </div>
             </div>
+            <Testimonial props={{
+                title2: 'Computers 4 People is transforming lives through technology every day',
+                desc2: <div className='space-y-7'>
+                        <p className=''>
+                            By providing the tools needed to unlock countless opportunities, Computers 4 People
+                            is changing the course of thousands of lives.
+                        </p>
+                        <p className=''>
+                            Discover the impact we've made.
+                        </p>
+                </div>,
+                side:'right',
+                image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
+                links: [{text:'Learn More'}]
+            }}/>
             <div className='h-full text-black py-20 px-10'>
                 <div className='grid grid-rows-1 grid-cols-6 relative px-20'>
                     <div className='col-span-4 flex flex-col justify-center space-y-10 my-10'>

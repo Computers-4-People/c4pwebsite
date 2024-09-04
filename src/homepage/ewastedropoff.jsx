@@ -1,10 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Testimonial from "../components/testimonial";
+import Header from "../components/header";
 
 export default function Contact() {
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{
+                bgImage: '/ewastedropoff/dropoffbackground.jpg',
+                titlePart1: 'Serve your community',
+                titlePart2: 'Become an Electronics Drop-off',
+                description: 'Help close the digital gap -- your location will collect devices, while Computers 4 People handles the rest, refurbishing and redistributing them to those in need.',
+                links: [{text: 'Become a device drop-off site'}, {text: 'Find a drop-off site near me'}]
+            }} />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/ewastedropoff/dropoffbackground.jpg')`
@@ -34,8 +42,16 @@ export default function Contact() {
                 </div>
             </div>
             <Testimonial props={{
-                title:'test',
-                description:'test',
+                title2:'You can help provide digital access to your neighborhood-collect disregarded devices',
+                desc2: <div>                    <p className=''>
+                A device has the power to uplift an individual, a family, and a community. By collecting discarded devices, you can help put tools that transform lives into the hands of those in need. Becoming a drop-off site, you will:
+               </p>
+               <ul className='list-disc list-inside text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 mt-4 ml-6'>
+                   <li>Enhance foot traffic and community engagement.</li>
+                   <li>Showcase commitment to environmental sustainability</li>
+                   <li>Zero cost involvement.</li>
+                   <li>Impact lives and close the digital gap.</li>
+               </ul></div>,
                 image:'../ewastedropoff/computerhandoff.png'
             }}/>
             <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>

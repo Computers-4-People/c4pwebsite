@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
+import Header from "../components/header";
+import Testimonial from "../components/testimonial";
+
 export default function Ewaste () {
     const cards = [
         {
@@ -37,9 +40,16 @@ export default function Ewaste () {
     ]
     
     const embed = <iframe aria-label='Donate Computers Today!' frameborder="0" style="height:500px;width:99%;border:none;" src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
-    
     return (
         <div className='font-sans mb-20'>
+            <Header props={{
+                bgImage: '/about/serving-3-states.jpg',
+                titlePart1: 'Turn E-Waste',
+                titlePart2: 'into Opportunties',
+                description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning E-waste into tools for a responsible future.</p></div>,
+                links: [{text: 'Schedule an electronics pickup'}]
+
+                }}/>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
                     <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
@@ -87,6 +97,20 @@ export default function Ewaste () {
                     <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
+
+            <Testimonial props={{
+                title2: 'Easy and Convenient Electronics Drop-off sites in your community',
+                desc2: <div>
+                            <p className='my-5'>
+                                Computers 4 People provices a hassle-free, complimentary services with
+                                convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
+                                your e-waste, and we'll handle the rest for you.
+                            </p>
+                            <p>Tax receipts are provided upon request.</p>
+                     </div>,
+                image: '/refurbished/luis.png'
+            }}/>
+
             <div className='bg-cover max-h-screen' style={{height:'60vh'}}>
                 <div className='grid grid-rows-3 grid-cols-6 mt-20'>
                 <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />

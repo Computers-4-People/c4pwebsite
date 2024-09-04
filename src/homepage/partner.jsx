@@ -1,4 +1,6 @@
 import React from "react";
+import Header from "../components/header";
+import Testimonial from "../components/testimonial";
 
 export default function Refurbished() {
     const scrollToForm = () => {
@@ -7,6 +9,10 @@ export default function Refurbished() {
 
     return (
         <div className='font-sans overflow-x-hidden'>
+            <Header props={{bgImage: '/Become a Partner/partnerbackgroundPNG.PNG', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
+            description: 'Join a network of 300+ non-profit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
+            links: [{text: 'Become a Partner', clickAction: scrollToForm}]
+            }} />
             <div
                 style={{
                     backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Become a Partner/partnerbackgroundPNG.PNG')`,
@@ -46,6 +52,17 @@ export default function Refurbished() {
                 >
                 </iframe>
             </div>
+
+            <Testimonial props={{
+                title2: 'Why Join Us as a Partner?',
+                desc2: 
+                <ul className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 list-disc list-inside'>
+                    <li>Bring Technology to Your Community: Help us provide computers to individuals in need.</li>
+                    <li>Host Digital Skills Classes: Collaborate with us to offer essential tech education.</li>
+                    <li>Innovative Partnerships: Join forces on creative solutions to enhance digital equity and impact.</li>
+                </ul>,
+                image: '../Become a Partner/partnerphoto.png'
+            }} />
 
             {/* Why Join Us Section */}
             <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10 md:px-20 py-10'>
