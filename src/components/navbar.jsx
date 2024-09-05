@@ -23,7 +23,7 @@ export default function Navbar() {
             key: 'programs',
             dropdownContent: (
                 <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
-                    <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black`}>
+                    <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black`}>
                         <li><Link to="/refurbished" className="hover:text-c4p">Refurbished Devices</Link></li>
                         <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>
                         <li><Link to="/ewaste" className="hover:text-c4p">EWaste Recycling</Link></li>
@@ -42,7 +42,7 @@ export default function Navbar() {
             key: 'about',
             dropdownContent: (
                 <div className='h-full'>
-                    <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+                    <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
                         <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
                         <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
@@ -63,8 +63,8 @@ export default function Navbar() {
             path: '/financialdonation',
             key: 'involved',
             dropdownContent: (
-                <div className=''>
-                    <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'>
+                <div className='h-full'>
+                    <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                     {/* <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'> */}
                         <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
                         <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
