@@ -3,7 +3,7 @@ import React from 'react';
 const InfoCard = ({ cards }) => {
   return (
     <div className="bg-cover text-black flex justify-center items-center w-full h-full">
-      <div className="m-11 flex flex-col md:flex-row justify-center md:justify-evenly w-full">
+      <div className="m-11 flex flex-col overflow-x-scroll md:flex-row justify-center md:justify-evenly w-full">
         {cards.map((card, index) => (
           <div
             key={index}
