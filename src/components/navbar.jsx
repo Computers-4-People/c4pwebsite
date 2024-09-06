@@ -106,7 +106,7 @@ export default function Navbar() {
 
 
     return (
-        <div className={`fixed z-50 w-full text-white ${scrollPosition > 50 ? 'bg-black opacity-80' : 'bg-gradient-to-b from-black'}`} onMouseLeave={() => setActiveDropdown(null)}>
+        <div className={`fixed z-50 w-full text-white ${scrollPosition > 750 ? 'bg-black opacity-80' : 'bg-gradient-to-b from-black'}`} onMouseLeave={() => setActiveDropdown(null)}>
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
                 <Link to='/' className="flex-shrink-0">
                     <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
