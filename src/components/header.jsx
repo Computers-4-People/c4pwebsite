@@ -11,7 +11,7 @@ export default function Header(props) {
         style={{
             backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${bgImage}')`
         }}
-        className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex flex-col justify-end md:flex-row pb-20 md:items-center md:justify-start"
+        className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex flex-col justify-end md:flex-row pb-10 md:items-center md:justify-start"
     >
         <div className="px-4 sm:px-10 md:px-20 md:grid grid-cols-1 md:grid-cols-6 justify-items-stretch">
             <h1 className='col-start-1 md:col-end-6 font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
