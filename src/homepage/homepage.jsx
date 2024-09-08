@@ -78,7 +78,7 @@ export default function Homepage() {
         bgImage: '/homepage/background.jpeg',
         titlePart1: 'Transform a Life',
         titlePart2: 'with Technology',
-        links: [{text: 'Donate your ewaste'}, {text: 'Discover our programs'}]
+        links: [{text: 'Donate your ewaste', url: "/donate"}, {text: 'Discover our programs',  url: "/programs"}]
         }}/>
         
       <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
@@ -106,7 +106,7 @@ export default function Homepage() {
 
           <div className="grid grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center text-center text-xl gap-3 z-20">
             <Link
-              to="/ewaste"
+              to="/donate"
               className="bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white"
             >
               🤍 Donate your ewaste

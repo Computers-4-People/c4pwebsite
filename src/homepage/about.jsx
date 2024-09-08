@@ -49,7 +49,8 @@ export default function About() {
                 bgImage: '/about/background.jpg',
                 titlePart1: 'Unlocking the Digital',
                 titlePart2: 'world. est. 2019',
-                description: ''
+                description: '',
+                links: [{}]
                 }} /> 
             <div className='bg-cover bg-black p-16 text-white'>
                 <ul className='flex flex-row justify-evenly text-center flex-wrap'>

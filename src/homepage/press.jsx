@@ -86,6 +86,7 @@ export default function Press() {
                 description: 'See how Computers 4 People is making headlines and driving change and digital equity.',
                 links: [{text: 'Access our press releases', clickAction: () => handleScroll("press-releases")}, {text: 'View media coverage', clickAction: () => handleScroll("media-highlights")}]
             }}/>
+
             <div id="media-highlights" className="mt-20">
                 <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Explore our media highlights</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-10'>Discover how our work is making waves through news articles, interviews, and features across various media outlets.</p>

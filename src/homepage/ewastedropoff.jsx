@@ -3,6 +3,20 @@ import { Link } from "react-router-dom";
 import Testimonial from "../components/testimonial";
 import Header from "../components/header";
 
+const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    const offset = 100;  // Adjust this value to leave space above the h1
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+    });
+};
+
 export default function Contact() {
     return (
         <div className='font-sans overflow-x-hidden'>
@@ -11,7 +25,7 @@ export default function Contact() {
                 titlePart1: 'Serve your community',
                 titlePart2: 'Become an Electronics Drop-off',
                 description: 'Help close the digital gap -- your location will collect devices, while Computers 4 People handles the rest, refurbishing and redistributing them to those in need.',
-                links: [{text: 'Become a device drop-off site'}, {text: 'Find a drop-off site near me'}]
+                links: [{text: 'Become a device drop-off site', clickAction: () => handleScroll("dropoffsignup")}, {text: 'Find a drop-off site near me', clickAction: () => handleScroll("findadropoff")}]
             }} />
             <Testimonial props={{
                 title2:'You can help provide digital access to your neighborhood-collect disregarded devices',
@@ -29,7 +43,7 @@ export default function Contact() {
         <div className="container mx-auto px-4 py-16">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Left Side: Text Content */}
-        <div className="space-y-6">
+        <div id="findadropoff" className="space-y-6">
             <h2 className="text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase">
                 Find an electronic drop-off site near me
             </h2>
@@ -66,7 +80,7 @@ export default function Contact() {
     </div>
 </div>
 <div className='bg-cover font-sans justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
+    <div id="dropoffsignup" className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
         {/* Image Section */}
         <div className='flex justify-center'>
             <img src="../ewastedropoff/luis.png" alt="" className='h-auto md:max-w-[80%]' />

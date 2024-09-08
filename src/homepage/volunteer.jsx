@@ -5,6 +5,20 @@ import IconCards from '../components/iconcards';
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
+const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    const offset = 100;  // Adjust this value to leave space above the h1
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+    });
+};
+
 export default function Volunteer() {
     const pressItems1 = [
         {
@@ -39,7 +53,7 @@ export default function Volunteer() {
                 titlePart1: 'Make an Impact',
                 titlePart2: 'Volunteer with Us',
                 description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or assissting in event planning. Your efforts make a meaningfull difference and help us serve and uplift our community.',
-                links: [{text: 'Signup to Volunteer'}, {text: 'Plan a day of service', url: 'contact'}]
+                links: [{text: 'Signup to Volunteer', url: 'https://charityquest.io/'}, {text: 'Plan a day of service', url: '/contact'}]
             }} />
         <Testimonial props={{
             title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',

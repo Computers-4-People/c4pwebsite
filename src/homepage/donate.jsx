@@ -5,6 +5,20 @@ import IconCards from "../components/iconcards";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
+const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    const offset = 100;  // Adjust this value to leave space above the h1
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+    });
+};
+
 export default function Donate () {
     const cards = [
         {
@@ -39,15 +53,14 @@ export default function Donate () {
         }
     ]
     
-    const embed = <iframe aria-label='Donate Computers Today!' frameborder="0" style="height:500px;width:99%;border:none;" src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
-    return (
+     return (
         <div className='font-sans mb-20'>
             <Header props={{
                 bgImage: '/about/serving-3-states.jpg',
                 titlePart1: 'Turn E-Waste',
                 titlePart2: 'into Opportunties',
                 description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning E-waste into tools for a responsible future.</p></div>,
-                links: [{text: 'Schedule an electronics pickup'}]
+                links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
@@ -68,7 +81,7 @@ export default function Donate () {
                         <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
                     </div> */}
                     {/* <iframe aria-label='Donate Computers Today!' frameborder="0" style={{height:'100%', width:'99%'}} src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe> */}
-                    <iframe aria-label='Donate Computers Today!' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe>
+                    <iframe id="donation-form" aria-label='Donate Form (2024 Draft)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'></iframe>
 
                 </div>
             </div>

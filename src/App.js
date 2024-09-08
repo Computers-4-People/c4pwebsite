@@ -41,9 +41,9 @@ function App() {
             <Route path="/donate" element={<Donate />}/>
            <Route path="/apply" element={<Apply />}/>
             <Route path="/dsclasses" element={<DSClasses />}/>
-            <Route path="/about" element={<About />}/>
             <Route path="/blog" element={<Blog />}/>
-            <Route path="/careers" element={<Careers />}/>         
+            <Route path="/careers" element={<Careers />}/>
+            <Route path="/about" element={<About />}/>         
             <Route path="/contact" element={<Contact />}/>
             <Route path="/ewastedropoff" element={<Ewastedropoff />}/>
             <Route path="/financialdonation" element={<Financialdonation />}/>
@@ -57,8 +57,8 @@ function App() {
             <Route path="/volunteer" element={<Volunteer />}/>
             {/* <Route path="/pepper" element={<Pepper />}/> */}
             <Route path="/login" element={<Login />}/>
-            <Route path="*" element={<PageNotFound />} />
             <Route path='/pepperfest' element={<PepperFest />}/>
+            <Route path="*" element={<PageNotFound />} />
          </Routes>
          <Footer/>
          {/* </div> */}

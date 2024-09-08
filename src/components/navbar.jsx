@@ -110,7 +110,6 @@ export default function Navbar() {
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
                 <Link to='/' className="flex-shrink-0">
                     <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
-
                 </Link>
 
                 <button onClick={() => setMenuVisible(!isMenuVisible)} className="md:hidden">

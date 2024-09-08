@@ -30,8 +30,8 @@ export default function Impact() {
                 titlePart1: 'Learn About the',
                 titlePart2: `Impact We've Made`,
                 description: `Dive into our Impact Reports to see how we've driven positive change and made a difference in the communities we serve.`,
-                links: [{text: 'Read our 2023 Impact Report'}]
-            }}/> 
+                links: [{text: 'Read our 2023 Impact Report', url:"/impact/2023impactreport.pdf"}]
+            }}/>
         <Testimonial props={{
             title2: `With you we're making big strides`,
             desc2: 

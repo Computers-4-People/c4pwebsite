@@ -3,6 +3,20 @@ import { Link } from "react-router-dom";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
+const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    const offset = 100;  // Adjust this value to leave space above the h1
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+    });
+};
+
 export default function DSClasses() {
     return (
         <div className='font-sans overflow-x-hidden'>
@@ -11,7 +25,7 @@ export default function DSClasses() {
                 titlePart1: 'ACQUIRE THE FOUNDATIONAL',
                 titlePart2: 'SKILLS TO THRIVE DIGITALLY',
                 description: 'From foundational digital literacy courses for all ages to specialized PC building courses for teenagers and digital skills classes in Arabic, our curriculum caters to diverse learning needs.',
-                links: [{url: '/ewaste', text: 'Discover our Courses'}]
+                links: [{text: 'Discover our Courses', clickAction: () => handleScroll("digital-classes")}]
             }}
             />
 
@@ -21,7 +35,7 @@ export default function DSClasses() {
                     image: '../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png'
                 }}/>
             <div className='h-full bg-cover px-20 pb-10 space-y-10'>
-                <div>
+                <div id="digital-classes">
                     <h2 className='text-6xl font-title '>Explore our current digital skills courses</h2>
                     <p className='text-xl'>Click to learn more about each course's curriculum and eligibility</p>
                 </div>

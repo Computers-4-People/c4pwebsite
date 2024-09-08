@@ -4,8 +4,22 @@ import PressCard from '../components/presscard';
 import IconCards from '../components/iconcards';
 import InfoCard from "../components/infocard";
 // import FrameWrapper from "../components/frameWrapper";
-import Header from '../components/header';
+import Header from "../components/header";
 import Testimonial from "../components/testimonial";
+
+const handleScroll = (id) => {
+    const element = document.getElementById(id);
+    const offset = 100;  // Adjust this value to leave space above the h1
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+    });
+};
 
 export default function Apply() {
     const cardsData = [
@@ -41,41 +55,20 @@ export default function Apply() {
         }
       ];
     return (
-        <div className='font-sans overflow-x-hidden'>
-            {/* <Header props={{
-                bgImage: '/refurbished/refurbishedbackground.png',
+        <div className='font-sans mb-20'>
+        <Header props={{
+            bgImage: '/refurbished/background.jpg',
+            titlePart1: 'UNLOCKING OPPORTUNITIES,',
+            titlePart2: 'ONE COMPUTER AT A TIME',
+            description: <div className='space-y-10'><p>Computers 4 People works tirelessly to refurbish and deliver donated devices to those in need. Complete our 10-min application today!</p></div>,
+            links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
 
-                }}/> */}
-        <div style={{
-                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`,
-                height: '130vh'
-            }}
-            // className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
-            className="bg-cover h-screen bg-center bg-fixed bg-no-repeat"
-
-        >
-            {/* grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch */}
-            <div className="px-4 sm:px-10 md:px-20 flex flex-col justify-center items-start h-full">
-                <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
-                    <p className='text-c4p animate-fade-up'>UNLOCKING OPPORTUNITIES,</p>
-                    <p className='text-white animate-fade-up'>ONE COMPUTER AT A TIME</p>
-                </h1>
-                <div className="col-start-1 md:col-end-4 animate-fade-up">
-                    <p className='text-white text-xl md:text-2xl mb-4'>
-                       Computers 4 People works tirelessly to refurbish and deliver donated devices to those in need. Complete our 10-min application today!
-                    </p>
-                    <div className="flex flex-col md:flex-row">
-                        <a href="" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Apply for a device</a>
-                    </div>
-                </div>
-                {/* <FrameWrapper html={<iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
-{/* }> */}
-                    <iframe className='h-3/4 w-3/4'aria-label='Apply For Computers!' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe>
-                {/* </FrameWrapper> */}
+            }}/>
+        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+            <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
+               <iframe id="apply-form" aria-label='Apply For Computers! (2024 Draft Individuals)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'></iframe>
 
             </div>
-            {/* <iframe aria-label='Apply For Computers!' frameborder="0" style={{height:'100%',width:'99%',border:'none'}} src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputersTest/formperma/1-e5fhfxicw0ikW84mZKvSd_KU1E6onhRlxWy3W6Zyc'></iframe> */}
-        </div>
         <Testimonial props={{
             title2: 'Supporting Underserved Communities with Free Computers',
             desc2: <p><a href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
@@ -102,6 +95,7 @@ export default function Apply() {
                 <InfoCard cards={cardsData}/>
             </div>
             </div>
-        </div>
+            </div>
+            </div>
         )
     }
