@@ -5,7 +5,7 @@ import IconCards from "../components/iconcards";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
-export default function Ewaste () {
+export default function Donate () {
     const cards = [
         {
             titlePart1: "Donors",
@@ -50,22 +50,6 @@ export default function Ewaste () {
                 links: [{text: 'Schedule an electronics pickup'}]
 
                 }}/>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/about/serving-3-states.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
-                <div class="ml-32 h-full grid grid-cols-6 grid-rows-2 justify-items-stretch">
-                    <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
-                        <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn E-Waste</p>
-                        <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
-                    </div>
-                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-2xl'>
-                        <p className='mb-10'>
-                            We're on a mission to collect unused devices,
-                            refurbishing what we can for communities and responsibly recycling the rest.
-                        </p>
-                        <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
-                        <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
-                    </div>
-                </div>
-            </div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 {/* <div class="ml-32 h-full grid grid-cols-2 grid-rows-2 justify-items-stretch"> */}
                 <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
@@ -110,23 +94,6 @@ export default function Ewaste () {
                      </div>,
                 image: '/refurbished/luis.png'
             }}/>
-
-            <div className='bg-cover max-h-screen' style={{height:'60vh'}}>
-                <div className='grid grid-rows-3 grid-cols-6 mt-20'>
-                <img src="/refurbished/luis.png" alt="" className='col-span-3 row-start-1 row-span-2 justify-self-start pr-20' />
-                    <div className='col-span-2 mt-10'>
-                        <h2 className='text-5xl md:text-7xl font-title'>EASY AND CONVENIENT ELECTRONICS DROP OFF SITES IN YOUR COMMUNITY</h2>
-                        <div className='text-xl md:text-2xl'>
-                            <p className='my-5'>
-                                Computers 4 People provices a hassle-free, complimentary services with
-                                convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
-                                your e-waste, and we'll handle the rest for you.
-                            </p>
-                            <p>Tax receipts are provided upon request.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div className="bg-cover mt-10" style={{height: "100vh"}}>
                 <div className="mx-20 grid grid-cols-3 grid-rows-2 h-full">
                     <div className='self-center col-span-2'>

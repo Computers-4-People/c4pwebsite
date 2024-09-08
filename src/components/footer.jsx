@@ -49,7 +49,6 @@ export default function Footer() {
                         <div><Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate E-Waste</Link></div>
                         <div><Link to="/financialdonation" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate Funding</Link></div>
                         <div><Link to="/volunteer" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Volunteer</Link></div>
-                        <div><Link to="/events" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Events</Link></div>
                     </div>
                     <div className='grid gap-3 border-r-2 pr-4'>
                         <div className='font-bold text-xl'>Policies</div>

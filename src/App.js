@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import Homepage from './homepage/homepage';
-import Ewaste from './homepage/ewaste';
-import Refurbished from './homepage/refurbished';
+import Donate from './homepage/donate';
+import Apply from './homepage/apply';
 import DSClasses from './homepage/dsclasses';
 import About from './homepage/about';
 import Blog from './homepage/blog';
@@ -21,6 +21,7 @@ import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
 import Pepper from './homepage/pepper';
 import Login from './homepage/login';
+import PageNotFound from './homepage/404page';
 import PepperFest from './homepage/pepperfest';
 
 // import background from './background.jpg'
@@ -37,8 +38,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Homepage/>}/>
               {/* <Homepage /> */}
-            <Route path="/ewaste" element={<Ewaste />}/>
-           <Route path="/refurbished" element={<Refurbished />}/>
+            <Route path="/donate" element={<Donate />}/>
+           <Route path="/apply" element={<Apply />}/>
             <Route path="/dsclasses" element={<DSClasses />}/>
             <Route path="/about" element={<About />}/>
             <Route path="/blog" element={<Blog />}/>
@@ -56,6 +57,7 @@ function App() {
             <Route path="/volunteer" element={<Volunteer />}/>
             {/* <Route path="/pepper" element={<Pepper />}/> */}
             <Route path="/login" element={<Login />}/>
+            <Route path="*" element={<PageNotFound />} />
             <Route path='/pepperfest' element={<PepperFest />}/>
          </Routes>
          <Footer/>

@@ -7,7 +7,7 @@ import InfoCard from "../components/infocard";
 import Header from '../components/header';
 import Testimonial from "../components/testimonial";
 
-export default function Refurbished() {
+export default function Apply() {
     const cardsData = [
         {
           titlePart1: "Donors",
@@ -82,23 +82,6 @@ export default function Refurbished() {
             image: '../refurbished/recipient.jpg',
             side: 'left'
         }} />
-        <div className='bg-cover font-sans justify-evenly px-4 mt-20 mb-20 sm:px-10 md:px-20 py-10'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
-                {/* Image Section */}
-                <div className='flex justify-center'>
-                    <img src="../refurbished/recipient.jpg" alt="" className='h-auto w-auto md:max-w-full md:ml-60' />
-                </div>
-                {/* Text Section */}
-                <div className='flex flex-col justify-center'>
-                    <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
-                    Supporting Underserved Communities<br/> with Free Computers
-                    </h2>
-                    <p className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7'>
-                    <a className="text-c4p" href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.
-                    </p>
-                </div>
-            </div>
-        </div>
         <Testimonial props={{
             title2: 'Our devices come from generous donors',
             desc2: 'Our devices come from individuals and organizations who generously provide their unused equipment to us.' +
@@ -108,26 +91,12 @@ export default function Refurbished() {
             side: 'right'
         }}/>
         <div className='bg-cover font-sans justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
-                {/* Text Section */}
-                <div className='flex flex-col text-left md:ml-20'>
-                <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
-                Our devices come from<br/> generous donors
-                    </h2>
-                    <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
-                    Our devices come from individuals and organizations who generously provide their unused equipment to us. Each device undergoes a meticulous refurbishing and data wiping process to be in optimal condition before being matched to a recipient. Due to our reliance on donated devices, there may be a waiting period for computer applicants.</p>
-                </div>
-                {/* Image Section */}
-                <div className='flex justify-center'>
-                    <img src="../refurbished/luis.png" alt="" className='h-auto md:max-w-full md:mr-40' />
-                </div>
                 <div className='flex flex-col text-left md:ml-20 mt-40'>
                 <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
                 Giving Devices a Second Chance
                     </h2>
                     <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
                     Each device has a unique story before reaching its new home.</p>
-                </div>
             </div>
             <div>
                 <InfoCard cards={cardsData}/>
