@@ -57,17 +57,18 @@ export default function Apply() {
     return (
         <div className='font-sans mb-20'>
         <Header props={{
-            bgImage: '/refurbished/background.jpg',
+            bgImage: '/refurbished/refurbishedbackground.png',
             titlePart1: 'UNLOCKING OPPORTUNITIES,',
             titlePart2: 'ONE COMPUTER AT A TIME',
             description: <div className='space-y-10'><p>Computers 4 People works tirelessly to refurbish and deliver donated devices to those in need. Complete our 10-min application today!</p></div>,
             links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
 
             }}/>
-        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/applybackground2.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
             <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
                <iframe id="apply-form" aria-label='Apply For Computers! (2024 Draft Individuals)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'></iframe>
 
+            </div>
             </div>
         <Testimonial props={{
             title2: 'Supporting Underserved Communities with Free Computers',
@@ -93,7 +94,6 @@ export default function Apply() {
             </div>
             <div>
                 <InfoCard cards={cardsData}/>
-            </div>
             </div>
             </div>
             </div>

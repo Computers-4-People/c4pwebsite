@@ -61,7 +61,7 @@ export default function Navbar() {
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
                         <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
-                        <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
+                        <li><Link to="/team/" className="hover:text-c4p">Team</Link></li>
                         <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
                         <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
                         <li><Link to="https://careers.computers4people.org" className="hover:text-c4p">Careers</Link></li>

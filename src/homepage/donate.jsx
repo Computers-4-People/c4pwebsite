@@ -63,7 +63,7 @@ export default function Donate () {
                 links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/ewastedropoff/ewaste-bg.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
                 {/* <div class="ml-32 h-full grid grid-cols-2 grid-rows-2 justify-items-stretch"> */}
                 <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
                     {/* <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
