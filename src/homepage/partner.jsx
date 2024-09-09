@@ -9,7 +9,7 @@ export default function Refurbished() {
 
     return (
         <div className='font-sans overflow-x-hidden'>
-            <Header props={{bgImage: '/Become a Partner/partnerbackgroundPNG.PNG', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
+            <Header props={{bgImage: '/Become a Partner/partnerbackground.jpg', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
             description: 'Join a network of 300+ non-profit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
             links: [{text: 'Become a Partner', clickAction: scrollToForm}]
             }} />

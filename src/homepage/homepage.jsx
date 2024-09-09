@@ -75,7 +75,7 @@ export default function Homepage() {
   return (
     <div className="font-sans overflow-x-hidden">
       <Header props={{
-        bgImage: '/homepage/background.jpeg',
+        bgImage: '/homepage/homepagebackground.png',
         titlePart1: 'Transform a Life',
         titlePart2: 'with Technology',
         links: [{text: 'Donate your ewaste', url: "/donate"}, {text: 'Discover our programs',  url: "/programs"}]
