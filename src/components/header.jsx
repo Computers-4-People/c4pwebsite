@@ -9,7 +9,7 @@ export default function Header(props) {
         if (link.url && link.url.includes('.pdf')) {
             // Handle direct PDF links or external links
             return (
-                <a 
+                <a
                     key={index}
                     href={link.url}
                     target="_blank" // Opens in a new tab
