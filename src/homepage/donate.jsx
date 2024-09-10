@@ -25,31 +25,31 @@ export default function Donate () {
             titlePart1: "Donors",
             titlePart2: "Arrange a Pickup",
             description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in ",
-            image: "/E-waste/arrange-a-pickup.jpg"
+            image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpg"
         },
         {
             titlePart1: "Ambassadors Provide",
             titlePart2: "Simple Device Pickup",
             description: "Ambassadors transport electronic waste to the refurbishing center, where they are catagorized into donatable and non-donatable devices",
-            image: "/E-waste/simple-device-pickup.jpg"
+            image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpg"
         },
         {
             titlePart1: "Donatable Devices",
             titlePart2: "are Refurbished & Clean",
             description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-recepits provided via email.",
-            image: "/E-waste/donatable-devices.jpg"
+            image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.JPG"
         },
         {
             titlePart1: "Non-Donatable Devices",
             titlePart2: "Are Properly Recycled",
             description: "Non-donatable devices are properly recycled and disposed of with materials that can be reused and transformed into items such as cans and bottles.",
-            image: ""
+            image: "/Programs/E-waste/Images/Volunteer_Sorting_ewaste.png"
         },
         {
             titlePart1: "Recipients",
             titlePart2: "Obtain Computers",
             description: "Refurbished devices are matched with individuals and organizations in need, fostering digital equity in under-resourced communities.",
-            image: "/E-waste/recipients.jpg"
+            image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpg"
         }
     ]
     
