@@ -41,7 +41,7 @@ export default function Homepage() {
       titlePart2: "With a Donation",
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../homepage/starts.jpg",
+      image: "../homepage/starts.JPG",
     },
     {
       titlePart1: "Undergoes",
