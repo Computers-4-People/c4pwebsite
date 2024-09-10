@@ -87,7 +87,7 @@ export default function Homepage() {
       </div>
 
       <div className="h-screen text-black p-5 m-5">
-        <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
+        <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance!</h2>
         <div className="grid grid-rows-6 grid-cols-6 relative">
           <img
             src="../secondchance.png"
