@@ -27,25 +27,25 @@ export default function Apply() {
           titlePart1: "Donors",
           titlePart2: "Schedule A Pickup",
           description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-          image: "../refurbished/donors.jpg"
+          image: "../refurbished/donors.JPG"
         },
         {
             titlePart1: "Individuals & Orgs",
             titlePart2: "Apply for a Device",
             description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-            image: "../refurbished/ambasadors.jpg"
+            image: "../refurbished/ambasadors.JPG"
         },
         {
             titlePart1: "Devices",
             titlePart2: "Undergoes Refurbishing",
             description: "Computers 4 People refurbishes and cleans computers thoroughly to optimal condition.",
-            image: "../refurbished/devices.jpg"
+            image: "../refurbished/devices.JPG"
         },
         {
             titlePart1: "Recipients",
             titlePart2: "Recieve Devices",
             description: "Recipient receives an email when the computer is delivered to the sponsoring organization.",
-            image: "../refurbished/recipients.jpg"
+            image: "../refurbished/recipients.JPG"
         },
         {
             titlePart1: "A Catalyst",
@@ -64,7 +64,7 @@ export default function Apply() {
             links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
 
             }}/>
-        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/applybackground2.jpg')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/applybackground2.JPG')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
             <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
                <iframe id="apply-form" aria-label='Apply For Computers! (2024 Draft Individuals)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'></iframe>
 
