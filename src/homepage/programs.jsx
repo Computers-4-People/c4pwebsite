@@ -10,25 +10,25 @@ export default function Programs() {
             titlePart1: "Distribution of",
             titlePart2: "Refurbished Devices",
             description: "We refurbish donated devices and distribute them to communities in need across NYC, NJ, and MA.",
-            image: "/programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg"
+            image: "/Programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg"
         },
         {
             titlePart1:"Foundational",
             titlePart2: "Digital Skills",
             description: "We offer specialized digital courses and PC building classes to equip individuals with digital literacy.",
-            image:"/programs/Programs/Teenagers_Building_PCs_Refurbished.jpg"
+            image:"/Programs/Programs/Teenagers_Building_PCs_Refurbished.jpg"
         },
         {
             titlePart1:"Affordable",
             titlePart2: "Internet Access",
             description: "We assist people in finding affordable Internet programs that meet their needs.",
-            image:"/programs/Programs/Refurbished_Computers.jpg"
+            image:"/Programs/Programs/Refurbished_Computers.jpg"
         }
     ]
     return (
         <div className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/programs/Programs/Unlocking_Access_To_The_Digital_World.JPG',
+                bgImage: '/Programs/Programs/Unlocking_Access_To_The_Digital_World.JPG',
                 titlePart1: 'Uncover Possibilities',
                 titlePart2: 'with Our Programs',
                 description: 'Seize the opportunities at your fingertips with our programs—refurbished devices, affordable broadband, and essential digital skills courses  - are designed to help you become who you’re meant to be in the digital age.',
@@ -48,7 +48,7 @@ export default function Programs() {
             <Testimonial props={{
                 title2: 'Your Chance to Master Technology can Be Today',
                 desc2: 'Everyone, regardless of age, gender or background, can learn technology; take the first step',
-                image: '../Programs/programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
+                image: '../Programs/Programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
                 links: [{text:'Apply for a computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
             }}/>
             <div className='h-full bg-cover p-20'>
