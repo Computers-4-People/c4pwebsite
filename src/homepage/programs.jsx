@@ -32,7 +32,7 @@ export default function Programs() {
                 titlePart1: 'Uncover Possibilities',
                 titlePart2: 'with Our Programs',
                 description: 'Seize the opportunities at your fingertips with our programs—refurbished devices, affordable broadband, and essential digital skills courses  - are designed to help you become who you’re meant to be in the digital age.',
-                links: [{text: 'Apply for a Computer'}, {text: 'Enroll in a Digital Skills Class'}]
+                links: [{text: 'Apply for a Computer', url: "/apply"}, {text: 'Enroll in a Digital Skills Class', url: "/dsclasses"}]
                 }} />
 
             <div className='h-full py-20'>
@@ -49,7 +49,7 @@ export default function Programs() {
                 title2: 'Your Chance to Master Technology can Be Today',
                 desc2: 'Everyone, regardless of age, gender or background, can learn technology; take the first step',
                 image: '../Programs/programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
-                links: [{text:'Apply for a computer'}, {text: 'Enroll in a Digital Class'}]
+                links: [{text:'Apply for a computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
             }}/>
             <div className='h-full bg-cover p-20'>
                 <div className='mb-20'>

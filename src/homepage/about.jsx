@@ -49,20 +49,9 @@ export default function About() {
                 bgImage: '/about/background.jpg',
                 titlePart1: 'Unlocking the Digital',
                 titlePart2: 'world. est. 2019',
-                description: ''
+                description: '',
+                links: [{}]
                 }} /> 
-            <div className="bg-cover bg-[center] bg-fixed h-screen bg-no-repeat" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/about/background.jpg')`}} >
-                <div class="ml-20 h-full grid grid-cols-6 grid-rows-6 justify-items-stretch">
-                    <div className='col-start-1 col-end-5 row-start-3 font-title text-8xl uppercase'>
-                        <p class='text-c4p col-span-2 object-fill mb-5'>Unlocking the digital</p>
-                        <p class='text-white col-span-2'>world. est. 2019</p>
-                    </div>
-                    {/* <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
-                        <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
-                    </div> */}
-                </div>
-            </div>
             <div className='bg-cover bg-black p-16 text-white'>
                 <ul className='flex flex-row justify-evenly text-center flex-wrap'>
                     <li><div className='text-6xl mb-3'>2,196</div><p className='text-3xl'>Computers Donated</p></li>
@@ -77,42 +66,12 @@ export default function About() {
                 desc2: 'A digitally inclusive world where technology bridges divides and a future where every person, regardless of their background or resources, has equal and meaningful access to the digital world',
                 image: '../about/our_vision.png'
             }} />
-
-            <div className='bg-cover font-sans'>
-                <div className='grid grid-rows-1 grid-cols-6 mt-20 align-items-center'>
-                {/* <div className='flex flex-row'> */}
-                <img src="../about/our_vision.png" alt="" className='col-span-3 row-start-1 row-span-2' />
-                    <div className='col-span-3 row-start-1 flex flex-col  justify-center ml-10 mr-5 mb-14'>
-                        <h2 className='text-6xl font-bold uppercase'>Our Vision</h2>
-                        <p className='text-4xl leading-10 mt-6'>
-                            A digitally inclusive world where technology bridges divides and a future where every person, 
-                            regardless of their background or resources,
-                            has equal and meaningful access to the digital world
-                        </p>
-                    </div>
-                </div>
-            </div>
-
             <Testimonial props={{
                 title2: 'Our Mission',
                 desc2: 'To bridge the digital divide by repurosing e-waste into educational tools, ensuring equal access to technology for all.',
                 image: '../about/our_mission.png',
                 side: 'right'
             }}/> 
-
-            <div className='bg-cover h-screen font-sans'>
-                <div className='grid grid-rows-1 grid-cols-6 mt-20 align-items-center'>
-                {/* <div className='flex flex-row'> */}
-                    <div className='col-span-3 row-start-1 flex flex-col  justify-center ml-10 mr-5 mb-14'>
-                        <h2 className='text-6xl font-bold uppercase'>Our Mission</h2>
-                        <p className='text-4xl leading-10 mt-6'>
-                            To bridge the digital divide by repurosing e-waste into educational tools, 
-                            ensuring equal access to technology for all.
-                        </p>
-                    </div>
-                    <img src="../about/our_mission.png" alt="" className='col-span-3 row-start-1 row-span-2' />
-                </div>
-            </div>
             <div className='bg-cover text-black'>
                 <h2 className='m-14 text-5xl'>Our History</h2>
                 <InfoCard cards={cards}></InfoCard>

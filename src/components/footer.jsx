@@ -38,7 +38,7 @@ export default function Footer() {
                     </div>
                     <div className='grid gap-3'>
                         <div className='font-bold text-xl'><Link to="/programs" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Programs</Link></div>
-                        <div><Link to="/refurbished" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Refurbished Devices</Link></div>
+                        <div><Link to="/apply" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Refurbished Devices</Link></div>
                         <div><Link to="/dsclasses" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Digital Skills Classes</Link></div>
                         <div><Link to="/dsclasses" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>PC Building Classes</Link></div>
                         <div><Link to="/ewastedropoff" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>E-Waste Dropoff</Link></div>
@@ -46,10 +46,9 @@ export default function Footer() {
                     </div>
                     <div className='grid gap-3'>
                         <div className='font-bold text-xl'><div><Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Support</Link></div></div>
-                        <div><Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate E-Waste</Link></div>
+                        <div><Link to="/donate" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate E-Waste</Link></div>
                         <div><Link to="/financialdonation" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Donate Funding</Link></div>
                         <div><Link to="/volunteer" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Volunteer</Link></div>
-                        <div><Link to="/events" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Events</Link></div>
                     </div>
                     <div className='grid gap-3 border-r-2 pr-4'>
                         <div className='font-bold text-xl'>Policies</div>

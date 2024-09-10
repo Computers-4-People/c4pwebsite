@@ -40,9 +40,9 @@ export default function Navbar() {
             dropdownContent: (
                 <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
                     <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black`}>
-                        <li><Link to="/refurbished" className="hover:text-c4p">Refurbished Devices</Link></li>
+                        <li><Link to="/apply" className="hover:text-c4p">Refurbished Devices</Link></li>
                         <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>
-                        <li><Link to="/ewaste" className="hover:text-c4p">EWaste Recycling</Link></li>
+                        <li><Link to="/donate" className="hover:text-c4p">EWaste Recycling</Link></li>
                     </ul>
                     {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
                         <img src="nav/applyforcomputer.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
@@ -61,7 +61,7 @@ export default function Navbar() {
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
                         <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
-                        <li><Link to="/team" className="hover:text-c4p">Team</Link></li>
+                        <li><Link to="/team/" className="hover:text-c4p">Team</Link></li>
                         <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
                         <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
                         <li><Link to="https://careers.computers4people.org" className="hover:text-c4p">Careers</Link></li>
@@ -110,7 +110,6 @@ export default function Navbar() {
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
                 <Link to='/' className="flex-shrink-0">
                     <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
-
                 </Link>
 
                 <button onClick={() => setMenuVisible(!isMenuVisible)} className="md:hidden">
