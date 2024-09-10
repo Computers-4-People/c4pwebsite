@@ -34,13 +34,13 @@ export default function About() {
             titlePart1:"Computers 4 People",
             titlePart2:"is Serving 3 States",
             description:"In 2024, Computers 4 People opened a second office in Waltham, MA. This expansion allows us to bring our programs to underserved communities throughout the Bay State.",
-            image:"serving-3-states.jpg"
+            image:"/about/serving-3-states.jpg"
         },
         {
             titlePart1:"A Leading Force",
             titlePart2:"in the Northeast",
             description:"With significant advancements in digital equity and e-waste management, Computers 4 People has become a prominent advocate for tech access in the northeastern US.",
-            image:"leading-force.jpg"
+            image:"/about/leading-force.jpg"
         }
     ]
     return (
