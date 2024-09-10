@@ -25,7 +25,8 @@ export default function Header(props) {
                 <Link 
                     key={index}
                     to={link.url}
-                    className={`block w-full md:w-2/5 min-w-max md:inline-block text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
+                    className={`block w-full md:w-2/5 min-w-max md:inline-block text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
+                        ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
                 </Link>
@@ -36,7 +37,8 @@ export default function Header(props) {
                 <button
                     key={index}
                     onClick={link.clickAction}
-                    className={`block w-full md:w-2/5 min-w-auto md:inline-block text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
+                    className={`block w-full md:w-2/5 min-w-auto md:inline-block text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
+                        ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
                 </button>
