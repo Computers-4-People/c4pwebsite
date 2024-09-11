@@ -53,7 +53,7 @@ export default function Header(props) {
             }}
             className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex flex-col justify-end md:flex-row pb-10 md:items-center md:justify-start"
         >
-            <div className="px-4 sm:px-10 md:px-20 justify-items-stretch">
+            {/* <div className="px-4 sm:px-10 md:px-20 justify-items-stretch">
                 <h1 className='col-start-1 md:col-end-6 font-title text-6xl md:text-6xl lg:text-9xl mb-4'>
                     <p className='text-c4p animate-fade-up'>{titlePart1}</p>
                     <p className='text-white animate-fade-up'>{titlePart2}</p>
@@ -64,7 +64,23 @@ export default function Header(props) {
                         {links.map(renderLinkItem)}
                     </div>
                 </div>
-            </div>
+            </div> */}
+            <div className="px-4 sm:px-10 md:px-20 justify-items-stretch">
+    {/* Wrapper for h1 that controls the width */}
+    <div className="inline-block">
+        <h1 className='col-start-1 md:col-end-6 font-title text-6xl md:text-6xl lg:text-9xl mb-4'>
+            <p className='text-c4p animate-fade-up'>{titlePart1}</p>
+            <p className='text-white animate-fade-up'>{titlePart2}</p>
+        </h1>
+    </div>
+
+    <div className="col-start-1 md:col-end-5 animate-fade-up" style={{ maxWidth: '80%' }}>
+        <p className='text-white text-xl md:text-2xl mb-4'>{description}</p>
+        <div className='flex flex-row space-x-5'>
+            {links.map(renderLinkItem)}
+        </div>
+    </div>
+</div>
         </div>
     );
 }
