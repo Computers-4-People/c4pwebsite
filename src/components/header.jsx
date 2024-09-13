@@ -51,20 +51,20 @@ export default function Header(props) {
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${bgImage}')`
             }}
-            className="bg-cover min-h-max-content h-screen bg-center bg-fixed bg-no-repeat flex flex-col justify-end md:flex-row pb-10 md:items-center md:justify-start"
+            className="bg-cover bg-right md:bg-cover min-h-max-content h-screen bg-fixed bg-no-repeat flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
         >
-    <div className="px-4 sm:px-10 md:px-20 justify-items-stretch">
+    <div className="px-10 mb-14 md:mb-0 md:px-20">
     {/* Wrapper for h1 that controls the width */}
     <div className="inline-block">
-        <h1 className='col-start-1 md:col-end-6 font-title text-6xl md:text-8xl 2xl:text-9xl mb-4'>
+        <h1 className='col-start-1 md:col-end-6 font-title text-7xl md:text-8xl 2xl:text-9xl mb-4'>
             <p className='text-c4p animate-fade-up'>{titlePart1}</p>
             <p className='text-white animate-fade-up'>{titlePart2}</p>
         </h1>
     </div>
 
-    <div className="col-start-1 md:col-end-5 animate-fade-up" style={{ maxWidth: '70%' }}>
-        <p className='text-white text-xl 2xl:text-2xl mb-4'>{description}</p>
-        <div className='flex flex-row space-x-5'>
+    <div className="animate-fade-up">
+        <p className='text-white text-xl 2xl:text-2xl mb-4 text-wrap w-4/5'>{description}</p>
+        <div className='flex flex-row space-x-2 md:space-x-5'>
             {links.map(renderLinkItem)}
         </div>
     </div>
