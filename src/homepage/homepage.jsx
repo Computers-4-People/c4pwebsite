@@ -153,9 +153,9 @@ export default function Homepage() {
           </div>
         </div>
       </div>
-      <div className="min-h-max bg-cover">
+      {/* <div className="min-h-max bg-cover">
         <Carosel />
-      </div>
+      </div> */}
     </div>
   );
 }
