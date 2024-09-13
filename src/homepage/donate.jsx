@@ -63,28 +63,6 @@ export default function Donate () {
                 links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
-                {/* <div class="ml-32 h-full grid grid-cols-2 grid-rows-2 justify-items-stretch"> */}
-                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
-                    {/* <div className='col-start-1 col-end-5 row-start-1 mt-36 self-end font-title text-9xl'>
-                        <p class='text-c4p col-span-2 object-fill mb-5 uppercase'>Turn Electronic Waste</p>
-                        <p class='text-white col-span-2 uppercase'>Into Opportunities</p>
-                    </div>
-                    <div className='mt-10 w-81 col-start-1 col-end-4 row-start-2 text-left text-white text-2xl'>
-                        <p className='mb-10'>
-                            6.9 million tons of electronic waste is generated each year in the US. 
-                            Computers 4 People collects unused electronic devices and properly recycles or disposes of e-waste. 
-                            Devices that can be refurbished are given back to communities in need, while materials - from non-donatable devices - 
-                            like metal are recycled into new products and processed for reuse.
-                        </p>
-                        <p className='mb-20'> We're turning e-waste into tools for a sustainable future. </p>
-                        <Link className='bg-c4p text-black text-3xl rounded p-3 pr-5 hover:bg-c4p-hover'>Schedule an electronic pickup</Link>
-                    </div> */}
-                    {/* <iframe aria-label='Donate Computers Today!' frameborder="0" style={{height:'100%', width:'99%'}} src='https://forms.zohopublic.com/Computers4People/form/ComputerDOnation/formperma/XJZv3iw51lSwx3q5uk__jm80Prad8oAU6C7DYZdtWH8'></iframe> */}
-                    <iframe id="donation-form" aria-label='Donate Form (2024 Draft)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'></iframe>
-
-                </div>
-            </div>
             <div className='bg-cover p-10'>
                 <div className='pl-14'>
                     <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
@@ -116,6 +94,11 @@ export default function Donate () {
                     <div className='col-span-3'>
                         <IconCards className='mt-4 row-start-2 col-span-3' />
                     </div>
+                </div>
+            </div>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`, height:"150vh"}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat">
+                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10 pb-10'>
+                    <iframe scrolling="no" id="donation-form" aria-label='Donate Form (2024 Draft)' style={{height: '150vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'></iframe>
                 </div>
             </div>
         </div>

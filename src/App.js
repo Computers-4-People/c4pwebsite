@@ -19,6 +19,7 @@ import Programs from './homepage/programs';
 import Socialmedia from './homepage/socialmedia';
 import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
+import Hotspot from './homepage/hotspot';
 import Pepper from './homepage/pepper';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
@@ -54,6 +55,7 @@ function App() {
             <Route path="/programs" element={<Programs />}/>
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
+            <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             {/* <Route path="/pepper" element={<Pepper />}/> */}
             <Route path="/login" element={<Login />}/>

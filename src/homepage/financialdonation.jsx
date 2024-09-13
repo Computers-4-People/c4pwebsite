@@ -38,7 +38,7 @@ export default function Financialdonation() {
                 </div>,
                 side:'right',
                 image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
-                links: [{text:'Learn More'}]
+                links: [{text:'Learn More', url:'/impact'}]
             }}/>
         </div>
     );

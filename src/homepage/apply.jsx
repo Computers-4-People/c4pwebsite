@@ -64,12 +64,6 @@ export default function Apply() {
             links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
 
             }}/>
-        <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/applybackground2.JPG')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
-            <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
-               <iframe id="apply-form" aria-label='Apply For Computers! (2024 Draft Individuals)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'></iframe>
-
-            </div>
-            </div>
         <Testimonial props={{
             title2: 'Supporting Underserved Communities with Free Computers',
             desc2: <p><a href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
@@ -96,6 +90,13 @@ export default function Apply() {
                 <InfoCard cards={cardsData}/>
             </div>
             </div>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/applybackground2.JPG')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+            <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
+               <iframe id="apply-form" aria-label='Apply For Computers! (2024 Draft Individuals)' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'></iframe>
+
             </div>
+            </div>
+            </div>
+            
         )
     }

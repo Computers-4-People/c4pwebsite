@@ -20,14 +20,11 @@ export default function Contact() {
                 <p>Visit our Help Center for instant answers or reach out to us for further assistance</p></div>,
                 links: [{text: 'Contact our Team', clickAction: scrollToForm}, {text: 'Visit our Help Center', url:"https://computers4people.zohodesk.com/portal/en/home"}]
             }}/>
-            <div className="mt-20 min-h-screen flex justify-center items-center" id="inquiry-form">
-                <iframe 
-                    aria-label='Inquiries Form' 
-                    className="w-full h-full border-0" 
-                    src='https://forms.zohopublic.com/Computers4People/form/ACPInquiry/formperma/Dx57tdHHrUQhpvkiUzWtSDiDNVj72PaVd3nJdw6C7tM'
-                    style={{ minHeight: '185vh', height: '100%', width: '100%' }}
-                >
-                </iframe>
+            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`, height:"150vh"}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
+                    <iframe id="donation-form" aria-label='Contact us' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/ContactUs/formperma/aIybWxHhYaCxg2xCQeEPGbTxvaTbLNmsTEJp_gjmCJI'></iframe>
+
+                </div>
             </div>
         </div>
     );

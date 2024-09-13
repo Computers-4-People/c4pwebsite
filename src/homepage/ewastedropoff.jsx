@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import Testimonial from "../components/testimonial";
 import Header from "../components/header";
 
+const scrollToElement = (elementId) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+};
+
 const handleScroll = (id) => {
     const element = document.getElementById(id);
     const offset = 100;  // Adjust this value to leave space above the h1
@@ -94,12 +101,17 @@ export default function Contact() {
                 Becoming a drop-off site is simple: fill out our form, display a banner to show you're a proud drop-off location, and provide a secure area for a bin (6ft L x 3.5ft W) to store electronics. Call us when the bin is full, and we'll handle pickup, recycling, and refurbishing.
             </p>
             <div className="flex flex-col md:flex-row mt-10">
-                <a href="" className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Join us as a drop-off site</a>
+                <a onClick={() => scrollToElement('ewaste-form')} className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Join us as a drop-off site</a>
             </div>
         </div>
     </div>
 </div>
+<div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
+                    <iframe id="ewaste-form" aria-label='Ewaste Dropoff Form' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DropOffLocationAnnualApplication/formperma/T-ratfhpzqXwyuP6pUEyRPkzUStNmvZjZCQLO9jXrZk'></iframe>
 
+                </div>
+            </div>
     </div>
     )
 }
