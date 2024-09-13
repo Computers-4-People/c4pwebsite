@@ -86,7 +86,7 @@ export default function Homepage() {
         <InfoCard cards={cardsData} />
       </div>
 
-      <div className="h-screen text-black p-5 m-5">
+      <div className="h-screen min-h-max text-black p-5 m-5">
         <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance!</h2>
         <div className="grid grid-rows-6 grid-cols-6 relative">
           <img
@@ -121,7 +121,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      <div className="bg-cover h-screen">
+      <div className="bg-cover min-h-max h-screen">
         <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
           <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
           <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
