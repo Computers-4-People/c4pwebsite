@@ -52,7 +52,26 @@ export default function Donate () {
             image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpg"
         }
     ]
-    
+    const iconsData = [
+        {
+          title: "BECOME AN EWASTE DROP-OFF SITE",
+          image: "../maps.png",
+          alt: "E-Waste Drop-off Site",
+          link: "/ewastedropoff"
+        },
+        {
+          title: "SPONSOR DIGITAL ACCESS",
+          image: "../handshake.png",
+          alt: "Sponsor Digital Access",
+          link: "/financialdonation"
+        },
+        {
+          title: "VOLUNTEER",
+          image: "../hands.png",
+          alt: "Volunteer",
+          link: "/volunteer"
+        }
+      ];
      return (
         <div className='font-sans mb-20'>
             <Header props={{
@@ -91,9 +110,9 @@ export default function Donate () {
                         <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
                         <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     </div>
-                    <div className=''>
-                        <IconCards className='mt-4 row-start-2 col-span-3' />
-                    </div>
+                    <div className="my-5 p-5 mt-20">
+  <IconCards cards={iconsData} />
+</div>
                 </div>
             </div>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`, height:"150vh"}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat">

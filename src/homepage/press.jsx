@@ -76,7 +76,26 @@ export default function Press() {
             behavior: "smooth"
         });
     };
-
+    const iconsData = [
+        {
+          title: "BECOME AN EWASTE DROP-OFF SITE",
+          image: "../maps.png",
+          alt: "E-Waste Drop-off Site",
+          link: "/ewastedropoff"
+        },
+        {
+          title: "SPONSOR DIGITAL ACCESS",
+          image: "../handshake.png",
+          alt: "Sponsor Digital Access",
+          link: "/financialdonation"
+        },
+        {
+          title: "VOLUNTEER",
+          image: "../hands.png",
+          alt: "Volunteer",
+          link: "/volunteer"
+        }
+      ];
     return (
         <div className='font-sans overflow-x-hidden'>
             <Header props={{
@@ -104,8 +123,10 @@ export default function Press() {
             <div className="mb-20 mx-20">
             <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Other Ways You can Contribute</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-20'>Explore these opportunities to foster digital equity</p>
-            <IconCards />  {/* Use the IconCards component here */}
             </div>
+            <div className="my-5 p-5 mt-20">
+  <IconCards cards={iconsData} />
+</div>
         </div>
     );
 }

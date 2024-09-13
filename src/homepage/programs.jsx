@@ -25,6 +25,27 @@ export default function Programs() {
             image:"/Programs/Programs/Refurbished_Computers.jpg"
         }
     ]
+    const iconsData = [
+        {
+          title: "BECOME AN EWASTE DROP-OFF SITE",
+          image: "../maps.png",
+          alt: "E-Waste Drop-off Site",
+          link: "/ewastedropoff"
+        },
+        {
+          title: "SPONSOR DIGITAL ACCESS",
+          image: "../handshake.png",
+          alt: "Sponsor Digital Access",
+          link: "/financialdonation"
+        },
+        {
+          title: "VOLUNTEER",
+          image: "../hands.png",
+          alt: "Volunteer",
+          link: "/volunteer"
+        }
+      ];
+    
     return (
         <div className='font-sans overflow-x-hidden'>
             <Header props={{
@@ -56,8 +77,10 @@ export default function Programs() {
                     <h2 className='text-7xl font-title'>How to Get Involved</h2>
                     <p className='text-2xl'>Be part of Bridging the Digital Digital Divide</p>
                 </div>
-                <IconCards />
             </div>
+            <div className="my-5 p-5 mt-20">
+  <IconCards cards={iconsData} />
+</div>
         </div>
     )
 }
