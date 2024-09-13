@@ -24,6 +24,7 @@ import Pepper from './homepage/pepper';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
 import PepperFest from './homepage/pepperfest';
+import Scroll from './components/scroll';
 
 // import background from './background.jpg'
 import './App.css';
@@ -35,6 +36,7 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
+        <Scroll />
           <Navbar/>
           <Routes>
             <Route path='/' element={<Homepage/>}/>
