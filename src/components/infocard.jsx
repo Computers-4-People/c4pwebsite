@@ -3,7 +3,7 @@ import React from 'react';
 const InfoCard = ({ cards }) => {
   return (
     <div className="bg-cover text-black flex justify-center items-center w-full h-full">
-      <div className="m-11 flex flex- overflow-x-scroll md:flex-row justify-center md:justify-evenly w-full">
+      <div className="m-11 flex flex- md:overflow-x-scroll md:flex-row md:justify-center md:justify-evenly w-full">
         {cards.map((card, index) => (
           <div
             key={index}
@@ -19,7 +19,7 @@ const InfoCard = ({ cards }) => {
                 <p className="text-c4p">{card.titlePart1}</p>
                 <p className="pb-2">{card.titlePart2}</p>
               </h3>
-              <p className="h-2 pt-3 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
+              <p className="h-10 pt-8 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
                 {card.description}
               </p>
             </div>

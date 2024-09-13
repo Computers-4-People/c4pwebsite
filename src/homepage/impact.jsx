@@ -8,17 +8,17 @@ import Testimonial from '../components/testimonial';
 export default function Impact() {
     const pressItems1 = [
         {
-            image: '',
+            image: '/impact/impactreportbook.png',
             title: 'Impact Report 2023',
             link: 'https://charityquest.io/'
         },
         {
-            image: '',
+            image: '/impact/impactreportbook.png',
             title: 'Impact Report 2022',
             link: 'https://charityquest.io/'
         },
         {
-            image: '',
+            image: '/impact/impactreportbook.png',
             title: 'Impact Report 2021',
             link: 'https://charityquest.io/'
         },

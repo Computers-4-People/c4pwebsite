@@ -41,7 +41,7 @@ export default function Homepage() {
       titlePart2: "With a Donation",
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../homepage/starts.jpg",
+      image: "../homepage/starts.JPG",
     },
     {
       titlePart1: "Undergoes",
@@ -86,9 +86,9 @@ export default function Homepage() {
         <InfoCard cards={cardsData} />
       </div>
 
-      <div className="h-screen text-black p-5 m-5">
-        <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance</h2>
-        <div className="grid grid-rows-6 grid-cols-6 relative">
+      <div className="h-screen min-h-screen text-black p-5 m-5">
+        <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance!</h2>
+        <div className="md:grid grid-rows-6 grid-cols-6 relative">
           <img
             src="../secondchance.png"
             className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
@@ -109,7 +109,7 @@ export default function Homepage() {
               to="/donate"
               className="bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white"
             >
-              🤍 Donate your ewaste
+              Donate your ewaste
             </Link>
             <Link
               to="/partner"
@@ -121,7 +121,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      <div className="bg-cover h-screen">
+      <div className="bg-cover min-h-max h-screen">
         <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
           <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
           <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
@@ -153,7 +153,7 @@ export default function Homepage() {
           </div>
         </div>
       </div>
-      <div className="bg-cover">
+      <div className="min-h-max bg-cover">
         <Carosel />
       </div>
     </div>

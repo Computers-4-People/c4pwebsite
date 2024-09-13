@@ -38,7 +38,8 @@ export default function Navbar() {
             path: '/programs',
             key: 'programs',
             dropdownContent: (
-                <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
+                // <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
+                <div className='h-full'>
                     <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black`}>
                         <li><Link to="/apply" className="hover:text-c4p">Refurbished Devices</Link></li>
                         <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>

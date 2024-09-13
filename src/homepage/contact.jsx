@@ -13,7 +13,7 @@ export default function Contact() {
     return (
         <div className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/contact us/contactbackground.png',
+                bgImage: '/Contact Us/contactbackground.png',
                 titlePart1: 'Contact Us',
                 titlePart2: `We're Here to Assist to You`,
                 description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m EST</p> 
