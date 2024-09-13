@@ -13,17 +13,6 @@ export default function Refurbished() {
             description: 'Join a network of 300+ non-profit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
             links: [{text: 'Become a Partner', clickAction: scrollToForm}]
             }} />
-            {/* Form Section */}
-            <div id="partnership-form">
-                <iframe
-                    aria-label='Partnership Application'
-                    className="w-full h-full border-0"
-                    src='https://forms.zohopublic.com/Computers4People/form/PartnershipApplication/formperma/LXC_W4X5dA-gXn0sMyqsRIwqPg4y0DRmqPqziLpD__Y'
-                    style={{ minHeight: '185vh', height: '100%', width: '100%' }}
-                >
-                </iframe>
-            </div>
-
             <Testimonial props={{
                 title2: 'Why Join Us as a Partner?',
                 desc2: 
@@ -34,6 +23,12 @@ export default function Refurbished() {
                 </ul>,
                 image: '../Become a Partner/partnerphoto.png'
             }} />
+             <div id="partnership-form" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
+                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
+                    <iframe scrolling="no" id="donation-form" aria-label='Partner Application' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/PartnershipApplicationDraft2024/formperma/AnuHDCVFeOCBdTmZZpXHF5Pdj1zM9ZEctklFyzZQZVE'></iframe>
+
+                </div>
+            </div>
         </div>
     );
 }

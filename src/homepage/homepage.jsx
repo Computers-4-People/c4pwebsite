@@ -41,41 +41,41 @@ export default function Homepage() {
       titlePart2: "With a Donation",
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../homepage/starts.JPG",
+      image: "../Homepage/starts.JPG",
     },
     {
       titlePart1: "Undergoes",
       titlePart2: "Refurbishment",
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../homepage/undergoes.jpg",
+      image: "../Homepage/undergoes.jpg",
     },
     {
       titlePart1: "Match",
       titlePart2: "With a Recipient",
       description: "Devices are redistributed to people in underserved communities.",
-      image: "../homepage/match.png",
+      image: "../Homepage/match.png",
     },
     {
       titlePart1: "Becomes",
       titlePart2: "Catalyst for Change",
       description:
         "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../homepage/becomes.jpg",
+      image: "../Homepage/becomes.jpg",
     },
     {
       titlePart1: "Equip",
       titlePart2: "People to succeed",
       description:
         "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../homepage/equip.jpg",
+      image: "../Homepage/equip.jpg",
     },
   ];
 
   return (
     <div className="font-sans overflow-x-hidden">
       <Header props={{
-        bgImage: '/homepage/homepagebackground.png',
+        bgImage: '/Homepage/homepagebackground.png',
         titlePart1: 'Transform a Life',
         titlePart2: 'with Technology',
         links: [{text: 'Donate your ewaste', url: "/donate"}, {text: 'Discover our programs',  url: "/programs"}]
