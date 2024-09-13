@@ -63,7 +63,7 @@ export default function Header(props) {
     </div>
 
     <div className="animate-fade-up">
-        <p className='text-white text-xl 2xl:text-2xl mb-4 text-wrap w-4/5'>{description}</p>
+        <p className='text-white text-xl 2xl:text-2xl mb-4 text-wrap md:w-4/5'>{description}</p>
         <div className='flex flex-row md:w-1/2 space-x-2 md:space-x-5'>
             {links.map(renderLinkItem)}
         </div>
