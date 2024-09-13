@@ -105,11 +105,12 @@ export default function Donate () {
                 image: '/refurbished/luis.png'
             }}/>
             <div className="bg-cover mt-10" style={{height: "100vh"}}>
-                <div className="mx-20 grid grid-cols-3 grid-rows-2 h-full">
-                    <div className='self-center col-span-2'>
+                {/* <div className="mx-20 grid grid-cols-3 grid-rows-2 h-full"> */}
+                    <div className='self-center row-span-1col-span-2 '>
                         <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
                         <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     </div>
+
                     <div className="my-5 p-5 mt-20">
   <IconCards cards={iconsData} />
 </div>
