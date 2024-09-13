@@ -73,6 +73,7 @@ export default function Donate () {
         }
       ];
      return (
+        <div>
         <div className='font-sans mb-20'>
             <Header props={{
                 bgImage: '/about/serving-3-states.jpg',
@@ -106,7 +107,7 @@ export default function Donate () {
             }}/>
             <div className="bg-cover mt-10" style={{height: "100vh"}}>
                 {/* <div className="mx-20 grid grid-cols-3 grid-rows-2 h-full"> */}
-                    <div className='self-center row-span-1col-span-2 '>
+                    <div className='self-center row-span-1col-span-2 mx-20'>
                         <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
                         <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     </div>
@@ -121,6 +122,6 @@ export default function Donate () {
                     <iframe scrolling="no" id="donation-form" aria-label='Donate Form (2024 Draft)' style={{height: '150vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'></iframe>
                 </div>
             </div>
-        </div>
+            </div>
     )
 }
