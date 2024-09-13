@@ -69,12 +69,14 @@ export default function Contact() {
         {/* Right Side: Image and Embedded Map */}
         <div className="flex justify-center items-center">
             <div className="relative w-full h-0 pb-[56.25%]"> {/* 16:9 Aspect Ratio */}
-                <iframe
+                {/* <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3154.4471160571655!2d-122.416529!3d37.778517999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c212d4d59%3A0x6f9e0b0a5e0e9250!2sApple%20Union%20Square!5e0!3m2!1sen!2sus!4v1635537981234!5m2!1sen!2sus"
                     className="absolute top-0 left-0 w-full h-full border-0 rounded-md"
                     allowFullScreen=""
                     loading="lazy"
-                ></iframe>
+                ></iframe> */}
+
+<iframe src="https://www.google.com/maps/d/embed?mid=1CJOngiAM0IGq83AdYhlbDVt7_B0T97c&ehbc=2E312F" width="640" height="480"></iframe>
             </div>
         </div>
     </div>
