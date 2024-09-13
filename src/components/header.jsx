@@ -37,7 +37,7 @@ export default function Header(props) {
                 <button
                     key={index}
                     onClick={link.clickAction}
-                    className={`block flex items-center w-full min-w-max md:w-2/5 min-w-auto text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
+                    className={`block flex justify-center items-center w-full min-w-max md:w-2/5 min-w-auto text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
                         ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
@@ -64,7 +64,7 @@ export default function Header(props) {
 
     <div className="animate-fade-up">
         <p className='text-white text-xl 2xl:text-2xl mb-4 text-wrap w-4/5'>{description}</p>
-        <div className='flex flex-row space-x-2 md:space-x-5'>
+        <div className='flex flex-row md:w-1/2 space-x-2 md:space-x-5'>
             {links.map(renderLinkItem)}
         </div>
     </div>
