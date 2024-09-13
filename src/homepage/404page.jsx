@@ -12,6 +12,5 @@ export default function Programs() {
                 links: [{text:"Contact Us", url:"/contact"}]
                 }} /> 
        </div>
-       
     )
 }

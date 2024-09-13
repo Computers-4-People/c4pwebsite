@@ -31,7 +31,6 @@ export default function Footer() {
                     <div className='grid gap-3'>
                         <div className='font-bold text-xl'><Link to="/" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Computers 4 People</Link></div>
                         <div><Link to="/about" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>About Us</Link></div>
-                        <div><Link to="/blog" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Blog</Link></div>
                         <div><Link to="/team" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Team</Link></div>
                         <div><Link to="https://computers4people.zohodesk.com/portal/en/home" className="hover:text-c4p">Help Center</Link></div>
                         <div><Link to="/contact" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Contact Us</Link></div>

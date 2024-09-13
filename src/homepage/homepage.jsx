@@ -3,11 +3,33 @@ import { Link } from "react-router-dom";
 import Carosel from "../components/carosel/carosel";
 import Textmarquee from "../components/textmarquee";
 import InfoCard from "../components/infocard";
+import IconCards from "../components/iconcards";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
 export default function Homepage() {
   const animatedElements = useRef([]);
+
+  const iconsData = [
+    {
+      title: "BECOME AN EWASTE DROP-OFF SITE",
+      image: "../maps.png",
+      alt: "E-Waste Drop-off Site",
+      link: "/ewastedropoff"
+    },
+    {
+      title: "SPONSOR DIGITAL ACCESS",
+      image: "../handshake.png",
+      alt: "Sponsor Digital Access",
+      link: "/financialdonation"
+    },
+    {
+      title: "VOLUNTEER",
+      image: "../hands.png",
+      alt: "Volunteer",
+      link: "/volunteer"
+    }
+  ];
 
   // useEffect(() => {
   //   const observer = new IntersectionObserver(
@@ -120,39 +142,9 @@ export default function Homepage() {
           </div>
         </div>
       </div>
-
-      <div className="bg-cover min-h-max h-screen">
-        <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
-          <h2 className="col-span-2 text-6xl font-sans font-bold">Ways to Get Involved</h2>
-          <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
-          <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
-            <Link
-              to="/ewastedropoff"
-              className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"
-            >
-              {" "}
-              <img className="mb-10" src="../maps.png" />
-              BECOME AN EWASTE DROP-OFF SITE
-            </Link>
-            <Link
-              to="/financialdonation"
-              className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"
-            >
-              {" "}
-              <img className="mb-10" src="../handshake.png" />
-              SPONSOR DIGITAL ACCESS
-            </Link>
-            <Link
-              to="/volunteer"
-              className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"
-            >
-              {" "}
-              <img className="mb-10" src="../hands.png" />
-              VOLUNTEER
-            </Link>
-          </div>
-        </div>
-      </div>
+      <div className="my-5 p-5 mt-20">
+  <IconCards cards={iconsData} />
+</div>
       {/* <div className="min-h-max bg-cover">
         <Carosel />
       </div> */}
