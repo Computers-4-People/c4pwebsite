@@ -77,8 +77,8 @@ export default function About() {
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
-            <div className="bg-cover h-screen">
-                <div className="mx-20 grid grid-cols-3 grid-rows-2 gap-5">
+            <div className="bg-cover min-h-min h-screen">
+                <div className="mx-20 md:grid grid-cols-3 md:grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-9xl font-title uppercase">How You Can Help</h2>
                     <p className="col-span-2 text-4xl ml-2">Discover How You Can Contribute to Digital Equity in Your Community</p>
                     <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">

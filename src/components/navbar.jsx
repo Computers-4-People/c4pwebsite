@@ -134,9 +134,9 @@ export default function Navbar() {
                             )}
                         </div>
                     ))}
-                    <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
+                    {/* <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
                         Log In
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
             {/* Mobile Menu */}

@@ -90,7 +90,7 @@ export default function Donate () {
                     <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
-                <div>
+            <div>
                     <InfoCard cards={cards}></InfoCard>
                 </div>
             </div>
@@ -113,7 +113,7 @@ export default function Donate () {
                         <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
                         <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
                     </div>
-                    <div className='col-span-3'>
+                    <div className=''>
                         <IconCards className='mt-4 row-start-2 col-span-3' />
                     </div>
                 </div>

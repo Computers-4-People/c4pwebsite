@@ -40,7 +40,7 @@ export default function Contact() {
                </ul></div>,
                 image:'../ewastedropoff/computerhandoff.png'
             }}/>
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-16 h-screen">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Left Side: Text Content */}
         <div id="findadropoff" className="space-y-6">
@@ -51,30 +51,38 @@ export default function Contact() {
                 Find a nearby drop-off site for your unused electronics. Simply drop off your devices, and our partner locations will securely store them while Computers 4 People manages pickup, recycling, refurbishment, and redistribution to those in need.
             </p>
             {/* Text Box and Button for User Input */}
-            <div className="space-y-4">
-                <p className="text-lg font-semibold">Electronics Drop-Off Sites Near 07030</p>
-                <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
-                    <input
+            {/* <div className="space-y-4"> */}
+                {/* <p className="text-lg font-semibold">Electronics Drop-Off Sites Near 07030</p> */}
+                {/* <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0"> */}
+                    {/* <input
                         type="text"
                         placeholder="Enter Zip Code, City, or State"
                         className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
-                    />
-                    <button className="w-full md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-md hover:bg-green-600">
+                    /> */}
+                    {/* <button className="w-full md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-md hover:bg-green-600">
                         Find Drop-Off Sites
-                    </button>
-                </div>
-            </div>
+                    </button> */}
+                {/* </div> */}
+            {/* </div> */}
         </div>
 
         {/* Right Side: Image and Embedded Map */}
         <div className="flex justify-center items-center">
-            <div className="relative w-full h-0 pb-[56.25%]"> {/* 16:9 Aspect Ratio */}
-                <iframe
+            <div className="relative w-full pb-[56.25%]"> {/* 16:9 Aspect Ratio */}
+                {/* <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3154.4471160571655!2d-122.416529!3d37.778517999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c212d4d59%3A0x6f9e0b0a5e0e9250!2sApple%20Union%20Square!5e0!3m2!1sen!2sus!4v1635537981234!5m2!1sen!2sus"
                     className="absolute top-0 left-0 w-full h-full border-0 rounded-md"
                     allowFullScreen=""
                     loading="lazy"
-                ></iframe>
+                ></iframe> */}
+
+{/* <iframe src="https://www.google.com/maps/d/embed?mid=1CJOngiAM0IGq83AdYhlbDVt7_B0T97c&ehbc=2E312F" width="640" height="480"></iframe> */}
+                <iframe src="https://storage.googleapis.com/maps-solutions-37fwki99o4/locator-plus/bqa2/locator-plus.html"
+                    // width="100%" height="100%"
+                    className='absolute top-0 left-0 w-full border-0 rounded-md'
+                    style={{border:'0', height: '100vh'}}
+                    loading="lazy">
+                </iframe>
             </div>
         </div>
     </div>
