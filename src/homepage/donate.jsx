@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
+import ZohoForm from "../components/zohoform";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
@@ -18,7 +19,6 @@ const handleScroll = (id) => {
         behavior: "smooth"
     });
 };
-
 export default function Donate () {
     const cards = [
         {
@@ -117,11 +117,12 @@ export default function Donate () {
 </div>
                 </div>
             </div>
-            <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`, height:"150vh"}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat">
-                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10 pb-10'>
-                    <iframe scrolling="no" id="donation-form" aria-label='Donate Form (2024 Draft)' style={{height: '150vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'></iframe>
-                </div>
-            </div>
+            <div>
+            <ZohoForm
+            formSrc="https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I"
+             ariaLabel="Donate Form"
+             backgroundImage= "/refurbished/refurbishedbackground.png"
+/></div>
             </div>
     )
 }
