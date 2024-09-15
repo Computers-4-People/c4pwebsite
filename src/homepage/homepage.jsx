@@ -142,7 +142,7 @@ export default function Homepage() {
           </div>
         </div>
       </div>
-      <div className="my-5 p-5 mt-20">
+      <div className="my-5 p-5 mb-20">
   <IconCards cards={iconsData} />
 </div>
       {/* <div className="min-h-max bg-cover">
