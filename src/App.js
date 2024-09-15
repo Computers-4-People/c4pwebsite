@@ -23,7 +23,6 @@ import Hotspot from './homepage/hotspot';
 import Pepper from './homepage/pepper';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
-import PepperFest from './homepage/pepperfest';
 import Scroll from './components/scroll';
 
 // import background from './background.jpg'
@@ -59,9 +58,8 @@ function App() {
             <Route path="/team" element={<Team />}/>
             <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
-            {/* <Route path="/pepper" element={<Pepper />}/> */}
+            <Route path="/pepper" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>
-            <Route path='/pepperfest' element={<PepperFest />}/>
             <Route path="*" element={<PageNotFound />} />
          </Routes>
          <Footer/>
