@@ -20,6 +20,9 @@ import Socialmedia from './homepage/socialmedia';
 import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
 import Hotspot from './homepage/hotspot';
+import Checkin from './homepage/checkin';
+import Uploadrecommendation from './homepage/uploadrecommendation';
+import Boardapplication from './homepage/boardapplication';
 import Pepper from './homepage/pepper';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
@@ -57,6 +60,9 @@ function App() {
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
             <Route path="/hotspot" element={<Hotspot />}/>
+            <Route path="/checkin" element={<Checkin />}/>
+            <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
+            <Route path="/boardapplication" element={<Boardapplication />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/pepper" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>

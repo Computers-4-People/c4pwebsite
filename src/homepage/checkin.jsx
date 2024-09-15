@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Hotspot() {
+export default function Checkin() {
     const scrollToForm = () => {
         const formSection = document.getElementById("inquiry-form");
         if (formSection) {
@@ -25,9 +25,9 @@ export default function Hotspot() {
   <iframe
     className="pt-20"
     scrolling="no"
-    aria-label='Hotspot Form'
+    aria-label='Checkin Form'
     style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/Hotspot2024Draft/formperma/O4b84XQEgAkGoxlKQL-tCYDf1kqU4nzORnvem_gy55M'
+    src='https://forms.zohopublic.com/Computers4People/form/CheckinForm/formperma/s2PIIeQMhEGt_cygikS3AIwv3CjF0Ni2x5RlDUGOdHw'
  ></iframe>
 </div>
            </div>

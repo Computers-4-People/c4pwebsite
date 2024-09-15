@@ -17,14 +17,17 @@ const handleScroll = (id) => {
 };
 export default function Financialdonation() {
     return (
+        <div>
         <div className='font-sans'>
             <Header props={{
                 bgImage: '/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg',
                 titlePart1: 'Take Action',
                 titlePart2: 'Become a Champion',
                 description: 'Every person deserves equitable access to opportunities. Your donation helps provide essential tech access and makes a difference for those in need.',
-                links: [{text: 'Donate Monetarily', clickAction: () => handleScroll("cash-donation")}, {text: 'Donate a Device', url: '/donate'}]
+                links: [{text: 'Donate Monetarily', clickAction: () => handleScroll("financialdonation")}, {text: 'Donate a Device', url: '/donate'}]
             }} />
+            </div>
+
             <Testimonial props={{
                 title2: 'Computers 4 People is transforming lives through technology every day',
                 desc2: <div  id="cash-donation" className='space-y-7'>
@@ -40,6 +43,27 @@ export default function Financialdonation() {
                 image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
                 links: [{text:'Learn More', url:'/impact'}]
             }}/>
+            <div>
+            <div style={{
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,
+  display: 'flex',
+  alignItems: 'center', // This aligns the iframe vertically
+  justifyContent: 'center', // This aligns the iframe horizontally
+  height: '430vh',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat'
+}} className="bg-fixed">
+  <iframe
+    className="pt-20"
+    scrolling="no"
+    aria-label='Checkin Form'
+    style={{ width: '90%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
+    src='https://secure.givelively.org/donate/computers-for-people/computers-4-people-fundraiser-2024?ref=sd_widget'
+    id="financialdonation"
+ ></iframe>
+</div>
+            </div>
         </div>
     );
 }
