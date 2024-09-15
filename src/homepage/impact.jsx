@@ -77,10 +77,10 @@ export default function Impact() {
                 </p>
             </div>
             <div className='flex space-x-4'>
-                <Link to="/ewaste" className='bg-c4p rounded h-12 px-4 pl-10 pr-10 flex items-center justify-center hover:bg-c4p-hover hover:text-white'>
+                <Link to="/donate" className='bg-c4p rounded h-12 px-4 pl-10 pr-10 flex items-center justify-center hover:bg-c4p-hover hover:text-white'>
                     Donate your device
                 </Link>
-                <Link to="/partner" className='border-2 border-black rounded h-12 px-4 flex items-center justify-center hover:bg-black hover:text-white'>
+                <Link to="/financialdonation" className='border-2 border-black rounded h-12 px-4 flex items-center justify-center hover:bg-black hover:text-white'>
                     Make a financial contribution
                 </Link>
             </div>
