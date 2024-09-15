@@ -124,7 +124,7 @@ export default function Press() {
             <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Other Ways You can Contribute</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-20'>Explore these opportunities to foster digital equity</p>
             </div>
-            <div className="my-5 p-5 mt-20">
+            <div className="my-5 p-5 mb-20">
   <IconCards cards={iconsData} />
 </div>
         </div>

@@ -1,5 +1,6 @@
  import React from "react";
  import InfoCard from '../components/infocard.jsx';
+ import IconCards from "../components/iconcards";
  import Header from "../components/header.jsx";
  import Testimonial from "../components/testimonial.jsx";
 
@@ -43,6 +44,27 @@ export default function About() {
             image:"/about/leading-force.jpg"
         }
     ]
+    
+  const iconsData = [
+    {
+      title: "BECOME AN EWASTE DROP-OFF SITE",
+      image: "../maps.png",
+      alt: "E-Waste Drop-off Site",
+      link: "/ewastedropoff"
+    },
+    {
+      title: "SPONSOR DIGITAL ACCESS",
+      image: "../handshake.png",
+      alt: "Sponsor Digital Access",
+      link: "/financialdonation"
+    },
+    {
+      title: "VOLUNTEER",
+      image: "../hands.png",
+      alt: "Volunteer",
+      link: "/volunteer"
+    }
+  ];
     return (
         <div className='font-sans'>
             <Header props={{
@@ -77,16 +99,14 @@ export default function About() {
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
-            <div className="bg-cover min-h-min h-screen">
+            <div className="bg-cover mb-40 mt-10">
                 <div className="mx-20 md:grid grid-cols-3 md:grid-rows-2 gap-5">
                     <h2 className="col-span-2 text-9xl font-title uppercase">How You Can Help</h2>
                     <p className="col-span-2 text-4xl ml-2">Discover How You Can Contribute to Digital Equity in Your Community</p>
-                    <div className="mt-4 row-start-3 col-span-3 grid grid-cols-3 justify-items-stretch gap-28 h-80">
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10'src="../maps.png" />BECOME AN EWASTE DROP-OFF SITE</Link>
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className="mb-10" src="../handshake.png"></img>SPONSOR DIGITAL ACCESS</Link>
-                        <Link className="border shadow-2xl flex flex-col justify-end text-center font-bold pb-5"> <img className='mb-10' src='../hands.png'></img>VOLUNTEER</Link>
-                    </div>
                 </div>
+                <div className="mt-10">
+                    <IconCards cards={iconsData} />
+                    </div>
             </div>
         </div>
     )

@@ -73,12 +73,12 @@ export default function Programs() {
                 links: [{text:'Apply for a computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
             }}/>
             <div className='h-full bg-cover p-20'>
-                <div className='mb-20'>
+                <div className=''>
                     <h2 className='text-7xl font-title'>How to Get Involved</h2>
                     <p className='text-2xl'>Be part of Bridging the Digital Digital Divide</p>
                 </div>
             </div>
-            <div className="my-5 p-5 mt-20">
+            <div className="my-5 p-5 mb-20">
   <IconCards cards={iconsData} />
 </div>
         </div>
