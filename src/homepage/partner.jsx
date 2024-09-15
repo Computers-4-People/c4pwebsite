@@ -23,12 +23,24 @@ export default function Refurbished() {
                 </ul>,
                 image: '../Become a Partner/partnerphoto.png'
             }} />
-             <div id="partnership-form" style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.3) 60%, transparent 100%),url('/refurbished/refurbishedbackground.png')`}} className=" bg-cover bg-fixed h-screen bg-center bg-no-repeat ">
-                <div className='grid grid-cols-4 grid-rows-6 h-full pt-10'>
-                    <iframe scrolling="no" id="donation-form" aria-label='Partner Application' style={{height: '90vh'}} className='col-span-6 md:col-span-2 row-start-1 row-span-5 w-full' src='https://forms.zohopublic.com/Computers4People/form/PartnershipApplicationDraft2024/formperma/AnuHDCVFeOCBdTmZZpXHF5Pdj1zM9ZEctklFyzZQZVE'></iframe>
-
-                </div>
-            </div>
+            <div style={{
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Become a Partner/partnerbackground.jpg')`,
+  display: 'flex',
+  alignItems: 'center', // This aligns the iframe vertically
+  justifyContent: 'center', // This aligns the iframe horizontally
+  height: '100vh',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat'
+}} className="bg-fixed">
+  <iframe
+    scrolling="no"
+    aria-label='Partner Form'
+    style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
+    src='https://forms.zohopublic.com/Computers4People/form/PartnershipApplicationDraft2024/formperma/AnuHDCVFeOCBdTmZZpXHF5Pdj1zM9ZEctklFyzZQZVE'
+    id="partnership-form"
+ ></iframe>
+</div>
         </div>
     );
 }
