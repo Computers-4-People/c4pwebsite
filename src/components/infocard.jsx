@@ -3,11 +3,12 @@ import React from 'react';
 const InfoCard = ({ cards }) => {
   return (
     <div className="bg-cover text-black flex justify-center items-center w-full h-full">
-      <div className="m-11 flex flex- overflow-x-scroll md:overflow-x-clip  md:flex-row md:justify-center md:justify-evenly w-full">
+      {/* Container for the cards */}
+      <div className="m-11 flex overflow-x-auto md:overflow-x-visible md:flex-row md:justify-center w-full snap-x snap-mandatory">
         {cards.map((card, index) => (
           <div
             key={index}
-            className={`text-white group my-4 mx-2 min-w-48 w-full md:w-1/${cards.length} rounded-2xl bg-cover bg-center relative bg-gray`}
+            className={`text-white group my-4 mx-2 min-w-full md:min-w-0 md:flex-1 rounded-2xl bg-cover bg-center relative bg-gray snap-start`}
             style={{
               height: "60vh", // Set a specific height for the cards
               backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url(${card.image})`,
