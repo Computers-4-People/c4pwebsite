@@ -74,14 +74,13 @@ export default function About() {
                 description: '',
                 links: [{}]
                 }} /> 
-            <div className='bg-cover bg-black p-16 text-white'>
-                <ul className='flex flex-row justify-evenly text-center flex-wrap'>
-                    <li><div className='text-6xl mb-3'>2,196</div><p className='text-3xl'>Computers Donated</p></li>
-                    <li><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of Ewaste Recycled</p></li>
-                    <li><div className='text-6xl mb-3'>1,489,200</div><p className='text-3xl'>Hours of Internet Donated</p></li>
-                    <li><div className='text-6xl mb-3'>156</div><p className='text-3xl'>Digital Skills Classes</p></li>
-                </ul>
-            </div>
+<div className='bg-cover bg-black p-16 text-white'>
+  <ul className='flex flex-col md:flex-row justify-evenly text-center'>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>3,096</div><p className='text-3xl'>Computers Donated</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of Ewaste Recycled</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>213</div><p className='text-3xl'>Digital Skills Classes</p></li>
+  </ul>
+</div>
             
             <Testimonial props={{
                 title2: 'Our Vision',

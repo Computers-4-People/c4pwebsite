@@ -6,7 +6,7 @@ export default function Navbar() {
     const [isMenuVisible, setMenuVisible] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null); // For desktop hover
     const [openDropdowns, setOpenDropdowns] = useState({}); // For mobile clicks
-    const [scrollPosition, setScrollPosition] = useState(0); 
+    const [scrollPosition, setScrollPosition] = useState(0);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -18,10 +18,8 @@ export default function Navbar() {
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
-        }
-    }, []
-
-    )
+        };
+    }, []);
 
     // Function to toggle dropdowns in mobile view
     const toggleDropdown = (key) => {
@@ -31,6 +29,11 @@ export default function Navbar() {
         }));
     };
 
+    // Function to close the mobile menu
+    const closeMobileMenu = () => {
+        setMenuVisible(false);
+    };
+
     // Menu items definition
     const menuItems = [
         {
@@ -38,18 +41,12 @@ export default function Navbar() {
             path: '/programs',
             key: 'programs',
             dropdownContent: (
-                // <div className={`${activeDropdown ? 'h-full': 'h-0'} ${activeDropdown ? 'w-full': 'w-0'}`}>
                 <div className='h-full'>
-                    <ul className={`h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black`}>
-                        <li><Link to="/apply" className="hover:text-c4p">Refurbished Devices</Link></li>
-                        <li><Link to="/DSClasses" className="hover:text-c4p">Digital Skills Courses</Link></li>
-                        <li><Link to="/donate" className="hover:text-c4p">EWaste Recycling</Link></li>
+                    <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
+                        <Link to="/apply" className="hover:text-c4p" onClick={closeMobileMenu}>Apply for a Computer</Link>
+                        <Link to="/DSClasses" className="hover:text-c4p" onClick={closeMobileMenu}>Digital Skills Courses</Link>
+                        <Link to="/donate" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Technology</Link>
                     </ul>
-                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
-                        <img src="nav/applyforcomputer.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
-                        <p className='text-center'>Fill out an application for a refurbished device.</p>
-                        <Link to="/refurbished" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Apply for a Computer</Link>
-                    </div> */}
                 </div>
             )
         },
@@ -60,18 +57,13 @@ export default function Navbar() {
             dropdownContent: (
                 <div className='h-full'>
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
-                        <li><Link to="/about" className="hover:text-c4p">Mission & History</Link></li>
-                        <li><Link to="/press" className="hover:text-c4p">Press & Media</Link></li>
-                        <li><Link to="/team/" className="hover:text-c4p">Team</Link></li>
-                        <li><Link to="/impact" className="hover:text-c4p">Impact</Link></li>
-                        <li><Link to="/socialmedia" className="hover:text-c4p">Social Media</Link></li>
-                        <li><Link to="https://careers.computers4people.org" className="hover:text-c4p">Careers</Link></li>
+                        <Link to="/about" className="hover:text-c4p" onClick={closeMobileMenu}>Mission & History</Link>
+                        <Link to="/press" className="hover:text-c4p" onClick={closeMobileMenu}>Press & Media</Link>
+                        <Link to="/team/" className="hover:text-c4p" onClick={closeMobileMenu}>Team</Link>
+                        <Link to="/impact" className="hover:text-c4p" onClick={closeMobileMenu}>Impact</Link>
+                        <Link to="/socialmedia" className="hover:text-c4p" onClick={closeMobileMenu}>Social Media</Link>
+                        <Link to="https://careers.computers4people.org" className="hover:text-c4p" onClick={closeMobileMenu}>Careers</Link>
                     </ul>
-                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
-                        <img src="nav/checkmark.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
-                        <p className='text-center'>Check status, schedule a pickup or enroll in a class!</p>
-                        <Link to="/login" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Create Account/Login</Link>
-                    </div> */}
                 </div>
             )
         },
@@ -82,29 +74,16 @@ export default function Navbar() {
             dropdownContent: (
                 <div className='h-full'>
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
-                    {/* <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 md:border-r-2 border-black'> */}
-                        <li><Link to="/financialdonation" className="hover:text-c4p">Donate Today</Link></li>
-                        <li><Link to="/volunteer" className="hover:text-c4p">Volunteer</Link></li>
-                        <li><Link to="/partner" className="hover:text-c4p">Partner</Link></li>
-                        <li><Link to="/ewastedropoff" className="hover:text-c4p">Drop-Off Site</Link></li>
-                        <li><Link to="/contact" className="hover:text-c4p">Contact Us</Link></li>
+                        <Link to="/financialdonation" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Today</Link>
+                        <Link to="/volunteer" className="hover:text-c4p" onClick={closeMobileMenu}>Volunteer</Link>
+                        <Link to="/partner" className="hover:text-c4p" onClick={closeMobileMenu}>Partner</Link>
+                        <Link to="/ewastedropoff" className="hover:text-c4p" onClick={closeMobileMenu}>Drop-Off Site</Link>
+                        <Link to="/contact" className="hover:text-c4p" onClick={closeMobileMenu}>Contact Us</Link>
                     </ul>
-                    {/* <div className='flex flex-col justify-between items-center mt-4 md:mt-0'>
-                        <img src="nav/ewaste.png" alt="Promotional" className="h-20 w-20 object-cover rounded mb-2" />
-                        <p className='text-center'>Schedule a pickup to collect your unused electronics.</p>
-                        <Link to="/ewaste" className='bg-c4p text-black px-5 py-2 rounded mt-2'>Donate your Ewaste</Link>
-                    </div> */}
                 </div>
             )
         }
     ];
-
-    // Function to render dropdown content based on key
-    const renderDropdownContent = (key) => {
-        const item = menuItems.find(item => item.key === key);
-        return item ? item.dropdownContent : null;
-    };
-
 
     return (
         <div className={`fixed z-50 w-full text-white ${scrollPosition > 750 ? 'bg-black opacity-80' : 'bg-gradient-to-b from-black'}`} onMouseLeave={() => setActiveDropdown(null)}>
@@ -116,6 +95,7 @@ export default function Navbar() {
                 <button onClick={() => setMenuVisible(!isMenuVisible)} className="md:hidden">
                     <FaBars size={30} className='text-white'></FaBars>
                 </button>
+
                 <div className="hidden md:flex items-center space-x-4 md:space-x-8">
                     {menuItems.map(item => (
                         <div key={item.key} className="relative"
@@ -129,17 +109,13 @@ export default function Navbar() {
                             </Link>
                             {activeDropdown === item.key && (
                                 <div className='absolute left-0 pl-5 bg-white text-black shadow-lg mt-2 rounded transition-all duration-300' style={!!activeDropdown ? {height: '30vh', width: '20vw', visibility: "visible"} : {height: '10vh', width: '10vw', visibility: 'invisible'}}>
-                                    {renderDropdownContent(item.key)}
+                                    {item.dropdownContent}
                                 </div>
                             )}
                         </div>
                     ))}
-                    {/* <Link className='bg-white text-black text-xl rounded flex items-center px-4 py-2 hover:bg-gray-300' to="/login">
-                        Log In
-                    </Link> */}
                 </div>
             </div>
-            {/* Mobile Menu */}
             {isMenuVisible && (
                 <div className='md:hidden bg-white text-black'>
                     {menuItems.map(item => (
@@ -153,19 +129,13 @@ export default function Navbar() {
                             </button>
                             {openDropdowns[item.key] && (
                                 <div className='bg-gray-50 px-4 py-2'>
-                                    {renderDropdownContent(item.key)}
+                                    {item.dropdownContent}
                                 </div>
                             )}
                         </div>
                     ))}
-                    <div className="border-t border-gray-200">
-                        <Link className='w-full block text-left px-4 py-2 hover:bg-gray-100' to="/login">
-                            Log In
-                        </Link>
-                    </div>
                 </div>
             )}
         </div>
     );
 }
-
