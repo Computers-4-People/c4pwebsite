@@ -7,38 +7,36 @@ export default function Header(props) {
     // Function to determine the correct element for each link
     const renderLinkItem = (link, index) => {
         if (link.url && link.url.includes('.pdf')) {
-            // Handle direct PDF links or external links
             return (
                 <a
                     key={index}
                     href={link.url}
-                    target="_blank" // Opens in a new tab
-                    rel="noopener noreferrer" // Security measure for opening new tabs
-                    className={`block flex items-center w-full md:w-2/5 min-w-max text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block flex items-center w-full md:w-2/5 min-w-max text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
+                    ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
                 </a>
             );
         } else if (link.url) {
-            // Handle internal SPA links
             return (
                 <Link 
                     key={index}
                     to={link.url}
                     className={`block flex justify-center items-center w-full md:w-2/5 min-w-max text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
-                        ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
+                    ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
                 </Link>
             );
         } else if (link.clickAction) {
-            // Handle button actions
             return (
                 <button
                     key={index}
                     onClick={link.clickAction}
                     className={`block flex justify-center items-center w-full min-w-max md:w-2/5 min-w-auto text-center md:text-xl animate-fade-up h-11 rounded-md md:px-7 
-                        ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
+                    ${index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white' : 'border border-white text-white hover:bg-white hover:text-black'}`}
                 >
                     {link.text}
                 </button>
@@ -50,7 +48,7 @@ export default function Header(props) {
         <div
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${bgImage}')`,
-                backgroundSize: 'cover',
+                backgroundSize: 'cover', // Default for desktop
                 backgroundPosition: 'center right', // Adjusted for better alignment in mobile view
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'fixed'
@@ -66,11 +64,22 @@ export default function Header(props) {
                 </div>
                 <div className="animate-fade-up">
                     <p className='text-white text-xl 2xl:text-2xl mb-4'>{description}</p>
-                    <div className='flex flex-row md:w-1/2 space-x-2 md:space-x-5'>
+                    <div className='flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0 md:w-1/2'>
                         {links.map(renderLinkItem)}
                     </div>
                 </div>
             </div>
+
+            {/* Mobile-specific styles to handle background scaling */}
+            <style jsx>{`
+                @media (max-width: 768px) {
+                    div[style] {
+                        background-size: contain; /* Avoid zooming in on mobile */
+                        background-position: center top; /* Adjust position on mobile */
+                        background-attachment: scroll; /* Disable fixed attachment on mobile for better behavior */
+                    }
+                }
+            `}</style>
         </div>
     );
 }
