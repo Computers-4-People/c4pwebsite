@@ -31,19 +31,19 @@ export default function Volunteer() {
             image: '/volunteer/volunteerbackground.jpg',
             title: 'Translate a document from English to Spanish',
             description: '10AM | In-Person',
-            link: 'https://charityquest.io/'
+            link: '/contact'
         },
         {
             image: '/volunteer/volunteerbackground.jpg',
             title: 'Join the Pepper Fest Planning Committee',
             description: '10AM | In-Person',
-            link: 'https://charityquest.io/'
+            link: '/contact'
         },
         {
             image: '/volunteer/volunteerbackground.jpg',
-            title: 'Hang up poster and do outreach',
+            title: 'Know how to program? Assist with building out C4P technology.',
             description: '10AM | In-Person',
-            link: 'https://charityquest.io/'
+            link: '/contact'
         },
     ];
     return (

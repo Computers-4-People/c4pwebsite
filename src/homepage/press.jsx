@@ -38,28 +38,40 @@ export default function Press() {
 
     const pressItems2 = [
         {
-            image: '/press/Girls_Computers.png',
+            image: '/press/bofapr.JPG',
             title: 'Computers 4 People Receives Grant from Bank of America to Support their Digital Equity Programs',
             date: 'July 30, 2024',
-            link: 'https://www.computers4people.org/uploads/5/4/8/7/54870129/final.c4p_bofa_grant_press_release_7.19.24.docx.pdf'
+            link: '/press/c4pbofapr2024.pdf'
         },
         {
-            image: '/press/Girls_Computers.png',
+            image: '/press/collegebound2024.JPG',
             title: 'Computers 4 People College-Bound Laptop Scholarship Donates 176 Laptops to Students',
             date: 'June 13, 2024',
-            link: 'https://www.computers4people.org/uploads/5/4/8/7/54870129/final.c4p_bofa_grant_press_release_7.19.24.docx.pdf'
+            link: '/press/collegebound2024.pdf'
         },
         {
-            image: '/press/Girls_Computers.png',
+            image: '/press/mayorofwaltham.JPG',
             title: 'Computers 4 People Officially Opens New Waltham, MA Office',
             date: 'April 30, 2024',
-            link: 'https://www.computers4people.org/uploads/5/4/8/7/54870129/final.c4p_bofa_grant_press_release_7.19.24.docx.pdf'
+            link: '/press/maofficelaunchpr.pdf'
         },
         {
-            image: '/press/Girls_Computers.png',
+            image: '/press/collegebound2023pr.png',
             title: '​Computers 4 People Donates 220 Laptops to College-Bound Students',
             date: 'July 20, 2023',
-            link: 'https://www.computers4people.org/uploads/5/4/8/7/54870129/final.c4p_bofa_grant_press_release_7.19.24.docx.pdf'
+            link: '/press/collegeboundpr2023.pdf'
+        },
+        {
+            image: '/press/collegebound2023.png',
+            title: 'College-Bound Laptop Scholarship 2023',
+            date: 'November 20, 2022',
+            link: '/press/collegebound2023prapp.pdf'
+        },
+        {
+            image: '/press/collegebound2022.jpg',
+            title: 'Computers 4 People is sending 110 students to college this fall with one less major expense.',
+            date: 'July 20, 2022',
+            link: '/press/collegebound2022.pdf'
         },
     ];
 

@@ -9,7 +9,7 @@ export default function Programs() {
                 titlePart1: '404 Page Not Found',
                 titlePart2: '',
                 description: 'Tech can be a little confusing, but don’t worry, we’ve got your back. Need help?',
-                links: [{text:"Contact Us", url:"/contact"}]
+                links: [{text:"Back to Home", url:"/"}]
                 }} /> 
        </div>
     )
