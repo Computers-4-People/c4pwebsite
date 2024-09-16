@@ -32,7 +32,8 @@ export default function DSClasses() {
                 <Testimonial props={{
                     title2: 'Collaborating with organizations to offer free digital skills classes to people in need',
                     desc2: `We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in hosting a digital skills class, please reach out to us-we'd love to partner with you.`,
-                    image: '../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png'
+                    image: '../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_.png',
+                    alt: 'Recipient receiving refurbished, donated laptops.'
                 }}/>
             <div className='h-full bg-cover px-20 pb-10 space-y-10'>
                 <div id="digital-classes">
@@ -40,7 +41,7 @@ export default function DSClasses() {
                     <p className='text-xl'>Click to learn more about each course's curriculum and eligibility</p>
                 </div>
                 <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{}}>
-                    <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt=""
+                    <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt="Young adult building a pc from scratch."
                     className='object-scale-down h-full col-span-6 md:col-span-2 p-3' style={{}} />
                     <div className='col-span-6 md:col-start-3 md:col-span-3 text-xl space-y-5 text-justify m-5'>
                         <h3 className='text-4xl font-bold text-center'>PC Building Classes</h3>
@@ -56,7 +57,7 @@ export default function DSClasses() {
                 </div>
 
                 <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3'>
-                    <img src="../Programs/Digital Skills/Digital_Literacy_Class_Community_Access_Computers_4 People.jpg" alt="" className='object-scale-down h-full col-span-6 md:col-span-2 p-3' />
+                    <img src="../Programs/Digital Skills/Digital_Literacy_Class_Community_Access_Computers_4 People.jpg" alt="Digital Skills Instructor Explaining to Connect to Wifi  on a laptop" className='object-scale-down h-full col-span-6 md:col-span-2 p-3' />
                     <div className='col-span-6 md:col-start-3 md:col-span-3 text-xl space-y-5 text-justify m-5'>
                         <h3 className='text-4xl font-bold text-center'>Digital Skills/Literacy Classes</h3>
                         <p>Our classes teach the foundations of digital skills and literacy,
@@ -78,7 +79,7 @@ export default function DSClasses() {
                                 resources that will help them continue their digital skills journey.
                             </p>
                         </div>
-                        <img src="../Programs/Digital Skills/PC_Building_Classes_Teenager_Course_Completion.png" className='col-start-5 col-span-2 row-span-3 animate-fade-right animate-once' />
+                        <img src="../Programs/Digital Skills/PC_Building_Classes_Teenager_Course_Completion.png" className='col-start-5 col-span-2 row-span-3 animate-fade-right animate-once' alt='Teenagers smiling and holding a refurbished desktop'/>
                     </div>
              </div>
              <div className='h-full'>

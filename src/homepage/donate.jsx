@@ -108,7 +108,8 @@ export default function Donate () {
                             </p>
                             <p>Tax receipts are provided upon request.</p>
                      </div>,
-                image: '/refurbished/luis.png'
+                image: '/refurbished/luis.png',
+                alt: 'Donor holding a bulk of donated laptops to be refurbished and redistributed to people in need.'
             }}/>
             </div>
             <div className="bg-cover mt-40">
