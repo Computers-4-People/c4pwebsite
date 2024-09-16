@@ -41,7 +41,8 @@ export default function Financialdonation() {
                 </div>,
                 side:'right',
                 image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
-                links: [{text:'Learn More', url:'/impact'}]
+                links: [{text:'Learn More', url:'/impact'}],
+                alt: 'A child holding a Computers 4 People green tote bag with a donated, refurbished laptop inside.'
             }}/>
             <div>
             <div style={{

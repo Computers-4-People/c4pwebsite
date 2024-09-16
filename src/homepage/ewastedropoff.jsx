@@ -45,7 +45,8 @@ export default function Contact() {
                    <li>Zero cost involvement.</li>
                    <li>Impact lives and close the digital gap.</li>
                </ul></div>,
-                image:'../ewastedropoff/computerhandoff.png'
+                image:'../ewastedropoff/computerhandoff.png',
+                alt: 'People donating computers to Computers 4 People. Computers will be refurbished and distributed to people in need.'
             }}/>
         <div className="container mx-auto px-4 py-16 mb-20 h-screen">
     <div className="md:grid md:grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -98,7 +99,7 @@ export default function Contact() {
     <div id="dropoffsignup" className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
         {/* Image Section */}
         <div className='flex justify-center'>
-            <img src="../ewastedropoff/luis.png" alt="" className='h-auto md:max-w-[80%]' />
+            <img src="../ewastedropoff/luis.png" alt="Computers 4 People Ambassador holding a donated Windows Surface computer." className='h-auto md:max-w-[80%]' />
         </div>
         {/* Text Section */}
         <div className='flex flex-col justify-center'>
