@@ -1,71 +1,58 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Testimonial(props) {
-    // console.log(props);
-    const {title1, desc1, title2, desc2, image, side, links} = props.props;
-    // const imageOrganization = function() {
-    //     let styling;
-    //     if(side === 'right') {
-    //         return 'col-start-2';
-    //     } else {
-    //         return 'col-start-1'
-    //     }
-    // }
-    return(
-        <div className='bg-cover min-h-max font-sans  px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
-            {/* <div className='grid grid-cols-1 lg:grid-cols-3 gap-10 items-center h-full  lg:h-[40vh]'> */}
+    const { title1, desc1, title2, desc2, image, side, links } = props.props;
+
+    return (
+        <div className='bg-cover min-h-max font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
             <div className={`flex flex-col ${side === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center h-full`}>
                 {/* Image Section */}
-                <div className={`${side === 'right' ? 'lg:col-start-3' : 'lg:col-start-1'} h-full w-full flex flex-row justify-center `}   >
-                    <img src={image} alt="" className='h-auto w-auto max-h-full max-w-full object-contain'/>
+                <div className={`w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0`}>
+                    <img 
+                        src={image} 
+                        alt="" 
+                        className='max-h-64 max-w-full object-contain lg:max-h-full' // Scales image for mobile
+                    />
                 </div>
+
                 {/* Text Section */}
-                <div className={`flex flex-col w-full row-start-1 lg:col-span-2 ${side === 'right' ? 'lg:col-start-1 pr-5' : 'lg:col-start-2'}`}>
-                    <h2 className='text-4xl font-title md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6'>
+                <div className={`flex flex-col w-full lg:w-1/2 items-center lg:items-start text-center lg:text-left`}>
+                    <h2 className='text-3xl md:text-4xl lg:text-5xl font-title font-bold uppercase mb-4 text-gray-800'>
                         {title2}
                     </h2>
-                    <p className='text-xl'>
+                    <p className='text-lg md:text-xl mb-6'>
                         {desc2}
                     </p>
-                    <div className='mt-8 w-full flex flex-row space-x-4'>
-                {
-                    links && links.length > 0 && 
-                        links.map(function (link, index){
-                            console.log(link.clickAction)
-                            if(!link.clickAction)
-                            {
-                                return(
-                                <Link 
-                                key={index}
-                                to={`${link.url}`}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-black text-black hover:bg-black hover:text-white'}`}
-                            >
-                                {link.text}   
-                            </Link>
-                                )
-                            }
-                            else {
-                                // console.log(link.clickAction);
-                                return(
-                                <button
-                                key={index}
-                                onClick={link.clickAction}
-                                className={`block md:inline-block text-center text-xl animate-fade-up h-11 rounded-md pt-2 px-7 ${ index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover hover:text-white': 'border border-black text-black hover:bg-white hover:text-black'}`}
-                            >
-                                {link.text}
 
+                    {/* Links Section */}
+                    <div className='mt-4 w-full flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 justify-center lg:justify-start'>
+                        {links && links.length > 0 && links.map((link, index) => (
+                            link.clickAction ? (
+                                <button
+                                    key={index}
+                                    onClick={link.clickAction}
+                                    className={`block w-full lg:w-auto text-center text-xl animate-fade-up h-11 rounded-md py-2 px-7 ${
+                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-white' : 'border border-black text-black hover:bg-black hover:text-white'
+                                    }`}
+                                >
+                                    {link.text}
                                 </button>
-                                )
-                            }
-                        }
-                        
-                    )
-                }
+                            ) : (
+                                <Link
+                                    key={index}
+                                    to={link.url}
+                                    className={`block w-full lg:w-auto text-center text-xl animate-fade-up h-11 rounded-md py-2 px-7 ${
+                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-white' : 'border border-black text-black hover:bg-black hover:text-white'
+                                    }`}
+                                >
+                                    {link.text}
+                                </Link>
+                            )
+                        ))}
+                    </div>
                 </div>
-                </div>
-            
             </div>
         </div>
-    )
+    );
 }
