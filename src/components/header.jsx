@@ -46,14 +46,14 @@ export default function Header(props) {
 
     return (
         <div
+            className="header-container min-h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
             style={{
-                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('${bgImage}')`,
+                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`,
                 backgroundSize: 'cover', // Default for desktop
                 backgroundPosition: 'center right', // Adjusted for better alignment in mobile view
                 backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed'
+                backgroundAttachment: 'fixed' // Sticky background effect on desktop
             }}
-            className="min-h-max-content h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
         >
             <div className="px-10 mb-14 md:mb-0 md:px-20">
                 <div className="inline-block">
@@ -73,10 +73,10 @@ export default function Header(props) {
             {/* Mobile-specific styles to handle background scaling */}
             <style jsx>{`
                 @media (max-width: 768px) {
-                    div[style] {
-                        background-size: contain; /* Avoid zooming in on mobile */
-                        background-position: center top; /* Adjust position on mobile */
-                        background-attachment: scroll; /* Disable fixed attachment on mobile for better behavior */
+                    .header-container {
+                        background-size: contain; /* Ensure the whole image is visible */
+                        background-position: center top; /* Align the image better on mobile */
+                        background-attachment: scroll; /* Remove fixed background for smoother mobile scrolling */
                     }
                 }
             `}</style>

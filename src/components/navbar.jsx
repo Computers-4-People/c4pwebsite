@@ -60,7 +60,7 @@ export default function Navbar() {
                         <Link to="/about" className="hover:text-c4p" onClick={closeMobileMenu}>Mission & History</Link>
                         <Link to="/press" className="hover:text-c4p" onClick={closeMobileMenu}>Press & Media</Link>
                         <Link to="/team/" className="hover:text-c4p" onClick={closeMobileMenu}>Team</Link>
-                        <Link to="/impact" className="hover:text-c4p" onClick={closeMobileMenu}>Impact</Link>
+                        {/* <Link to="/impact" className="hover:text-c4p" onClick={closeMobileMenu}>Impact</Link> */}
                         <Link to="/socialmedia" className="hover:text-c4p" onClick={closeMobileMenu}>Social Media</Link>
                         <Link to="https://careers.computers4people.org" className="hover:text-c4p" onClick={closeMobileMenu}>Careers</Link>
                     </ul>

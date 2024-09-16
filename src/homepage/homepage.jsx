@@ -1,15 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Carosel from "../components/carosel/carosel";
-import Textmarquee from "../components/textmarquee";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from "../components/header";
-import Testimonial from "../components/testimonial";
 
 export default function Homepage() {
-  const animatedElements = useRef([]);
-
   const iconsData = [
     {
       title: "BECOME AN EWASTE DROP-OFF SITE",
@@ -30,32 +25,6 @@ export default function Homepage() {
       link: "/volunteer"
     }
   ];
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           entry.target.classList.add("animate-fade-up");
-  //           observer.unobserve(entry.target); // Stop observing after animation starts
-  //         }
-  //       });
-  //     },
-  //     {
-  //       threshold: 0.1, // Adjust this threshold based on when you want the animation to trigger
-  //     }
-  //   );
-
-  //   animatedElements.current.forEach((el) => {
-  //     observer.observe(el);
-  //   });
-
-  //   return () => {
-  //     if (animatedElements.current) {
-  //       animatedElements.current.forEach((el) => observer.unobserve(el));
-  //     }
-  //   };
-  // }, []);
 
   const cardsData = [
     {
@@ -96,20 +65,29 @@ export default function Homepage() {
 
   return (
     <div className="font-sans overflow-x-hidden">
-      <Header props={{
-        bgImage: '/Homepage/homepagebackground.png',
-        titlePart1: 'Transform a Life',
-        titlePart2: 'with Technology',
-        links: [{text: 'Donate your ewaste', url: "/donate"}, {text: 'Discover our programs',  url: "/programs"}]
-        }}/>
-        
-      <h2 className="m-14 mt-20 text-5xl font-bold text-left">Be Part of the Change</h2>
+      <Header
+        props={{
+          bgImage: "/Homepage/homepagebackground.png",
+          titlePart1: "Transform a Life",
+          titlePart2: "with Technology",
+          links: [
+            { text: "Donate your ewaste", url: "/donate" },
+            { text: "Discover our programs", url: "/programs" },
+          ],
+        }}
+      />
+
+      <h2 className="m-14 mt-20 text-5xl font-bold text-left">
+        Be Part of the Change
+      </h2>
       <div>
         <InfoCard cards={cardsData} />
       </div>
 
-      <div className="h-screen min-h-screen text-black p-5 m-5">
-        <h2 className="ml-14 mb-20 text-5xl font-bold">Give Unused Tech a Second Chance!</h2>
+      <div className="min-h-screen text-black p-5 m-5">
+        <h2 className="ml-14 mb-20 text-5xl font-bold">
+          Give Unused Tech a Second Chance!
+        </h2>
         <div className="md:grid grid-rows-6 grid-cols-6 relative">
           <img
             src="../secondchance.png"
@@ -117,37 +95,37 @@ export default function Homepage() {
           />
 
           <div
-            className="absolute invisible md:visible inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
+            className="absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
             style={{ backgroundImage: "url('../quotes.png')" }}
           />
 
           <div className="z-10 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">
-            <p>Thanks to the laptop I received from Computers 4 People; I can now create artwork every night when I get home!</p>
+            <p>
+              Thanks to the laptop I received from Computers 4 People; I can now
+              create artwork every night when I get home!
+            </p>
             <p className="text-right italic">-Mallika</p>
           </div>
-
-          <div className="grid grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center text-center text-xl gap-3 z-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center gap-3 z-20">
             <Link
               to="/donate"
-              className="bg-c4p rounded h-12 pr-3 pt-2.5 hover:bg-c4p-hover hover:text-white"
+              className="bg-c4p rounded px-4 py-2 hover:bg-c4p-hover hover:text-white text-center w-full md:w-auto flex justify-center items-center"
             >
-              Donate your ewaste
+              Donate Computers
             </Link>
             <Link
               to="/partner"
-              className="border-2 border-black rounded h-12 pr-1 pt-2.5 hover:bg-black hover:text-white"
+              className="border-2 border-black rounded px-4 py-2 hover:bg-black hover:text-white text-center w-full md:w-auto flex justify-center items-center"
             >
               Become a Partner
             </Link>
           </div>
         </div>
       </div>
+
       <div className="my-5 p-5 mb-20">
-  <IconCards cards={iconsData} />
-</div>
-      {/* <div className="min-h-max bg-cover">
-        <Carosel />
-      </div> */}
+        <IconCards cards={iconsData} />
+      </div>
     </div>
   );
 }
