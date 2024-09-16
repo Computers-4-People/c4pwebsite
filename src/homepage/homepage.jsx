@@ -97,6 +97,8 @@ export default function Homepage() {
           <img
             src="../secondchance.png"
             className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
+            alt='Woman holding a t-shirt she designed, with a refurbished computer donated by Computers 4 People.
+'
           />
 
           <div
