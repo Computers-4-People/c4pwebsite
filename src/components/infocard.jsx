@@ -12,6 +12,8 @@ const InfoCard = ({ cards }) => {
             style={{
               height: "60vh", // Set a specific height for the cards
               backgroundImage: `linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0,0,0,0.5) 40%, transparent 50%), url(${card.image})`,
+              backgroundRepeat: 'no-repeat', // Prevent the background image from repeating
+              backgroundSize: 'cover' // Ensure the image covers the entire area of the card
             }}
           >
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500" />
@@ -32,3 +34,4 @@ const InfoCard = ({ cards }) => {
 };
 
 export default InfoCard;
+
