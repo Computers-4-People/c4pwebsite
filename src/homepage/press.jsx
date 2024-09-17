@@ -138,7 +138,7 @@ export default function Press() {
             </div>
             <div className="my-5 p-5 mb-20">
   <IconCards cards={iconsData} />
-</div>
-        </div>
+    </div>
+    </div>
     );
 }
