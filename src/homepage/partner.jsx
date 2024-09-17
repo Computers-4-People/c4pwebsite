@@ -21,7 +21,8 @@ export default function Refurbished() {
                     <li>Host Digital Skills Classes: Collaborate with us to offer essential tech education.</li>
                     <li>Innovative Partnerships: Join forces on creative solutions to enhance digital equity and impact.</li>
                 </ul>,
-                image: '../Become a Partner/partnerphoto.png'
+                image: '../Become a Partner/partnerphoto.png',
+                alt: `Dylan Zajac with Computers 4 People's partners and donors`
             }} />
             <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Become a Partner/partnerbackground.jpg')`,

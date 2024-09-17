@@ -71,7 +71,7 @@ export default function Impact() {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-center'>
                     {/* Image on the Left */}
                     <div className='flex justify-center'>
-                        <img src="/impact/recipient.png" className='animate-fade-right animate-once h-auto max-w-full md:max-w-md' />
+                        <img src="/impact/recipient.png" alt='' className='animate-fade-right animate-once h-auto max-w-full md:max-w-md' />
                     </div>
 
                     {/* Quote and Buttons on the Right */}
