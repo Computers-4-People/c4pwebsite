@@ -62,6 +62,7 @@ function App() {
             <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/checkin" element={<Checkin />}/>
             <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
+            <Route path="/uploadrecommendation.html" element={<Uploadrecommendation />}/>
             <Route path="/boardapplication" element={<Boardapplication />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/pepper" element={<Pepper />}/>
