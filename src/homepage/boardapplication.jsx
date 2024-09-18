@@ -11,7 +11,7 @@ export default function Hotspot() {
 
 
     return (
-        <div>
+        <div  id="main-content" >
            <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,
   display: 'flex',

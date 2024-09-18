@@ -24,7 +24,7 @@ export default function Impact() {
     ];
     
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/impact/impactbackground.png',
                 titlePart1: 'Learn About the',

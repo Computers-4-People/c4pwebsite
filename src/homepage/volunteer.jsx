@@ -47,7 +47,7 @@ export default function Volunteer() {
         },
     ];
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/volunteer/volunteerbackground.jpg',
                 titlePart1: 'Make an Impact',

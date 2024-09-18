@@ -14,7 +14,7 @@ export default function Pepper() {
         <p className='italic'>*Only 30 Contestant Tickets available</p>
     </div>
     return(
-    <div>
+    <div id="main-content" >
     <Header props={
         {
             bgImage: '../pepper/pepperbackground.png',

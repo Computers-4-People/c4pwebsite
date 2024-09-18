@@ -36,7 +36,7 @@ export default function Help() {
         }
     ]
     return (
-        <div className='font-sans'>
+        <div id="main-content" className='font-sans'>
             <div style={{backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/Help Center/Ewaste_Sorted.jpg')`}} 
             className="bg-cover h-screen bg-center bg-local bg-no-repeat flex flex-col justify-center">
                 <div class="flex place-content-center">

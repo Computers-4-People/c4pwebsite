@@ -50,7 +50,7 @@ export default function Programs() {
       ];
     
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/Programs/Programs/Unlocking_Access_To_The_Digital_World.JPG',
                 titlePart1: 'Uncover Possibilities',

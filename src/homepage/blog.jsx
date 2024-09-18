@@ -30,7 +30,7 @@ export default function Volunteer() {
         },
     ];
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div  id="main-content" className='font-sans overflow-x-hidden'>
         <div
             style={{
                 backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%),url('/blog/blogbackground.png')`

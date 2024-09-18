@@ -17,7 +17,7 @@ const handleScroll = (id) => {
 };
 export default function Financialdonation() {
     return (
-        <div>
+        <div id="main-content" >
         <div className='font-sans'>
             <Header props={{
                 bgImage: '/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg',

@@ -19,7 +19,7 @@ const handleScroll = (id) => {
 
 export default function DSClasses() {
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/Programs/Digital Skills/Digital_Skills_Classes_Community_Access.jpg',
                 titlePart1: 'ACQUIRE THE FOUNDATIONAL',

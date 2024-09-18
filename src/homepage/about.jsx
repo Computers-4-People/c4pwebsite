@@ -66,7 +66,7 @@ export default function About() {
     }
   ];
     return (
-        <div className='font-sans'>
+        <div  id="main-content" className='font-sans'>
             <Header props={{
                 bgImage: '/about/background.jpg',
                 titlePart1: 'Unlocking the Digital',

@@ -78,7 +78,7 @@ export default function Donate () {
         }
       ];
      return (
-        <div>
+        <div id="main-content" >
         <div className='font-sans mb-20'>
             <Header props={{
                 bgImage: '/about/serving-3-states.jpg',
