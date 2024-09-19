@@ -45,7 +45,9 @@ function App() {
             <Route path='/' element={<Homepage/>}/>
               {/* <Homepage /> */}
             <Route path="/donate" element={<Donate />}/>
+            <Route path="/donate.html" element={<Donate />}/>
            <Route path="/apply" element={<Apply />}/>
+           <Route path="/apply.html" element={<Apply />}/>
             <Route path="/dsclasses" element={<DSClasses />}/>
             <Route path="/blog" element={<Blog />}/>
             <Route path="/careers" element={<Careers />}/>
@@ -60,6 +62,7 @@ function App() {
             <Route path="/programs" element={<Programs />}/>
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
+            <Route path="/team.html" element={<Team />}/>
             <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/checkin" element={<Checkin />}/>
             <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
