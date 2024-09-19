@@ -39,9 +39,9 @@ export default function Pepper() {
                 </ul>,
                 image: '../pepper/Pepper Fest Participants Trying Chili Pepper.png'
             }} />
-    <div class='bg-c4p bg-cover flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
-        <div className='flex flex-row justify-end px-10 items-center border-r-2  w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
-        <img src="../pepper/Pepper Fest Prizes.png" className='object-contain h-full w-full' alt=""/>
+    <div class='bg-c4p bg-cover overflow-x-scroll flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
+        <div className='flex flex-row justify-end px-10 items-center border-r-2  md:w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
+        <img src="../pepper/Pepper Fest Prizes.png" className='object-contain h-full md:w-full' alt=""/>
     </div>
     <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,
