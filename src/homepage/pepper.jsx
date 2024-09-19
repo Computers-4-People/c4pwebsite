@@ -18,13 +18,13 @@ export default function Pepper() {
     <Header props={
         {
             bgImage: '../pepper/pepperbackground.png',
-            titlePart1: <div><span className='text-red-700'>Spice Up</span> the End of Summer</div>,
+            titlePart1: <div><span className='text-[#D10000]'>Spice Up</span> the End of Summer</div>,
             titlePart2: 'at the Hoboken PepperFest',
             description: `Don't miss out on the ultimate spicy showdown! Join 300+ people for a thrilling festival, pepper-eating competition, and more! Be part of this fundraiser supporting Computers 4 People's programs`,
             links: [{text: 'Buy Tickets', url:'https://www.zeffy.com/en-US/ticketing/ebfce008-e36e-4da1-b9c0-a76b1ee5481f'}]
         }
     }/>
-    <div className='bg-cover bg-red-700 flex flex-row justify-around text-white text-center p-5'>
+    <div className='bg-cover bg-[#D10000] flex flex-row justify-around text-white text-center p-5'>
         <div><p className='text-4xl font-black'>5th October</p><p className='text-xl'>2024</p></div>
         <div><p className='text-4xl font-black'>1 PM-5 PM</p> <p>EST</p></div>
         <div><p className='text-4xl font-black'>524 Willow Ave</p><p>Hoboken, NJ 07030</p></div>
