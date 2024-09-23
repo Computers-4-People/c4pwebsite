@@ -46,7 +46,7 @@ export default function Header(props) {
 
     return (
         <div
-            className="header-container min-h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
+            className="header-container @media min-h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
             style={{
                 backgroundImage: `${ window.innerWidth > 720 ? `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`:`linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`}`,
                 backgroundSize: 'cover', // Default for desktop
