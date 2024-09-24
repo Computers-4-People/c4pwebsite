@@ -78,7 +78,7 @@ export default function Donate () {
         }
       ];
      return (
-        <div id="main-content" >
+        <div id="main-content overflow-x-hidden" >
         <div className='font-sans mb-20'>
             <Header props={{
                 bgImage: '/about/serving-3-states.jpg',
@@ -88,7 +88,7 @@ export default function Donate () {
                 links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
-            <div className='bg-cover p-10'>
+            <div className='bg-cover'>
                 <div className='pl-14'>
                     <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
