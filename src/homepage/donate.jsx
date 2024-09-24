@@ -78,8 +78,8 @@ export default function Donate () {
         }
       ];
      return (
-        <div id="main-content overflow-x-hidden" >
-        <div className='font-sans mb-20'>
+        <div id="main-content" >
+        <div className='font-sans mb-20 overflow-x-hidden'>
             <Header props={{
                 bgImage: '/about/serving-3-states.jpg',
                 titlePart1: 'Turn E-Waste',
@@ -89,7 +89,7 @@ export default function Donate () {
 
                 }}/>
             <div className='bg-cover'>
-                <div className='pl-14'>
+                <div className='pl-5 md:pl-14'>
                     <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
