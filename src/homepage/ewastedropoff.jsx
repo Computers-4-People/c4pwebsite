@@ -88,14 +88,14 @@ export default function Contact() {
                 <iframe src="https://storage.googleapis.com/maps-solutions-37fwki99o4/locator-plus/bqa2/locator-plus.html"
                     // width="100%" height="100%"
                     className='absolute top-0 left-0 w-full border-0 rounded-md'
-                    style={{border:'0', height: '100vh'}}
+                    style={{border:'0', height: '80vh'}}
                     loading="lazy">
                 </iframe>
             </div>
         </div>
     </div>
 </div>
-<div className='bg-cover font-sans justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
+<div className='bg-cover justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
     <div id="dropoffsignup" className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
         {/* Image Section */}
         <div className='flex justify-center'>
