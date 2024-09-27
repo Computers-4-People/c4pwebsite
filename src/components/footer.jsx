@@ -88,12 +88,12 @@ export default function Footer() {
             </div>
             <div className="text-xl mt-10 font-bold text-center w-full">Follow Us</div>
             <div className="w-full flex justify-around mt-4">
-              <a href="https://www.facebook.com/Computers4People"><FaFacebook size={30} /></a>
-              <a href="https://www.instagram.com/computers4people/"><FaInstagram size={30} /></a>
-              <a href="https://twitter.com/Computer4people"><FaXTwitter size={30} /></a>
-              <a href="https://www.linkedin.com/company/computers4people"><FaLinkedin size={30} /></a>
-              <a href="https://www.tiktok.com/@computers4people"><FaTiktok size={30} /></a>
-              <a href="https://www.youtube.com/@Computers4People"><FaYoutube size={30} /></a>
+              <a href="https://www.facebook.com/Computers4People" aria-label='Facebook'><FaFacebook size={30} /></a>
+              <a href="https://www.instagram.com/computers4people/" aria-label='Instagram'><FaInstagram size={30} /></a>
+              <a href="https://twitter.com/Computer4people" aria-label='x.com'><FaXTwitter size={30} /></a>
+              <a href="https://www.linkedin.com/company/computers4people" aria-label='LinkedIn'><FaLinkedin size={30} /></a>
+              <a href="https://www.tiktok.com/@computers4people" aria-label='TikTok'><FaTiktok size={30} /></a>
+              <a href="https://www.youtube.com/@Computers4People" aria-label='YouTube'><FaYoutube size={30} /></a>
             </div>
           </div>
         </div>

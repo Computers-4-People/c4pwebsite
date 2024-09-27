@@ -11,3 +11,10 @@
       src: url(/fonts/Roboto.woff2) format('woff2');
  }
 } */
+
+@font-face {
+  font-family: "BebasNeueRegular";
+  src: local("BebasNeueRegularr"),
+    url("./fonts/BebasNeue-Regular.ttf") format("TrueType");
+  font-weight: normal;
+}

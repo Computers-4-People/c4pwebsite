@@ -14,7 +14,7 @@ module.exports = {
     },
     fontFamily: {
       'sans': 'Roboto',
-      'title': '"Bebas Neue"'
+      'title': 'BebasNeueRegular'
     },
     transitionProperty: {
       'grid': 'grid'

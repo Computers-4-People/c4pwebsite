@@ -109,7 +109,7 @@ export default function Press() {
         }
       ];
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/press/pressbackground.jpg',
                 titlePart1: 'Discover Our Latest',
@@ -138,7 +138,7 @@ export default function Press() {
             </div>
             <div className="my-5 p-5 mb-20">
   <IconCards cards={iconsData} />
-</div>
-        </div>
+    </div>
+    </div>
     );
 }

@@ -55,7 +55,7 @@ export default function Apply() {
         }
       ];
     return (
-        <div className='font-sans'>
+        <div  id="main-content" className='font-sans'>
         <Header props={{
             bgImage: '/refurbished/refurbishedbackground.png',
             titlePart1: 'UNLOCKING OPPORTUNITIES,',

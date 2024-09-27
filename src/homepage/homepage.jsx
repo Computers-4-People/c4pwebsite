@@ -33,6 +33,7 @@ export default function Homepage() {
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
       image: "../Homepage/starts.JPG",
+      alt: 'Donor holding a stack of laptops for donation to Computers 4 People.'
     },
     {
       titlePart1: "Undergoes",
@@ -40,12 +41,14 @@ export default function Homepage() {
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
       image: "../Homepage/undergoes.jpg",
+      alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
       titlePart1: "Match",
       titlePart2: "With a Recipient",
       description: "Devices are redistributed to people in underserved communities.",
       image: "../Homepage/match.png",
+      alt: 'White Van with a green sign and the logo of Computers 4 People'
     },
     {
       titlePart1: "Becomes",
@@ -53,6 +56,7 @@ export default function Homepage() {
       description:
         "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
       image: "../Homepage/becomes.jpg",
+      alt: 'Senior recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
     },
     {
       titlePart1: "Equip",
@@ -60,11 +64,12 @@ export default function Homepage() {
       description:
         "These refurbished devices become a gateway to acquire the digital skills they need.",
       image: "../Homepage/equip.jpg",
+      alt: 'Dylan Zajac hosting Digital Skills Classes at the Community Access Venue in front of recipients and community members in need.'
     },
   ];
 
   return (
-    <div className="font-sans overflow-x-hidden">
+    <div id="main-content" className="font-sans overflow-x-hidden">
       <Header
         props={{
           bgImage: "/Homepage/homepagebackground.png",
@@ -92,11 +97,15 @@ export default function Homepage() {
           <img
             src="../secondchance.png"
             className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
+            alt='Woman holding a t-shirt she designed, with a refurbished computer donated by Computers 4 People.
+'
           />
 
           <div
             className="absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
             style={{ backgroundImage: "url('../quotes.png')" }}
+            role='img'
+            aria-label='quotes'
           />
 
           <div className="z-10 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">

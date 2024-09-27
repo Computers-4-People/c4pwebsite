@@ -3,7 +3,7 @@ import Header from "../components/header.jsx";
 import { Link } from "react-router-dom";
 export default function Programs() {
     return (
-        <div className='font-sans'>
+        <div id="main-content" className='font-sans'>
             <Header props={{
                 bgImage: '/404page/404background.png',
                 titlePart1: '404 Page Not Found',
