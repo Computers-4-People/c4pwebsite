@@ -16,10 +16,7 @@ export default function Careers() {
                         <p class='text-[#0FE006] col-span-2 object-fill mb-5'>TRANSFORM A LIFE</p>
                         <p class='text-white col-span-2'>WITH TECHNOLOGY</p>
                     </div>
-                    {/* <div className='mt-10 w-81 grid grid-cols-2 col-start-1 col-end-4 row-start-4 text-center text-xl gap-3'>
-                        <Link className="bg-[#0FE006] h-10 rounded">🤍 Donate your ewaste</Link>
-                        <Link className='border-2 rounded border-white text-white h-10'> Discover our programs </Link>
-                    </div> */}
+
                     <div className='mt-10 row-start-3 col-span-4 row-span-2 flex flex-row justify-items-start flex-wrap text-center text-xl w-128'>
                         <Link className="bg-[#0FE006] h-10 mr-3 h-11 rounded-md pt-2 px-5">🤍 Donate your ewaste</Link>
                         <Link className='border-2 rounded-md border-white h-11 text-white h-10 pt-1.5 px-5'> Discover our programs </Link>
