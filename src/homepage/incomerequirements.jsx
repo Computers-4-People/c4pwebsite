@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function UploadRecommendation() {
+export default function IncomeRequirements() {
     const scrollToForm = () => {
         const formSection = document.getElementById("inquiry-form");
         if (formSection) {
@@ -11,7 +11,7 @@ export default function UploadRecommendation() {
 
 
     return (
-        <div id="main-content" >
+        <div>
            <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,
   display: 'flex',
@@ -25,9 +25,9 @@ export default function UploadRecommendation() {
   <iframe
     className="pt-20"
     scrolling="no"
-    aria-label='Upload Recommendation Form'
+    aria-label='Income Requirements Form'
     style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/RecommendersRecommendation/formperma/Mm7O-367T-QFemOC5v4ELjZThBIvsgRAaHLPr2Bf2HA'
+    src='https://forms.zohopublic.com/Computers4People/form/IncomeRequirement/formperma/GxN8-2hO0SF_BOBZMKA0xpbpQ3XrOzuIaoVeiVCLSAA'
  ></iframe>
 </div>
            </div>
