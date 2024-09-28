@@ -102,20 +102,20 @@ export default function Homepage() {
           />
 
           <div
-            className="absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
+            className="md:absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
             style={{ backgroundImage: "url('../quotes.png')" }}
             role='img'
             aria-label='quotes'
           />
 
-          <div className="z-10 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">
+          <div className="z-20 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">
             <p>
               Thanks to the laptop I received from Computers 4 People; I can now
               create artwork every night when I get home!
             </p>
             <p className="text-right italic">-Mallika</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center gap-3 z-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center gap-3 z-30">
             <Link
               to="/donate"
               className="bg-c4p rounded px-4 py-2 hover:bg-c4p-hover hover:text-white text-center w-full md:w-auto flex justify-center items-center"
