@@ -102,7 +102,7 @@ export default function Homepage() {
           />
 
           <div
-            className="md:absolute inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
+            className="md:absolute invisible md:visible inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
             style={{ backgroundImage: "url('../quotes.png')" }}
             role='img'
             aria-label='quotes'
