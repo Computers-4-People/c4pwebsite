@@ -59,6 +59,7 @@ function App() {
             <Route path="/financialdonation" element={<Financialdonation />}/>
             <Route path="/help" element={<Help />}/>
             <Route path="/press" element={<Press />}/>
+            <Route path="/press.html" element={<Press />}/>
             <Route path="/impact" element={<Impact />}/>
             <Route path="/partner" element={<Partner />}/>
             <Route path="/programs" element={<Programs />}/>
