@@ -107,9 +107,9 @@ export default function Apply() {
             <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/applybackground2.JPG')`,
   display: 'flex',
-  alignItems: 'center', // This aligns the iframe vertically
+  alignItems: 'start', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
-  height: '100vh',
+  height: '115vh',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat'
@@ -118,7 +118,7 @@ export default function Apply() {
     scrolling="no"
     id="apply-form"
     aria-label='Apply For Computers! (2024 Draft Individuals)'
-    style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
+    style={{ width: '100%', height: '76%', border: 'none' }} // Make iframe fullscreen and remove border
     src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'
   ></iframe>
 </div>
