@@ -21,7 +21,7 @@ export default function Testimonial(props) {
                     <h2 className='text-3xl md:text-4xl lg:text-5xl font-title font-bold uppercase mb-4 text-gray-800'>
                         {title2}
                     </h2>
-                    <p className='text-lg md:text-xl mb-6'>
+                    <p className='text-lg text-justify md:text-left md:text-xl mb-6'>
                         {desc2}
                     </p>
 
