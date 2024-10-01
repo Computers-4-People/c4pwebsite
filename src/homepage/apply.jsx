@@ -92,7 +92,7 @@ export default function Apply() {
             image: '../refurbished/luis.png',
             side: 'right'
         }}/>
-        <div className='bg-cover font-sans justify-evenly px-4 mt-40 mb-20 sm:px-10 md:px-20 py-10'>
+        <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10 md:px-20'>
                 <div className='flex flex-col text-left md:ml-20 mt-40'>
                 <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
                 Giving Devices a Second Chance
