@@ -39,6 +39,7 @@ function App() {
   // console.log(background);
   return (
     <div className="app">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-black focus:text-white focus:px-4 focus:py-2 focus:z-50">Skip to main content</a>
       <BrowserRouter>
         <Scroll />
           <Navbar/>
@@ -46,7 +47,9 @@ function App() {
             <Route path='/' element={<Homepage/>}/>
               {/* <Homepage /> */}
             <Route path="/donate" element={<Donate />}/>
+            <Route path="/donate.html" element={<Donate />}/>
            <Route path="/apply" element={<Apply />}/>
+           <Route path="/apply.html" element={<Apply />}/>
             <Route path="/dsclasses" element={<DSClasses />}/>
             <Route path="/blog" element={<Blog />}/>
             <Route path="/careers" element={<Careers />}/>
@@ -56,18 +59,23 @@ function App() {
             <Route path="/financialdonation" element={<Financialdonation />}/>
             <Route path="/help" element={<Help />}/>
             <Route path="/press" element={<Press />}/>
+            <Route path="/press.html" element={<Press />}/>
             <Route path="/impact" element={<Impact />}/>
             <Route path="/partner" element={<Partner />}/>
             <Route path="/programs" element={<Programs />}/>
             <Route path="/socialmedia" element={<Socialmedia />}/>
             <Route path="/team" element={<Team />}/>
+            <Route path="/team.html" element={<Team />}/>
             <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/checkin" element={<Checkin />}/>
             <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
             <Route path="/incomerequirements" element={<IncomeRequirements />}/>
+            <Route path="/uploadrecommendation.html" element={<Uploadrecommendation />}/>
             <Route path="/boardapplication" element={<Boardapplication />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/pepper" element={<Pepper />}/>
+            <Route path="/pepper.html" element={<Pepper />}/>
+            <Route path="/Pepper-Fest" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="*" element={<PageNotFound />} />
          </Routes>

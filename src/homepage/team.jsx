@@ -59,7 +59,7 @@ const handleScroll = (id) => {
 
 export default function Team() {
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/team/teambackground.JPG',
                 titlePart1: 'FIND OUT WHO ARE',

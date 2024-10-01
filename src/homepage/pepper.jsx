@@ -14,17 +14,17 @@ export default function Pepper() {
         <p className='italic'>*Only 30 Contestant Tickets available</p>
     </div>
     return(
-    <div>
+    <div id="main-content" >
     <Header props={
         {
             bgImage: '../pepper/pepperbackground.png',
-            titlePart1: <div><span className='text-red-700'>Spice Up</span> the End of Summer</div>,
+            titlePart1: <div><span className='text-[#D10000]'>Spice Up</span> the End of Summer</div>,
             titlePart2: 'at the Hoboken PepperFest',
             description: `Don't miss out on the ultimate spicy showdown! Join 300+ people for a thrilling festival, pepper-eating competition, and more! Be part of this fundraiser supporting Computers 4 People's programs`,
             links: [{text: 'Buy Tickets', url:'https://www.zeffy.com/en-US/ticketing/ebfce008-e36e-4da1-b9c0-a76b1ee5481f'}]
         }
     }/>
-    <div className='bg-cover bg-red-700 flex flex-row justify-around text-white text-center p-5'>
+    <div className='bg-cover bg-[#D10000] flex flex-row justify-around text-white text-center p-5'>
         <div><p className='text-4xl font-black'>5th October</p><p className='text-xl'>2024</p></div>
         <div><p className='text-4xl font-black'>1 PM-5 PM</p> <p>EST</p></div>
         <div><p className='text-4xl font-black'>524 Willow Ave</p><p>Hoboken, NJ 07030</p></div>
@@ -39,9 +39,9 @@ export default function Pepper() {
                 </ul>,
                 image: '../pepper/Pepper Fest Participants Trying Chili Pepper.png'
             }} />
-    <div class='bg-c4p bg-cover flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
-        <div className='flex flex-row justify-end px-10 items-center border-r-2  w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
-        <img src="../pepper/Pepper Fest Prizes.png" className='object-contain h-full w-full' alt=""/>
+    <div class='bg-c4p bg-cover overflow-x-scroll flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
+        <div className='flex flex-row justify-end px-10 items-center border-r-2  md:w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
+        <img src="../pepper/Pepper Fest Prizes.png" className='object-contain h-full md:w-full' alt=""/>
     </div>
     <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,

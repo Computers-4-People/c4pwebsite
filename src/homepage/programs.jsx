@@ -10,19 +10,22 @@ export default function Programs() {
             titlePart1: "Distribution of",
             titlePart2: "Refurbished Devices",
             description: "We refurbish donated devices and distribute them to communities in need across NYC, NJ, and MA.",
-            image: "/Programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg"
+            image: "/Programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg",
+            alt: 'Teacher holding donated a computer with green tote bag from Computers 4 People.'
         },
         {
             titlePart1:"Foundational",
             titlePart2: "Digital Skills",
             description: "We offer specialized digital courses and PC building classes to equip individuals with digital literacy.",
-            image:"/Programs/Programs/Teenagers_Building_PCs_Refurbished.jpg"
+            image:"/Programs/Programs/Teenagers_Building_PCs_Refurbished.jpg",
+            alt: 'Teenager volunteer refurbishing donated computers to provide them to people in need.'
         },
         {
             titlePart1:"Affordable",
             titlePart2: "Internet Access",
             description: "We assist people in finding affordable Internet programs that meet their needs.",
-            image:"/Programs/Programs/Refurbished_Computers.jpg"
+            image:"/Programs/Programs/Refurbished_Computers.jpg",
+            alt: 'Refurbished computers with the logo of Computers 4 People '
         }
     ]
     const iconsData = [
@@ -47,7 +50,7 @@ export default function Programs() {
       ];
     
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/Programs/Programs/Unlocking_Access_To_The_Digital_World.JPG',
                 titlePart1: 'Uncover Possibilities',

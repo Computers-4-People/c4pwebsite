@@ -47,7 +47,7 @@ export default function Volunteer() {
         },
     ];
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/volunteer/volunteerbackground.jpg',
                 titlePart1: 'Make an Impact',
@@ -58,7 +58,8 @@ export default function Volunteer() {
         <Testimonial props={{
             title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',
             desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
-            image: '../volunteer/volunteersacha.png'
+            image: '../volunteer/volunteersacha.png',
+            alt: 'Volunteer holding a spicy chili pepper plant for our annual fundraiser Pepper Fest'
         }} />
         <div id="media-highlights" className="mt-60">
                 <h2 className="ml-14 text-3xl md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
@@ -77,7 +78,7 @@ export default function Volunteer() {
                 </div>
                 {/* Image Section */}
                 <div className='flex justify-center'>
-                    <img src="../volunteer/volunteeraxel.png" alt="" className='w-full h-auto md:max-w-md' />
+                    <img src="../volunteer/volunteeraxel.png" alt="Axel" className='w-full h-auto md:max-w-md' />
                 </div>
             </div>
         </div>

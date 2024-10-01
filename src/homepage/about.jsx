@@ -66,7 +66,7 @@ export default function About() {
     }
   ];
     return (
-        <div className='font-sans'>
+        <div  id="main-content" className='font-sans'>
             <Header props={{
                 bgImage: '/about/background.jpg',
                 titlePart1: 'Unlocking the Digital',
@@ -89,7 +89,7 @@ export default function About() {
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'To bridge the digital divide by repurosing e-waste into educational tools, ensuring equal access to technology for all.',
+                desc2: 'To bridge the digital divide by repurposing e-waste into educational tools, ensuring equal access to technology for all.',
                 image: '../about/our_mission.png',
                 side: 'right'
             }}/> 

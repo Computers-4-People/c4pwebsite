@@ -18,7 +18,7 @@ export default function Contact() {
     };
 
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/Contact Us/contactbackground.png',
                 titlePart1: 'Contact Us',

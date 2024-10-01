@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 export default function Testimonial(props) {
-    const { title1, desc1, title2, desc2, image, side, links } = props.props;
+    const { title1, desc1, title2, desc2, image, side, links, alt} = props.props;
 
     return (
         <div className='bg-cover min-h-max font-sans px-4 mt-20 mb-20 sm:px-10 md:px-20 my-10'>
@@ -11,7 +11,7 @@ export default function Testimonial(props) {
                 <div className={`w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0`}>
                     <img 
                         src={image} 
-                        alt="" 
+                        alt={alt} 
                         className='max-h-64 max-w-full object-contain lg:max-h-full' // Scales image for mobile
                     />
                 </div>
@@ -21,7 +21,7 @@ export default function Testimonial(props) {
                     <h2 className='text-3xl md:text-4xl lg:text-5xl font-title font-bold uppercase mb-4 text-gray-800'>
                         {title2}
                     </h2>
-                    <p className='text-lg md:text-xl mb-6'>
+                    <p className='text-lg text-justify md:text-left md:text-xl mb-6'>
                         {desc2}
                     </p>
 

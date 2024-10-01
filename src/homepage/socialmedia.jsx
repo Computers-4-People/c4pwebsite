@@ -9,7 +9,7 @@ import Header from "../components/header";
 
 export default function SocialMedia() {
     return (
-        <div className='font-sans overflow-x-hidden'>
+        <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
                 bgImage: '/socialmedia/socialmediabackground.png',
                 titlePart1: 'Follow our Journey.',

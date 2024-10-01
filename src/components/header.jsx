@@ -46,13 +46,13 @@ export default function Header(props) {
 
     return (
         <div
-            className="header-container min-h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
+            className="header-container md:bg-cover min-h-screen flex flex-col justify-end md:flex-row pb-10 items-center md:items-center md:justify-start"
             style={{
-                backgroundImage: `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`,
-                backgroundSize: 'cover', // Default for desktop
-                backgroundPosition: 'center right', // Adjusted for better alignment in mobile view
+                backgroundImage: `${ window.innerWidth > 720 ? `linear-gradient(to right, black 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`:`linear-gradient(to top, black 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`}`,
+                backgroundSize: window.innerWidth > 720 ? 'cover' : 'cover', // Keep cover for both
+                backgroundPosition: window.innerWidth > 720 ? 'center right' : 'center right', // Position more precisely for each view
                 backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed' // Sticky background effect on desktop
+                backgroundAttachment: window.innerWidth > 720 ? 'fixed' : 'scroll' // Fixed on desktop, scroll on mobile
             }}
         >
             <div className="px-10 mb-14 md:mb-0 md:px-20">
@@ -63,7 +63,7 @@ export default function Header(props) {
                     </h1>
                 </div>
                 <div className="animate-fade-up">
-                    <p className='text-white text-xl 2xl:text-2xl mb-4'>{description}</p>
+                    <p className='text-white text-xl 2xl:text-2xl mb-4 md:w-3/4'>{description}</p>
                     <div className='flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0 md:w-1/2'>
                         {links.map(renderLinkItem)}
                     </div>
