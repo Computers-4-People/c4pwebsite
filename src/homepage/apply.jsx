@@ -7,17 +7,31 @@ import InfoCard from "../components/infocard";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
+// const handleScroll = (id) => {
+//     const element = document.getElementById(id);
+//     const offset = 100;  // Adjust this value to leave space above the h1
+//     const bodyRect = document.body.getBoundingClientRect().top;
+//     const elementRect = element.getBoundingClientRect().top;
+//     const elementPosition = elementRect - bodyRect;
+//     const offsetPosition = elementPosition - offset;
+
+//     window.scrollTo({
+//         top: offsetPosition,
+//         behavior: "smooth"
+//     });
+// };
+
 const handleScroll = (id) => {
     const element = document.getElementById(id);
-    const offset = 100;  // Adjust this value to leave space above the h1
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
+    if (!element) return; // Ensure the element exists
+
+    const headerOffset = 60;  // Adjust this to match your fixed header height
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
 
     window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
     });
 };
 
