@@ -77,7 +77,6 @@ export default function Team() {
                     <img src="Dylan Zajac.png" className="w-auto h-auto object-contain" alt="Dylan Zajac" />
                     <img src="Nichool Castro.png" className="w-auto h-auto object-contain" alt="Nichool Castro" />
                     <img src="devin monserrate.png" className="w-auto h-auto object-contain" alt="Devin Monserrate" />
-                    <img src="David Kieser.png" className="w-auto h-auto object-contain" alt="David Kieser" />
                 </div>
             </div>
 
