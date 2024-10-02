@@ -52,7 +52,7 @@ export default function Programs() {
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/Programs/Programs/unlocking_access_to_the_digital_world.jpg',
+                bgImage: '/Programs/Programs/unlocking_access_to_the_new_digital_world.jpg',
                 titlePart1: 'Uncover Possibilities',
                 titlePart2: 'with Our Programs',
                 description: 'Seize the opportunities at your fingertips with our programs—refurbished devices, affordable broadband, and essential digital skills courses  - are designed to help you become who you’re meant to be in the digital age.',
