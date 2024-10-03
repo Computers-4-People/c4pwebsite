@@ -17,7 +17,7 @@ export default function Pepper() {
     <div id="main-content" >
     <Header props={
         {
-            bgImage: '../pepper/pepperbackground.png',
+            bgImage: '../pepper/pepperfestbackground.jpg',
             titlePart1: <div><span className='text-[#D10000]'>Spice Up</span> the End of Summer</div>,
             titlePart2: 'at the Hoboken PepperFest',
             description: `Don't miss out on the ultimate spicy showdown! Join 300+ people for a thrilling festival, pepper-eating competition, and more! Be part of this fundraiser supporting Computers 4 People's programs`,
