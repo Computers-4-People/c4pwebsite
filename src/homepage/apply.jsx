@@ -69,7 +69,7 @@ export default function Apply() {
         }
       ];
     return (
-        <div  id="main-content" className='font-sans'>
+        <div  id="main-content" className='font-sans overflow-hidden'>
         <Header props={{
             bgImage: '/refurbished/refurbishedbackground.png',
             titlePart1: 'UNLOCKING OPPORTUNITIES,',
