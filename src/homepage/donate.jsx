@@ -38,7 +38,7 @@ export default function Donate () {
         {
             titlePart1: "Donatable Devices",
             titlePart2: "are Refurbished & Clean",
-            description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-recepits provided via email.",
+            description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-receipts provided via email.",
             image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.JPG",
             alt: 'Volunteer refurbishing a donated device.'
         },
