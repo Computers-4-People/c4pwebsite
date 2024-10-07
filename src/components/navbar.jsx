@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 
 export default function Navbar() {
+    const location = useLocation();
+    const [currentLocation, setCurrentLocation] = useState(location)
     const [isMenuVisible, setMenuVisible] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState(null); // For desktop hover
     const [openDropdowns, setOpenDropdowns] = useState({}); // For mobile clicks
@@ -19,7 +21,9 @@ export default function Navbar() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+
+        setOpenDropdowns()
+    }, [location]);
 
     // Function to toggle dropdowns in mobile view
     const toggleDropdown = (key) => {
