@@ -18,11 +18,14 @@ export default function Navbar() {
 
         window.addEventListener('scroll', handleScroll);
 
+        setMenuVisible(false)
+        setOpenDropdowns({})
+        
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
 
-        setMenuVisible(false)
+
     }, [location]);
 
     // Function to toggle dropdowns in mobile view
