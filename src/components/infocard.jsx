@@ -22,8 +22,8 @@ const InfoCard = ({ cards }) => {
                 <p className="text-c4p">{card.titlePart1}</p>
                 <p className="pb-2">{card.titlePart2}</p>
               </h3>
-              <p className="h-10 pt-8 left-2 w-11/12 group-hover:h-48 border-t-4 duration-500 text-sm">
-                {card.description}
+              <p className="h-10 pt-2 left-2 w-11/12 group-hover:h-48 border-t-4 duration-500 text-sm">
+                <div className='invisible group-hover:visible'> {card.description} </div>
               </p>
             </div>
           </div>
