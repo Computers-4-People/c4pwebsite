@@ -46,6 +46,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Homepage/>}/>
               {/* <Homepage /> */}
+            <Route path='/' element={<Homepage/>}/>
             <Route path="/donate" element={<Donate />}/>
             <Route path="/donate.html" element={<Donate />}/>
            <Route path="/apply" element={<Apply />}/>
