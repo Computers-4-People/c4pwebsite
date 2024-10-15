@@ -127,9 +127,10 @@ export default function Donate () {
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
   height: '100vh',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat'
+  backgroundSize: window.innerWidth > 720 ? 'cover' : 'cover', // Keep cover for both
+  backgroundPosition: window.innerWidth > 720 ? 'center right' : 'center right', // Position more precisely for each view
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: window.innerWidth > 720 ? 'fixed' : 'scroll' // Fixed on desktop, scroll on mobile
 }} className="bg-fixed">
   <iframe
     scrolling="no"
