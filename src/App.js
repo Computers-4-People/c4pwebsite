@@ -56,6 +56,7 @@ function App() {
             <Route path="/careers" element={<Careers />}/>
             <Route path="/about" element={<About />}/>         
             <Route path="/contact" element={<Contact />}/>
+            <Route path="/contact.html" element={<Contact />}/>
             <Route path="/ewastedropoff" element={<Ewastedropoff />}/>
             <Route path="/financialdonation" element={<Financialdonation />}/>
             <Route path="/help" element={<Help />}/>
