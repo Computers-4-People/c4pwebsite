@@ -52,7 +52,7 @@ export default function Navbar() {
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <Link to="/apply" className="hover:text-c4p" onClick={closeMobileMenu}>Apply for a Computer</Link>
                         <Link to="/DSClasses" className="hover:text-c4p" onClick={closeMobileMenu}>Digital Skills Courses</Link>
-                        <Link to="/donate" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Technology</Link>
+                        <Link to="/donate" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Computers</Link>
                     </ul>
                 </div>
             )

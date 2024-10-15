@@ -57,12 +57,12 @@ export default function Footer() {
           {/* Column 3 */}
           <div className="flex flex-col items-center md:items-start">
             <div className="font-bold text-xl mb-4">
-              <Link to="/ewaste" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+              <Link to="/financialdonation" className="hover:text-c4p" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
                 Get Involved
               </Link>
             </div>
             <Link to="/donate" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-              Donate Technology
+              Donate Computers
             </Link>
             <Link to="/financialdonation" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Fund Our Work
