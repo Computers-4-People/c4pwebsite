@@ -89,11 +89,11 @@ export default function Homepage() {
         <InfoCard cards={cardsData} />
       </div>
 
-      <div className="min-h-screen text-black p-5 m-5">
-        <h2 className="ml-14 mb-20 text-5xl font-bold">
+      <div className="text-black p-5 m-5">
+        <h2 className="ml-14 text-5xl font-bold">
           Give Unused Tech a Second Chance!
         </h2>
-        <div className="md:grid grid-rows-6 grid-cols-6 relative">
+        <div className="md:grid grid-rows-3 grid-cols-6 relative">
           <img
             src="../secondchance.png"
             className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
