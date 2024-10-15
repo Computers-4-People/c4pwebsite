@@ -14,21 +14,21 @@ export default function Press() {
             link: 'https://www.youtube.com/watch?v=6IxUYncb8OE&t=281s'
         },
         {
-            image: '/press/forbesteens.png',
+            image: '/press/forbesteens.PNG',
             title: 'Teens Teaming With Teens To Create A Better World',
             date: 'May 16, 2024',
             description: 'Forbes',
             link: 'https://www.forbes.com/sites/katevitasek/2024/05/16/teens-teaming-with-teens-to-create-a-better-world/'
         },
         {
-            image: '/press/whiteboard.jpg',
+            image: '/press/whiteboard.JPG',
             title: 'Babson student expands nonprofit that refurbishes computers',
             date: 'April 30, 2024',
             description: 'BostInno',
             link: 'https://www.bizjournals.com/boston/inno/stories/news/2024/04/30/baboon-computers4people-babson.html'
         },
         {
-            image: '/press/comcastnewsmakers.png',
+            image: '/press/comcastnewsmakers.PNG',
             title: 'A Nonprofit is Closing the Digital Divide and Reducing E-Waste',
             date: 'August 5, 2024',
             description: 'Comcast Newsmakers',
