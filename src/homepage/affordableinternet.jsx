@@ -64,7 +64,7 @@ export default function AffordableInternet() {
               <li>✅ No contract, renew yearly</li>
             </ul>
             <a
-              href="/coverage-map"
+              href="https://www.t-mobile.com/coverage/coverage-map?icid=MGPO_TMO_C_5GNETWORK_MJR8SPU7KMEJO9V30719"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-block bg-c4p hover:bg-c4p-hover text-white font-semibold px-4 py-2 rounded-md shadow-md"
@@ -103,7 +103,7 @@ export default function AffordableInternet() {
           Renew your internet plan and stay connected to the world.
         </p>
         <a
-          href="/renew"
+          href="https://zfrmz.com/gJV8kQamz35e1CFDLp9e"
           className="bg-c4p hover:bg-c4p-hover text-white font-semibold px-8 py-4 rounded-md shadow-md"
         >
           Renew Your Internet
