@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         c4p:{DEFAULT:"#17de43", 
-          hover:"#00624b"
+          hover:"#2e8b57"
         },
       }
     },

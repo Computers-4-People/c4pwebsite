@@ -8,49 +8,55 @@ const missionControlMembers = [
   {
     name: "Dylan Zajac",
     title: "Founder & Executive Director",
-    photo: "Dylan Zajac.png",
+    photo: "DylanZajac.png",
     link: "https://www.linkedin.com/in/dylanzajac/",
   },
   {
     name: "Nichool Castro",
     title: "Communications Manager",
-    photo: "Nichool.png",
+    photo: "NichoolCastro.png",
     link: "https://www.linkedin.com/in/castronichool/",
   },
   {
     name: "Devin Monserrate",
     title: "Program Manager NJ/NYC",
-    photo: "Devin.png",
+    photo: "DevinMonserrate.png",
     link: "https://www.linkedin.com/in/devin-monserrate21/",
+  },
+  {
+    name: "Gray, Gray, Gray LLP",
+    title: "Finance Team",
+    photo: "gggllp.png",
+    link: "https://www.linkedin.com/company/gray-gray-&-gray/",
   },
   {
     name: "Joseph Bergmann",
     title: "Software Engineer",
-    photo: "Joseph.png",
-    link: "",
+    photo: "JosephBergmann.png",
+    link: "https://www.linkedin.com/in/joseph-bergmann-06855a268/",
   },
   {
     name: "Hector Ramos",
     title: "Computer Donation Supervisor NJ/NYC",
-    photo: "Hector.png",
+    photo: "HectorRamos.png",
     link: "",
   },
   {
     name: "Salvador Medina",
     title: "Ambassador NJ/NYC",
-    photo: "Sal.png",
+    photo: "SalvadorMedina.png",
     link: "",
   },
   {
     name: "Elmehdi Ghardi",
     title: "Ambassador MA (Tech)",
-    photo: "Mehdi.png",
+    photo: "ElmehdiGhardi.png",
     link: "https://www.linkedin.com/in/elmehdi-ghardi-6b73a1233/",
   },
   {
     name: "Arnold Ssemuyaga",
     title: "Ambassador MA (Logistics)",
-    photo: "Arnold.png",
+    photo: "ArnoldSsemuyaga.png",
     link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
   },
 ];
@@ -61,41 +67,41 @@ const teamMembers = [
     name: "Sally Bowman", 
     title: "President", 
     company: "Metro Flood Defense", 
-    photo: "Sally Bowman.png",
+    photo: "SallyBowman.png",
     link: "https://www.linkedin.com/in/sally-bowman-4883a0ba/"
   },
   { 
     name: "Greg Camas", 
     title: "Treasurer", 
-    photo: "Greg Camas.png", 
+    photo: "GregCamas.png", 
     link: "https://www.linkedin.com/in/gregcamas/" 
   },
   { 
     name: "Paul Zajac", 
     title: "Vice President", 
     company: "Invesco", 
-    photo: "Paul Zajac.png",
+    photo: "PaulZajac.png",
     link: "https://www.linkedin.com/in/paul-zajac-b964495/"
   },
   { 
     name: "Andrew Prodromos", 
     title: "Board Member", 
     company: "Insight Partners", 
-    photo: "Andrew Prodromos.png",
+    photo: "AndrewProdromos.png",
     link: "https://www.linkedin.com/in/andrew-prodromos-583a254/"
   },
   { 
     name: "Jerome Abernathy", 
     title: "Board Member", 
     company: "Hoboken Public Library", 
-    photo: "Jerome Abernathy.png",
+    photo: "JeromeAbernathy.png",
     link: "https://www.linkedin.com/in/jerome-abernathy-ph-d-5a5a79/" 
   },
   { 
     name: "David Neves", 
     title: "Board Member", 
     company: "PGIM", 
-    photo: "David Neves.png",
+    photo: "DavidNeves.png",
     link: "https://www.linkedin.com/in/david-neves-digital-marketing-executive/"
   },
 ];
