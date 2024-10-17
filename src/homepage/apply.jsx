@@ -86,9 +86,8 @@ export default function Apply() {
         }} />
         <Testimonial props={{
             title2: 'Our devices come from generous donors',
-            desc2: 'Our devices come from individuals and organizations who generously provide their unused equipment to us.' +
-            'Each device undergoes a meticulous refurbishing and data wiping process to be in optimal condition before being matched to a recipient.' +
-            'Due to our reliance on donated devices, there may be a waiting period for computer applicants.',
+            desc2: 'Our devices come from individuals and organizations who generously provide their unused equipment to us. Each device undergoes a meticulous refurbishing and data wiping process to be in optimal condition before being matched to a recipient. Due to our' +
+            ' reliance on donated devices, there may be a waiting period for computer applicants.',
             image: '../refurbished/luis.png',
             side: 'right'
         }}/>
