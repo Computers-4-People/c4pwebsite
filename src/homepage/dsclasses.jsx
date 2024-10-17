@@ -38,7 +38,6 @@ export default function DSClasses() {
             <div className='h-full bg-cover px-20 pb-10 space-y-10'>
                 <div id="digital-classes">
                     <h2 className='text-6xl font-title '>Explore our current digital skills courses</h2>
-                    <p className='text-xl'>Click to learn more about each course's curriculum and eligibility</p>
                 </div>
                 <div className='shadow-2xl rounded-xl grid grid-cols-6 grid-rows-1 gap-3' style={{}}>
                     <img src="../Programs/Digital Skills/Axel_Insternational_Volunteer_Refurbishing_Computers_Building_PC.jpg" alt="Young adult building a pc from scratch."
