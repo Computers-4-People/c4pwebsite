@@ -84,7 +84,7 @@ export default function About() {
             
             <Testimonial props={{
                 title2: 'Our Vision',
-                desc2: 'A digitally inclusive world where technology bridges divides and a future where every person, regardless of their background or resources, has equal and meaningful access to the digital world',
+                desc2: 'A digitally inclusive world where technology bridges divides and a future where every person, regardless of their background or resources, has equal and meaningful access to the digital world.',
                 image: '../about/our_vision.png'
             }} />
             <Testimonial props={{
