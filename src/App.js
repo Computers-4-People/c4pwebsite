@@ -22,7 +22,7 @@ import Volunteer from './homepage/volunteer';
 import Hotspot from './homepage/hotspot';
 import Checkin from './homepage/checkin';
 import Uploadrecommendation from './homepage/uploadrecommendation';
-import Incomerequirements from './homepage/incomerequirements';
+import Eligibility from './homepage/eligibility';
 import Boardapplication from './homepage/boardapplication';
 import Pepper from './homepage/pepper';
 import AffordableInternet from './homepage/affordableinternet';
@@ -34,7 +34,7 @@ import Scroll from './components/scroll';
 import './App.css';
 // import background from '/images/background.jpg'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import IncomeRequirements from './homepage/incomerequirements';
+import IncomeRequirements from './homepage/eligibility';
 
 function App() {
   // console.log(background);
@@ -72,7 +72,7 @@ function App() {
             <Route path="/hotspot" element={<Hotspot />}/>
             <Route path="/checkin" element={<Checkin />}/>
             <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
-            <Route path="/incomerequirements" element={<IncomeRequirements />}/>
+            <Route path="/eligibility" element={<Eligibility />}/>
             <Route path="/uploadrecommendation.html" element={<Uploadrecommendation />}/>
             <Route path="/boardapplication" element={<Boardapplication />}/>
             <Route path="/volunteer" element={<Volunteer />}/>

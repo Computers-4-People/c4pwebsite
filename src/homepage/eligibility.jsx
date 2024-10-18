@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function IncomeRequirements() {
+export default function Eligibility() {
     const scrollToForm = () => {
         const formSection = document.getElementById("inquiry-form");
         if (formSection) {
