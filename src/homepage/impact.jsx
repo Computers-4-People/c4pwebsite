@@ -34,7 +34,7 @@ export default function Impact() {
             }}/>
 
             <Testimonial props={{
-                title2: `With you we're making big strides`,
+                title2: `With you, we're making big strides`,
                 desc2: 
                 <div className='space-y-10'> 
                     <p>

@@ -15,8 +15,8 @@ export default function About() {
     const cards = [
         {
             titlePart1: "Founded by",
-            titlePart2: "A 15-year-old",
-            description: "In 2019, Dylan Zajac founded Computers 4 People after witnessing the lack of acess to technology in under-resourced communities",
+            titlePart2: "A Teen Entrepreneur",
+            description: "In 2019, at the age of 15, Dylan Zajac launched Computers 4 People, inspired by the lack of access to technology in underserved communities.",
             image: "../about/15-year-old.jpg"
         },
         {
@@ -47,19 +47,19 @@ export default function About() {
     
   const iconsData = [
     {
-      title: "BECOME AN EWASTE DROP-OFF SITE",
+      title: "Become an Electronics Drop-off Site",
       image: "../maps.png",
       alt: "E-Waste Drop-off Site",
       link: "/ewastedropoff"
     },
     {
-      title: "SPONSOR DIGITAL ACCESS",
+      title: "Sponsor Digital Access",
       image: "../handshake.png",
       alt: "Sponsor Digital Access",
       link: "/financialdonation"
     },
     {
-      title: "VOLUNTEER",
+      title: "Volunteer",
       image: "../hands.png",
       alt: "Volunteer",
       link: "/volunteer"
@@ -76,20 +76,20 @@ export default function About() {
                 }} /> 
 <div className='bg-cover bg-black p-16 text-white'>
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>3,096</div><p className='text-3xl'>Computers Donated</p></li>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of Ewaste Recycled</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>3,272</div><p className='text-3xl'>Computers Donated</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>46,538</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
     <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>213</div><p className='text-3xl'>Digital Skills Classes</p></li>
   </ul>
 </div>
             
             <Testimonial props={{
                 title2: 'Our Vision',
-                desc2: 'A digitally inclusive world where technology bridges divides and a future where every person, regardless of their background or resources, has equal and meaningful access to the digital world.',
+                desc2: 'A world where everyone has equal access to technology and its opportunities.',
                 image: '../about/our_vision.png'
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'To bridge the digital divide by repurposing e-waste into educational tools, ensuring equal access to technology for all.',
+                desc2: 'Unlock Access to the Digital World.',
                 image: '../about/our_mission.png',
                 side: 'right'
             }}/> 
@@ -100,7 +100,7 @@ export default function About() {
 
             <div className="bg-cover mb-40 mt-10">
                 <div className="mx-20 md:grid grid-cols-3 md:grid-rows-2 gap-5">
-                    <h2 className="col-span-2 text-9xl font-title uppercase">How You Can Help</h2>
+                    <h2 className="col-span-4 text-9xl font-title uppercase">How You Can Help</h2>
                     <p className="col-span-2 text-4xl ml-2">Discover How You Can Contribute to Digital Equity in Your Community</p>
                 </div>
                 <div className="mt-10">

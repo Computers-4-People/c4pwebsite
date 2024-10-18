@@ -52,12 +52,12 @@ export default function Volunteer() {
                 bgImage: '/volunteer/volunteerbackground.jpg',
                 titlePart1: 'Make an Impact',
                 titlePart2: 'Volunteer with Us',
-                description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or assissting in event planning. Your efforts make a meaningfull difference and help us serve and uplift our community.',
-                links: [{text: 'Signup to Volunteer', url: 'https://charityquest.io/'}, {text: 'Plan a day of service', url: '/contact'}]
+                description: 'Whether it is refurbishing laptops, sorting donations, assisting with translations, or in event planning. Your efforts make a meaningful difference and help us serve and uplift our community.',
+                links: [{text: 'Sign up to volunteer', url: 'https://charityquest.io/'}, {text: 'Plan a day of service', url: '/contact'}]
             }} />
         <Testimonial props={{
             title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',
-            desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
+            desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! <br/>No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
             image: '../volunteer/volunteersacha.png',
             alt: 'Volunteer holding a spicy chili pepper plant for our annual fundraiser Pepper Fest'
         }} />
