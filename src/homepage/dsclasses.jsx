@@ -51,7 +51,7 @@ export default function DSClasses() {
                         <p>Students will be equipped with essential skills that will not only
                             broaden their horizons but also prepare them for a tech-driven future.
                         </p>
-                        <p>For ages 13-18</p>
+                        <p>For ages 13-18.</p>
                     </div>
                 </div>
 
