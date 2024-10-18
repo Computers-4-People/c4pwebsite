@@ -41,7 +41,7 @@ export default function Contact() {
                </p>
                <ul className='list-disc list-inside text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 mt-4 ml-6'>
                    <li>Enhance foot traffic and community engagement.</li>
-                   <li>Showcase commitment to environmental sustainability</li>
+                   <li>Showcase commitment to environmental sustainability.</li>
                    <li>Zero cost involvement.</li>
                    <li>Impact lives and close the digital gap.</li>
                </ul></div>,
@@ -107,7 +107,7 @@ export default function Contact() {
                 Become an electronics drop-off site in minutes
             </h2>
             <p className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7'>
-                Becoming a drop-off site is simple: fill out our form, display a banner to show you're a proud drop-off location, and provide a secure area for a bin (6ft L x 3.5ft W) to store electronics. Call us when the bin is full, and we'll handle pickup, recycling, and refurbishing.
+                Becoming a drop-off site is simple: fill out a form, display a banner to show you're a proud drop-off location, and provide a secure area for a bin (6ft L x 3.5ft W) to store electronics. Call us when the bin is full, and we'll handle pickup, recycling, and refurbishing.
             </p>
             <div className="flex flex-col md:flex-row mt-10">
                 <a onClick={() => scrollToElement('ewasteform')} className="flex items-center justify-center text-center text-xl bg-c4p h-11 rounded-md px-7 hover:bg-c4p-hover hover:text-white mb-4 md:mb-0 md:mr-4 w-full md:w-auto">Join us as a drop-off site</a>

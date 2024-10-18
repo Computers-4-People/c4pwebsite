@@ -23,8 +23,8 @@ export default function Contact() {
                 bgImage: '/Contact Us/contactbackground.png',
                 titlePart1: 'Contact Us',
                 titlePart2: `We're Here to Assist to You`,
-                description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m EST</p> 
-                <p>Visit our Help Center for instant answers or reach out to us for further assistance</p></div>,
+                description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m. EST</p> 
+                <p>Visit our Help Center for instant answers or reach out to us for further assistance.</p></div>,
                 links: [{text: 'Contact our Team', clickAction: () => handleScroll("inquiry-form")}, {text: 'Visit our Help Center', url:"https://computers4people.zohodesk.com/portal/en/home"}]
             }}/>
             <div style={{

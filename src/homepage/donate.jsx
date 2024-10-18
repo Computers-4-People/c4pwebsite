@@ -24,14 +24,14 @@ export default function Donate () {
         {
             titlePart1: "Donors",
             titlePart2: "Arrange a Pickup",
-            description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in ",
+            description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in",
             image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpg",
             alt: 'Dylan Zjac talking to a donor.'
         },
         {
             titlePart1: "Ambassadors Provide",
             titlePart2: "Simple Device Pickup",
-            description: "Ambassadors transport electronic waste to the refurbishing center, where they are catagorized into donatable and non-donatable devices",
+            description: "Ambassadors transport electronic waste to the refurbishing center, where they are categorized into donatable and non-donatable devices",
             image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpg",
             alt: 'Computers 4 People Ambassadors picking up a donation.'
         },
@@ -59,19 +59,19 @@ export default function Donate () {
     ]
     const iconsData = [
         {
-          title: "BECOME AN EWASTE DROP-OFF SITE",
+          title: "Become an Electronics Drop-Off Site",
           image: "../maps.png",
           alt: "E-Waste Drop-off Site",
           link: "/ewastedropoff"
         },
         {
-          title: "SPONSOR DIGITAL ACCESS",
+          title: "Sponsor Digital Access",
           image: "../handshake.png",
           alt: "Sponsor Digital Access",
           link: "/financialdonation"
         },
         {
-          title: "VOLUNTEER",
+          title: "Volunteer",
           image: "../hands.png",
           alt: "Volunteer",
           link: "/volunteer"
@@ -84,7 +84,7 @@ export default function Donate () {
                 bgImage: '/about/serving-3-states.jpg',
                 titlePart1: 'Turn E-Waste',
                 titlePart2: 'into Opportunties',
-                description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning E-waste into tools for a responsible future.</p></div>,
+                description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning e-waste into tools for a responsible future.</p></div>,
                 links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
@@ -102,7 +102,7 @@ export default function Donate () {
                 title2: 'Easy and Convenient Electronics Drop-off sites in your community',
                 desc2: <div>
                             <p className='my-5'>
-                                Computers 4 People provices a hassle-free, complimentary services with
+                                Computers 4 People provides a hassle-free, complimentary services with
                                 convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
                                 your e-waste, and we'll handle the rest for you.
                             </p>
