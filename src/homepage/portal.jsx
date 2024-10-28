@@ -13,7 +13,7 @@ function Portal() {
     const API_BASE_URL =
         process.env.NODE_ENV === 'development'
             ? 'http://localhost:3000'
-            : 'https://www.computers4people.org';
+            : '';
 
     const fetchData = async () => {
         setError('');
@@ -27,8 +27,9 @@ function Portal() {
 
         try {
             const response = await axios.get(`${API_BASE_URL}/api/${module}/${recordId}`);
+            console.log('API Response:', response.data);
             if (response.data.error) {
-                setError('Record not found.');
+                setError(response.data.error);
             } else {
                 setData(response.data);
 
@@ -45,8 +46,12 @@ function Portal() {
                 }
             }
         } catch (error) {
-            console.error('Error fetching data:', error.message);
-            setError('Network Error: Unable to retrieve data.');
+            console.error('Error fetching data:', error);
+            if (error.response && error.response.data && error.response.data.error) {
+                setError(error.response.data.error);
+            } else {
+                setError('Network Error: Unable to retrieve data.');
+            }
         }
     };
 
@@ -55,13 +60,14 @@ function Portal() {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Recipient', searchValue: recipientId },
             });
+            console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
             } else {
                 console.log('No inventory data found for this recipient.');
             }
         } catch (error) {
-            console.error('Error fetching inventory data:', error.message);
+            console.error('Error fetching inventory data:', error);
         }
     };
 
@@ -70,13 +76,14 @@ function Portal() {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Donor_ID', searchValue: donorId },
             });
+            console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
             } else {
                 console.log('No inventory data found for this donor.');
             }
         } catch (error) {
-            console.error('Error fetching inventory data:', error.message);
+            console.error('Error fetching inventory data:', error);
         }
     };
 
