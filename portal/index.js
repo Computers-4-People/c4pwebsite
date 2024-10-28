@@ -11,17 +11,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Set up CORS to allow requests from both localhost and your production domain
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'https://computers4people.org',
-    'https://www.computers4people.org',
-];
-
-app.use(cors({
-    origin: allowedOrigins,
-}));
+// Allow all origins (since frontend and backend are on the same domain)
+app.use(cors());
 
 let cachedAccessToken = null;
 let tokenExpiration = null;
@@ -51,7 +42,8 @@ async function getZohoAccessToken() {
         return cachedAccessToken;
     } catch (error) {
         console.error("Error obtaining access token:", error.response ? error.response.data : error.message);
-        throw new Error('Failed to obtain access token');
+        // Return null or throw an error
+        return null;
     }
 }
 
@@ -62,6 +54,9 @@ app.get('/api/:module/:recordId', async (req, res) => {
 
     try {
         const accessToken = await getZohoAccessToken();
+        if (!accessToken) {
+            return res.status(500).json({ error: 'Failed to obtain access token' });
+        }
         const response = await axios.get(`https://www.zohoapis.com/crm/v2/${module}/${recordId}`, {
             headers: {
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -77,7 +72,7 @@ app.get('/api/:module/:recordId', async (req, res) => {
         }
     } catch (error) {
         console.error(`Error fetching ${module} data:`, error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'An error occurred while fetching the data.' });
+        res.status(500).json({ error: error.response ? error.response.data : 'An error occurred while fetching the data.' });
     }
 });
 
@@ -93,6 +88,9 @@ app.get('/api/computer-inventory', async (req, res) => {
 
     try {
         const accessToken = await getZohoAccessToken();
+        if (!accessToken) {
+            return res.status(500).json({ error: 'Failed to obtain access token' });
+        }
 
         let criteria;
         // Adjust the criteria based on the field and data type
@@ -136,7 +134,7 @@ app.get('/api/computer-inventory', async (req, res) => {
         }
     } catch (error) {
         console.error("Error fetching inventory data:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'An error occurred while fetching inventory data.' });
+        res.status(500).json({ error: error.response ? error.response.data : 'An error occurred while fetching inventory data.' });
     }
 });
 
