@@ -9,6 +9,9 @@ function Portal() {
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
 
+    // Set the API base URL dynamically based on environment variable
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
+
     const fetchData = async () => {
         setError('');
         setData(null);
@@ -20,7 +23,7 @@ function Portal() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:3000/api/${module}/${recordId}`);
+            const response = await axios.get(`${API_BASE_URL}/api/${module}/${recordId}`);
             if (response.data.error) {
                 setError("Record not found.");
             } else {
@@ -45,7 +48,7 @@ function Portal() {
 
     const fetchInventoryByRecipientId = async (recipientId) => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/computer-inventory`, {
+            const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: "Recipient", searchValue: recipientId }
             });
             if (response.data && response.data.length > 0) {
@@ -60,7 +63,7 @@ function Portal() {
 
     const fetchInventoryByDonorId = async (donorId) => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/computer-inventory`, {
+            const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: "Donor_ID", searchValue: donorId }
             });
             if (response.data && response.data.length > 0) {
