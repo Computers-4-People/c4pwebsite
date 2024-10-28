@@ -18,3 +18,32 @@
     url("./fonts/BebasNeue-Regular.ttf") format("TrueType");
   font-weight: normal;
 }
+.applicant-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.applicant-info {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.progress-step {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.progress-step.completed {
+  background-color: #4caf50;
+  color: #fff;
+}
