@@ -9,8 +9,19 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
 app.use(express.json());
+
+// Set up CORS to allow requests from both localhost and your production domain
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://computers4people.org',
+    'https://www.computers4people.org',
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+}));
 
 let cachedAccessToken = null;
 let tokenExpiration = null;
@@ -51,7 +62,7 @@ app.get('/api/:module/:recordId', async (req, res) => {
 
     try {
         const accessToken = await getZohoAccessToken();
-        const response = await axios.get(`${process.env.ZOHO_API_BASE_URL}/${module}/${recordId}`, {
+        const response = await axios.get(`https://www.zohoapis.com/crm/v2/${module}/${recordId}`, {
             headers: {
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
             },
@@ -84,26 +95,28 @@ app.get('/api/computer-inventory', async (req, res) => {
         const accessToken = await getZohoAccessToken();
 
         let criteria;
-        if (searchField === 'Recipient') {
-            // Recipient is a TEXT field, compare as string
-            criteria = `(${searchField}=="${searchValue}")`;
-        } else if (searchField === 'Donor_ID') {
-            // Donor_ID is a numeric field, compare as number
-            criteria = `(${searchField}==${searchValue})`;
+        // Adjust the criteria based on the field and data type
+        if (searchField === 'Donor_ID') {
+            // Donor_ID is a numeric field
+            criteria = `(${searchField} == ${searchValue})`;
+        } else if (searchField === 'Recipient') {
+            // Recipient is a text field
+            criteria = `(${searchField} == "${searchValue}")`;
         } else if (!isNaN(searchValue)) {
-            // Numeric field
-            criteria = `(${searchField}==${searchValue})`;
+            // Other numeric fields
+            criteria = `(${searchField} == ${searchValue})`;
         } else {
-            // String field
-            criteria = `(${searchField}=="${searchValue}")`;
+            // String fields
+            criteria = `(${searchField} == "${searchValue}")`;
         }
 
         // URL-encode the criteria
         const encodedCriteria = encodeURIComponent(criteria);
 
         // Use the correct report name from your Zoho Creator app
-        const url = `${process.env.ZOHO_CREATOR_API_BASE_URL}/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${encodedCriteria}`;
+        const url = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${encodedCriteria}`;
 
+        console.log("Constructed criteria:", criteria);
         console.log("Requesting Search URL:", url);
 
         const response = await axios.get(url, {
@@ -128,5 +141,5 @@ app.get('/api/computer-inventory', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
