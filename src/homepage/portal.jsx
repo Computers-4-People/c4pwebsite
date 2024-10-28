@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 
-function ApplicantDetails() {
+function Portal() {
     const [recordId, setRecordId] = useState('');
     const [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
     const [data, setData] = useState(null);
@@ -84,7 +84,7 @@ function ApplicantDetails() {
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Application Submitted</h3>
-                        <p>We have your application, we are now waiting on the recommendation letter from your nominating recommender (listed below). We will not review your application until we receive this.</p>
+                        <p>We have your application, we are now waiting on the recommendation letter from the nominating recommender (listed below). We will not review your application until we receive this.</p>
                     </div>
                 );
             case "Recommendation Received":
@@ -134,6 +134,40 @@ function ApplicantDetails() {
             const weight = parseFloat(item.Weight) || 0;
             return total + weight;
         }, 0);
+    };
+
+    // Function to convert inventory data to CSV and trigger download
+    const downloadCSV = () => {
+        if (inventoryData.length === 0) {
+            alert("No inventory data available to download.");
+            return;
+        }
+
+        // Define the headers you want to include in the CSV
+        const headers = ['Model', 'Computer_Type', 'Date_Added', 'Date_Donated', 'Date_Recycled', 'Weight'];
+
+        // Create rows from inventoryData
+        const rows = inventoryData.map(item => [
+            item.Model || '',
+            item.Computer_Type || '',
+            item.Date_Added || '',
+            item.Date_Donated || '',
+            item.Date_Recycled || '',
+            item.Weight || ''
+        ]);
+
+        // Combine headers and rows
+        const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+
+        // Create a blob and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute('download', 'donated_computers.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
@@ -245,6 +279,16 @@ function ApplicantDetails() {
                                         </div>
                                     </div>
 
+                                    {/* Download CSV Button */}
+                                    <div className="flex justify-end mb-4">
+                                        <button
+                                            onClick={downloadCSV}
+                                            className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700"
+                                        >
+                                            Download CSV
+                                        </button>
+                                    </div>
+
                                     <h3 className="text-xl font-semibold text-c4p mb-4">Donated Computers</h3>
                                     <table className="min-w-full bg-white">
                                         <thead>
@@ -286,4 +330,4 @@ function ApplicantDetails() {
     );
 }
 
-export default ApplicantDetails;
+export default Portal;

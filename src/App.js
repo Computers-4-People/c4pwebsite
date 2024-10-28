@@ -25,7 +25,7 @@ import Uploadrecommendation from './homepage/uploadrecommendation';
 import Eligibility from './homepage/eligibility';
 import Boardapplication from './homepage/boardapplication';
 import Pepper from './homepage/pepper';
-import ApplicantDetails from './homepage/ApplicantDetails';
+import Portal from './homepage/portal';
 import AffordableInternet from './homepage/affordableinternet';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
@@ -78,7 +78,7 @@ function App() {
             <Route path="/boardapplication" element={<Boardapplication />}/>
             <Route path="/volunteer" element={<Volunteer />}/>
             <Route path="/affordableinternet" element={<AffordableInternet />}/>
-            <Route path="/applicantdetails" element={<ApplicantDetails />}/>
+            <Route path="/portal" element={<Portal />}/>
             <Route path="/pepper" element={<Pepper />}/>
             <Route path="/pepper.html" element={<Pepper />}/>
             <Route path="/Pepper-Fest" element={<Pepper />}/>
