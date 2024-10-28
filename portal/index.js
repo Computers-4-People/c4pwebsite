@@ -3,6 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 let cachedAccessToken = null;
 let tokenExpiration = null;
 
+// Function to obtain Zoho access token using the refresh token
 async function getZohoAccessToken() {
     const currentTime = Date.now();
 
@@ -34,8 +36,7 @@ async function getZohoAccessToken() {
 
         cachedAccessToken = response.data.access_token;
         tokenExpiration = Date.now() + (response.data.expires_in - 60) * 1000;
-
-        console.log("New Access Token:", cachedAccessToken);
+        console.log("New Access Token obtained.");
         return cachedAccessToken;
     } catch (error) {
         console.error("Error obtaining access token:", error.response ? error.response.data : error.message);
@@ -43,7 +44,7 @@ async function getZohoAccessToken() {
     }
 }
 
-// Endpoint to fetch data from any module by record ID
+// Endpoint to fetch primary record data from Zoho CRM
 app.get('/api/:module/:recordId', async (req, res) => {
     const { module, recordId } = req.params;
     console.log(`Received request for module: ${module}, ID: ${recordId}`);
@@ -57,7 +58,7 @@ app.get('/api/:module/:recordId', async (req, res) => {
         });
 
         if (response.data.data && response.data.data.length > 0) {
-            console.log(`${module} data retrieved:`, response.data.data[0]);
+            console.log(`${module} data retrieved.`);
             res.json(response.data.data[0]);
         } else {
             console.log("Record not found");
@@ -69,44 +70,63 @@ app.get('/api/:module/:recordId', async (req, res) => {
     }
 });
 
-// Enhanced endpoint to fetch related list data for a specific record
-app.get('/api/:module/:recordId/:relatedList', async (req, res) => {
-    const { module, recordId, relatedList } = req.params;
-    console.log(`Received request for related list: ${relatedList} of ${module}, ID: ${recordId}`);
+// Endpoint to search for records in Zoho Creator's Computer Inventory by a search field and value
+app.get('/api/computer-inventory', async (req, res) => {
+    const { searchField, searchValue } = req.query;
+
+    if (!searchField || !searchValue) {
+        return res.status(400).json({ error: "Please provide searchField and searchValue query parameters." });
+    }
+
+    console.log(`Searching for Computer Inventory records with ${searchField}: ${searchValue}`);
 
     try {
         const accessToken = await getZohoAccessToken();
 
-        // Construct related list API request URL
-        const relatedListURL = `${process.env.ZOHO_API_BASE_URL}/${module}/${recordId}/${relatedList}`;
-        console.log("Requesting Related List URL:", relatedListURL);
+        let criteria;
+        if (searchField === 'Recipient') {
+            // Recipient is a TEXT field, compare as string
+            criteria = `(${searchField}=="${searchValue}")`;
+        } else if (searchField === 'Donor_ID') {
+            // Donor_ID is a numeric field, compare as number
+            criteria = `(${searchField}==${searchValue})`;
+        } else if (!isNaN(searchValue)) {
+            // Numeric field
+            criteria = `(${searchField}==${searchValue})`;
+        } else {
+            // String field
+            criteria = `(${searchField}=="${searchValue}")`;
+        }
 
-        const response = await axios.get(relatedListURL, {
+        // URL-encode the criteria
+        const encodedCriteria = encodeURIComponent(criteria);
+
+        // Use the correct report name from your Zoho Creator app
+        const url = `${process.env.ZOHO_CREATOR_API_BASE_URL}/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${encodedCriteria}`;
+
+        console.log("Requesting Search URL:", url);
+
+        const response = await axios.get(url, {
             headers: {
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
             },
         });
 
+        console.log("Zoho Creator API response:", response.data);
+
         if (response.data.data && response.data.data.length > 0) {
-            console.log(`${relatedList} data retrieved for ${module}:`, response.data.data);
+            console.log("Inventory items found.");
             res.json(response.data.data);
         } else {
-            console.log(`No related records found for ${relatedList} in ${module}`);
-            res.status(404).json({ error: "No related records found" });
+            console.log(`No items found with the given ${searchField}`);
+            res.status(404).json({ error: `No items found with the given ${searchField}` });
         }
     } catch (error) {
-        console.error(`Error fetching ${relatedList} data for ${module}:`, error.response ? error.response.data : error.message);
-
-        // Check specific Zoho CRM error response
-        if (error.response && error.response.data && error.response.data.code === "INVALID_DATA") {
-            res.status(400).json({ error: "Invalid related list name. Verify the name in Zoho CRM." });
-        } else {
-            res.status(500).json({ error: 'An error occurred while fetching related list data.' });
-        }
+        console.error("Error fetching inventory data:", error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'An error occurred while fetching inventory data.' });
     }
 });
 
-// Start the backend server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
