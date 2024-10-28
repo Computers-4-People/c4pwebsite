@@ -9,8 +9,11 @@ function Portal() {
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
 
-    // Set the API base URL dynamically based on environment variable
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
+    // Set the API base URL dynamically based on environment
+    const API_BASE_URL =
+        process.env.NODE_ENV === 'development'
+            ? 'http://localhost:3000'
+            : 'https://computers4people.org';
 
     const fetchData = async () => {
         setError('');
@@ -18,23 +21,23 @@ function Portal() {
         setInventoryData([]);
 
         if (!recordId) {
-            setError("Please enter an ID.");
+            setError('Please enter an ID.');
             return;
         }
 
         try {
             const response = await axios.get(`${API_BASE_URL}/api/${module}/${recordId}`);
             if (response.data.error) {
-                setError("Record not found.");
+                setError('Record not found.');
             } else {
                 setData(response.data);
 
                 // Fetch inventory data based on Applicant ID or Donor_ID
-                if (module === "Contacts") {
-                    if (response.data.Status === "Client") {
+                if (module === 'Contacts') {
+                    if (response.data.Status === 'Client') {
                         fetchInventoryByRecipientId(recordId);
                     }
-                } else if (module === "Computer_Donors") {
+                } else if (module === 'Computer_Donors') {
                     const donorId = response.data.Donor_ID;
                     if (donorId) {
                         fetchInventoryByDonorId(donorId);
@@ -42,37 +45,38 @@ function Portal() {
                 }
             }
         } catch (error) {
-            setError("Network Error: Unable to retrieve data.");
+            console.error('Error fetching data:', error.message);
+            setError('Network Error: Unable to retrieve data.');
         }
     };
 
     const fetchInventoryByRecipientId = async (recipientId) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
-                params: { searchField: "Recipient", searchValue: recipientId }
+                params: { searchField: 'Recipient', searchValue: recipientId },
             });
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
             } else {
-                console.log("No inventory data found for this recipient.");
+                console.log('No inventory data found for this recipient.');
             }
         } catch (error) {
-            console.error("Error fetching inventory data:", error.message);
+            console.error('Error fetching inventory data:', error.message);
         }
     };
 
     const fetchInventoryByDonorId = async (donorId) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
-                params: { searchField: "Donor_ID", searchValue: donorId }
+                params: { searchField: 'Donor_ID', searchValue: donorId },
             });
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
             } else {
-                console.log("No inventory data found for this donor.");
+                console.log('No inventory data found for this donor.');
             }
         } catch (error) {
-            console.error("Error fetching inventory data:", error.message);
+            console.error('Error fetching inventory data:', error.message);
         }
     };
 
@@ -83,47 +87,68 @@ function Portal() {
 
         // Map CRM statuses to the new statuses you've provided
         switch (Status) {
-            case "Applicants No Recommendation":
+            case 'Applicants No Recommendation':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Application Submitted</h3>
-                        <p>We have your application, we are now waiting on the recommendation letter from the nominating recommender (listed below). We will not review your application until we receive this.</p>
+                        <p>
+                            We have your application, we are now waiting on the recommendation
+                            letter from the nominating recommender (listed below). We will not
+                            review your application until we receive this.
+                        </p>
                     </div>
                 );
-            case "Recommendation Received":
+            case 'Recommendation Received':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Recommendation Received</h3>
                         <p>We have received the recommendation letter from your recommender!</p>
                     </div>
                 );
-            case "Applicants to approve":
+            case 'Applicants to approve':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Pending Review</h3>
-                        <p>We have everything we need! Our application committee is reviewing your application, please be patient. We will notify you once we have made a decision.</p>
+                        <p>
+                            We have everything we need! Our application committee is reviewing your
+                            application, please be patient. We will notify you once we have made a
+                            decision.
+                        </p>
                     </div>
                 );
-            case "Denied Applicant":
+            case 'Denied Applicant':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Application Denied</h3>
-                        <p><strong>Reason(s):</strong> {Denial_Reason || "Not specified"}</p>
-                        <p>Possible reasons for denial: Not located in NJ, NYC, MA; no recommendation received; recommendation is not from a valid non-profit; don’t meet the income requirements.</p>
+                        <p>
+                            <strong>Reason(s):</strong> {Denial_Reason || 'Not specified'}
+                        </p>
+                        <p>
+                            Possible reasons for denial: Not located in NJ, NYC, MA; no
+                            recommendation received; recommendation is not from a valid non-profit;
+                            don’t meet the income requirements.
+                        </p>
                     </div>
                 );
-            case "Approved Applicants":
+            case 'Approved Applicants':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Application Approved</h3>
-                        <p>You have been approved for a computer, and we will be contacting your recommender shortly to arrange the drop-off. You will be notified once delivered.</p>
+                        <p>
+                            You have been approved for a computer, and we will be contacting your
+                            recommender shortly to arrange the drop-off. You will be notified once
+                            delivered.
+                        </p>
                     </div>
                 );
-            case "Client":
+            case 'Client':
                 return (
                     <div>
                         <h3 className="text-xl font-semibold mb-2">Delivered</h3>
-                        <p>We are happy to inform you that we dropped off the requested computer to {Nominating_Organization || 'your nominating organization'}.</p>
+                        <p>
+                            We are happy to inform you that we dropped off the requested computer to{' '}
+                            {Nominating_Organization || 'your nominating organization'}.
+                        </p>
                     </div>
                 );
             default:
@@ -142,30 +167,39 @@ function Portal() {
     // Function to convert inventory data to CSV and trigger download
     const downloadCSV = () => {
         if (inventoryData.length === 0) {
-            alert("No inventory data available to download.");
+            alert('No inventory data available to download.');
             return;
         }
 
         // Define the headers you want to include in the CSV
-        const headers = ['Model', 'Computer_Type', 'Date_Added', 'Date_Donated', 'Date_Recycled', 'Weight'];
+        const headers = [
+            'Model',
+            'Computer_Type',
+            'Date_Added',
+            'Date_Donated',
+            'Date_Recycled',
+            'Weight',
+        ];
 
         // Create rows from inventoryData
-        const rows = inventoryData.map(item => [
+        const rows = inventoryData.map((item) => [
             item.Model || '',
             item.Computer_Type || '',
             item.Date_Added || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
-            item.Weight || ''
+            item.Weight || '',
         ]);
 
         // Combine headers and rows
-        const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+        const csvContent = [headers, ...rows]
+            .map((e) => e.join(','))
+            .join('\n');
 
         // Create a blob and trigger download
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', 'donated_computers.csv');
         document.body.appendChild(link);
@@ -197,136 +231,234 @@ function Portal() {
                         <button
                             onClick={fetchData}
                             className="w-full p-3 font-semibold text-white rounded hover:bg-green-700"
-                            style={{ backgroundColor: "#17de43" }}
+                            style={{ backgroundColor: '#17de43' }}
                         >
                             Fetch Details
                         </button>
                         {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
                     </>
+                ) : module === 'Contacts' ? (
+                    <div className="applicant-info">
+                        <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
+                            Applicant Tracker
+                        </h2>
+                        <ProgressBar status={data.Status} />
+
+                        <div className="bg-gray-100 p-4 rounded mb-4">
+                            {renderStatusMessage()}
+                        </div>
+                        <div className="p-4 bg-white rounded shadow w-full">
+                            <h2 className="text-2xl font-bold text-center mb-6 text-c4p">
+                                Applicant Information
+                            </h2>
+                            <p>
+                                <strong>Name:</strong> {data.Full_Name || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Email:</strong> {data.Email || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Phone:</strong> {data.Phone || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Nominating Organization:</strong>{' '}
+                                {data.Nominating_Organization || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Recommender Name:</strong>{' '}
+                                {`${data.Recommenders_Name || ''} ${
+                                    data.Recommenders_Last_Name || ''
+                                }`.trim()}
+                            </p>
+                            <p>
+                                <strong>Recommender Email:</strong>{' '}
+                                {data.Recommenders_Email || 'N/A'}
+                            </p>
+                        </div>
+                        <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
+                            <h3 className="text-xl font-semibold text-c4p mb-2">
+                                Computer Request Details
+                            </h3>
+                            {data.Laptop_Quantity && (
+                                <p>
+                                    <strong>Laptop Quantity:</strong> {data.Laptop_Quantity}
+                                </p>
+                            )}
+                            {data.Desktop_Quantity && (
+                                <p>
+                                    <strong>Desktop Quantity:</strong> {data.Desktop_Quantity}
+                                </p>
+                            )}
+                            {data.Tablet_Quantity && (
+                                <p>
+                                    <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
+                                </p>
+                            )}
+                            {/* More quantities if needed */}
+                        </div>
+
+                        {/* Display Assigned Computer Section if Applicant is a Client */}
+                        {data.Status === 'Client' && inventoryData.length > 0 && (
+                            <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
+                                <h3 className="text-xl font-semibold text-c4p mb-2">
+                                    Assigned Computer(s)
+                                </h3>
+                                {inventoryData.map((item) => (
+                                    <div key={item.ID} className="mb-4">
+                                        <p>
+                                            <strong>Model:</strong> {item.Model || 'N/A'}
+                                        </p>
+                                        <p>
+                                            <strong>Status:</strong> {item.Status || 'N/A'}
+                                        </p>
+                                        <p>
+                                            <strong>Computer Type:</strong>{' '}
+                                            {item.Computer_Type || 'N/A'}
+                                        </p>
+                                        <p>
+                                            <strong>Location:</strong> {item.Location || 'N/A'}
+                                        </p>
+                                        {/* Add more fields as needed */}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <button
+                            onClick={() => {
+                                setData(null);
+                                setInventoryData([]);
+                            }}
+                            className="w-full mt-6 p-3 font-semibold text-white rounded hover:bg-green-700"
+                            style={{ backgroundColor: '#17de43' }}
+                        >
+                            Back to Search
+                        </button>
+                    </div>
                 ) : (
-                    module === 'Contacts' ? (
-                        <div className="applicant-info">
-                            <h2 className="text-center text-3xl font-bold mb-4 text-c4p">Applicant Tracker</h2>
-                            <ProgressBar status={data.Status} />
-
-                            <div className="bg-gray-100 p-4 rounded mb-4">
-                                {renderStatusMessage()}
-                            </div>
-                            <div className="p-4 bg-white rounded shadow w-full">
-                                <h2 className="text-2xl font-bold text-center mb-6 text-c4p">Applicant Information</h2>
-                                <p><strong>Name:</strong> {data.Full_Name || 'N/A'}</p>
-                                <p><strong>Email:</strong> {data.Email || 'N/A'}</p>
-                                <p><strong>Phone:</strong> {data.Phone || 'N/A'}</p>
-                                <p><strong>Nominating Organization:</strong> {data.Nominating_Organization || 'N/A'}</p>
-                                <p><strong>Recommender Name:</strong> {`${data.Recommenders_Name || ''} ${data.Recommenders_Last_Name || ''}`.trim()}</p>
-                                <p><strong>Recommender Email:</strong> {data.Recommenders_Email || 'N/A'}</p>
-                            </div>
-                            <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
-                                <h3 className="text-xl font-semibold text-c4p mb-2">Computer Request Details</h3>
-                                {data.Laptop_Quantity && <p><strong>Laptop Quantity:</strong> {data.Laptop_Quantity}</p>}
-                                {data.Desktop_Quantity && <p><strong>Desktop Quantity:</strong> {data.Desktop_Quantity}</p>}
-                                {data.Tablet_Quantity && <p><strong>Tablet Quantity:</strong> {data.Tablet_Quantity}</p>}
-                                {/* More quantities if needed */}
-                            </div>
-
-                            {/* Display Assigned Computer Section if Applicant is a Client */}
-                            {data.Status === "Client" && inventoryData.length > 0 && (
-                                <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
-                                    <h3 className="text-xl font-semibold text-c4p mb-2">Assigned Computer(s)</h3>
-                                    {inventoryData.map((item) => (
-                                        <div key={item.ID} className="mb-4">
-                                            <p><strong>Model:</strong> {item.Model || 'N/A'}</p>
-                                            <p><strong>Status:</strong> {item.Status || 'N/A'}</p>
-                                            <p><strong>Computer Type:</strong> {item.Computer_Type || 'N/A'}</p>
-                                            <p><strong>Location:</strong> {item.Location || 'N/A'}</p>
-                                            {/* Add more fields as needed */}
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            <button
-                                onClick={() => { setData(null); setInventoryData([]); }}
-                                className="w-full mt-6 p-3 font-semibold text-white rounded hover:bg-green-700"
-                                style={{ backgroundColor: "#17de43" }}
-                            >
-                                Back to Search
-                            </button>
+                    // Donor details section
+                    <div className="donor-info">
+                        <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
+                            Donor Details
+                        </h2>
+                        <div className="p-4 bg-green-50 rounded shadow w-full">
+                            <h2 className="text-2xl font-bold mb-4 text-c4p">
+                                Computer Donor Information
+                            </h2>
+                            <p>
+                                <strong>Company:</strong> {data.Company || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Contact Person:</strong> {data.Name || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Email:</strong> {data.Email || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Phone:</strong> {data.Phone || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Location:</strong> {data.Location || 'N/A'}
+                            </p>
+                            <p>
+                                <strong>Mailing Address:</strong>{' '}
+                                {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${
+                                    data.Mailing_State || ''
+                                } ${data.Mailing_Zip || ''}`.trim()}
+                            </p>
                         </div>
-                    ) : (
-                        // Donor details section
-                        <div className="donor-info">
-                            <h2 className="text-center text-3xl font-bold mb-4 text-c4p">Donor Details</h2>
-                            <div className="p-4 bg-green-50 rounded shadow w-full">
-                                <h2 className="text-2xl font-bold mb-4 text-c4p">Computer Donor Information</h2>
-                                <p><strong>Company:</strong> {data.Company || 'N/A'}</p>
-                                <p><strong>Contact Person:</strong> {data.Name || 'N/A'}</p>
-                                <p><strong>Email:</strong> {data.Email || 'N/A'}</p>
-                                <p><strong>Phone:</strong> {data.Phone || 'N/A'}</p>
-                                <p><strong>Location:</strong> {data.Location || 'N/A'}</p>
-                                <p><strong>Mailing Address:</strong> {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${data.Mailing_State || ''} ${data.Mailing_Zip || ''}`.trim()}</p>
-                            </div>
 
-                            {/* Display Donated Computers Section */}
-                            {inventoryData.length > 0 && (
-                                <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
-                                    {/* Display Total Computers Donated and Total Weight */}
-                                    <div className="flex justify-around mb-6">
-                                        <div className="text-center">
-                                            <p className="text-4xl font-bold text-c4p">{inventoryData.length}</p>
-                                            <p className="text-lg">Total Computers Donated</p>
-                                        </div>
-                                        <div className="text-center">
-                                            <p className="text-4xl font-bold text-c4p">{calculateTotalWeight()} lbs</p>
-                                            <p className="text-lg">Total Weight</p>
-                                        </div>
+                        {/* Display Donated Computers Section */}
+                        {inventoryData.length > 0 && (
+                            <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
+                                {/* Display Total Computers Donated and Total Weight */}
+                                <div className="flex justify-around mb-6">
+                                    <div className="text-center">
+                                        <p className="text-4xl font-bold text-c4p">
+                                            {inventoryData.length}
+                                        </p>
+                                        <p className="text-lg">Total Computers Donated</p>
                                     </div>
-
-                                    {/* Download CSV Button */}
-                                    <div className="flex justify-end mb-4">
-                                        <button
-                                            onClick={downloadCSV}
-                                            className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700"
-                                        >
-                                            Download CSV
-                                        </button>
+                                    <div className="text-center">
+                                        <p className="text-4xl font-bold text-c4p">
+                                            {calculateTotalWeight()} lbs
+                                        </p>
+                                        <p className="text-lg">Total Weight</p>
                                     </div>
+                                </div>
 
-                                    <h3 className="text-xl font-semibold text-c4p mb-4">Donated Computers</h3>
-                                    <table className="min-w-full bg-white">
-                                        <thead>
-                                            <tr>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Model</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Computer Type</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Added</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Donated</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Recycled</th>
+                                {/* Download CSV Button */}
+                                <div className="flex justify-end mb-4">
+                                    <button
+                                        onClick={downloadCSV}
+                                        className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700"
+                                    >
+                                        Download CSV
+                                    </button>
+                                </div>
+
+                                <h3 className="text-xl font-semibold text-c4p mb-4">
+                                    Donated Computers
+                                </h3>
+                                <table className="min-w-full bg-white">
+                                    <thead>
+                                        <tr>
+                                            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                Model
+                                            </th>
+                                            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                Computer Type
+                                            </th>
+                                            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                Date Added
+                                            </th>
+                                            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                Date Donated
+                                            </th>
+                                            <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                Date Recycled
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {inventoryData.map((item, index) => (
+                                            <tr
+                                                key={item.ID}
+                                                className={index % 2 === 0 ? 'bg-gray-100' : ''}
+                                            >
+                                                <td className="py-2 px-4 border-b border-gray-200">
+                                                    {item.Model || 'N/A'}
+                                                </td>
+                                                <td className="py-2 px-4 border-b border-gray-200">
+                                                    {item.Computer_Type || 'N/A'}
+                                                </td>
+                                                <td className="py-2 px-4 border-b border-gray-200">
+                                                    {item.Date_Added || 'N/A'}
+                                                </td>
+                                                <td className="py-2 px-4 border-b border-gray-200">
+                                                    {item.Date_Donated || 'N/A'}
+                                                </td>
+                                                <td className="py-2 px-4 border-b border-gray-200">
+                                                    {item.Date_Recycled || 'N/A'}
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {inventoryData.map((item, index) => (
-                                                <tr key={item.ID} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Model || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Computer_Type || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Added || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Donated || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Recycled || 'N/A'}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
 
-                            <button
-                                onClick={() => { setData(null); setInventoryData([]); }}
-                                className="w-full mt-6 p-3 font-semibold text-white rounded hover:bg-green-700"
-                                style={{ backgroundColor: "#17de43" }}
-                            >
-                                Back to Search
-                            </button>
-                        </div>
-                    )
+                        <button
+                            onClick={() => {
+                                setData(null);
+                                setInventoryData([]);
+                            }}
+                            className="w-full mt-6 p-3 font-semibold text-white rounded hover:bg-green-700"
+                            style={{ backgroundColor: '#17de43' }}
+                        >
+                            Back to Search
+                        </button>
+                    </div>
                 )}
             </div>
         </div>
