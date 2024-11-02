@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios/dist/node/axios.cjs');
 
 let cachedAccessToken = null;
 let tokenExpiration = null;
