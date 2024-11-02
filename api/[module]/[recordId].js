@@ -7,7 +7,7 @@ dotenv.config({
 const { getZohoAccessToken } = require('../_utils');
 
 export default async function handler(req, res) {
-  const { module, recordId } = req.params;
+  const { module, recordId } = req.query;
     console.log(`Received request for module: ${module}, ID: ${recordId}`);
 
     try {
@@ -30,8 +30,6 @@ export default async function handler(req, res) {
         }
     } catch (error) {
         console.error(`Error fetching ${module} data:`, error.response ? error.response.data : error.message);
-        res.status(500).json({ error: error.response ? error.response.data : 'An error occurred while fetching the data.' });
+        return res.status(500).json({ error: error.response ? error.response.data : 'An error occurred while fetching the data.' });
     }
-
-  res.status(200).json({ name: "John Doe" });
 }
