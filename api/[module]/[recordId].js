@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios/dist/node/axios.cjs');
 const dotenv = require('dotenv');
 // Load environment variables from .env file
 dotenv.config({
