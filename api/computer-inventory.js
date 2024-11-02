@@ -1,8 +1,13 @@
 const axios = require('axios');
-const { getZohoAccessToken } = require('../_utils');
+const dotenv = require('dotenv');
+// Load environment variables from .env file
+dotenv.config({
+    path: './.env.local'
+});
+const { getZohoAccessToken } = require('./_utils');
 
 export default async function handler(req, res) {
-  const { searchField, searchValue } = req.query;
+    const { searchField, searchValue } = req.query;
 
     if (!searchField || !searchValue) {
         return res.status(400).json({ error: "Please provide searchField and searchValue query parameters." });

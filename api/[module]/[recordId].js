@@ -1,4 +1,9 @@
 const axios = require('axios');
+const dotenv = require('dotenv');
+// Load environment variables from .env file
+dotenv.config({
+  path: './.env.local'
+});
 const { getZohoAccessToken } = require('../_utils');
 
 export default async function handler(req, res) {
