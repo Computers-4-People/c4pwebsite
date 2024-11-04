@@ -32,7 +32,7 @@ export default function Homepage() {
       titlePart2: "With a Donation",
       description:
         "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../Homepage/starts.JPG",
+      image: "../Homepage/starts.jpeg",
       alt: 'Donor holding a stack of laptops for donation to Computers 4 People.'
     },
     {
@@ -40,14 +40,14 @@ export default function Homepage() {
       titlePart2: "Refurbishment",
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../Homepage/undergoes.jpg",
+      image: "../Homepage/undergoes.jpeg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
       titlePart1: "Match",
       titlePart2: "With a Recipient",
       description: "Devices are redistributed to people in underserved communities.",
-      image: "../Homepage/match.png",
+      image: "../Homepage/match.jpeg",
       alt: 'White Van with a green sign and the logo of Computers 4 People'
     },
     {
@@ -55,7 +55,7 @@ export default function Homepage() {
       titlePart2: "Catalyst for Change",
       description:
         "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../Homepage/becomes.jpg",
+      image: "../Homepage/becomes.jpeg",
       alt: 'Senior recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
     },
     {
@@ -63,7 +63,7 @@ export default function Homepage() {
       titlePart2: "People to succeed",
       description:
         "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../Homepage/equip.jpg",
+      image: "../Homepage/equip.jpeg",
       alt: 'Dylan Zajac hosting Digital Skills Classes at the Community Access Venue in front of recipients and community members in need.'
     },
   ];
