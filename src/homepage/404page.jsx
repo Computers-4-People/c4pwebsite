@@ -5,7 +5,7 @@ export default function Programs() {
     return (
         <div id="main-content" className='font-sans'>
             <Header props={{
-                bgImage: '/404page/404background.png',
+                bgImage: '/404page/404background.jpeg',
                 titlePart1: '404 Page Not Found',
                 titlePart2: '',
                 description: 'Tech can be a little confusing, but don’t worry, we’ve got your back. Need help?',
