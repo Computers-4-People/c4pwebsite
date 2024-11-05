@@ -38,7 +38,7 @@ export default function Press() {
 
     const pressItems2 = [
         {
-            image: 'IMG_9672.jpeg',
+            image: '/press/IMG_9672.jpeg',
             title: 'Computers 4 People has partnered with Dvine Konektion and 123 Recycling to distribute  150 refurbished computers to families in West New York, NJ',
             date: 'November 5, 2024',
             link: '/press/recyclingtechgivinghope.pdf'
