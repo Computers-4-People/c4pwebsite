@@ -25,35 +25,35 @@ export default function Donate () {
             titlePart1: "Donors",
             titlePart2: "Arrange a Pickup",
             description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in",
-            image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpg",
+            image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpeg",
             alt: 'Dylan Zjac talking to a donor.'
         },
         {
             titlePart1: "Ambassadors Provide",
             titlePart2: "Simple Device Pickup",
             description: "Ambassadors transport electronic waste to the refurbishing center, where they are categorized into donatable and non-donatable devices",
-            image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpg",
+            image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg",
             alt: 'Computers 4 People Ambassadors picking up a donation.'
         },
         {
             titlePart1: "Donatable Devices",
             titlePart2: "are Refurbished & Clean",
             description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-receipts provided via email.",
-            image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.JPG",
+            image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.jpeg",
             alt: 'Volunteer refurbishing a donated device.'
         },
         {
             titlePart1: "Non-Donatable Devices",
             titlePart2: "Are Properly Recycled",
             description: "Non-donatable devices are properly recycled and disposed of with materials that can be reused and transformed into items such as cans and bottles.",
-            image: "/Programs/E-waste/Images/Volunteer_Sorting_ewaste.png",
+            image: "/Programs/E-waste/Images/Volunteer_Sorting_ewaste.jpeg",
             alt: 'Volunteer categorizing and recycling e waste and electronics.'
         },
         {
             titlePart1: "Recipients",
             titlePart2: "Obtain Computers",
             description: "Refurbished devices are matched with individuals and organizations in need, fostering digital equity in under-resourced communities.",
-            image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpg",
+            image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpeg",
             alt: 'A woman of advanced age receiving a refurbished computer and green computers 4 people tote bag.'
         }
     ]
@@ -81,7 +81,7 @@ export default function Donate () {
         <div id="main-content" >
         <div className='font-sans mb-20 overflow-x-hidden'>
             <Header props={{
-                bgImage: '/about/serving-3-states.jpg',
+                bgImage: '/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg',
                 titlePart1: 'Turn E-Waste',
                 titlePart2: 'into Opportunties',
                 description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning e-waste into tools for a responsible future.</p></div>,
@@ -108,7 +108,7 @@ export default function Donate () {
                             </p>
                             <p>Tax receipts are provided upon request.</p>
                      </div>,
-                image: '/refurbished/luis.png',
+                image: '/Programs/E-waste/Images/Donor_with_Bulk_Ewaste_Laptops.jpeg',
                 alt: 'Donor holding a bulk of donated laptops to be refurbished and redistributed to people in need.'
             }}/>
             </div>
