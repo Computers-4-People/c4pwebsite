@@ -41,19 +41,19 @@ export default function Apply() {
           titlePart1: "Donors",
           titlePart2: "Schedule A Pickup",
           description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-          image: "../refurbished/donors.JPG"
+          image: "../refurbished/donors.jpeg"
         },
         {
             titlePart1: "Individuals & Orgs",
             titlePart2: "Apply for a Device",
             description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-            image: "../refurbished/ambasadors.JPG"
+            image: "../refurbished/ambasadors.jpeg"
         },
         {
             titlePart1: "Devices",
             titlePart2: "Undergoes Refurbishing",
             description: "Computers 4 People refurbishes and cleans computers thoroughly to optimal condition.",
-            image: "../refurbished/devices.JPG"
+            image: "../refurbished/devices.jpeg"
         },
         {
             titlePart1: "Recipients",
@@ -65,13 +65,13 @@ export default function Apply() {
             titlePart1: "A Catalyst",
             titlePart2: "of Change Begins",
             description: "Computers 4 People follows up via email to see how the computer is enabling opportunities and gather feedback.",
-            image: "../refurbished/catalyst.png"
+            image: "../refurbished/catalyst.jpeg"
         }
       ];
     return (
         <div  id="main-content" className='font-sans overflow-hidden'>
         <Header props={{
-            bgImage: '/refurbished/refurbishedbackground.png',
+            bgImage: '/refurbished/refurbishedbackground.jpeg',
             titlePart1: 'UNLOCKING OPPORTUNITIES,',
             titlePart2: 'ONE COMPUTER AT A TIME',
             description: <div className='space-y-10'><p>Computers 4 People works tirelessly to refurbish and deliver donated devices to those in need. Complete our 10-min application today!</p></div>,
