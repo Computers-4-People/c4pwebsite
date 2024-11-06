@@ -17,31 +17,31 @@ export default function About() {
             titlePart1: "Founded by",
             titlePart2: "A Teen Entrepreneur",
             description: "In 2019, at the age of 15, Dylan Zajac launched Computers 4 People, inspired by the lack of access to technology in underserved communities.",
-            image: "../about/15-year-old.jpg"
+            image: "../about/15-year-old.jpeg"
         },
         {
             titlePart1: "To Bridge the Digital",
             titlePart2: "Gap across NJ & NYC",
             description: "In 2021, Computers 4 People opened its first office in Hoboken, NJ, and continued its first program: refurbishing and redistributing donated devices to people in need.",
-            image: "../about/digital-gap.jpg"
+            image: "../about/digital-gap.jpeg"
         },
         {
             titlePart1:"Through Various",
             titlePart2:"Digital Programs",
             description:"In 2023, Computers 4 People team quadrupled and the organization added two more programs-digital skills classes and internet access-to better serve the communitiy's needs",
-            image:"../about/digital-programs.jpg"
+            image:"../about/digital-programs.jpeg"
         },
         {
             titlePart1:"Computers 4 People",
             titlePart2:"is Serving 3 States",
             description:"In 2024, Computers 4 People opened a second office in Waltham, MA. This expansion allows us to bring our programs to underserved communities throughout the Bay State.",
-            image:"/about/serving-3-states.jpg"
+            image:"/about/serving-3-states.jpeg"
         },
         {
             titlePart1:"A Leading Force",
             titlePart2:"in the Northeast",
             description:"With significant advancements in digital equity and e-waste management, Computers 4 People has become a prominent advocate for tech access in the northeastern US.",
-            image:"/about/leading-force.jpg"
+            image:"/about/leading-force.jpeg"
         }
     ]
     
@@ -68,7 +68,7 @@ export default function About() {
     return (
         <div  id="main-content" className='font-sans'>
             <Header props={{
-                bgImage: '/about/background.jpg',
+                bgImage: '/about/background.jpeg',
                 titlePart1: 'Unlocking the Digital',
                 titlePart2: 'world. est. 2019',
                 description: '',
@@ -85,12 +85,12 @@ export default function About() {
             <Testimonial props={{
                 title2: 'Our Vision',
                 desc2: 'A world where everyone has equal access to technology and its opportunities.',
-                image: '../about/our_vision.png'
+                image: '../about/our_vision.jpeg'
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
                 desc2: 'Unlock Access to the Digital World.',
-                image: '../about/our_mission.png',
+                image: '../about/our_mission.jpeg',
                 side: 'right'
             }}/> 
             <div className='bg-cover text-black'>
