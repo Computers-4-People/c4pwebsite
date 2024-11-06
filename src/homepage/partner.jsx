@@ -9,7 +9,7 @@ export default function Refurbished() {
 
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
-            <Header props={{bgImage: '/Become a Partner/partnerbackground.jpg', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
+            <Header props={{bgImage: '/Become a Partner/partnerbackground.jpeg', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
             description: 'Join a network of 300+ nonprofit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
             links: [{text: 'Become a Partner', clickAction: scrollToForm}]
             }} />
@@ -21,11 +21,11 @@ export default function Refurbished() {
                     <li>Host Digital Skills Classes: Collaborate with us to offer essential tech education.</li>
                     <li>Innovative Partnerships: Join forces on creative solutions to enhance digital equity and impact.</li>
                 </ul>,
-                image: '../Become a Partner/partnerphoto.png',
+                image: '../Become a Partner/partnerphoto.jpeg',
                 alt: `Dylan Zajac with Computers 4 People's partners and donors`
             }} />
             <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Become a Partner/partnerbackground.jpg')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Become a Partner/partnerbackground.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
