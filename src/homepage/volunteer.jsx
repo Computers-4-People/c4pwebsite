@@ -58,7 +58,7 @@ export default function Volunteer() {
         <Testimonial props={{
             title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',
             desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! <br/>No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
-            image: '../volunteer/volunteersacha.png',
+            image: '../volunteer/volunteersacha.jpeg',
             alt: 'Volunteer holding a spicy chili pepper plant for our annual fundraiser Pepper Fest'
         }} />
         <div id="media-highlights" className="mt-60">
@@ -78,7 +78,7 @@ export default function Volunteer() {
                 </div>
                 {/* Image Section */}
                 <div className='flex justify-center'>
-                    <img src="../volunteer/volunteeraxel.png" alt="Axel" className='w-full h-auto md:max-w-md' />
+                    <img src="../volunteer/volunteeraxel.jpeg" alt="Axel" className='w-full h-auto md:max-w-md' />
                 </div>
             </div>
         </div>
