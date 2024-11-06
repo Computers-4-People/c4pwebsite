@@ -20,7 +20,7 @@ export default function Contact() {
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/Contact Us/contactbackground.png',
+                bgImage: '/Contact Us/contactbackground.jpeg',
                 titlePart1: 'Contact Us',
                 titlePart2: `We're Here to Assist to You`,
                 description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m. EST</p> 
@@ -28,7 +28,7 @@ export default function Contact() {
                 links: [{text: 'Contact our Team', clickAction: () => handleScroll("inquiry-form")}, {text: 'Visit our Help Center', url:"https://computers4people.zohodesk.com/portal/en/home"}]
             }}/>
             <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Contact Us/contactbackground.png')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Contact Us/contactbackground.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
