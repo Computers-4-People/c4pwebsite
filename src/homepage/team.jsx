@@ -108,7 +108,7 @@ const teamMembers = [
 
 const pressItems1 = [
   {
-    image: "/press/kellyclarkson.png",
+    image: "/press/kellyclarkson.jpeg",
     title: "College Student Refurbishes Thousands of Old Computers",
     date: "November 9, 2023",
     description: "The Kelly Clarkson Show",
