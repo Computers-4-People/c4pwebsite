@@ -11,7 +11,7 @@ export default function SocialMedia() {
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/socialmedia/socialmediabackground.png',
+                bgImage: '/socialmedia/socialmediabackground.jpeg',
                 titlePart1: 'Follow our Journey.',
                 titlePart2: 'Become part of it.',
                 description: 'Follow us on social media and become part of our journey by sharing photos and stories about how you’re involved with Computers 4 People.',
