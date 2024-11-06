@@ -8,55 +8,55 @@ const missionControlMembers = [
   {
     name: "Dylan Zajac",
     title: "Founder & Executive Director",
-    photo: "DylanZajac.png",
+    photo: "DylanZajac.jpeg",
     link: "https://www.linkedin.com/in/dylanzajac/",
   },
   {
     name: "Nichool Castro",
     title: "Communications Manager",
-    photo: "NichoolCastro.png",
+    photo: "NichoolCastro.jpeg",
     link: "https://www.linkedin.com/in/castronichool/",
   },
   {
     name: "Devin Monserrate",
     title: "Program Manager NJ/NYC",
-    photo: "DevinMonserrate.png",
+    photo: "DevinMonserrate.jpeg",
     link: "https://www.linkedin.com/in/devin-monserrate21/",
   },
   {
     name: "Gray, Gray, Gray LLP",
     title: "Finance Team",
-    photo: "gggllp.png",
+    photo: "gggllp.jpeg",
     link: "https://www.linkedin.com/company/gray-gray-&-gray/",
   },
   {
     name: "Joseph Bergmann",
     title: "Software Engineer",
-    photo: "JosephBergmann.png",
+    photo: "JosephBergmann.jpeg",
     link: "https://www.linkedin.com/in/joseph-bergmann-06855a268/",
   },
   {
     name: "Hector Ramos",
     title: "Computer Donation Supervisor NJ/NYC",
-    photo: "HectorRamos.png",
+    photo: "HectorRamos.jpeg",
     link: "",
   },
   {
     name: "Salvador Medina",
     title: "Ambassador NJ/NYC",
-    photo: "SalvadorMedina.png",
+    photo: "SalvadorMedina.jpeg",
     link: "",
   },
   {
     name: "Elmehdi Ghardi",
     title: "Ambassador MA (Tech)",
-    photo: "ElmehdiGhardi.png",
+    photo: "ElmehdiGhardi.jpeg",
     link: "https://www.linkedin.com/in/elmehdi-ghardi-6b73a1233/",
   },
   {
     name: "Arnold Ssemuyaga",
     title: "Ambassador MA (Logistics)",
-    photo: "ArnoldSsemuyaga.png",
+    photo: "ArnoldSsemuyaga.jpeg",
     link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
   },
 ];
@@ -67,41 +67,41 @@ const teamMembers = [
     name: "Sally Bowman", 
     title: "President", 
     company: "Metro Flood Defense", 
-    photo: "SallyBowman.png",
+    photo: "SallyBowman.jpeg",
     link: "https://www.linkedin.com/in/sally-bowman-4883a0ba/"
   },
   { 
     name: "Greg Camas", 
     title: "Treasurer", 
-    photo: "GregCamas.png", 
+    photo: "GregCamas.jpeg", 
     link: "https://www.linkedin.com/in/gregcamas/" 
   },
   { 
     name: "Paul Zajac", 
     title: "Vice President", 
     company: "Invesco", 
-    photo: "PaulZajac.png",
+    photo: "PaulZajac.jpeg",
     link: "https://www.linkedin.com/in/paul-zajac-b964495/"
   },
   { 
     name: "Andrew Prodromos", 
     title: "Board Member", 
     company: "Insight Partners", 
-    photo: "AndrewProdromos.png",
+    photo: "AndrewProdromos.jpeg",
     link: "https://www.linkedin.com/in/andrew-prodromos-583a254/"
   },
   { 
     name: "Jerome Abernathy", 
     title: "Board Member", 
     company: "Hoboken Public Library", 
-    photo: "JeromeAbernathy.png",
+    photo: "JeromeAbernathy.jpeg",
     link: "https://www.linkedin.com/in/jerome-abernathy-ph-d-5a5a79/" 
   },
   { 
     name: "David Neves", 
     title: "Board Member", 
     company: "PGIM", 
-    photo: "DavidNeves.png",
+    photo: "DavidNeves.jpeg",
     link: "https://www.linkedin.com/in/david-neves-digital-marketing-executive/"
   },
 ];
@@ -115,21 +115,21 @@ const pressItems1 = [
     link: "https://www.youtube.com/watch?v=6IxUYncb8OE&t=281s",
   },
   {
-    image: "/press/forbesteens.PNG",
+    image: "/press/forbesteens.jpeg",
     title: "Teens Teaming With Teens To Create A Better World",
     date: "May 16, 2024",
     description: "Forbes",
     link: "https://www.forbes.com/sites/katevitasek/2024/05/16/teens-teaming-with-teens-to-create-a-better-world/",
   },
   {
-    image: "/press/whiteboard.JPG",
+    image: "/press/whiteboard.jpeg",
     title: "Babson student expands nonprofit that refurbishes computers",
     date: "April 30, 2024",
     description: "BostInno",
     link: "https://www.bizjournals.com/boston/inno/stories/news/2024/04/30/baboon-computers4people-babson.html",
   },
   {
-    image: "/press/comcastnewsmakers.PNG",
+    image: "/press/comcastnewsmakers.jpeg",
     title: "A Nonprofit is Closing the Digital Divide and Reducing E-Waste",
     date: "August 5, 2024",
     description: "Comcast Newsmakers",
@@ -157,7 +157,7 @@ export default function Team() {
       {/* Header */}
       <Header
         props={{
-          bgImage: "/team/teambackground.JPG",
+          bgImage: "/team/teambackground.jpeg",
           titlePart1: "FIND OUT WHO ARE",
           titlePart2: "BEHIND THE SCENES",
           description:
