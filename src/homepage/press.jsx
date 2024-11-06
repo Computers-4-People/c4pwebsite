@@ -7,21 +7,21 @@ import Header from "../components/header";
 export default function Press() {
     const pressItems1 = [
         {
-            image: '/press/kellyclarkson.png',
+            image: '/press/kellyclarkson.jpeg',
             title: 'College Student Refurbishes Thousands of Old Computers',
             date: 'November 9, 2023',
             description: 'The Kelly Clarkson Show',
             link: 'https://www.youtube.com/watch?v=6IxUYncb8OE&t=281s'
         },
         {
-            image: '/press/forbesteens.PNG',
+            image: '/press/forbesteens.jpeg',
             title: 'Teens Teaming With Teens To Create A Better World',
             date: 'May 16, 2024',
             description: 'Forbes',
             link: 'https://www.forbes.com/sites/katevitasek/2024/05/16/teens-teaming-with-teens-to-create-a-better-world/'
         },
         {
-            image: '/press/whiteboard.JPG',
+            image: '/press/whiteboard.jpeg',
             title: 'Babson student expands nonprofit that refurbishes computers',
             date: 'April 30, 2024',
             description: 'BostInno',
@@ -44,31 +44,31 @@ export default function Press() {
             link: '/press/recyclingtechgivinghope.pdf'
         },
         {
-            image: '/press/bofapr.JPG',
+            image: '/press/bofapr.jpeg',
             title: 'Computers 4 People Receives Grant from Bank of America to Support their Digital Equity Programs',
             date: 'July 30, 2024',
             link: '/press/c4pbofapr2024.pdf'
         },
         {
-            image: '/press/collegebound2024.JPG',
+            image: '/press/collegebound2024.jpeg',
             title: 'Computers 4 People College-Bound Laptop Scholarship Donates 176 Laptops to Students',
             date: 'June 13, 2024',
             link: '/press/collegebound2024.pdf'
         },
         {
-            image: '/press/mayorofwaltham.JPG',
+            image: '/press/mayorofwaltham.jpeg',
             title: 'Computers 4 People Officially Opens New Waltham, MA Office',
             date: 'April 30, 2024',
             link: '/press/maofficelaunchpr.pdf'
         },
         {
-            image: '/press/collegebound2023pr.png',
+            image: '/press/collegebound2023pr.jpeg',
             title: '​Computers 4 People Donates 220 Laptops to College-Bound Students',
             date: 'July 20, 2023',
             link: '/press/collegeboundpr2023.pdf'
         },
         {
-            image: '/press/collegebound2023.png',
+            image: '/press/collegebound2023.jpeg',
             title: 'College-Bound Laptop Scholarship 2023',
             date: 'November 20, 2022',
             link: '/press/collegebound2023prapp.pdf'
@@ -117,7 +117,7 @@ export default function Press() {
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/press/pressbackground.jpg',
+                bgImage: '/press/pressbackground.jpeg',
                 titlePart1: 'Discover Our Latest',
                 titlePart2: 'Press & Media Highlights',
                 description: 'See how Computers 4 People is making headlines and driving change and digital equity.',
