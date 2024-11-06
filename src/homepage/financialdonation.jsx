@@ -20,7 +20,7 @@ export default function Financialdonation() {
         <div id="main-content" >
         <div className='font-sans'>
             <Header props={{
-                bgImage: '/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpg',
+                bgImage: '/Financial Contribution/Computers 4 People Fundraiser Recipient of Refurbished Computer Testimony.jpeg',
                 titlePart1: 'Take Action',
                 titlePart2: 'Become a Champion',
                 description: 'Every person deserves equitable access to opportunities. Your donation helps provide essential tech access and makes a difference for those in need.',
@@ -40,13 +40,13 @@ export default function Financialdonation() {
                         </p>
                 </div>,
                 side:'right',
-                image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.png',
+                image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.jpeg',
                 links: [{text:'Learn More', url:'/impact'}],
                 alt: 'A child holding a Computers 4 People green tote bag with a donated, refurbished laptop inside.'
             }}/>
             <div>
             <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.png')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
