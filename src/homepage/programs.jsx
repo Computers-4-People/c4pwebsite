@@ -60,7 +60,7 @@ export default function Programs() {
                 }} />
 
             <div className='h-full py-20'>
-                <div className='ml-32'>
+                <div className='ml-14'>
                     <h2 className='text-7xl font-title'>Programs tailored to foster growth</h2>
                     <p className='text-2xl'>Our programs are designed to help you achieve full participation in the digital world</p>
                 </div>
@@ -73,7 +73,7 @@ export default function Programs() {
                 title2: 'Your Chance to Master Technology can Be Today',
                 desc2: 'Everyone, regardless of age, gender, or background, can learn technology; take the first step.',
                 image: '../Programs/Programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
-                links: [{text:'Apply for a computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
+                links: [{text:'Apply for a Computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
             }}/>
             <div className='h-full bg-cover p-20'>
                 <div className=''>
