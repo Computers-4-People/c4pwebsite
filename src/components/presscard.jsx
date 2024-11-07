@@ -34,10 +34,10 @@ const PressCard = ({ pressItems }) => {
             <div className="flex justify-between items-center">
                 <button
                     onClick={handlePrev}
-                    className="text-gray-800 hover:text-gray-600 focus:outline-none z-10"
+                    className="text-gray-800 hover:text-gray-600 focus:outline-none z-10 mb-10"
                     style={{ marginRight: '10px' }}
                 >
-                    <img src="/presscard/leftarrow.png" alt="Previous" className="w-16 h-16" />
+                    <img src="/presscard/left-arrow.png" alt="Previous" className="w-16 h-20" />
                 </button>
                 <div className="w-full overflow-hidden">
                     <div
@@ -66,10 +66,10 @@ const PressCard = ({ pressItems }) => {
                 </div>
                 <button
                     onClick={handleNext}
-                    className="text-gray-800 hover:text-gray-600 focus:outline-none z-10"
+                    className="text-gray-800 hover:text-gray-600 focus:outline-none z-10 mb-10"
                     style={{ marginLeft: '10px' }}
                 >
-                    <img src="/presscard/rightarrow.png" alt="Next" className="w-16 h-16" />
+                    <img src="/presscard/right-arrow.png" alt="Next" className="w-16 h-20" />
                 </button>
             </div>
         </div>
