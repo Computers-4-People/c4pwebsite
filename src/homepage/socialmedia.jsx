@@ -18,7 +18,7 @@ export default function SocialMedia() {
                 links: [{text: 'Look at our latest posts'}]
             }}/> 
             <div>
-                <h2 className="ml-14 mt-20 mb-20 text-6xl font-bold text-gray">Social Media Live Feed</h2>
+                <h2 className="ml-14 mt-20 mb-20 text-7xl font-title text-gray">Social Media Live Feed</h2>
             </div>
                 <div className="flex flex-col md:flex-row flex-wrap justify-center md:justify-evenly w-full mb-20">
                 <div className="flex justify-center w-full md:w-auto mb-4">
