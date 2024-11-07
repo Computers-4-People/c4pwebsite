@@ -52,7 +52,7 @@ export default function Contact() {
     <div className="md:grid md:grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Left Side: Text Content */}
         <div id="findadropoff" className="space-y-6">
-            <h2 className="text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase">
+            <h2 className="text-2xl md:text-4xl lg:text-7xl font-title text-gray-800 font-bold uppercase">
                 Find an electronic drop-off site near me
             </h2>
             <p className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7">
@@ -103,7 +103,7 @@ export default function Contact() {
         </div>
         {/* Text Section */}
         <div className='flex flex-col justify-center'>
-            <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
+            <h2 className='text-2xl md:text-4xl lg:text-7xl text-gray-800 font-title uppercase mb-6'>
                 Become an electronics drop-off site in minutes
             </h2>
             <p className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7'>
