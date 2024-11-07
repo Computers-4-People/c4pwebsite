@@ -125,21 +125,21 @@ export default function Press() {
             }}/>
 
             <div id="media-highlights" className="mt-20">
-                <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Explore our media highlights</h2>
+                <h2 className="ml-14 mt-20 mb-4 text-7xl font-title text-gray">Explore our media highlights</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-10'>Discover how our work is making waves through news articles, interviews, and features across various media outlets.</p>
             </div>
-            <div className="container mx-auto px-4 py-16 relative">
+            <div className="container mx-auto px-4 relative">
                 <PressCard pressItems={pressItems1} />
             </div>
-            <div id="press-releases" className="mt-40">
-                <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Our Press Releases</h2>
+            <div id="press-releases" className="">
+                <h2 className="ml-14  mb-4 text-7xl font-title text-gray">Our Press Releases</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-20'>Discover our press releases featuring updates on new programs, fundraisers, grants and more.</p>
             </div>
-            <div className="container mx-auto px-4 py-16 relative">
+            <div className="container mx-auto px-4 relative">
                 <PressCard pressItems={pressItems2} />
             </div>
             <div className="mb-20 mx-20">
-            <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">Other Ways You can Contribute</h2>
+            <h2 className="ml-14 mb-4 text-7xl font-title text-gray">Other Ways You can Contribute</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-20'>Explore these opportunities to foster digital equity</p>
             </div>
             <div className="my-5 p-5 mb-20">
