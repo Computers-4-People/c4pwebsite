@@ -55,7 +55,7 @@ const PressCard = ({ pressItems }) => {
                                         <h3 className="text-2xl font-bold mb-2 h-16 line-clamp-2 text-ellipsis">{item.title}</h3>
                                         <p className="text-gray-500 mb-4">{item.date}</p>
                                         <p className="text-gray-700 mb-6">{item.description}</p>
-                                        <a href={item.link} className="inline-block bg-c4p text-white px-4 py-2 rounded-md hover:bg-c4p-hover">
+                                        <a href={item.link} className="inline-block bg-c4p text-black hover:text-white px-4 py-2 rounded-md hover:bg-c4p-hover">
                                             Read More
                                         </a>
                                     </div>
