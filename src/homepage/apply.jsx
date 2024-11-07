@@ -80,23 +80,23 @@ export default function Apply() {
             }}/>
         <Testimonial props={{
             title2: 'Supporting Underserved Communities with Free Computers',
-            desc2: <p><a href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
+            desc2: <p><a className='text-green-500 hover:underline' href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
             image: '../refurbished/recipient.jpg',
             side: 'left'
         }} />
         <Testimonial props={{
             title2: 'Our devices come from generous donors',
-            desc2: 'Our devices come from individuals and organizations who generously provide their unused equipment to us. Each device undergoes a meticulous refurbishing and data wiping process to be in optimal condition before being matched to a recipient. Due to our' +
-            ' reliance on donated devices, there may be a waiting period for computer applicants.',
+            desc2: <p> Our devices come from individuals and organizations who generously provide their unused equipment to us. Each device undergoes a meticulous refurbishing and <a className='text-green-500 hover:underline' href=''> data wiping </a> process to be in optimal condition before being matched to a recipient. Due to our` +
+            ` reliance on donated devices, there may be a waiting period for computer applicants. </p>,
             image: '../refurbished/luis.png',
             side: 'right'
         }}/>
         <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10 md:px-20'>
-                <div className='flex flex-col text-left md:ml-20 mt-40'>
-                <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
+                <div className='flex flex-col text-left md:ml-12 mt-40'>
+                <h2 className='text-2xl md:text-4xl lg:text-7xl font-title text-gray-800 uppercase mb-6'>
                 Giving Devices a Second Chance
                     </h2>
-                    <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
+                    <p className='text-lg md:text-2xl leading-7 md:leading-8 lg:leading-10'>
                     Each device has a unique story before reaching its new home.</p>
             </div>
             <div>
