@@ -114,8 +114,8 @@ export default function Donate () {
             </div>
             <div className="bg-cover mt-40">
                     <div className='self-center row-span-1col-span-2 mx-20'>
-                        <h2 className="col-span-2 text-6xl font-sans font-bold mb-10">Ways to Get Involved</h2>
-                        <p className="col-span-2 text-3xl ml-2"> Explore these ways to cultivate digital equity</p>
+                        <h2 className="col-span-2 text-7xl font-title mb-3">Ways to Get Involved</h2>
+                        <p className="col-span-2 text-2xl"> Explore these ways to cultivate digital equity</p>
                     </div>
                 </div>
             <div className="my-5 p-5 mb-20 mt-10">
