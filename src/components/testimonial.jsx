@@ -12,16 +12,16 @@ export default function Testimonial(props) {
                     <img 
                         src={image} 
                         alt={alt} 
-                        className='max-h-64 max-w-full object-contain lg:max-h-full' // Scales image for mobile
+                        className='max-h-64 max-w-96 object-contain lg:max-h-full' // Scales image for mobile
                     />
                 </div>
 
                 {/* Text Section */}
                 <div className={`flex flex-col w-full lg:w-1/2 items-center lg:items-start text-center lg:text-left`}>
-                    <h2 className='text-3xl md:text-4xl lg:text-5xl font-title font-bold uppercase mb-4 text-gray-800'>
+                    <h2 className='text-3xl md:text-4xl lg:text-7xl font-title uppercase mb-4 text-gray-800'>
                         {title2}
                     </h2>
-                    <p className='text-lg text-justify md:text-left md:text-xl mb-6'>
+                    <p className='text-lg text-justify md:text-left md:text-2xl mb-6'>
                         {desc2}
                     </p>
 
@@ -33,7 +33,7 @@ export default function Testimonial(props) {
                                     key={index}
                                     onClick={link.clickAction}
                                     className={`block w-full lg:w-auto text-center text-xl animate-fade-up h-11 rounded-md py-2 px-7 ${
-                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-white' : 'border border-black text-black hover:bg-black hover:text-white'
+                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-black hover:text-white' : 'border border-black text-black hover:bg-black hover:text-white'
                                     }`}
                                 >
                                     {link.text}
@@ -43,7 +43,7 @@ export default function Testimonial(props) {
                                     key={index}
                                     to={link.url}
                                     className={`block w-full lg:w-auto text-center text-xl animate-fade-up h-11 rounded-md py-2 px-7 ${
-                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-white' : 'border border-black text-black hover:bg-black hover:text-white'
+                                        index % 2 === 0 ? 'bg-c4p hover:bg-c4p-hover text-black hover:text-white' : 'border border-black text-black hover:bg-black hover:text-white'
                                     }`}
                                 >
                                     {link.text}
