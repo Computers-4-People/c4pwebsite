@@ -187,7 +187,7 @@ export default function Team() {
 
       {/* Media Highlights Section */}
       <div id="media-highlights" className="mt-20">
-        <h2 className="ml-14 mt-20 mb-4 text-6xl font-bold text-gray">
+        <h2 className="ml-14 mt-20 mb-4 text-7xl font-title text-gray">
           Explore our media highlights
         </h2>
         <p className="ml-14 text-black text-xl md:text-2xl mb-10">
