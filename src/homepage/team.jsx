@@ -24,12 +24,6 @@ const missionControlMembers = [
     link: "https://www.linkedin.com/in/devin-monserrate21/",
   },
   {
-    name: "Gray, Gray, Gray LLP",
-    title: "Finance Team",
-    photo: "gggllp.jpeg",
-    link: "https://www.linkedin.com/company/gray-gray-&-gray/",
-  },
-  {
     name: "Joseph Bergmann",
     title: "Software Engineer",
     photo: "JosephBergmann.jpeg",
@@ -59,6 +53,12 @@ const missionControlMembers = [
     photo: "ArnoldSsemuyaga.jpeg",
     link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
   },
+  {
+    name: "Gray, Gray, Gray LLP",
+    title: "Finance Team",
+    photo: "gggllp.jpeg",
+    link: "https://www.linkedin.com/company/gray-gray-&-gray/",
+  },
 ];
 
 // Board of Directors Members
@@ -87,7 +87,7 @@ const teamMembers = [
     name: "Andrew Prodromos", 
     title: "Board Member", 
     company: "Insight Partners", 
-    photo: "AndrewProdromos.jpeg",
+    photo: "AndrewProdromos.png",
     link: "https://www.linkedin.com/in/andrew-prodromos-583a254/"
   },
   { 
