@@ -72,7 +72,7 @@ export default function Homepage() {
     <div id="main-content" className="font-sans overflow-x-hidden">
       <Header
         props={{
-          bgImage: "/Homepage/homepagebackground.jpg",
+          bgImage: "/Homepage/homepage_background_new.jpeg",
           titlePart1: "Transform a Life",
           titlePart2: "with Technology",
           links: [
