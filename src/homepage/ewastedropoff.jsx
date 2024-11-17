@@ -28,7 +28,7 @@ export default function Contact() {
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
             <Header props={{
-                bgImage: '/ewastedropoff/dropoffbackground.jpg',
+                bgImage: '/ewastedropoff/dropoffbackground.jpeg',
                 titlePart1: 'Serve your community',
                 titlePart2: 'Become an Electronics Drop-off',
                 description: 'Help close the digital gap -- your location will collect devices, while Computers 4 People handles the rest, refurbishing and redistributing them to those in need.',
@@ -45,14 +45,14 @@ export default function Contact() {
                    <li>Zero cost involvement.</li>
                    <li>Impact lives and close the digital gap.</li>
                </ul></div>,
-                image:'../ewastedropoff/computerhandoff.png',
+                image:'../ewastedropoff/computerhandoff.jpeg',
                 alt: 'People donating computers to Computers 4 People. Computers will be refurbished and distributed to people in need.'
             }}/>
         <div className="container mx-auto px-4 py-16 mb-20 h-screen">
     <div className="md:grid md:grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Left Side: Text Content */}
         <div id="findadropoff" className="space-y-6">
-            <h2 className="text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase">
+            <h2 className="text-2xl md:text-4xl lg:text-7xl font-title text-gray-800 font-bold uppercase">
                 Find an electronic drop-off site near me
             </h2>
             <p className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7">
@@ -99,11 +99,11 @@ export default function Contact() {
     <div id="dropoffsignup" className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
         {/* Image Section */}
         <div className='flex justify-center'>
-            <img src="../ewastedropoff/luis.png" alt="Computers 4 People Ambassador holding a donated Windows Surface computer." className='h-auto md:max-w-[80%]' />
+            <img src="../ewastedropoff/luis.jpeg" alt="Computers 4 People Ambassador holding a donated Windows Surface computer." className='h-auto md:max-w-[80%]' />
         </div>
         {/* Text Section */}
         <div className='flex flex-col justify-center'>
-            <h2 className='text-2xl md:text-4xl lg:text-4xl text-gray-800 font-bold uppercase mb-6'>
+            <h2 className='text-2xl md:text-4xl lg:text-7xl text-gray-800 font-title uppercase mb-6'>
                 Become an electronics drop-off site in minutes
             </h2>
             <p className='text-lg md:text-lg leading-7 md:leading-8 lg:leading-7'>
@@ -116,7 +116,7 @@ export default function Contact() {
     </div>
 </div>
             <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/ewastedropoff/dropoffbackground.jpg')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/ewastedropoff/dropoffbackground.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally

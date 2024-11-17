@@ -10,21 +10,21 @@ export default function Programs() {
             titlePart1: "Distribution of",
             titlePart2: "Refurbished Devices",
             description: "We refurbish donated devices and distribute them to communities in need across NYC, NJ, and MA.",
-            image: "/Programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpg",
+            image: "/Programs/Programs/Recipient_Computers4People_Tote_Bag_Refurbished_Laptop_College_Bound.jpeg",
             alt: 'Teacher holding donated a computer with green tote bag from Computers 4 People.'
         },
         {
             titlePart1:"Foundational",
             titlePart2: "Digital Skills",
             description: "We offer specialized digital courses and PC building classes to equip individuals with digital literacy.",
-            image:"/Programs/Programs/Teenagers_Building_PCs_Refurbished.jpg",
+            image:"/Programs/Programs/Teenagers_Building_PCs_Refurbished.jpeg",
             alt: 'Teenager volunteer refurbishing donated computers to provide them to people in need.'
         },
         {
             titlePart1:"Affordable",
             titlePart2: "Internet Access",
             description: "We assist people in finding affordable Internet programs that meet their needs.",
-            image:"/Programs/Programs/Refurbished_Computers.jpg",
+            image:"/Programs/Programs/Refurbished_Computers.jpeg",
             alt: 'Refurbished computers with the logo of Computers 4 People '
         }
     ]
@@ -60,7 +60,7 @@ export default function Programs() {
                 }} />
 
             <div className='h-full py-20'>
-                <div className='ml-32'>
+                <div className='ml-14'>
                     <h2 className='text-7xl font-title'>Programs tailored to foster growth</h2>
                     <p className='text-2xl'>Our programs are designed to help you achieve full participation in the digital world</p>
                 </div>
@@ -73,7 +73,7 @@ export default function Programs() {
                 title2: 'Your Chance to Master Technology can Be Today',
                 desc2: 'Everyone, regardless of age, gender, or background, can learn technology; take the first step.',
                 image: '../Programs/Programs/Computers4People_Community_Access_Refurbished_Donated_Computers.png',
-                links: [{text:'Apply for a computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
+                links: [{text:'Apply for a Computer', url: "/apply"}, {text: 'Enroll in a Digital Class', url: "/dsclasses"}]
             }}/>
             <div className='h-full bg-cover p-20'>
                 <div className=''>

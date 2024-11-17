@@ -58,11 +58,11 @@ export default function Volunteer() {
         <Testimonial props={{
             title2: 'Volunteer Opportunities for Everyone: Tailored to Your Preferences',
             desc2: <div className='space-y-8'><p>Our volunteer opportunities are for everyone! <br/>No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting great like-minded people.</p><p>Volunteer opportunities available in-person or remote.</p></div>,
-            image: '../volunteer/volunteersacha.png',
+            image: '../volunteer/volunteersacha.jpeg',
             alt: 'Volunteer holding a spicy chili pepper plant for our annual fundraiser Pepper Fest'
         }} />
         <div id="media-highlights" className="mt-60">
-                <h2 className="ml-14 text-3xl md:text-4xl lg:text-5xl text-gray-800 font-bold uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
+                <h2 className="ml-14 text-3xl md:text-4xl lg:text-7xl text-gray-800 font-title uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-10'>In-person. Online. No Experience Required.</p>
             </div>
             <div className="container mx-auto px-4 py-16 relative">
@@ -71,14 +71,14 @@ export default function Volunteer() {
         <div className='bg-cover font-sans justify-evenly px-4 mt-30 mb-20 sm:px-10 md:px-20 py-10'>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-10 items-center'>
                 {/* Text Section */}
-                <div className='flex flex-col text-right'>
+                <div className='flex flex-col text-center'>
                     <p className='text-lg md:text-xl leading-7 md:leading-8 lg:leading-10'>
-                    "Volunteering with Computers 4 People was incredible! I helped by collecting and preparing computers for those in need, while immersing myself in American culture and making lasting friendships."<br/><br/>-Axel, International Volunteer
+                    "Volunteering with Computers 4 People was incredible! I helped by collecting and preparing computers for those in need, while immersing myself in American culture and making lasting friendships."<p className='text-right'>-Axel, International Volunteer</p>
                     </p>
                 </div>
                 {/* Image Section */}
                 <div className='flex justify-center'>
-                    <img src="../volunteer/volunteeraxel.png" alt="Axel" className='w-full h-auto md:max-w-md' />
+                    <img src="../volunteer/volunteeraxel.jpeg" alt="Axel" className='w-full h-auto md:max-w-md' />
                 </div>
             </div>
         </div>
