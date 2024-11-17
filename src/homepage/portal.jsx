@@ -9,7 +9,6 @@ function Portal() {
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
-    const [isDownloading, setIsDownloading] = useState(false); // State for download loading
 
     // Set the API base URL dynamically based on environment
     const API_BASE_URL =
@@ -222,8 +221,6 @@ function Portal() {
             'Date_Donated',
             'Date_Recycled',
             'Weight',
-            'Data_Certificate_URL',
-            'Tax_Receipt_URL',
         ];
 
         // Create rows from inventoryData
@@ -234,8 +231,6 @@ function Portal() {
             item.Date_Donated || '',
             item.Date_Recycled || '',
             item.Weight || '',
-            item.Data_Certificate_URL || '',
-            item.Tax_Receipt_URL || '',
         ]);
 
         // Combine headers and rows
@@ -252,36 +247,6 @@ function Portal() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    };
-
-    // Function to download Tax Receipt
-    const downloadTaxReceipt = async (receiptUrl) => {
-        setIsDownloading(true);
-        try {
-            const response = await axios.get(receiptUrl, {
-                responseType: 'blob', // Important for handling binary data
-            });
-            // Create a URL for the blob
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            // Extract filename from headers or set a default name
-            const contentDisposition = response.headers['content-disposition'];
-            let fileName = 'tax_receipt.pdf';
-            if (contentDisposition) {
-                const fileNameMatch = contentDisposition.match(/filename="?(.+)"?/);
-                if (fileNameMatch && fileNameMatch.length === 2) fileName = fileNameMatch[1];
-            }
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (error) {
-            console.error('Error downloading tax receipt:', error);
-            alert('Failed to download the tax receipt. Please try again later.');
-        } finally {
-            setIsDownloading(false);
-        }
     };
 
     return (
@@ -394,7 +359,8 @@ function Portal() {
                                                 <strong>Status:</strong> {item.Status || 'N/A'}
                                             </p>
                                             <p>
-                                                <strong>Computer Type:</strong> {item.Computer_Type || 'N/A'}
+                                                <strong>Computer Type:</strong>{' '}
+                                                {item.Computer_Type || 'N/A'}
                                             </p>
                                             <p>
                                                 <strong>Location:</strong> {item.Location || 'N/A'}
@@ -488,49 +454,43 @@ function Portal() {
                                     <table className="min-w-full bg-white">
                                         <thead>
                                             <tr>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Model</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Computer Type</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Added</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Donated</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Date Recycled</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Data Certificate</th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">Tax Receipt</th>
+                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                    Model
+                                                </th>
+                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                    Computer Type
+                                                </th>
+                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                    Date Added
+                                                </th>
+                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                    Date Donated
+                                                </th>
+                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+                                                    Date Recycled
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {inventoryData.map((item, index) => (
-                                                <tr key={item.ID} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Model || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Computer_Type || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Added || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Donated || 'N/A'}</td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">{item.Date_Recycled || 'N/A'}</td>
+                                                <tr
+                                                    key={item.ID}
+                                                    className={index % 2 === 0 ? 'bg-gray-100' : ''}
+                                                >
                                                     <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Data_Certificate_URL ? (
-                                                            <a
-                                                                href={item.Data_Certificate_URL}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                                className="text-blue-500 hover:underline"
-                                                            >
-                                                                Download PDF
-                                                            </a>
-                                                        ) : (
-                                                            'N/A'
-                                                        )}
+                                                        {item.Model || 'N/A'}
                                                     </td>
                                                     <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Tax_Receipt_URL ? (
-                                                            <button
-                                                                onClick={() => downloadTaxReceipt(item.Tax_Receipt_URL)}
-                                                                className="text-blue-500 hover:underline focus:outline-none"
-                                                                disabled={isDownloading}
-                                                            >
-                                                                {isDownloading ? 'Downloading...' : 'Download Receipt'}
-                                                            </button>
-                                                        ) : (
-                                                            'N/A'
-                                                        )}
+                                                        {item.Computer_Type || 'N/A'}
+                                                    </td>
+                                                    <td className="py-2 px-4 border-b border-gray-200">
+                                                        {item.Date_Added || 'N/A'}
+                                                    </td>
+                                                    <td className="py-2 px-4 border-b border-gray-200">
+                                                        {item.Date_Donated || 'N/A'}
+                                                    </td>
+                                                    <td className="py-2 px-4 border-b border-gray-200">
+                                                        {item.Date_Recycled || 'N/A'}
                                                     </td>
                                                 </tr>
                                             ))}

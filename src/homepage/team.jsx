@@ -12,10 +12,10 @@ const missionControlMembers = [
     link: "https://www.linkedin.com/in/dylanzajac/",
   },
   {
-    name: "Nichool Castro",
-    title: "Communications Manager",
-    photo: "NichoolCastro.jpeg",
-    link: "https://www.linkedin.com/in/castronichool/",
+    name: "Bárbara Cristina De Souza Pinto",
+    title: "Program Manager MA",
+    photo: "Barbara.jpg",
+    link: "https://www.linkedin.com/in/barbaraspinto/",
   },
   {
     name: "Devin Monserrate",
