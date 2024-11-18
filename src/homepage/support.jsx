@@ -15,7 +15,7 @@ const handleScroll = (id) => {
         behavior: "smooth"
     });
 };
-export default function Financialdonation() {
+export default function Support() {
     return (
         <div id="main-content" >
         <div className='font-sans'>
@@ -29,7 +29,7 @@ export default function Financialdonation() {
             </div>
 
             <Testimonial props={{
-                title2: 'Computers 4 People is transforming lives through technology every day',
+                title2: 'Computers 4 People is transforming lives',
                 desc2: <div  id="cash-donation" className='space-y-7'>
                         <p className=''>
                             By providing the tools needed to unlock countless opportunities, Computers 4 People

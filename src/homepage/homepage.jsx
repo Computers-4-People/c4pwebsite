@@ -76,7 +76,7 @@ export default function Homepage() {
           titlePart1: "Transform a Life",
           titlePart2: "with Technology",
           links: [
-            { text: "Donate Computers", url: "/donate" },
+            { text: "Support C4P", url: "/support" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
