@@ -81,7 +81,7 @@ export default function Navbar() {
             dropdownContent: (
                 <div className='h-full'>
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
-                        <Link to="/financialdonation" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Today</Link>
+                        <Link to="/support" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Today</Link>
                         <Link to="/volunteer" className="hover:text-c4p" onClick={closeMobileMenu}>Volunteer</Link>
                         <Link to="/partner" className="hover:text-c4p" onClick={closeMobileMenu}>Partner</Link>
                         <Link to="/ewastedropoff" className="hover:text-c4p" onClick={closeMobileMenu}>Drop-Off Site</Link>
