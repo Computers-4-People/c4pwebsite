@@ -76,7 +76,7 @@ export default function Navbar() {
         },
         {
             name: 'Get Involved',
-            path: '/financialdonation',
+            path: '/support',
             key: 'involved',
             dropdownContent: (
                 <div className='h-full'>

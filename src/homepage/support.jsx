@@ -14,7 +14,7 @@ const handleScroll = (id) => {
         top: offsetPosition,
         behavior: "smooth"
     });
-};
+};  
 export default function Support() {
     return (
         <div id="main-content" >
