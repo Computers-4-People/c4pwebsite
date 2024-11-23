@@ -20,6 +20,8 @@ import Socialmedia from './homepage/socialmedia';
 import Team from './homepage/team';
 import Volunteer from './homepage/volunteer';
 import Hotspot from './homepage/hotspot';
+import Nonprofitapplication from './homepage/nonprofitapplication';
+import Paperapplication from './homepage/paperapplication';
 import Checkin from './homepage/checkin';
 import Uploadrecommendation from './homepage/uploadrecommendation';
 import Eligibility from './homepage/eligibility';
@@ -71,6 +73,8 @@ function App() {
             <Route path="/team" element={<Team />}/>
             <Route path="/team.html" element={<Team />}/>
             <Route path="/hotspot" element={<Hotspot />}/>
+            <Route path="/nonprofitapplication" element={<Nonprofitapplication />}/>
+            <Route path="/paperapplication" element={<Paperapplication />}/>
             <Route path="/checkin" element={<Checkin />}/>
             <Route path="/uploadrecommendation" element={<Uploadrecommendation />}/>
             <Route path="/eligibility" element={<Eligibility />}/>
