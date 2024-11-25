@@ -122,7 +122,7 @@ export default function Donate () {
   <IconCards cards={iconsData} />
 </div>
                 <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/about/c4p_ambassador_Picking_Up_Ewaste.jpeg')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
