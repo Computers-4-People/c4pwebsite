@@ -124,7 +124,6 @@ export default function Donate () {
                 <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg')`,
   display: 'flex',
-  alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
   height: '100vh',
   backgroundSize: window.innerWidth > 720 ? 'cover' : 'cover', // Keep cover for both
@@ -136,7 +135,7 @@ export default function Donate () {
     scrolling="no"
     id="donation-form"
     aria-label='Donate Computers'
-    style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
+    style={{ width: '100%', height: '100vh', border: 'none' }} // Make iframe fullscreen and remove border
     src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'
   ></iframe>
 </div>
