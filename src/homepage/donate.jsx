@@ -85,7 +85,7 @@ export default function Donate () {
                 titlePart1: 'Turn E-Waste',
                 titlePart2: 'into Opportunties',
                 description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning e-waste into tools for a responsible future.</p></div>,
-                links: [{text: 'Schedule an electronics pickup', clickAction: () => handleScroll("donation-form")}]
+                links: [{text: 'Donate Computers', clickAction: () => handleScroll("donation-form")}]
 
                 }}/>
             <div className='bg-cover'>
