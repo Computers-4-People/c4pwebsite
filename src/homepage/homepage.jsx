@@ -28,43 +28,43 @@ export default function Homepage() {
 
   const cardsData = [
     {
-      titlePart1: "Starts",
+      titlePart1: "Begins",
       titlePart2: "With a Donation",
       description:
-        "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../Homepage/starts.jpeg",
-      alt: 'Donor holding a stack of laptops for donation to Computers 4 People.'
+        "Companies and individuals donate their computers, tablets, keyboards and other electronic devices.",
+      image: "../Homepage/collection.jpg",
+      alt: 'Computers 4 People team member picking up a new donation from a company.'
     },
     {
-      titlePart1: "Undergoes",
-      titlePart2: "Refurbishment",
+      titlePart1: "Certified",
+      titlePart2: "Data Erasure",
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../Homepage/undergoes.jpeg",
+      image: "../Homepage/refurb.jpg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
-      titlePart1: "Match",
-      titlePart2: "With a Recipient",
-      description: "Devices are redistributed to people in underserved communities.",
-      image: "../Homepage/match.jpeg",
-      alt: 'White Van with a green sign and the logo of Computers 4 People'
+      titlePart1: "Partners",
+      titlePart2: "With Non-Profits",
+      description: "We partner with 400+ non-profit partners to identify individuals lacking digital access.",
+      image: "../Homepage/partners.jpg",
+      alt: 'Computers 4 People ambassador delivering laptops to a non-profit partner'
     },
     {
-      titlePart1: "Becomes",
-      titlePart2: "Catalyst for Change",
+      titlePart1: "Unlocks",
+      titlePart2: "The Digital World",
       description:
-        "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../Homepage/becomes.jpeg",
-      alt: 'Senior recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
+        "Our unique application process distributes computers to individuals, families, and organizations that need them the most.",
+      image: "../Homepage/unlocks.jpg",
+      alt: 'Young recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
     },
     {
-      titlePart1: "Equip",
-      titlePart2: "People to succeed",
+      titlePart1: "Enables",
+      titlePart2: "Real Change",
       description:
-        "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../Homepage/equip.jpeg",
-      alt: 'Dylan Zajac hosting Digital Skills Classes at the Community Access Venue in front of recipients and community members in need.'
+        "Recipients use their devices to obtain jobs, access education, entrepreneurship, telehealth, and beyond!",
+      image: "../Homepage/enables.jpg",
+      alt: 'Computer receipient holding their new laptop from Computers 4 People.'
     },
   ];
 
@@ -72,11 +72,11 @@ export default function Homepage() {
     <div id="main-content" className="font-sans overflow-x-hidden">
       <Header
         props={{
-          bgImage: "/Homepage/homepage_background_new.jpeg",
+          bgImage: "/Homepage/homepagebackground.jpg",
           titlePart1: "Transform a Life",
           titlePart2: "with Technology",
           links: [
-            { text: "Support C4P", url: "/support" },
+            { text: "Donate Now", url: "/support" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
