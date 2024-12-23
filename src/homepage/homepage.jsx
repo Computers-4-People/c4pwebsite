@@ -16,7 +16,7 @@ export default function Homepage() {
       title: "Sponsor Digital Access",
       image: "../handshake.png",
       alt: "Sponsor Digital Access",
-      link: "/financialdonation"
+      link: "/support"
     },
     {
       title: "Volunteer",
