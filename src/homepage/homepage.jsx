@@ -28,43 +28,43 @@ export default function Homepage() {
 
   const cardsData = [
     {
-      titlePart1: "Starts",
+      titlePart1: "Begins",
       titlePart2: "With a Donation",
       description:
-        "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../Homepage/starts.jpeg",
-      alt: 'Donor holding a stack of laptops for donation to Computers 4 People.'
+        "Companies and individuals donate their computers, tablets, keyboards and other electronic devices.",
+      image: "../Homepage/collection.jpg",
+      alt: 'Computers 4 People team member picking up a new donation from a company.'
     },
     {
-      titlePart1: "Undergoes",
-      titlePart2: "Refurbishment",
+      titlePart1: "Certified",
+      titlePart2: "Data Erasure",
       description:
         "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../Homepage/undergoes.jpeg",
+      image: "../Homepage/refurb.jpg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
-      titlePart1: "Match",
-      titlePart2: "With a Recipient",
-      description: "Devices are redistributed to people in underserved communities.",
-      image: "../Homepage/match.jpeg",
-      alt: 'White Van with a green sign and the logo of Computers 4 People'
+      titlePart1: "Partners",
+      titlePart2: "With Non-Profits",
+      description: "We partner with 400+ non-profit partners to identify individuals lacking digital access.",
+      image: "../Homepage/partners.jpg",
+      alt: 'Computers 4 People ambassador delivering laptops to a non-profit partner'
     },
     {
-      titlePart1: "Becomes",
-      titlePart2: "Catalyst for Change",
+      titlePart1: "Unlocks",
+      titlePart2: "The Digital World",
       description:
-        "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../Homepage/becomes.jpeg",
-      alt: 'Senior recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
+        "Our unique application process distributes computers to individuals, families, and organizations that need them the most.",
+      image: "../Homepage/unlocks.jpg",
+      alt: 'Young recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
     },
     {
-      titlePart1: "Equip",
-      titlePart2: "People to succeed",
+      titlePart1: "Enables",
+      titlePart2: "Real Change",
       description:
-        "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../Homepage/equip.jpeg",
-      alt: 'Dylan Zajac hosting Digital Skills Classes at the Community Access Venue in front of recipients and community members in need.'
+        "Recipients use their devices to obtain jobs, access education, entrepreneurship, telehealth, and beyond!",
+      image: "../Homepage/enables.jpg",
+      alt: 'Computer receipient holding their new laptop from Computers 4 People.'
     },
   ];
 
@@ -72,32 +72,32 @@ export default function Homepage() {
     <div id="main-content" className="font-sans overflow-x-hidden">
       <Header
         props={{
-          bgImage: "/Homepage/homepage_background_new.jpeg",
+          bgImage: "/Homepage/homepagebackground.jpg",
           titlePart1: "Transform a Life",
           titlePart2: "with Technology",
           links: [
-            { text: "Support C4P", url: "/support" },
+            { text: "Donate Now", url: "/support" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
       />
 
-      <h2 className="m-14 mt-20 text-5xl font-bold text-left">
+      <h2 className="ml-14 mt-20 text-5xl font-bold text-left">
         Be Part of the Change
       </h2>
       <div>
         <InfoCard cards={cardsData} />
       </div>
-
-      <div className="text-black p-5 m-5">
-        <h2 className="ml-14 text-5xl font-bold">
+      <h2 className="ml-14 text-5xl font-bold mt-20">
           Give Unused Tech a Second Chance!
         </h2>
+      <div className="text-black p-5 m-5">
+       
         <div className="md:grid grid-rows-3 grid-cols-6 relative">
           <img
-            src="../secondchance.png"
-            className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
-            alt='Woman holding a t-shirt she designed, with a refurbished computer donated by Computers 4 People.
+            src="../Homepage/homepagetestimonial.png"
+            className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once w-auto h-auto"
+            alt='Woman holding her refurbished computer donated by Computers 4 People.
 '
           />
 
@@ -110,10 +110,9 @@ export default function Homepage() {
 
           <div className="z-20 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">
             <p>
-              Thanks to the laptop I received from Computers 4 People; I can now
-              create artwork every night when I get home!
+             "I’m going to start filling out all my college applications!”
             </p>
-            <p className="text-right italic">-Mallika</p>
+            <p className="text-right italic">-Kenadi</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center gap-3 z-30">
             <Link
@@ -132,7 +131,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      <div className="my-5 p-5 mb-20">
+      <div className="my-5 mt-20 p-5 mb-20">
         <IconCards cards={iconsData} />
       </div>
     </div>
