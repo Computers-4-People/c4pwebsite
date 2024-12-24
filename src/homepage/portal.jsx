@@ -4,11 +4,13 @@ import ProgressBar from '../components/ProgressBar';
 
 function Portal() {
     const [recordId, setRecordId] = useState('');
+    const [championId, setChampionId] = useState('');
     const [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+
 
     // Set the API base URL dynamically based on environment
     const API_BASE_URL =
@@ -60,8 +62,14 @@ function Portal() {
             return;
         }
 
+        
+        const requestUrl = `${API_BASE_URL}/api/${module}/${recordId}`;
+        
+        
+        console.log('Attempting to fetch from:', requestUrl);
+
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/${module}/${recordId}`);
+            const response = await axios.get(requestUrl);
             console.log('API Response:', response.data);
             if (response.data.error) {
                 setError(response.data.error);
@@ -81,6 +89,9 @@ function Portal() {
                 }
             }
         } catch (error) {
+            console.log(module);
+            console.log(recordId);
+            console.log(API_BASE_URL);
             console.error('Error fetching data:', error);
             if (error.response && error.response.data && error.response.data.error) {
                 setError(error.response.data.error);

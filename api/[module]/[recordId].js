@@ -7,6 +7,11 @@ dotenv.config({
 const { getZohoAccessToken } = require('../_utils');
 
 export default async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    
   const { module, recordId } = req.query;
     console.log(`Received request for module: ${module}, ID: ${recordId}`);
 
