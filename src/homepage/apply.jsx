@@ -119,7 +119,7 @@ export default function Apply() {
     id="apply-form"
     aria-label='Apply For Computers! (2024 Draft Individuals)'
     style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'
+    src='https://forms.zohopublic.com/Computers4People/form/ApplyforaComputertestKPIs/formperma/zk0NnJSBFpkXO4ULlGN4TOKt9HESX6_p5mgQFoS6lSA'
   ></iframe>
 </div>
             </div>
