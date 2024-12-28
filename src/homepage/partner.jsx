@@ -38,7 +38,7 @@ export default function Refurbished() {
     scrolling="no"
     aria-label='Partner Form'
     style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/PartnershipApplicationDraft2024/formperma/AnuHDCVFeOCBdTmZZpXHF5Pdj1zM9ZEctklFyzZQZVE'
+    src='https://forms.zohopublic.com/Computers4People/form/NonProfitPartnerApplicationtestKPIs/formperma/KL05sPM09wVMLK1u79mFQwS8zaWKnQdX57BRHA1NKO0'
     id="partnership-form"
  ></iframe>
 </div>
