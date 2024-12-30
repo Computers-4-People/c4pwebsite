@@ -39,7 +39,7 @@ export default function Homepage() {
       titlePart1: "Certified",
       titlePart2: "Data Erasure",
       description:
-        "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
+        "Every device goes through a meticulous data wiping and refurbishment process to be in optimal condition.",
       image: "../Homepage/refurb.jpg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
@@ -69,7 +69,7 @@ export default function Homepage() {
   ];
 
   return (
-    <div id="main-content" className="font-sans overflow-x-hidden">
+    <div id="main-content" className="overflow-x-hidden">
       <Header
         props={{
           bgImage: "/Homepage/homepagebackground.jpg",
@@ -82,13 +82,13 @@ export default function Homepage() {
         }}
       />
 
-      <h2 className="ml-14 mt-20 text-5xl font-bold text-left">
+      <h2 className="ml-14 mt-20 text-7xl font-title text-left">
         Be Part of the Change
       </h2>
       <div>
         <InfoCard cards={cardsData} />
       </div>
-      <h2 className="ml-14 text-5xl font-bold mt-20">
+      <h2 className="ml-14 text-7xl font-title mt-20">
           Give Unused Tech a Second Chance!
         </h2>
       <div className="text-black p-5 m-5">

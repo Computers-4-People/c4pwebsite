@@ -52,7 +52,7 @@ export default function Navbar() {
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <Link to="/apply" className="hover:text-c4p" onClick={closeMobileMenu}>Apply for a Computer</Link>
                         <Link to="/DSClasses" className="hover:text-c4p" onClick={closeMobileMenu}>Digital Skills Courses</Link>
-                        <Link to="/donate" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Computers</Link>
+                        <Link to="/partner" className="hover:text-c4p" onClick={closeMobileMenu}>Non-Profit Partnerships</Link>
                     </ul>
                 </div>
             )
@@ -65,11 +65,9 @@ export default function Navbar() {
                 <div className='h-full'>
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <Link to="/about" className="hover:text-c4p" onClick={closeMobileMenu}>Mission & History</Link>
-                        <Link to="/press" className="hover:text-c4p" onClick={closeMobileMenu}>Press & Media</Link>
                         <Link to="/team/" className="hover:text-c4p" onClick={closeMobileMenu}>Team</Link>
+                        <Link to="/press" className="hover:text-c4p" onClick={closeMobileMenu}>Press & Media</Link>
                         {/* <Link to="/impact" className="hover:text-c4p" onClick={closeMobileMenu}>Impact</Link> */}
-                        <Link to="/socialmedia" className="hover:text-c4p" onClick={closeMobileMenu}>Social Media</Link>
-                        <Link to="https://careers.computers4people.org" className="hover:text-c4p" onClick={closeMobileMenu}>Careers</Link>
                     </ul>
                 </div>
             )
@@ -83,7 +81,6 @@ export default function Navbar() {
                     <ul className='h-full flex flex-col justify-evenly text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <Link to="/support" className="hover:text-c4p" onClick={closeMobileMenu}>Donate Today</Link>
                         <Link to="/volunteer" className="hover:text-c4p" onClick={closeMobileMenu}>Volunteer</Link>
-                        <Link to="/partner" className="hover:text-c4p" onClick={closeMobileMenu}>Partner</Link>
                         <Link to="/ewastedropoff" className="hover:text-c4p" onClick={closeMobileMenu}>Drop-Off Site</Link>
                         <Link to="/contact" className="hover:text-c4p" onClick={closeMobileMenu}>Contact Us</Link>
                     </ul>

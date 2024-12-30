@@ -76,8 +76,8 @@ export default function About() {
                 }} /> 
 <div className='bg-cover bg-black p-16 text-white'>
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>3,700</div><p className='text-3xl'>Computers Donated</p></li>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>55,907</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>4,091</div><p className='text-3xl'>Computers Donated</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>54,028</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
     <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>215</div><p className='text-3xl'>Digital Skills Classes</p></li>
   </ul>
 </div>
