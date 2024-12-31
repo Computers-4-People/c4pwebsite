@@ -24,12 +24,6 @@ const missionControlMembers = [
     link: "https://www.linkedin.com/in/devin-monserrate21/",
   },
   {
-    name: "Joseph Bergmann",
-    title: "Software Engineer",
-    photo: "JosephBergmann.jpeg",
-    link: "https://www.linkedin.com/in/joseph-bergmann-06855a268/",
-  },
-  {
     name: "Hector Ramos",
     title: "Computer Donation Supervisor NJ/NYC",
     photo: "HectorRamos.jpeg",
@@ -52,13 +46,7 @@ const missionControlMembers = [
     title: "Ambassador MA (Logistics)",
     photo: "ArnoldSsemuyaga.jpeg",
     link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
-  },
-  {
-    name: "Gray, Gray, Gray LLP",
-    title: "Finance Team",
-    photo: "gggllp.jpeg",
-    link: "https://www.linkedin.com/company/gray-gray-&-gray/",
-  },
+  }
 ];
 
 // Board of Directors Members
