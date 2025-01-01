@@ -7,20 +7,20 @@ import Header from "../components/header";
 export default function Homepage() {
   const iconsData = [
     {
-      title: "Become an Electronics Drop-Off Site",
-      image: "../maps.png",
-      alt: "E-Waste Drop-off Site",
-      link: "/ewastedropoff"
-    },
-    {
-      title: "Sponsor Digital Access",
-      image: "../handshake.png",
+      title: "Fund Digital Access",
+      image: "/homepage/funddigitalaccess.jpg",
       alt: "Sponsor Digital Access",
       link: "/support"
     },
     {
+      title: "Donate Computers",
+      image: "/homepage/donatecomputersicon.jpg",
+      alt: "Donate your computers today",
+      link: "/donate"
+    },
+    {
       title: "Volunteer",
-      image: "../hands.png",
+      image: "/homepage/volunteericon.jpg",
       alt: "Volunteer",
       link: "/volunteer"
     }

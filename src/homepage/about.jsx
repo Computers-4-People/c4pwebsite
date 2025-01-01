@@ -47,23 +47,23 @@ export default function About() {
     
   const iconsData = [
     {
-      title: "Become an Electronics Drop-off Site",
-      image: "../maps.png",
-      alt: "E-Waste Drop-off Site",
-      link: "/ewastedropoff"
-    },
-    {
-      title: "Sponsor Digital Access",
-      image: "../handshake.png",
-      alt: "Sponsor Digital Access",
-      link: "/financialdonation"
-    },
-    {
-      title: "Volunteer",
-      image: "../hands.png",
-      alt: "Volunteer",
-      link: "/volunteer"
-    }
+        title: "Fund Digital Access",
+        image: "/homepage/funddigitalaccess.jpg",
+        alt: "Sponsor Digital Access",
+        link: "/support"
+      },
+      {
+        title: "Donate Computers",
+        image: "/homepage/donatecomputersicon.jpg",
+        alt: "Donate your computers today",
+        link: "/donate"
+      },
+      {
+        title: "Volunteer",
+        image: "/homepage/volunteericon.jpg",
+        alt: "Volunteer",
+        link: "/volunteer"
+      }
   ];
     return (
         <div  id="main-content" className='font-sans'>

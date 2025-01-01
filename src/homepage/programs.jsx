@@ -30,23 +30,23 @@ export default function Programs() {
     ]
     const iconsData = [
         {
-          title: "BECOME AN EWASTE DROP-OFF SITE",
-          image: "../maps.png",
-          alt: "E-Waste Drop-off Site",
-          link: "/ewastedropoff"
-        },
-        {
-          title: "SPONSOR DIGITAL ACCESS",
-          image: "../handshake.png",
-          alt: "Sponsor Digital Access",
-          link: "/financialdonation"
-        },
-        {
-          title: "VOLUNTEER",
-          image: "../hands.png",
-          alt: "Volunteer",
-          link: "/volunteer"
-        }
+            title: "Fund Digital Access",
+            image: "/homepage/funddigitalaccess.jpg",
+            alt: "Sponsor Digital Access",
+            link: "/support"
+          },
+          {
+            title: "Donate Computers",
+            image: "/homepage/donatecomputersicon.jpg",
+            alt: "Donate your computers today",
+            link: "/donate"
+          },
+          {
+            title: "Volunteer",
+            image: "/homepage/volunteericon.jpg",
+            alt: "Volunteer",
+            link: "/volunteer"
+          }
       ];
     
     return (
