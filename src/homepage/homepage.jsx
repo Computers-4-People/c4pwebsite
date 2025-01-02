@@ -8,19 +8,19 @@ export default function Homepage() {
   const iconsData = [
     {
       title: "Fund Digital Access",
-      image: "/homepage/funddigitalaccess.jpg",
+      image: "../Homepage/funddigitalaccess.jpg",
       alt: "Sponsor Digital Access",
       link: "/support"
     },
     {
       title: "Donate Computers",
-      image: "/homepage/donatecomputersicon.jpg",
+      image: "../Homepage/donatecomputersicon.jpg",
       alt: "Donate your computers today",
       link: "/donate"
     },
     {
       title: "Volunteer",
-      image: "/homepage/volunteericon.jpg",
+      image: "../Homepage/volunteericon.jpg",
       alt: "Volunteer",
       link: "/volunteer"
     }
