@@ -42,7 +42,7 @@ export default function Refurbished() {
 
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
-            <Header props={{bgImage: '/Become a Partner/partnerbackground.jpeg', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
+            <Header props={{bgImage: '/partner/partnerbackground.jpeg', titlePart1: 'Drive Positive Impact', titlePart2: 'Become a Partner',
             description: 'Join a network of 300+ nonprofit partners that are tackling pressing community needs, uplifting people, and building bridges to lasting change worldwide.',
             links: [{text: 'Become a Partner', clickAction: scrollToForm}]
             }} />
@@ -108,7 +108,7 @@ export default function Refurbished() {
     }}
   />
             <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Become a Partner/partnerbackground.jpeg')`,
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/partner/partnerbackground.jpeg')`,
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
