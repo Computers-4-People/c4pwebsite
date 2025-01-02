@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from "../components/header";
+import ImageMarquee from "../components/imagemarquee";
 
 export default function Homepage() {
   const iconsData = [
@@ -31,7 +32,7 @@ export default function Homepage() {
       titlePart1: "Begins",
       titlePart2: "With a Donation",
       description:
-        "Companies and individuals donate their computers, tablets, keyboards and other electronic devices.",
+        "We're a 501(c)(3) Non-Profit. Companies and individuals donate their computers, tablets, keyboards and other electronic devices. Everything's tax deductible.",
       image: "../Homepage/collection.jpg",
       alt: 'Computers 4 People team member picking up a new donation from a company.'
     },
@@ -39,14 +40,14 @@ export default function Homepage() {
       titlePart1: "Certified",
       titlePart2: "Data Erasure",
       description:
-        "Every device goes through a meticulous data wiping and refurbishment process to be in optimal condition.",
+        "Every device goes through a meticulous data erasure (NIST 800-88) certification process. Computers are refurbished back to optimal condition.",
       image: "../Homepage/refurb.jpg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
       titlePart1: "Partners",
       titlePart2: "With Non-Profits",
-      description: "We partner with 400+ non-profit partners to identify individuals lacking digital access.",
+      description: "We partner with 400+ non-profit partners across New Jersey, New York City, and Massachusetts to identify individuals lacking digital access.",
       image: "../Homepage/partners.jpg",
       alt: 'Computers 4 People ambassador delivering laptops to a non-profit partner'
     },
@@ -67,6 +68,11 @@ export default function Homepage() {
       alt: 'Computer receipient holding their new laptop from Computers 4 People.'
     },
   ];
+  const partnerLogos = [
+    { src: "../logos/babson.png", alt: "Babson College" },
+    { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
+    { src: "../logos/junkteens.png", alt: "Junk Teens" },
+  ];
 
   return (
     <div id="main-content" className="overflow-x-hidden">
@@ -81,6 +87,11 @@ export default function Homepage() {
           ],
         }}
       />
+       <div className="m-10"><ImageMarquee
+        images={partnerLogos}
+        title="Join 1,000+ Computer Donors..."
+      />
+      </div>
 
       <h2 className="ml-14 mt-20 text-7xl font-title text-left">
         Be Part of the Change
@@ -125,7 +136,7 @@ export default function Homepage() {
               to="/partner"
               className="border-2 border-black rounded px-4 py-2 hover:bg-black hover:text-white text-center w-full md:w-auto flex justify-center items-center"
             >
-              Become a Partner
+              Become a Non-Profit Partner
             </Link>
           </div>
         </div>

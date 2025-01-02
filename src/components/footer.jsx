@@ -21,7 +21,7 @@ export default function Footer() {
             <Link to="/about" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               About Us
             </Link>
-            <Link to="/team" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <Link to="/team/" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Team
             </Link>
             <Link to="https://computers4people.zohodesk.com/portal/en/home" className="hover:text-c4p mb-2">
