@@ -72,6 +72,7 @@ export default function Homepage() {
   const partnerLogos = [
     { src: "../logos/babson.png", alt: "Babson College" },
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
+    { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
   ];
 
