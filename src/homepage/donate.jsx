@@ -59,20 +59,20 @@ export default function Donate () {
     ]
     const iconsData = [
         {
-          title: "Become an Electronics Drop-Off Site",
-          image: "../maps.png",
-          alt: "E-Waste Drop-off Site",
-          link: "/ewastedropoff"
+          title: "Fund Digital Access",
+          image: "../Homepage/funddigitalaccess.jpg",
+          alt: "Sponsor Digital Access",
+          link: "/support"
         },
         {
-          title: "Sponsor Digital Access",
-          image: "../handshake.png",
-          alt: "Sponsor Digital Access",
-          link: "/financialdonation"
+          title: "Host a Computer Drive",
+          image: "../Homepage/donatecomputersicon.jpg",
+          alt: "Host a computer drive in your community",
+          link: "/contact"
         },
         {
           title: "Volunteer",
-          image: "../hands.png",
+          image: "../Homepage/volunteericon.jpg",
           alt: "Volunteer",
           link: "/volunteer"
         }
