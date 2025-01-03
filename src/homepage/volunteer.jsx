@@ -62,7 +62,7 @@ export default function Volunteer() {
             alt: 'Volunteer holding a spicy chili pepper plant for our annual fundraiser Pepper Fest'
         }} />
         <div id="media-highlights" className="mt-60">
-                <h2 className="ml-14 text-3xl md:text-4xl lg:text-7xl text-gray-800 font-title uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
+                <h2 className="ml-14 text-3xl md:text-4xl lg:text-7xl font-title uppercase mb-6">VOLUNTEER OPPORTUNITIES</h2>
                 <p className='ml-14 text-black text-xl md:text-2xl mb-10'>In-person. Online. No Experience Required.</p>
             </div>
             <div className="container mx-auto px-4 py-16 relative">
