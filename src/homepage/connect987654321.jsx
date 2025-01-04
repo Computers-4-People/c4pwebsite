@@ -24,24 +24,25 @@ export default function Connect() {
   useEffect(() => {
     const interval = setInterval(() => {
       setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); // Change image every 3 seconds
+    }, 5000); // Change image every 3 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
-      {/* Header */}
-      <Header
-        props={{
-          bgImage: "/refurbished/refurbishedbackground.png",
-          titlePart1: "C4P Connect",
-          titlePart2: "Affordable Internet",
-          description: "The most affordable unlimited mobile internet plan in America. Purchase or Renew Internet starting at $12/month.",
-          links: [{ text: "Get Connected", clickAction: scrollToForm }],
-        }}
-      />
-
+<div className="bg-gray-100 min-h-screen flex flex-col">
+  {/* Header */}
+  <Header
+    props={{
+      bgImage: "/refurbished/refurbishedbackground.png",
+      titlePart1: "C4P Connect",
+      titlePart2: "Affordable Internet",
+      description: "The most affordable unlimited mobile internet plan in America. Purchase or Renew Internet starting at $12/month.",
+      links: [{ text: "Get Connected", clickAction: scrollToForm }],
+      partnerText: "Service provided in partnership with",
+      logos: ["/hotspot/missiontelecom.png", "/hotspot/tmobile.png"], // Replace with actual logo paths
+    }}
+  />
       {/* Internet Plan Information */}
       <div className="bg-white py-32 flex flex-col md:flex-row items-center justify-center flex-1">
         <div className="w-full md:w-1/2">
