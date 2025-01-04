@@ -72,7 +72,7 @@ export default function Header(props) {
 
             {/* Optional Bottom Right Section */}
             {partnerText && logos && (
-                <div className="absolute bottom-4 right-4 text-right">
+                <div className="md:absolute md:bottom-4 md:right-4 text-right mt-6 md:mt-0">
                     <p className="text-sm text-white mb-2">{partnerText}</p>
                     <div className="flex justify-end space-x-4">
                         {logos.map((logo, index) => (
