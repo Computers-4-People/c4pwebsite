@@ -40,7 +40,7 @@ export default function Connect() {
       description: "The most affordable unlimited mobile internet plan in America. Purchase or Renew Internet starting at $12/month.",
       links: [{ text: "Get Connected", clickAction: scrollToForm }],
       partnerText: "Service provided in partnership with",
-      logos: ["/Hotspot/missiontelecom.png", "/Hotspot/tmobile.png"], // Replace with actual logo paths
+      logos: ["/Hotspot/missiontelecom.png"], // Replace with actual logo paths
     }}
   />
       {/* Internet Plan Information */}
