@@ -34,7 +34,10 @@ export default function DropOffLocations() {
           <h2 className="text-3xl md:text-5xl lg:text-7xl font-title">
             Find a Drop-Off Site Near You
           </h2>
-          <p className="text-lg md:text-lg leading-7 md:leading-8"> Drop off your electronics securely at our partner locations. Complete the <a href="/donate" className="text-blue-500 hover:underline">donate form</a> and attach your Donor ID to get a tax receipt and track your donation. We’ll handle recycling, refurbishment, or redistribution to those in need. </p>
+          <p className="text-lg md:text-lg leading-7 md:leading-8">
+            Drop off your electronics securely at our partner locations. Complete the{" "}
+            <a href="/donate" className="text-blue-500 hover:underline">donate form</a> and attach your Donor ID to get a tax receipt and track your donation. We’ll handle recycling, refurbishment, or redistribution to those in need.
+          </p>
           {/* Embedded Google Maps Locator */}
           <div className="relative w-full pb-[56.25%] mt-8">
             <iframe
@@ -46,6 +49,8 @@ export default function DropOffLocations() {
             ></iframe>
           </div>
         </div>
+        {/* Additional padding for mobile */}
+        <div className="h-32 md:h-16"></div>
       </div>
     </div>
   );
