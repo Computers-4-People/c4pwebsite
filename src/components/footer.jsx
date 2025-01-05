@@ -100,7 +100,7 @@ export default function Footer() {
 
         {/* Copyright Text */}
         <div className="mt-10 text-center text-sm text-gray-400">
-          © 2024 Computers For People Inc.
+          © 2025 Computers For People Inc.
         </div>
       </div>
     </div>
