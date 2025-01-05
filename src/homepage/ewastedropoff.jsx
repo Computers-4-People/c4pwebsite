@@ -29,7 +29,7 @@ export default function DropOffLocations() {
       />
 
       {/* Drop-Off Locations Section */}
-      <div className="container mx-auto px-4 py-16 mb-20">
+      <div className="container mx-auto px-4 py-16 mb-20" style={{ marginBottom: "20rem" }}>
         <div id="findadropoff" className="space-y-6">
           <h2 className="text-3xl md:text-5xl lg:text-7xl font-title">
             Find a Drop-Off Site Near You
@@ -45,13 +45,14 @@ export default function DropOffLocations() {
               className="absolute top-0 left-0 w-full h-full border-0 rounded-md"
               loading="lazy"
               title="Drop-Off Locations Map"
-              style={{ border: "0", height: "80vh" }}
+              style={{ border: "0", height: "100vh" }}
             ></iframe>
           </div>
         </div>
-        {/* Additional padding for mobile */}
-        <div className="h-32 md:h-16"></div>
       </div>
+
+      {/* Additional Large Margin to Extend Page Height */}
+      <div style={{ height: "10rem" }}></div>
     </div>
   );
 }
