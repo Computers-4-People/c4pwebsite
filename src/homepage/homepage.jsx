@@ -74,6 +74,8 @@ export default function Homepage() {
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
+    { src: "../logos/att.png", alt: "AT&T" },
+    { src: "../logos/insightpartners.png", alt: "Insight Partners" },
   ];
 
   return (
@@ -84,7 +86,7 @@ export default function Homepage() {
           titlePart1: "Transform a Life",
           titlePart2: "with Technology",
           links: [
-            { text: "Donate Now", url: "/support" },
+            { text: "Donate Computers", url: "/donate" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
