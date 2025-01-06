@@ -24,8 +24,8 @@ export default function Contact() {
                 titlePart1: 'Contact Us',
                 titlePart2: `We're Here to Assist You`,
                 description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m. EST</p> 
-                <p>Visit our Help Center for instant answers or reach out to us for further assistance.</p></div>,
-                links: [{text: 'Contact our Team', clickAction: () => handleScroll("inquiry-form")}, {text: 'Visit our Help Center', url:"https://computers4people.zohodesk.com/portal/en/home"}]
+                <p>Click the floating button in the bottom right corner to access our Help Center for instant answers or reach out for further assistance.</p></div>,
+                links: [{text: 'Contact our Team', clickAction: () => handleScroll("inquiry-form")}]
             }}/>
             <div style={{
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Contact Us/contactbackground.jpeg')`,

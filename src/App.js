@@ -36,15 +36,15 @@ import "./App.css";
 function App() {
   useEffect(() => {
     // Add GTM script dynamically
-    const script = document.createElement("script");
-    script.innerHTML = `
+    const gtmScript = document.createElement("script");
+    gtmScript.innerHTML = `
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-TKNZ7LGV');
     `;
-    document.head.appendChild(script);
+    document.head.appendChild(gtmScript);
 
     // Add GTM noscript fallback dynamically
     const noscript = document.createElement("noscript");
@@ -53,6 +53,13 @@ function App() {
       height="0" width="0" style="display:none;visibility:hidden"></iframe>
     `;
     document.body.appendChild(noscript);
+
+    // Add Zoho Desk ASAP script dynamically
+    const asapScript = document.createElement("script");
+    asapScript.type = "text/javascript";
+    asapScript.src = "https://desk.zoho.com/portal/api/web/asapApp/560217000008252019?orgId=731111531";
+    asapScript.defer = true;
+    document.body.appendChild(asapScript);
   }, []); // Ensure this runs only once on component mount
 
   return (

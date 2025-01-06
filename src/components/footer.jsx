@@ -1,6 +1,9 @@
+// src/components/Footer.js
+import React from 'react';
 import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import { openZohoDeskKB } from '../utils/openKb'; // Import the helper function
 
 export default function Footer() {
   return (
@@ -23,9 +26,6 @@ export default function Footer() {
             </Link>
             <Link to="/team/" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Team
-            </Link>
-            <Link to="https://computers4people.zohodesk.com/portal/en/home" className="hover:text-c4p mb-2">
-              Help Center
             </Link>
             <Link to="/contact" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Contact Us
@@ -90,7 +90,7 @@ export default function Footer() {
             <div className="w-full flex justify-around mt-4">
               <a href="https://www.facebook.com/Computers4People" aria-label='Facebook'><FaFacebook size={30} /></a>
               <a href="https://www.instagram.com/computers4people/" aria-label='Instagram'><FaInstagram size={30} /></a>
-              <a href="https://twitter.com/Computer4people" aria-label='x.com'><FaXTwitter size={30} /></a>
+              <a href="https://twitter.com/Computer4people" aria-label='X.com'><FaXTwitter size={30} /></a>
               <a href="https://www.linkedin.com/company/computers4people" aria-label='LinkedIn'><FaLinkedin size={30} /></a>
               <a href="https://www.tiktok.com/@computers4people" aria-label='TikTok'><FaTiktok size={30} /></a>
               <a href="https://www.youtube.com/@Computers4People" aria-label='YouTube'><FaYoutube size={30} /></a>
@@ -98,7 +98,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright Text */}
+        {/* Copyright */}
         <div className="mt-10 text-center text-sm text-gray-400">
           © 2025 Computers For People Inc.
         </div>
