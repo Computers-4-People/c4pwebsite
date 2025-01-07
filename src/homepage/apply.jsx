@@ -7,34 +7,6 @@ import InfoCard from "../components/infocard";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
-// const handleScroll = (id) => {
-//     const element = document.getElementById(id);
-//     const offset = 100;  // Adjust this value to leave space above the h1
-//     const bodyRect = document.body.getBoundingClientRect().top;
-//     const elementRect = element.getBoundingClientRect().top;
-//     const elementPosition = elementRect - bodyRect;
-//     const offsetPosition = elementPosition - offset;
-
-//     window.scrollTo({
-//         top: offsetPosition,
-//         behavior: "smooth"
-//     });
-// };
-
-const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    if (!element) return; // Ensure the element exists
-
-    const headerOffset = 60;  // Adjust this to match your fixed header height
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-    const offsetPosition = elementPosition - headerOffset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-    });
-};
-
 export default function Apply() {
     const cardsData = [
         {
@@ -72,7 +44,11 @@ export default function Apply() {
             image: "../refurbished/transform.jpg",
         },
     ];
-    
+    const scrollToForm = () => {
+        document.getElementById("apply-form").scrollIntoView({ behavior: "smooth" });
+        
+    };
+
     
     return (
         <div  id="main-content" className='font-sans overflow-hidden'>
@@ -81,7 +57,7 @@ export default function Apply() {
             titlePart1: 'UNLOCKING OPPORTUNITIES,',
             titlePart2: 'ONE COMPUTER AT A TIME',
             description: <div className='space-y-10'><p>Computers 4 People refurbishes and delivers donated devices to those in need. Complete our 10-min application today!</p></div>,
-            links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
+            links: [{text: 'Apply for a Device', clickAction: scrollToForm}]
 
             }}/>
         <Testimonial
