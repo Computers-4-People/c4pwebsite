@@ -112,7 +112,7 @@ export default function Connect() {
       </div>
 
       {/* Free Internet Application Section */}
-      <div className="bg-gray-900 py-16 text-center">
+      {/* <div className="bg-gray-900 py-16 text-center">
         <h2 className="text-3xl font-bold text-white">Qualify for Free Internet?</h2>
         <p className="text-gray-300 my-4">
           If you meet eligibility requirements through our partner programs, apply for free internet.
@@ -120,7 +120,7 @@ export default function Connect() {
         <a href="/hotspot" className="bg-c4p hover:bg-c4p-hover text-white font-semibold rounded-md shadow-md px-6 py-3">
           Apply for Free Internet
         </a>
-      </div>
+      </div> */}
     </div>
   );
 }

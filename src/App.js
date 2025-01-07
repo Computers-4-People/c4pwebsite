@@ -29,7 +29,7 @@ import Eligibility from "./homepage/eligibility";
 import Boardapplication from "./homepage/boardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
-import Connect from "./homepage/connect987654321";
+import Connect from "./homepage/connect";
 import PageNotFound from "./homepage/404page";
 import "./App.css";
 
@@ -104,7 +104,7 @@ function App() {
           <Route path="/uploadrecommendation.html" element={<Uploadrecommendation />} />
           <Route path="/boardapplication" element={<Boardapplication />} />
           <Route path="/volunteer" element={<Volunteer />} />
-          <Route path="/connect987654321" element={<Connect />} />
+          <Route path="/connect" element={<Connect />} />
           <Route path="/portal" element={<Portal />} />
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
