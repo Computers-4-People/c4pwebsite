@@ -7,93 +7,91 @@ import InfoCard from "../components/infocard";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
-// const handleScroll = (id) => {
-//     const element = document.getElementById(id);
-//     const offset = 100;  // Adjust this value to leave space above the h1
-//     const bodyRect = document.body.getBoundingClientRect().top;
-//     const elementRect = element.getBoundingClientRect().top;
-//     const elementPosition = elementRect - bodyRect;
-//     const offsetPosition = elementPosition - offset;
-
-//     window.scrollTo({
-//         top: offsetPosition,
-//         behavior: "smooth"
-//     });
-// };
-
-const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    if (!element) return; // Ensure the element exists
-
-    const headerOffset = 60;  // Adjust this to match your fixed header height
-    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-    const offsetPosition = elementPosition - headerOffset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-    });
-};
-
 export default function Apply() {
     const cardsData = [
         {
-          titlePart1: "Donors",
-          titlePart2: "Schedule A Pickup",
-          description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-          image: "../refurbished/donors.jpeg"
+            titlePart1: "Donors &",
+            titlePart2: "Refurbishing",
+            description: "Generous donors provide devices, which are refurbished with secure data wiping and repairs, ensuring they are ready for recipients.",
+            image: "../refurbished/donorsrefurb.jpg",
         },
         {
-            titlePart1: "Individuals & Orgs",
-            titlePart2: "Apply for a Device",
-            description: "Individuals and companies donate their devices to us and we partner with local organizations to redistribute them to the community.",
-            image: "../refurbished/ambasadors.jpeg"
+            titlePart1: "Apply &",
+            titlePart2: "Nomination",
+            description: "Applicants apply online (paper applications available) and list a recommender from a nominating non-profit. The recommender receives an email to upload a recommendation.",
+            image: "../refurbished/applynomination.jpg",
         },
         {
-            titlePart1: "Devices",
-            titlePart2: "Undergoes Refurbishing",
-            description: "Computers 4 People refurbishes and cleans computers thoroughly to optimal condition.",
-            image: "../refurbished/devices.jpeg"
+            titlePart1: "Notifications &",
+            titlePart2: "Review",
+            description: (
+                <>
+                    Applicants are notified when their recommender submits the recommendation and the application is complete. Applications are reviewed for eligibility. Check <a href="/eligibility" className="text-green-500 hover:underline">eligibility requirements</a>.
+                </>
+            ),
+            image: "../refurbished/notification.jpg",
         },
         {
-            titlePart1: "Recipients",
-            titlePart2: "Recieve Devices",
-            description: "Recipient receives an email when the computer is delivered to the sponsoring organization.",
-            image: "../refurbished/recipients.JPG"
+            titlePart1: "Device",
+            titlePart2: "Delivery",
+            description: "Approved applicants are notified and devices are delivered to the nominating non-profit, where recipients can pick them up. There may be a waiting period based on availability.",
+            image: "../refurbished/devicedelivery.jpg",
         },
         {
-            titlePart1: "A Catalyst",
-            titlePart2: "of Change Begins",
-            description: "Computers 4 People follows up via email to see how the computer is enabling opportunities and gather feedback.",
-            image: "../refurbished/catalyst.jpeg"
-        }
-      ];
+            titlePart1: "Transforming",
+            titlePart2: "Lives",
+            description: "We follow up with recipients to gather feedback and learn how the devices are creating new opportunities in their lives.",
+            image: "../refurbished/transform.jpg",
+        },
+    ];
+    const scrollToForm = () => {
+        document.getElementById("apply-form").scrollIntoView({ behavior: "smooth" });
+        
+    };
+
+    
     return (
         <div  id="main-content" className='font-sans overflow-hidden'>
         <Header props={{
             bgImage: '/refurbished/refurbishedbackground.jpeg',
             titlePart1: 'UNLOCKING OPPORTUNITIES,',
             titlePart2: 'ONE COMPUTER AT A TIME',
-            description: <div className='space-y-10'><p>Computers 4 People works tirelessly to refurbish and deliver donated devices to those in need. Complete our 10-min application today!</p></div>,
-            links: [{text: 'Apply for a Device', clickAction: () => handleScroll("apply-form")}]
+            description: <div className='space-y-10'><p>Computers 4 People refurbishes and delivers donated devices to those in need. Complete our 10-min application today!</p></div>,
+            links: [{text: 'Apply for a Device', clickAction: scrollToForm}]
 
             }}/>
-        <Testimonial props={{
-            title2: 'Supporting Underserved Communities with Free Computers',
-            desc2: <p><a className='text-green-500 hover:underline' href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">Forty-one percent of adults with lower incomes do not own a desktop or laptop computer</a>, limiting their access to economic, educational, and social opportunities. Computers 4 People provide refurbished laptops, desktops, all-in-one and tablets at no cost to individuals and organizations in need to help people grasp the resources at their disposal.</p>,
-            image: '../refurbished/recipient.jpg',
-            side: 'left'
-        }} />
-        <Testimonial props={{
-            title2: 'Our devices come from generous donors',
-            desc2: <p> Our devices come from individuals and organizations who generously provide their unused equipment to us. Each device undergoes a meticulous refurbishing and <a className='text-green-500 hover:underline' href=''> data wiping </a> process to be in optimal condition before being matched to a recipient. Due to our` +
-            ` reliance on donated devices, there may be a waiting period for computer applicants. </p>,
-            image: '../refurbished/luis.png',
-            side: 'right'
-        }}/>
-        <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10 md:px-20'>
+        <Testimonial
+            props={{
+                title2: 'Transforming Lives with Free Computers',
+                desc2: (
+                <p>
+                    According to a <a className="text-green-500 hover:underline" href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">
+                    Pew Research study
+                    </a>, 41% of adults with lower incomes do not own a desktop or laptop computer. This limits access to critical opportunities in education, employment, and healthcare. Computers 4 People provides refurbished laptops, desktops, and tablets at no cost, ensuring everyone can unlock their potential.
+                </p>
+                ),
+                image: '../refurbished/recipient.jpg',
+                side: 'left',
+  }}
+/>
+<Testimonial
+  props={{
+    title2: 'From Donors to Recipients: A Full Circle of Impact',
+    desc2: (
+      <p>
+        Generous individuals and organizations donate their unused devices, which are then meticulously
+        refurbished and securely <a className="text-green-500 hover:underline" href="/donate">data-wiped</a> to be in optimal condition. These devices are matched with recipients to help
+        them achieve their goals. Due to reliance on donations, applicants may experience a short
+        waiting period, but the impact is well worth it.
+      </p>
+    ),
+    image: '../refurbished/luis.png',
+    side: 'right',
+  }}
+/>
+        <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10'>
                 <div className='flex flex-col text-left md:ml-12 mt-40'>
-                <h2 className='text-2xl md:text-4xl lg:text-7xl font-title text-gray-800 uppercase mb-6'>
+                <h2 className='text-2xl md:text-4xl lg:text-7xl font-title uppercase mb-6'>
                 Giving Devices a Second Chance
                     </h2>
                     <p className='text-lg md:text-2xl leading-7 md:leading-8 lg:leading-10'>
@@ -119,7 +117,7 @@ export default function Apply() {
     id="apply-form"
     aria-label='Apply For Computers! (2024 Draft Individuals)'
     style={{ width: '100%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/ApplyForComputers2024Draft/formperma/bAlXxxX5A17U75_UNCjXMmfBaH3aR0c5kD2o-9FbngA'
+    src='https://forms.zohopublic.com/Computers4People/form/ApplyforaComputertestKPIs/formperma/zk0NnJSBFpkXO4ULlGN4TOKt9HESX6_p5mgQFoS6lSA'
   ></iframe>
 </div>
             </div>

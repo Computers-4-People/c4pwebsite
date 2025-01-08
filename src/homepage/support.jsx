@@ -2,19 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from '../components/header';
 import Testimonial from '../components/testimonial';
-const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    const offset = 100;  // Adjust this value to leave space above the h1
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
+const scrollToForm = () => {
+    document.getElementById("financialdonation").scrollIntoView({ behavior: "smooth" });
+    
+};
 
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-    });
-};  
 export default function Support() {
     return (
         <div id="main-content" >
@@ -24,7 +16,7 @@ export default function Support() {
                 titlePart1: 'Take Action',
                 titlePart2: 'Become a Champion',
                 description: 'Every person deserves equitable access to opportunities. Your donation helps provide essential tech access and makes a difference for those in need.',
-                links: [{text: 'Donate Monetarily', clickAction: () => handleScroll("financialdonation")}, {text: 'Donate a Device', url: '/donate'}]
+                links: [{text: 'Donate Monetarily', clickAction: scrollToForm}, {text: 'Donate a Device', url: '/donate'}]
             }} />
             </div>
 
@@ -41,7 +33,7 @@ export default function Support() {
                 </div>,
                 side:'right',
                 image: '../Financial Contribution/Computers 4 People Recipient with Refurbished Laptop.jpeg',
-                links: [{text:'Learn More', url:'/impact'}],
+                links: [{text:'Learn More', url:'/about'}],
                 alt: 'A child holding a Computers 4 People green tote bag with a donated, refurbished laptop inside.'
             }}/>
             <div>
@@ -60,7 +52,7 @@ export default function Support() {
     scrolling="no"
     aria-label='Checkin Form'
     style={{ width: '90%', height: '100%', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://secure.givelively.org/donate/computers-for-people/computers-4-people-fundraiser-2024?ref=sd_widget'
+    src='https://secure.givelively.org/donate/computers-for-people/computers-4-people-fundraiser-2025?ref=sd_widget'
     id="financialdonation"
  ></iframe>
 </div>
