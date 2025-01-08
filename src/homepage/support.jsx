@@ -50,7 +50,7 @@ export default function Support() {
   display: 'flex',
   alignItems: 'center', // This aligns the iframe vertically
   justifyContent: 'center', // This aligns the iframe horizontally
-  height: '500vh',
+  height: '750vh',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat'

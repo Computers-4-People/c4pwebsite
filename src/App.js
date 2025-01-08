@@ -11,7 +11,6 @@ import Careers from './homepage/careers';
 import Contact from './homepage/contact';
 import Ewastedropoff from './homepage/ewastedropoff';
 import Support from './homepage/support';
-import Help from './homepage/help';
 import Press from './homepage/press';
 import Impact from './homepage/impact';
 import Partner from './homepage/partner';
@@ -63,7 +62,6 @@ function App() {
             <Route path="/contact.html" element={<Contact />}/>
             <Route path="/ewastedropoff" element={<Ewastedropoff />}/>
             <Route path="/support" element={<Support />}/>
-            <Route path="/help" element={<Help />}/>
             <Route path="/press" element={<Press />}/>
             <Route path="/press.html" element={<Press />}/>
             <Route path="/impact" element={<Impact />}/>

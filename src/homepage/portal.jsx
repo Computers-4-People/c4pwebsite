@@ -10,6 +10,7 @@ function Portal() {
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+    const [championType, setChampionType] = useState('');
 
 
     // Set the API base URL dynamically based on environment
@@ -62,8 +63,8 @@ function Portal() {
             return;
         }
 
-        
-        const requestUrl = `${API_BASE_URL}/api/${module}/${recordId}`;
+        const type = 'Champions';
+        const requestUrl = `${API_BASE_URL}/api/${type}/${recordId}`;
         
         
         console.log('Attempting to fetch from:', requestUrl);
@@ -71,21 +72,47 @@ function Portal() {
         try {
             const response = await axios.get(requestUrl);
             console.log('API Response:', response.data);
+            console.log('Applicant Type:', response.data.Champion_Type);
+            setChampionType(response.data.Champion_Type);
+            console.log('Champion_Id', response.data?.Champion_ID);
+            const championId = response.data?.Champion_ID;
+            console.log('Name', response.data?.Name);
+            const name = response.data?.Name;
+            
+            setChampionId(response.data.Champion_ID);
+
             if (response.data.error) {
                 setError(response.data.error);
             } else {
                 setData(response.data);
+            
+                const found = response.data.Champion_Type.find((element) => element === 'Computer Applicant' || element === 'Computer Donor');
+                console.log(found);
 
-                // Fetch inventory data based on Applicant ID or Donor_ID
-                if (module === 'Contacts') {
-                    if (response.data.Status === 'Client') {
-                        fetchInventoryByRecipientId(recordId);
+                if (found) {
+
+                    if (found === 'Computer Donor') {
+
+
+                        // could not be working because of naming, check this
+                        const response = await fetchWithChampion(name, 'Computer_Donations');
+                        const donorId = response.data?.Donor_ID;
+                        if (donorId) {
+                            await fetchInventoryByDonorId(donorId);
+                        }
+                        
+
                     }
-                } else if (module === 'Computer_Donors') {
-                    const donorId = response.data.Donor_ID;
-                    if (donorId) {
-                        fetchInventoryByDonorId(donorId);
+
+                    else if (found === 'Computer Applicant') {
+                        const response = await fetchWithChampion(name, 'Contacts');
+                        const applicantId = response.data?.Applicant_ID;
+                        if (applicantId) {
+                        await fetchInventoryByRecipientId(recordId);
+                        }
+                        
                     }
+
                 }
             }
         } catch (error) {
@@ -93,13 +120,32 @@ function Portal() {
             console.log(recordId);
             console.log(API_BASE_URL);
             console.error('Error fetching data:', error);
-            if (error.response && error.response.data && error.response.data.error) {
+            if (error.response?.data?.error) {
                 setError(error.response.data.error);
+            } else if (error.message) {
+                setError(error.message);
             } else {
                 setError('Network Error: Unable to retrieve data.');
             }
         }
     };
+
+
+    const fetchWithChampion = async ( Name, moduleName) => {
+        try {
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}`;
+            console.log('url:', requestUrl);
+
+            const response = await axios.get(requestUrl);
+            console.log('response:', response.data);
+
+            return response.data;
+        }
+        catch(e) {
+            console.error('Error fetching champion-related data:', e);
+            throw e;
+        }
+    }
 
     const fetchInventoryByRecipientId = async (recipientId) => {
         try {
@@ -117,6 +163,8 @@ function Portal() {
         }
     };
 
+
+
     const fetchInventoryByDonorId = async (donorId) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
@@ -132,6 +180,8 @@ function Portal() {
             console.error('Error fetching inventory data:', error);
         }
     };
+
+
 
     const renderStatusMessage = () => {
         if (module !== 'Contacts' || !data) return null;
@@ -266,14 +316,6 @@ function Portal() {
                 {!data ? (
                     <>
                         <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2>
-                        <select
-                            className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
-                            value={module}
-                            onChange={(e) => setModule(e.target.value)}
-                        >
-                            <option value="Contacts">Applicants</option>
-                            <option value="Computer_Donors">Computer Donors</option>
-                        </select>
                         <input
                             type="text"
                             placeholder="Enter ID"
