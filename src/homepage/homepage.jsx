@@ -73,6 +73,8 @@ export default function Homepage() {
     { src: "../logos/babson.png", alt: "Babson College" },
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
+    { src: "../logos/comcast.png", alt: "Comcast" },
+    { src: "../logos/qbe.png", alt: "QBE" },
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
     { src: "../logos/att.png", alt: "AT&T" },
     { src: "../logos/insightpartners.png", alt: "Insight Partners" },
