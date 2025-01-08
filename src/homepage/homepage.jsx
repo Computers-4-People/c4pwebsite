@@ -98,14 +98,12 @@ export default function Homepage() {
         title="Join 1,000+ Computer Donors..."
       />
       </div>
-
       <h2 className="ml-14 mt-20 text-7xl font-title text-left">
         Be Part of the Change
       </h2>
       <div>
         <InfoCard cards={cardsData} />
       </div>
-
       <Testimonial
     props={{
       title2: " Give Unused Tech a Second Chance!",
