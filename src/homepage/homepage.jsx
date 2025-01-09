@@ -75,6 +75,7 @@ export default function Homepage() {
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "../logos/comcast.png", alt: "Comcast" },
     { src: "../logos/qbe.png", alt: "QBE" },
+    { src: "../logos/stevens.png", alt: "Stevens Institute of Technology" },
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
     { src: "../logos/att.png", alt: "AT&T" },
     { src: "../logos/insightpartners.png", alt: "Insight Partners" },
