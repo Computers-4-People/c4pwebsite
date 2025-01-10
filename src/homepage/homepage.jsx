@@ -70,6 +70,7 @@ export default function Homepage() {
     },
   ];
   const partnerLogos = [
+    { src: "../logos/americanliverfoundation.png", alt: "American Liver Foundation" },
     { src: "../logos/babson.png", alt: "Babson College" },
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
@@ -79,6 +80,7 @@ export default function Homepage() {
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
     { src: "../logos/att.png", alt: "AT&T" },
     { src: "../logos/insightpartners.png", alt: "Insight Partners" },
+    
   ];
 
   return (
