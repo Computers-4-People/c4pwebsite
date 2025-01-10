@@ -11,6 +11,7 @@ export default function Refurbished() {
     const partnerLogos = [
             { src: "../logos/cityofboston.png", alt: "City of Boston" },
             { src: "../logos/unitedway.png", alt: "United Way" },
+            { src: "../logos/missiontelecom.png", alt: "Mission Telecom" },
             { src: "../logos/jewishboard.png", alt: "Jewish Board" },
             { src: "../logos/perscholas.png", alt: "Per Scholas" },
             { src: "../logos/phoenixhouse.png", alt: "Phoenix House" },
