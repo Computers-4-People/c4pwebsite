@@ -35,32 +35,6 @@ import "./App.css";
 
 function App() {
   useEffect(() => {
-      // Add Google Tag Manager script to <head>
-      const gtmScript = document.createElement("script");
-      gtmScript.innerHTML = `
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TKNZ7LGV');
-      `;
-      document.head.appendChild(gtmScript);
-  
-      // Add Google Tag Manager noscript to <body>
-      const noscript = document.createElement("noscript");
-      noscript.innerHTML = `
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKNZ7LGV"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe>
-      `;
-      document.body.appendChild(noscript);
-     // This will run only once when the component mounts
-
-
-
-
-
-
-    
     // Add Zoho Desk ASAP script dynamically
     const asapScript = document.createElement("script");
     asapScript.type = "text/javascript";
