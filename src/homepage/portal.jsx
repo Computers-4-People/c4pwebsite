@@ -109,6 +109,7 @@ function Portal() {
             console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
+                console.log('Inventory Data:', response.data);
             } else {
                 console.log('No inventory data found for this recipient.');
             }
@@ -125,6 +126,7 @@ function Portal() {
             console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
+                console.log('Inventory Data:', response.data);
             } else {
                 console.log('No inventory data found for this donor.');
             }
