@@ -120,6 +120,10 @@ function Portal() {
 
     const fetchInventoryByDonorId = async (donorId) => {
         try {
+            const req = `${API_BASE_URL}/api/computer-inventory`;
+            const params = { searchField: 'Donor_ID', searchValue: donorId };
+            console.log('here');
+            console.log(req, params);
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Donor_ID', searchValue: donorId },
             });
