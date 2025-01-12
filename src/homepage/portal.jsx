@@ -3,13 +3,15 @@ import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 
 function Portal() {
-    const [recordId, setRecordId] = useState('');
+    var [recordId, setRecordId] = useState('');
     const [championId, setChampionId] = useState('');
-    const [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
+    var [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+
+    const [type, setType] = useState(null);
 
 
     // Set the API base URL dynamically based on environment
@@ -62,7 +64,26 @@ function Portal() {
             return;
         }
 
+        // recordId here is the champion recordId
+        const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
+        const championResp = await axios.get(reqChampion);
+        console.log('successfully retrieved champion information', championResp.data);
+
+        const name = championResp.data?.Name;
+        console.log("here is the champion's name", name);
+
+        const reqName = await fetchWithChampion(name);
+        console.log('successfully retrieved applicant information', reqName);
         
+        const id = reqName.data[0].id;
+        
+        console.log('recordId before:', recordId);
+        console.log('recordId after:', id);
+        recordId = id;
+
+
+
+        // get recordId from request and put it here
         const requestUrl = `${API_BASE_URL}/api/${module}/${recordId}`;
         
         
@@ -100,6 +121,23 @@ function Portal() {
             }
         }
     };
+
+    // fetch donor or applicant data with champion name
+    const fetchWithChampion = async (Name) => {
+        try {
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}`;
+            console.log('url:', requestUrl);
+
+            const response = await axios.get(requestUrl);
+            console.log('response:', response.data);
+
+            return response.data;
+        }
+        catch(e) {
+            console.error('Error fetching champion-related data:', e);
+            throw e;
+        }
+    }
 
     const fetchInventoryByRecipientId = async (recipientId) => {
         try {
