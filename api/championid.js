@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     console.log(`Received request for module: ${Name}`);
 
     // decode parameter --> email, phone, etc
-    paramType = decodeURIComponent(param);
+    const paramType = decodeURIComponent(param);
 
     try {
         const accessToken = await getZohoAccessToken();
