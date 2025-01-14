@@ -80,6 +80,7 @@ export default function Homepage() {
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
     { src: "../logos/att.png", alt: "AT&T" },
     { src: "../logos/insightpartners.png", alt: "Insight Partners" },
+    { src: "../logos/bigbelly.png", alt: "Big Belly Solar" },
     
   ];
 
