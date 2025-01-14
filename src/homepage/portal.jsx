@@ -3,14 +3,16 @@ import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 
 function Portal() {
-    const [recordId, setRecordId] = useState('');
+    var [recordId, setRecordId] = useState('');
     const [championId, setChampionId] = useState('');
-    const [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
+    var [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
     const [championType, setChampionType] = useState('');
+
+    const [type, setType] = useState(null);
 
 
     // Set the API base URL dynamically based on environment
@@ -63,10 +65,40 @@ function Portal() {
             return;
         }
 
-        const type = 'Champions';
-        const requestUrl = `${API_BASE_URL}/api/${type}/${recordId}`;
+
+        // recordId here is the champion recordId
+        const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
+        const championResp = await axios.get(reqChampion);
+        console.log('successfully retrieved champion information', championResp.data);
+
+        const name = championResp.data?.Name;
+        console.log("here is the champion's name", name);
+
+        const reqName = await fetchWithChampion(name);
+        console.log('successfully retrieved applicant information', reqName);
         
+        const id = reqName.data[0].id;
         
+        console.log('recordId before:', recordId);
+        console.log('recordId after:', id);
+
+        //mutates to computer_donor or applicant record id
+        recordId = id;
+
+        if (reqName.data[0].Status === 'Client') {
+            console.log('Applicant is a client');
+            module = 'Contacts';
+        }
+
+        else {
+            console.log('Applicant is not a client');
+            module = 'Computer_Donors';
+        }
+
+
+        // get recordId from request and put it here
+        const requestUrl = `${API_BASE_URL}/api/${module}/${recordId}`;
+       
         console.log('Attempting to fetch from:', requestUrl);
 
         try {
@@ -130,10 +162,18 @@ function Portal() {
         }
     };
 
-
-    const fetchWithChampion = async ( Name, moduleName) => {
+    /**
+     * 
+     * @param {*} Name email of the applicant/donor
+     * @param {*} moduleName module name of where the applicant/donor is located
+     * @param {*} param the parameter type to search for (email, phone, etc)
+     * @returns response data from the api/championid endpoint 
+     */
+    // fetch donor or applicant data with champion name
+    const fetchWithChampion = async (Name, moduleName, param) => {
         try {
-            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}`;
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=
+            ${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
             console.log('url:', requestUrl);
 
             const response = await axios.get(requestUrl);
@@ -155,6 +195,7 @@ function Portal() {
             console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
+                console.log('Inventory Data:', response.data);
             } else {
                 console.log('No inventory data found for this recipient.');
             }
@@ -167,12 +208,17 @@ function Portal() {
 
     const fetchInventoryByDonorId = async (donorId) => {
         try {
+            const req = `${API_BASE_URL}/api/computer-inventory`;
+            const params = { searchField: 'Donor_ID', searchValue: donorId };
+            console.log('here');
+            console.log(req, params);
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Donor_ID', searchValue: donorId },
             });
             console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
+                console.log('Inventory Data:', response.data);
             } else {
                 console.log('No inventory data found for this donor.');
             }
@@ -316,6 +362,14 @@ function Portal() {
                 {!data ? (
                     <>
                         <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2>
+                        {/* <select
+                            className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
+                            value={module}
+                            onChange={(e) => setModule(e.target.value)}
+                        >
+                            <option value="Contacts">Applicants</option>
+                            <option value="Computer_Donors">Computer Donors</option>
+                        </select> */}
                         <input
                             type="text"
                             placeholder="Enter ID"
