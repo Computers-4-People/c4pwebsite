@@ -6,15 +6,24 @@ dotenv.config({
 });
 const { getZohoAccessToken } = require('./_utils');
 
+
+/**
+ * 
+ * @param {*} req --> query params: Name, moduleName, param
+ * @param {*} res --> response data from zoho api as a json object
+ * @returns response data from the zoho api search endpoint
+ */
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
 
-    const { Name } = req.query;
+    const { Name, moduleName, param } = req.query;
     console.log(`Received request for module: ${Name}`);
 
+    // decode parameter --> email, phone, etc
+    paramType = decodeURIComponent(param);
 
     try {
         const accessToken = await getZohoAccessToken();
@@ -23,7 +32,7 @@ export default async function handler(req, res) {
         if (!accessToken) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
-        const requestUrl = `https://www.zohoapis.com/crm/v2/Contacts/search?criteria=(Champion:equals:${Name})`;
+        const requestUrl = `https://www.zohoapis.com/crm/v2/${moduleName}/search?criteria=(${paramType}:equals:${Name})`;
 
         const response = await axios.get(requestUrl, {
             headers: {

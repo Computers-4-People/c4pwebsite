@@ -79,8 +79,19 @@ function Portal() {
         
         console.log('recordId before:', recordId);
         console.log('recordId after:', id);
+
+        //mutates to computer_donor or applicant record id
         recordId = id;
 
+        if (reqName.data[0].Status === 'Client') {
+            console.log('Applicant is a client');
+            module = 'Contacts';
+        }
+
+        else {
+            console.log('Applicant is not a client');
+            module = 'Computer_Donors';
+        }
 
 
         // get recordId from request and put it here
@@ -122,10 +133,20 @@ function Portal() {
         }
     };
 
+
+    /**
+     * 
+     * @param {*} Name email of the applicant/donor
+     * @param {*} moduleName module name of where the applicant/donor is located
+     * @param {*} param the parameter type to search for (email, phone, etc)
+     * @returns response data from the api/championid endpoint 
+     */
     // fetch donor or applicant data with champion name
-    const fetchWithChampion = async (Name) => {
+    const fetchWithChampion = async (Name, moduleName, param) => {
         try {
-            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}`;
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=
+            ${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
+
             console.log('url:', requestUrl);
 
             const response = await axios.get(requestUrl);
@@ -310,14 +331,14 @@ function Portal() {
                 {!data ? (
                     <>
                         <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2>
-                        <select
+                        {/* <select
                             className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
                             value={module}
                             onChange={(e) => setModule(e.target.value)}
                         >
                             <option value="Contacts">Applicants</option>
                             <option value="Computer_Donors">Computer Donors</option>
-                        </select>
+                        </select> */}
                         <input
                             type="text"
                             placeholder="Enter ID"
