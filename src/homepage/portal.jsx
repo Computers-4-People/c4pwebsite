@@ -70,9 +70,11 @@ function Portal() {
         console.log('successfully retrieved champion information', championResp.data);
 
         const name = championResp.data?.Name;
+        const email = championResp.data?.Email;
         console.log("here is the champion's name", name);
+        console.log("here is the Champion's Email", email);
 
-        const reqName = await fetchWithChampion(name);
+        const reqName = await fetchWithChampion(email, 'Contacts', 'Email');
         console.log('successfully retrieved applicant information', reqName);
         
         const id = reqName.data[0].id;
