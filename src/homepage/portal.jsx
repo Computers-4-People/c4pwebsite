@@ -12,6 +12,7 @@ function Portal() {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
 
     const [type, setType] = useState(null);
+    var newModule = null;
 
 
     // Set the API base URL dynamically based on environment
@@ -87,17 +88,17 @@ function Portal() {
 
         if (reqName.data[0].Status === 'Client') {
             console.log('Applicant is a client');
-            module = 'Contacts';
+            newModule = 'Contacts';
         }
 
         else {
             console.log('Applicant is not a client');
-            module = 'Computer_Donors';
+            newModule = 'Computer_Donors';
         }
 
 
         // get recordId from request and put it here
-        const requestUrl = `${API_BASE_URL}/api/${module}/${recordId}`;
+        const requestUrl = `${API_BASE_URL}/api/${newModule}/${recordId}`;
         
         
         console.log('Attempting to fetch from:', requestUrl);
@@ -109,6 +110,7 @@ function Portal() {
                 setError(response.data.error);
             } else {
                 setData(response.data);
+                setModule(newModule);
 
                 // Fetch inventory data based on Applicant ID or Donor_ID
                 if (module === 'Contacts') {
