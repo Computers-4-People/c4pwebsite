@@ -74,7 +74,7 @@ function Portal() {
         console.log("here is the champion's name", name);
         console.log("here is the Champion's Email", email);
 
-        const reqName = await fetchWithChampion(email, 'Contacts', 'Email');
+        const reqName = await fetchWithChampion(email, 'Computer_Donors', 'Email');
         console.log('successfully retrieved applicant information', reqName);
         
         const id = reqName.data[0].id;
@@ -146,8 +146,7 @@ function Portal() {
     // fetch donor or applicant data with champion name
     const fetchWithChampion = async (Name, moduleName, param) => {
         try {
-            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=
-            ${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
 
             console.log('url:', requestUrl);
 
