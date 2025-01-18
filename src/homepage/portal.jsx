@@ -13,6 +13,7 @@ function Portal() {
 
     const [type, setType] = useState(null);
     var newModule = null;
+    var reqName = null;
 
 
     // Set the API base URL dynamically based on environment
@@ -72,12 +73,31 @@ function Portal() {
 
         const name = championResp.data?.Name;
         const email = championResp.data?.Email;
+        const found = championResp.data?.Champion_Type;
         console.log("here is the champion's name", name);
         console.log("here is the Champion's Email", email);
+        console.log("Champion types:", found);
 
-        const reqName = await fetchWithChampion(email, 'Computer_Donors', 'Email');
-        console.log('successfully retrieved applicant information', reqName);
+        const type = found.find(t => t === 'Computer Donor' || t === 'Computer Applicant' || t === 'Loser');
+        console.log("type", type);
+        if (!type) {
+            console.error('Champion type not found:', found);
+            setError('Invalid champion type');
+            return -1;
+        }
+
         
+        if (type === 'Computer Donor' || type === 'Loser') {
+            reqName = await fetchWithChampion(email, 'Computer_Donors', 'Email');
+        }
+
+        else {
+            reqName = await fetchWithChampion(email, 'Contacts', 'Email');
+        }
+        
+        console.log('successfully retrieved applicant information', reqName);
+
+
         const id = reqName.data[0].id;
         
         console.log('recordId before:', recordId);
@@ -86,7 +106,8 @@ function Portal() {
         //mutates to computer_donor or applicant record id
         recordId = id;
 
-        if (reqName.data[0].Status === 'Client') {
+        if (reqName.data[0].Status === 'Client' || reqName.data[0].Status === "Applicants No Recommendation" || 
+            reqName.data[0].Status === "Approved Applicants") {
             console.log('Applicant is a client');
             newModule = 'Contacts';
         }
