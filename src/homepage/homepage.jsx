@@ -75,13 +75,13 @@ export default function Homepage() {
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "../logos/comcast.png", alt: "Comcast" },
+    { src: "../logos/wsaudiology.png", alt: "WS Audiology" },
     { src: "../logos/qbe.png", alt: "QBE" },
     { src: "../logos/stevens.png", alt: "Stevens Institute of Technology" },
     { src: "../logos/junkteens.png", alt: "Junk Teens" },
     { src: "../logos/att.png", alt: "AT&T" },
     { src: "../logos/insightpartners.png", alt: "Insight Partners" },
     { src: "../logos/bigbelly.png", alt: "Big Belly Solar" },
-    
   ];
 
   return (
