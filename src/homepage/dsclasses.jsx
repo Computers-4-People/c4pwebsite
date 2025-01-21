@@ -31,7 +31,7 @@ export default function DSClasses() {
 
                 <Testimonial props={{
                     title2: 'Collaborating with organizations to offer free digital skills classes to people in need',
-                    desc2: `We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in hosting a digital skills class, please reach out to us-we'd love to partner with you.`,
+                    desc2: `We collaborate with organizations like RiseBoro, Community Access, Jersey City Housing Authority, and the Hoboken Public Library to deliver digital literacy courses to under-resourced communities. Our classes are held across New York City and northern New Jersey. If your organization is interested in hosting a digital skills class, please reach out to us, we'd love to partner with you.`,
                     image: '../Programs/Digital Skills/Refurbished_Computers_Donation_Dylan_Zajac_ .jpeg',
                     alt: 'Recipient receiving refurbished, donated laptops.'
                 }}/>
