@@ -80,7 +80,7 @@ export default function Apply() {
     desc2: (
       <p>
         Generous individuals and organizations donate their unused devices, which are then meticulously
-        refurbished and securely <a className="text-green-500 hover:underline" href="/donate">data-wiped</a> to be in optimal condition. These devices are matched with recipients to help
+        refurbished and securely <a className="text-green-500 hover:underline" href="/donate">data-wiped</a> to be in optimal condition. These devices are matched with recipients (located in New Jersey, New York City, or Massachusetts) to help
         them achieve their goals. Due to reliance on donations, applicants may experience a short
         waiting period, but the impact is well worth it.
       </p>
