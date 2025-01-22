@@ -3,7 +3,7 @@ const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
 const mg = mailgun.client({username: 'Computers4People', key: process.env.API_KEY || '110217f8bff22a71a02b973dad53f074-9c3f0c68-a15068ee'});
 
-const domain = 'sandbox028d9366440941f29d34eb3f81272721.mailgun.org';
+const domain = process.env.DOMAIN;
 
 
 export default async function handler(req, res) {
