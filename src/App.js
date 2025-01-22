@@ -32,6 +32,7 @@ import AffordableInternet from './homepage/affordableinternet';
 import Login from './homepage/login';
 import PageNotFound from './homepage/404page';
 import Scroll from './components/scroll';
+import Auth from './homepage/auth';
 
 // import background from './background.jpg'
 import './App.css';
@@ -88,6 +89,7 @@ function App() {
             <Route path="/Pepper-Fest" element={<Pepper />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="*" element={<PageNotFound />} />
+            <Route path="/auth" element={<Auth />}/>
          </Routes>
          <Footer/>
          {/* </div> */}
