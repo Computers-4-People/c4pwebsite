@@ -39,7 +39,6 @@ export default function Connect() {
       titlePart2: "Affordable Internet",
       description: "The most affordable unlimited mobile internet plan in America. Purchase or Renew Internet starting at $12/month.",
       links: [{ text: "Get Connected", clickAction: scrollToForm }],
-      partnerText: "Service provided in partnership with",
       logos: ["/Hotspot/missiontelecom.png"], // Replace with actual logo paths
     }}
   />

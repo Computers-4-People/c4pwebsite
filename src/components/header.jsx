@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Header(props) {
-    const { bgImage, titlePart1, titlePart2, description, links, partnerText, logos } = props.props;
+    const { bgImage, titlePart1, titlePart2, description, links, logos } = props.props;
 
     // Function to determine the correct element for each link
     const renderLinkItem = (link, index) => {
@@ -71,12 +71,16 @@ export default function Header(props) {
             </div>
 
             {/* Optional Bottom Right Section */}
-            {partnerText && logos && (
+            {logos && (
                 <div className="md:absolute md:bottom-4 md:right-4 text-right mt-6 md:mt-0">
-                    <p className="text-sm text-white mb-2">{partnerText}</p>
                     <div className="flex justify-end space-x-4">
                         {logos.map((logo, index) => (
-                            <img key={index} src={logo} alt={`Partner Logo ${index + 1}`} className="h-8" />
+                            <img 
+                                key={index} 
+                                src={logo} 
+                                alt={`Partner Logo ${index + 1}`} 
+                                className="h-14 md:h-24" // Updated className for responsive sizing
+                            />
                         ))}
                     </div>
                 </div>
