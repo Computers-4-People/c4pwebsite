@@ -75,7 +75,7 @@ export default function Homepage() {
     { src: "../logos/babson.png", alt: "Babson College" },
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
-    { src: "../logos/radnet.png", alt: "Radnet" },
+    { src: "../logos/RadNet.png", alt: "Radnet" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "../logos/comcast.png", alt: "Comcast" },
     { src: "../logos/wsaudiology.png", alt: "WS Audiology" },
