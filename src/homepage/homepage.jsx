@@ -73,6 +73,7 @@ export default function Homepage() {
     { src: "../logos/americanliverfoundation.png", alt: "American Liver Foundation" },
     { src: "../logos/Invesco.png", alt: "Invesco" },
     { src: "../logos/babson.png", alt: "Babson College" },
+    { src: "../logos/radnet.png", alt: "Radnet" },
     { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
     { src: "../logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
     { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
