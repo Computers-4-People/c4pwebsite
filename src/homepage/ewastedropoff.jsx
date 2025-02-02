@@ -31,7 +31,7 @@ export default function DropOffLocations() {
       {/* Drop-Off Locations Section */}
       <div className="container mx-auto px-4 py-16 mb-20" style={{ marginBottom: "20rem" }}>
         <div id="findadropoff" className="space-y-6">
-          <h2 className="text-3xl md:text-5xl lg:text-7xl font-title">
+          <h2 className="text-3xl md:text-5xl lg:text-7xl font-subtitle">
             Find a Drop-Off Site Near You
           </h2>
           <p className="text-lg md:text-lg leading-7 md:leading-8">

@@ -95,13 +95,13 @@ export default function About() {
                 side: 'right'
             }}/> 
             <div className='bg-cover text-black'>
-                <h2 className='m-14 font-title text-7xl'>Our History</h2>
+                <h2 className='m-14 font-subtitle text-7xl'>Our History</h2>
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
             <div className="bg-cover mb-40">
                 <div className="mx-20 md:grid grid-cols-3 md:grid-rows-2 gap-5">
-                    <h2 className="col-span-4 text-7xl font-title uppercase">How You Can Help</h2>
+                    <h2 className="col-span-4 text-7xl font-subtitle uppercase">How You Can Help</h2>
                     <p className="col-span-2 text-2xl">Discover How You Can Contribute to Digital Access in Your Community</p>
                 </div>
                 <div className="mt-10">

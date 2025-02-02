@@ -18,7 +18,7 @@ const IconCards = ({ cards }) => {
                         }}
                     >
                         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition duration-300 ease-in-out group-hover:bg-opacity-60">
-                            <span className="text-white text-3xl font-bold font-title">
+                            <span className="text-white text-3xl font-subtitle">
                                 {card.title}
                             </span>
                         </div>

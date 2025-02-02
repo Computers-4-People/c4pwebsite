@@ -22,10 +22,10 @@ export default function Testimonial(props) {
 
         {/* Text Section */}
         <div className="w-full lg:w-1/2 text-center lg:text-left flex flex-col justify-center items-center lg:items-start space-y-6">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-title text-black">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-subtitle text-black">
             {title2}
           </h2>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed">
+          <p className="font-quote text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed">
             {desc2}
           </p>
 

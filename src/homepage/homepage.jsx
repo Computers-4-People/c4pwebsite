@@ -92,20 +92,20 @@ export default function Homepage() {
       <Header
         props={{
           bgImage: "/Homepage/homepagebackground.jpg",
-          titlePart1: "Transform a Life",
-          titlePart2: "with Technology",
+          titlePart1: "TRANSFORM A LIFE",
+          titlePart2: "WITH TECHNOLOGY",
           links: [
             { text: "Donate Computers", url: "/donate" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
       />
-       <div className="m-10"><ImageMarquee
+       <div className="m-10 font-quote"><ImageMarquee
         images={partnerLogos}
         title="Join 1,000+ Computer Donors..."
       />
       </div>
-      <h2 className="ml-14 mt-20 text-7xl font-title text-left">
+      <h2 className="ml-14 mt-20 text-7xl font-subtitle text-left">
         Be Part of the Change
       </h2>
       <div>

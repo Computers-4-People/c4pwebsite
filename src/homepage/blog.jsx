@@ -38,7 +38,7 @@ export default function Volunteer() {
             className="bg-cover h-screen bg-center bg-fixed bg-no-repeat flex items-center justify-center"
         >
             <div className="px-4 sm:px-10 md:px-20 grid grid-cols-1 md:grid-cols-6 grid-rows-auto justify-items-stretch">
-                <h1 className='col-start-1 md:col-end-4 text-justify font-title text-6xl md:text-6xl lg:text-8xl mb-4'>
+                <h1 className='col-start-1 md:col-end-4 text-justify font-subtitle text-6xl md:text-6xl lg:text-8xl mb-4'>
                     <p className='text-c4p animate-fade-up'>5 WAYS TO IMPROVE</p>
                     <p className='text-white animate-fade-up'>YOUR INTERNET CONNECTION</p>
                 </h1>

@@ -61,7 +61,7 @@ export default function Programs() {
 
             <div className='h-full py-20'>
                 <div className='ml-14'>
-                    <h2 className='text-7xl font-title'>Programs tailored to foster growth</h2>
+                    <h2 className='text-7xl font-subtitle'>Programs tailored to foster growth</h2>
                     <p className='text-2xl'>Our programs are designed to help you achieve full participation in the digital world</p>
                 </div>
                 <div>
@@ -90,7 +90,7 @@ export default function Programs() {
 
             <div className='h-full bg-cover p-20'>
                 <div className=''>
-                    <h2 className='text-7xl font-title'>How to Get Involved</h2>
+                    <h2 className='text-7xl font-subtitle'>How to Get Involved</h2>
                     <p className='text-2xl'>Be part of Bridging the Digital Digital Divide</p>
                 </div>
             </div>
