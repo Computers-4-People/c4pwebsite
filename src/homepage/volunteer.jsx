@@ -85,7 +85,7 @@ export default function Volunteer() {
 
             {/* Volunteer Opportunities Section */}
             <div id="media-highlights" className="mt-60">
-                <h2 className="ml-14 text-3xl md:text-4xl lg:text-7xl font-title uppercase mb-6">
+                <h2 className="ml-14 text-3xl md:text-4xl lg:text-7xl font-subtitle uppercase mb-6">
                     VOLUNTEER OPPORTUNITIES
                 </h2>
                 <p className="ml-14 text-black text-xl md:text-2xl mb-10">

@@ -91,7 +91,7 @@ export default function Apply() {
 />
         <div className='bg-cover font-sans justify-evenly px-4 mb-20 sm:px-10'>
                 <div className='flex flex-col text-left md:ml-12 mt-40'>
-                <h2 className='text-2xl md:text-4xl lg:text-7xl font-title uppercase mb-6'>
+                <h2 className='text-2xl md:text-4xl lg:text-7xl font-subtitle uppercase mb-6'>
                 Giving Devices a Second Chance
                     </h2>
                     <p className='text-lg md:text-2xl leading-7 md:leading-8 lg:leading-10'>

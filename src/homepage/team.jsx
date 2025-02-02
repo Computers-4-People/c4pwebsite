@@ -171,7 +171,7 @@ export default function Team() {
 
       {/* Mission Control Section */}
       <div id="team" className="px-20 mt-20">
-        <h2 className="text-9xl font-title uppercase">MISSION CONTROL</h2>
+        <h2 className="text-7xl font-subtitle uppercase">MISSION CONTROL</h2>
         <div className="container mx-auto mt-8">
           <TeamGrid teamMembers={missionControlMembers} />
         </div>
@@ -179,7 +179,7 @@ export default function Team() {
 
       {/* Board of Directors Section */}
       <div id="board" className="px-20 mt-20">
-        <h2 className="text-9xl font-title uppercase">BOARD OF DIRECTORS</h2>
+        <h2 className="text-7xl font-subtitle uppercase">BOARD OF DIRECTORS</h2>
         <div className="container mx-auto mt-8">
           <TeamGrid teamMembers={teamMembers} />
         </div>
@@ -187,10 +187,10 @@ export default function Team() {
 
       {/* Media Highlights Section */}
       <div id="media-highlights" className="mt-20">
-        <h2 className="ml-14 mt-20 mb-4 text-7xl font-title text-gray">
+        <h2 className="ml-14 mt-20 mb-4 text-7xl font-subtitle text-gray">
           Explore our media highlights
         </h2>
-        <p className="ml-14 text-black text-xl md:text-2xl mb-10">
+        <p className="font-paragraph ml-14 text-black text-xl md:text-2xl mb-10">
           Discover how our work is making waves through news articles,
           interviews, and features across various media outlets.
         </p>

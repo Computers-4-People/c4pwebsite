@@ -5,9 +5,9 @@ import Testimonial from "../components/testimonial.jsx";
 export default function Pepper() {
     const desc = 
     <div className='space-y-10'> 
-        <div><h3 className='font-title text-2xl'>Date/Time:</h3><p>October 5th | Festival Starts at 1PM | Competition starts at 3PM</p> </div>
-        <div><h3 className='font-title text-2xl'>Contest Chili Peppers Include:</h3> <p>Carolina Reaper, Ghost Pepper, Dragon's Breath.</p></div>
-        <div><h3 className='font-title text-2xl'>How it works</h3> <p>There will be 20 rounds, each round contestants will nead to eat and swallow an
+        <div><h3 className='font-subtitle text-2xl'>Date/Time:</h3><p>October 5th | Festival Starts at 1PM | Competition starts at 3PM</p> </div>
+        <div><h3 className='font-subtitle text-2xl'>Contest Chili Peppers Include:</h3> <p>Carolina Reaper, Ghost Pepper, Dragon's Breath.</p></div>
+        <div><h3 className='font-subtitle text-2xl'>How it works</h3> <p>There will be 20 rounds, each round contestants will nead to eat and swallow an
             entire pepper without drinking water/milk. Chili Peppers will increase in heat each round. The last
             standing contestant wins!
         </p></div>
@@ -40,7 +40,7 @@ export default function Pepper() {
                 image: '../pepper/Pepper Fest Participants Trying Chili Pepper.png'
             }} />
     <div class='bg-c4p bg-cover overflow-x-scroll flex flex-row justify-evenly p-5' style={{height: '30vh'}}>
-        <div className='flex flex-row justify-end px-10 items-center border-r-2  md:w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-title text-9xl'>Prizes</p></div>
+        <div className='flex flex-row justify-end px-10 items-center border-r-2  md:w-full'><img src="../pepper/trophy icon.png" className='h-full' alt="" /> <p className='font-subtitle text-9xl'>Prizes</p></div>
         <img src="../pepper/Pepper Fest Prizes.png" className='object-contain h-full md:w-full' alt=""/>
     </div>
     <div style={{

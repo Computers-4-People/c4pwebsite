@@ -81,7 +81,7 @@ export default function Donate () {
                 }}/>
             <div className='bg-cover'>
                 <div className='pl-5 md:pl-14'>
-                    <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <h2 className='text-7xl font-subtitle mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
             <div>
@@ -105,7 +105,7 @@ export default function Donate () {
             </div>
             <div className="bg-cover mt-40">
                     <div className='self-center row-span-1col-span-2 mx-20'>
-                        <h2 className="col-span-2 text-7xl font-title mb-3">Ways to Get Involved</h2>
+                        <h2 className="col-span-2 text-7xl font-subtitle mb-3">Ways to Get Involved</h2>
                         <p className="col-span-2 text-2xl"> Explore these ways to cultivate digital equity</p>
                     </div>
                 </div>

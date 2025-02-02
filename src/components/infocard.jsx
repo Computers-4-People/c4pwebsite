@@ -18,11 +18,11 @@ const InfoCard = ({ cards }) => {
           >
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 rounded-2xl transition-opacity duration-500" />
             <div className="absolute bottom-0 duration-1000 overflow-hidden ml-5">
-              <h3 className="font-bold text-xl uppercase">
+              <h3 className="font-subtitle text-xl uppercase">
                 <p className="text-c4p">{card.titlePart1}</p>
                 <p className="pb-2">{card.titlePart2}</p>
               </h3>
-              <p className="h-10 pt-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
+              <p className="font-paragraph h-10 pt-2 left-2 w-11/12 group-hover:h-32 border-t-4 duration-500 text-sm">
                 <div className='invisible group-hover:visible'> {card.description} </div>
               </p>
             </div>
