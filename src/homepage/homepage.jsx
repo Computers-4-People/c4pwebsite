@@ -92,8 +92,8 @@ export default function Homepage() {
       <Header
         props={{
           bgImage: "/Homepage/homepagebackground.jpg",
-          titlePart1: "Transform a Life",
-          titlePart2: "with Technology",
+          titlePart1: "TRANSFORM A LIFE",
+          titlePart2: "WITH TECHNOLOGY",
           links: [
             { text: "Donate Computers", url: "/donate" },
             { text: "Discover our programs", url: "/programs" },
