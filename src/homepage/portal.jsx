@@ -106,6 +106,7 @@ function Portal() {
         //mutates to computer_donor or applicant record id
         recordId = id;
 
+        // fix this, there are more types of statuses
         if (reqName.data[0].Status === 'Client' || reqName.data[0].Status === "Applicants No Recommendation" || 
             reqName.data[0].Status === "Approved Applicants") {
             console.log('Applicant is a client');

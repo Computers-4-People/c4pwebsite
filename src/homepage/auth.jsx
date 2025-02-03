@@ -24,7 +24,7 @@ const sendEmail = async (email, recordId) => {
     }
 }
 
-// display html that says "sending email..."
+// display html that says "sending email... within react component"
 const getRecordId = async (email) => {
     try {
     // might need to encode the other query params
@@ -58,7 +58,8 @@ function Auth() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             class="block w-half rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-            onSubmit={() => getRecordId(email)}/>
+            />
+            
             </div>
             <label class="pt-1 block text-gray-500 text-sm">Enter your email</label>
             </div>
