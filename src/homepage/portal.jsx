@@ -106,16 +106,34 @@ function Portal() {
         //mutates to computer_donor or applicant record id
         recordId = id;
 
-        if (reqName.data[0].Status === 'Client' || reqName.data[0].Status === "Applicants No Recommendation" || 
-            reqName.data[0].Status === "Approved Applicants") {
+
+        // if (reqName.data[0].Status === "Computer Donor" || reqName.data[0].Status === "Loser") {
+        //     console.log('Applicant is not a client');
+        //     newModule = 'Computer_Donors';
+        // }
+
+        if (reqName.data[0].Status === "Donated") {
+            console.log('Applicant is not a client');
+            newModule = 'Computer_Donors';
+        }
+
+        else {
             console.log('Applicant is a client');
             newModule = 'Contacts';
         }
 
-        else {
-            console.log('Applicant is not a client');
-            newModule = 'Computer_Donors';
-        }
+        
+        // // fix this, there are more types of statuses
+        // if (reqName.data[0].Status === 'Client' || reqName.data[0].Status === "Applicants No Recommendation" || 
+        //     reqName.data[0].Status === "Approved Applicants") {
+        //     console.log('Applicant is a client');
+        //     newModule = 'Contacts';
+        // }
+
+        // else {
+        //     console.log('Applicant is not a client');
+        //     newModule = 'Computer_Donors';
+        // }
 
 
         // get recordId from request and put it here
