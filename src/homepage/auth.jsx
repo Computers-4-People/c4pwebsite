@@ -12,7 +12,8 @@ const API_BASE_URL =
 
 const sendEmail = async (email, recordId) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/api/email?email=${email}&recordId=${recordId}`);
+        
+        const response = await axios.post(`${API_BASE_URL}/api/email?email=${encodeURIComponent(email)}&recordId=${recordId}`);
         if (!response.ok) {
             throw new Error('Failed to send email');
         }
@@ -53,6 +54,7 @@ function Auth() {
         try {
             setLoading(true);
             setError('');
+            console.log(email);
             await sendEmail(email, 0);
             setSuccess(true);
         } catch (error) {

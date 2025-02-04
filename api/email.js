@@ -8,15 +8,16 @@ const formData = require('form-data');
 const Mailgun = require('mailgun.js');
 const mailgun = new Mailgun(formData);
 
+const key = process.env.API_KEY;
 const mg = mailgun.client({
-  username: 'api', // This should be 'api', not 'Computers4People'
+  username: 'api',
   key: process.env.API_KEY
 });
 
 const domain = process.env.DOMAIN;
 
 export default async function handler(req, res) {
-  // Only allow POST requests
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -28,19 +29,31 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Email and recordId are required' });
   }
 
+  if (!domain || !key) {
+    return res.status(400).json({ error: 'Domain and key are required' });
+  }
+
   try {
+    const decodedEmail = decodeURIComponent(email);
     
     await mg.messages.create(domain, {
       from: `Computers4People <mailgun@${domain}>`,
-      to: [email],
+      to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<h1>Welcome to Computers4People!</h1><p>Your record ID is ${recordId}</p>`
+      html: `<h1> this is a test! </p>`
     });
 
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Mailgun error:', {
+      message: error.message,
+      stack: error.stack,
+      config: {
+        domain: domain,
+        hasApiKey: !!process.env.API_KEY
+      }
+    });
     res.status(500).json({ error: 'Failed to send email' });
   }
 }
