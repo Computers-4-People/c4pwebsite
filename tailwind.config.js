@@ -7,21 +7,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        c4p:{DEFAULT:"#17de43", 
-          hover:"#2e8b57"
+        c4p: {
+          DEFAULT: "#00d64e",
+          hover: "#00a33b"
         },
-      }
-    },
-    fontFamily: {
-      'sans': 'Roboto',
-      'title': 'BebasNeueRegular'
-    },
-    transitionProperty: {
-      'grid': 'grid'
+        black: "#001407",
+        white: "#f4f9f6",
+      },
+      fontFamily: {
+        title: ["Geist Black", "sans-serif"],       // For main titles
+        subtitle: ["Geist SemiBold", "sans-serif"], // For subtitles & body text
+        paragraph: ["Geist Light", "sans-serif"], 
+        quote: ["Geist Mono", "monospace"],        // For quotes
+      },
+      transitionProperty: {
+        grid: "grid",
+      },
     },
   },
   plugins: [
-    require('tailwindcss-animated')
+    require("tailwindcss-animated"),
   ],
-}
-
+};

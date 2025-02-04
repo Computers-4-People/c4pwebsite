@@ -3,24 +3,26 @@ import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from "../components/header";
+import ImageMarquee from "../components/imagemarquee";
+import Testimonial from "../components/testimonial";
 
 export default function Homepage() {
   const iconsData = [
     {
-      title: "Become an Electronics Drop-Off Site",
-      image: "../maps.png",
-      alt: "E-Waste Drop-off Site",
-      link: "/ewastedropoff"
+      title: "Fund Digital Access",
+      image: "../Homepage/funddigitalaccess.jpg",
+      alt: "Sponsor Digital Access",
+      link: "/support"
     },
     {
-      title: "Sponsor Digital Access",
-      image: "../handshake.png",
-      alt: "Sponsor Digital Access",
-      link: "/financialdonation"
+      title: "Donate Computers",
+      image: "../Homepage/donatecomputersicon.jpg",
+      alt: "Donate your computers today",
+      link: "/donate"
     },
     {
       title: "Volunteer",
-      image: "../hands.png",
+      image: "../Homepage/volunteericon.jpg",
       alt: "Volunteer",
       link: "/volunteer"
     }
@@ -28,111 +30,98 @@ export default function Homepage() {
 
   const cardsData = [
     {
-      titlePart1: "Starts",
+      titlePart1: "Begins",
       titlePart2: "With a Donation",
       description:
-        "Individuals and organizations donate their computers, tablets, keyboards and other electronic devices.",
-      image: "../Homepage/starts.jpeg",
-      alt: 'Donor holding a stack of laptops for donation to Computers 4 People.'
+        "We're a 501(c)(3) Non-Profit. Companies and individuals donate their computers, tablets, keyboards and other electronic devices. Everything's tax deductible.",
+      image: "../Homepage/collection.jpg",
+      alt: 'Computers 4 People team member picking up a new donation from a company.'
     },
     {
-      titlePart1: "Undergoes",
-      titlePart2: "Refurbishment",
+      titlePart1: "Certified",
+      titlePart2: "Data Erasure",
       description:
-        "Every device goes through a meticulous refurbishing and data wiping process to be in optimal condition.",
-      image: "../Homepage/undergoes.jpeg",
+        "Every device goes through a meticulous data erasure (NIST 800-88) certification process. Computers are refurbished back to optimal condition.",
+      image: "../Homepage/refurb.jpg",
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
-      titlePart1: "Match",
-      titlePart2: "With a Recipient",
-      description: "Devices are redistributed to people in underserved communities.",
-      image: "../Homepage/match.jpeg",
-      alt: 'White Van with a green sign and the logo of Computers 4 People'
+      titlePart1: "Partners",
+      titlePart2: "With Non-Profits",
+      description: "We partner with 400+ non-profit partners across New Jersey, New York City, and Massachusetts to identify individuals lacking digital access.",
+      image: "../Homepage/partners.jpg",
+      alt: 'Computers 4 People ambassador delivering laptops to a non-profit partner'
     },
     {
-      titlePart1: "Becomes",
-      titlePart2: "Catalyst for Change",
+      titlePart1: "Unlocks",
+      titlePart2: "The Digital World",
       description:
-        "People use these devices to open opportunities in jobs, education, telehealth, and beyond!",
-      image: "../Homepage/becomes.jpeg",
-      alt: 'Senior recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
+        "Our unique application process distributes computers to individuals, families, and organizations that need them the most.",
+      image: "../Homepage/unlocks.jpg",
+      alt: 'Young recipient from the community holding a green tote bag with the Computers 4 People logo, with a refurbished donated computer inside.'
     },
     {
-      titlePart1: "Equip",
-      titlePart2: "People to succeed",
+      titlePart1: "Enables",
+      titlePart2: "Real Change",
       description:
-        "These refurbished devices become a gateway to acquire the digital skills they need.",
-      image: "../Homepage/equip.jpeg",
-      alt: 'Dylan Zajac hosting Digital Skills Classes at the Community Access Venue in front of recipients and community members in need.'
+        "Recipients use their devices to obtain jobs, access education, entrepreneurship, telehealth, and beyond!",
+      image: "../Homepage/enables.jpg",
+      alt: 'Computer receipient holding their new laptop from Computers 4 People.'
     },
+  ];
+  const partnerLogos = [
+    { src: "../logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+    { src: "../logos/Invesco.png", alt: "Invesco" },
+    { src: "../logos/babson.png", alt: "Babson College" },
+    { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
+    { src: "../logos/RadNet.png", alt: "Radnet" },
+    { src: "../logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
+    { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
+    { src: "../logos/comcast.png", alt: "Comcast" },
+    { src: "../logos/wsaudiology.png", alt: "WS Audiology" },
+    { src: "../logos/qbe.png", alt: "QBE" },
+    { src: "../logos/stevens.png", alt: "Stevens Institute of Technology" },
+    { src: "../logos/junkteens.png", alt: "Junk Teens" },
+    { src: "../logos/att.png", alt: "AT&T" },
+    { src: "../logos/insightpartners.png", alt: "Insight Partners" },
+    { src: "../logos/bigbelly.png", alt: "Big Belly Solar" },
   ];
 
   return (
-    <div id="main-content" className="font-sans overflow-x-hidden">
+    <div id="main-content" className="overflow-x-hidden">
       <Header
         props={{
-          bgImage: "/Homepage/homepage_background_new.jpeg",
-          titlePart1: "Transform a Life",
-          titlePart2: "with Technology",
+          bgImage: "/Homepage/homepagebackground.jpg",
+          titlePart1: "TRANSFORM A LIFE",
+          titlePart2: "WITH TECHNOLOGY",
           links: [
-            { text: "Support C4P", url: "/support" },
+            { text: "Donate Computers", url: "/donate" },
             { text: "Discover our programs", url: "/programs" },
           ],
         }}
       />
-
-      <h2 className="m-14 mt-20 text-5xl font-bold text-left">
+       <div className="m-10 font-quote"><ImageMarquee
+        images={partnerLogos}
+        title="Join 1,000+ Computer Donors..."
+      />
+      </div>
+      <h2 className="ml-14 mt-20 text-7xl font-subtitle text-left">
         Be Part of the Change
       </h2>
       <div>
         <InfoCard cards={cardsData} />
       </div>
-
-      <div className="text-black p-5 m-5">
-        <h2 className="ml-14 text-5xl font-bold">
-          Give Unused Tech a Second Chance!
-        </h2>
-        <div className="md:grid grid-rows-3 grid-cols-6 relative">
-          <img
-            src="../secondchance.png"
-            className="col-span-6 md:col-span-3 row-start-1 row-span-3 animate-fade-right animate-once"
-            alt='Woman holding a t-shirt she designed, with a refurbished computer donated by Computers 4 People.
-'
-          />
-
-          <div
-            className="md:absolute invisible md:visible inset-0 col-span-6 md:col-start-4 md:col-end-6 md:row-start-1 md:row-end-4 bg-contain bg-top bg-no-repeat z-0 animate-jump animate-once"
-            style={{ backgroundImage: "url('../quotes.png')" }}
-            role='img'
-            aria-label='quotes'
-          />
-
-          <div className="z-20 col-span-6 md:col-start-4 md:col-end-6 md:row-start-2 md:row-end-2 text-center text-xl bg-contain bg-top bg-no-repeat">
-            <p>
-              Thanks to the laptop I received from Computers 4 People; I can now
-              create artwork every night when I get home!
-            </p>
-            <p className="text-right italic">-Mallika</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 col-span-6 md:col-start-4 md:col-end-6 md:row-start-3 items-center gap-3 z-30">
-            <Link
-              to="/donate"
-              className="bg-c4p rounded px-4 py-2 hover:bg-c4p-hover hover:text-white text-center w-full md:w-auto flex justify-center items-center"
-            >
-              Donate Computers
-            </Link>
-            <Link
-              to="/partner"
-              className="border-2 border-black rounded px-4 py-2 hover:bg-black hover:text-white text-center w-full md:w-auto flex justify-center items-center"
-            >
-              Become a Partner
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="my-5 p-5 mb-20">
+      <Testimonial
+    props={{
+      title2: " Give Unused Tech a Second Chance!",
+      desc2: '"I’m going to start filling out all my college applications!” -Kendadi',
+      image: "../Homepage/homepagetestimonial.png",
+      alt: `Partner organization taking photos with Computers 4 People team member`,
+      side: "left", // Image on the right
+      links: [{text:'Donate Computers', url: "/donate"}, {text: 'Become a Non-Profit Partner', url: "/partner"}]
+    }}
+  />
+      <div className="my-5 mt-20 p-5 mb-20">
         <IconCards cards={iconsData} />
       </div>
     </div>

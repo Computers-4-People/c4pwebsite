@@ -5,18 +5,9 @@ import IconCards from "../components/iconcards";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
 
-const handleScroll = (id) => {
-    const element = document.getElementById(id);
-    const offset = 100;  // Adjust this value to leave space above the h1
-    const bodyRect = document.body.getBoundingClientRect().top;
-    const elementRect = element.getBoundingClientRect().top;
-    const elementPosition = elementRect - bodyRect;
-    const offsetPosition = elementPosition - offset;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-    });
+const scrollToForm = () => {
+    document.getElementById("donation-form").scrollIntoView({ behavior: "smooth" });
+    
 };
 
 export default function Donate () {
@@ -59,20 +50,20 @@ export default function Donate () {
     ]
     const iconsData = [
         {
-          title: "Become an Electronics Drop-Off Site",
-          image: "../maps.png",
-          alt: "E-Waste Drop-off Site",
-          link: "/ewastedropoff"
+          title: "Fund Digital Access",
+          image: "../Homepage/funddigitalaccess.jpg",
+          alt: "Sponsor Digital Access",
+          link: "/support"
         },
         {
-          title: "Sponsor Digital Access",
-          image: "../handshake.png",
-          alt: "Sponsor Digital Access",
-          link: "/financialdonation"
+          title: "Host a Computer Drive",
+          image: "../Homepage/donatecomputersicon.jpg",
+          alt: "Host a computer drive in your community",
+          link: "/contact"
         },
         {
           title: "Volunteer",
-          image: "../hands.png",
+          image: "../Homepage/volunteericon.jpg",
           alt: "Volunteer",
           link: "/volunteer"
         }
@@ -85,12 +76,12 @@ export default function Donate () {
                 titlePart1: 'Turn E-Waste',
                 titlePart2: 'into Opportunties',
                 description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning e-waste into tools for a responsible future.</p></div>,
-                links: [{text: 'Donate Computers', clickAction: () => handleScroll("donation-form")}]
+                links: [{text: 'Donate Computers', clickAction: scrollToForm}]
 
                 }}/>
             <div className='bg-cover'>
                 <div className='pl-5 md:pl-14'>
-                    <h2 className='text-7xl font-title mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
+                    <h2 className='text-7xl font-subtitle mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
                     <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
                 </div>
             <div>
@@ -114,7 +105,7 @@ export default function Donate () {
             </div>
             <div className="bg-cover mt-40">
                     <div className='self-center row-span-1col-span-2 mx-20'>
-                        <h2 className="col-span-2 text-7xl font-title mb-3">Ways to Get Involved</h2>
+                        <h2 className="col-span-2 text-7xl font-subtitle mb-3">Ways to Get Involved</h2>
                         <p className="col-span-2 text-2xl"> Explore these ways to cultivate digital equity</p>
                     </div>
                 </div>
@@ -136,7 +127,7 @@ export default function Donate () {
     id="donation-form"
     aria-label='Donate Computers'
     style={{ width: '100%', height: '100vh', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/DonateFormTest/formperma/6XerbAZaBgCkJBbbDpwBsaIWrd-2TmcGiUM1IL0dX2I'
+    src='https://forms.zohopublic.com/Computers4People/form/DonateYourElectronicstestKPIs/formperma/AsSpFP2nu9WN-cUFojNMNeHV3KcP-8xiM6-sWVFbwgA'
   ></iframe>
 </div>
             </div>

@@ -368,7 +368,7 @@ export default function Impact() {
             {/* Call to Action Section */}
             <div className='min-h-screen text-black mb-20'>
                 {/* Heading */}
-                <h2 className="ml-6 mb-10 text-7xl text-center font-title mt-40">Give Disregarded Tech a Chance to Improve Lives</h2>
+                <h2 className="ml-6 mb-10 text-7xl text-center font-subtitle mt-40">Give Disregarded Tech a Chance to Improve Lives</h2>
 
                 {/* Content Wrapper */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-center'>
