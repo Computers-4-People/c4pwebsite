@@ -44,24 +44,47 @@ const getRecordId = async (email) => {
 
 
 function Auth() {
-
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
+    const handleSubmit = async () => {
+        try {
+            setLoading(true);
+            setError('');
+            await sendEmail(email, 0);
+            setSuccess(true);
+        } catch (error) {
+            setError('Failed to process your request. Please try again.');
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div id="main-content" className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
             <div className="bg-white shadow-lg rounded-lg p-6 w-half max-w-5xl my-10 sm:my-16">
-            <div class="mt-2">
-            <input
-            type="text"
-            name="inputname"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            class="block w-half rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
-            />
-            
-            </div>
-            <label class="pt-1 block text-gray-500 text-sm">Enter your email</label>
+                <div className="mt-2">
+                    <input
+                        type="email"
+                        name="inputname"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="block w-half rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800"
+                    />
+                    <button 
+                        onClick={handleSubmit}
+                        disabled={loading}
+                        className="mt-4 bg-c4p hover:bg-c4p-hover text-white px-4 py-2 rounded"
+                    >
+                        {loading ? 'Sending...' : 'Get Record ID'}
+                    </button>
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                    {success && <p className="text-green-500 mt-2">Email sent successfully!</p>}
+                </div>
+                <label className="pt-1 block text-gray-500 text-sm">Enter your email</label>
             </div>
         </div>
     );
