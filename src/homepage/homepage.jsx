@@ -102,7 +102,7 @@ export default function Homepage() {
       />
        <div className="m-10 font-quote"><ImageMarquee
         images={partnerLogos}
-        title="Join 1,000+ Computer Donors..."
+        title="Join 500+ Computer Donors..."
       />
       </div>
       <h2 className="ml-14 mt-20 text-7xl font-subtitle text-left">
