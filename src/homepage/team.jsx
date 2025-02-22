@@ -37,13 +37,13 @@ const missionControlMembers = [
   },
   {
     name: "Elmehdi Ghardi",
-    title: "Ambassador MA (Tech)",
+    title: "Ambassador MA (Logistics)",
     photo: "ElmehdiGhardi.jpeg",
     link: "https://www.linkedin.com/in/elmehdi-ghardi-6b73a1233/",
   },
   {
     name: "Arnold Ssemuyaga",
-    title: "Ambassador MA (Logistics)",
+    title: "Ambassador MA (Tech)",
     photo: "ArnoldSsemuyaga.jpeg",
     link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
   }
