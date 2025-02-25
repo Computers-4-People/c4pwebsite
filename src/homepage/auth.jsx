@@ -31,14 +31,16 @@ const getJWT = async(email, recordID) => {
             email,
             recordID
         }, {
-            withCredentials: true 
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            }
         });
 
-        return response.json();
-        
+        return response.data;
         
     } catch (error) {
-        console.error('Error in getting JWT', error);
+        console.error('Error in getting JWT:', error);
         throw error;
     }
 }
@@ -75,7 +77,12 @@ function Auth() {
             console.log(email);
             // await sendEmail(email, 0);
             console.log('awaiting JWT');
-            await getJWT(email, 0);
+            const resp = await getJWT(email, 1);
+
+            const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
+            console.log('jwtResp', jwtResp);
+            
+            console.log(resp);
             setSuccess(true);
         } catch (error) {
             
