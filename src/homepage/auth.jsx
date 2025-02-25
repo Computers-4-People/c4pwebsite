@@ -25,6 +25,22 @@ const sendEmail = async (email, recordId) => {
     }
 }
 
+const getJWT = async(email, recordID) => {
+    try {
+        await axios.post(`${API_BASE_URL}/api/jwt`, {
+            email,
+            recordID
+        }, {
+            withCredentials: true 
+        });
+        
+        
+    } catch (error) {
+        console.error('Error in getting JWT', error);
+        throw error;
+    }
+}
+
 // display html that says "sending email... within react component"
 const getRecordId = async (email) => {
     try {
@@ -56,9 +72,10 @@ function Auth() {
             setError('');
             console.log(email);
             await sendEmail(email, 0);
+            await getJWT(email, 0);
             setSuccess(true);
         } catch (error) {
-            setError('Failed to process your request. Please try again.');
+            
             console.error('Error:', error);
         } finally {
             setLoading(false);

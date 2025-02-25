@@ -56,6 +56,10 @@ function Portal() {
         }
     };
 
+
+
+    
+
     const fetchData = async () => {
         setError('');
         setData(null);
@@ -65,6 +69,18 @@ function Portal() {
             setError('Please enter an ID.');
             return;
         }
+
+        // jwt token validation here 
+
+        const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
+        console.log('jwtResp', jwtResp);    
+        if (!jwtResp.data.valid) {
+            setError('Invalid token');
+            return;
+        }
+
+       
+
 
         // recordId here is the champion recordId
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;

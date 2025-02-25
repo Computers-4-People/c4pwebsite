@@ -35,6 +35,13 @@ export default async function handler(req, res) {
 
   try {
     const decodedEmail = decodeURIComponent(email);
+    console.log('Current Environment:', {
+      DOMAIN: process.env.DOMAIN,
+      hasApiKey: process.env.API_KEY,
+      
+    });
+
+
     
     await mg.messages.create(domain, {
       from: `Computers4People <mailgun@${domain}>`,
@@ -42,6 +49,7 @@ export default async function handler(req, res) {
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
       html: `<h1> this is a test! </p>`
+      // <p> enter the record Id here: www.computers4people.com/portal <p> 
     });
 
     res.status(200).json({ message: 'Email sent successfully' });
