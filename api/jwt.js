@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const axios = require('axios');
+const axios = require('axios/dist/node/axios.cjs');
 
 dotenv.config({
   path: './.env.local'
