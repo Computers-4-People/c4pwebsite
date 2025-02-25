@@ -71,13 +71,16 @@ function Portal() {
         }
 
         // jwt token validation here 
-
+        try {
         const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
         console.log('jwtResp', jwtResp);    
-        if (!jwtResp.data.valid) {
-            setError('Invalid token');
+
+        } catch (error) {
+            setError('Authentication failed. Please log in again.');
             return;
         }
+
+        
 
        
 

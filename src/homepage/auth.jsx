@@ -27,12 +27,14 @@ const sendEmail = async (email, recordId) => {
 
 const getJWT = async(email, recordID) => {
     try {
-        await axios.post(`${API_BASE_URL}/api/jwt`, {
+        const response = await axios.post(`${API_BASE_URL}/api/jwt`, {
             email,
             recordID
         }, {
             withCredentials: true 
         });
+
+        return response.json();
         
         
     } catch (error) {
