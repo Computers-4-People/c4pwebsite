@@ -11,9 +11,8 @@ const JWT_EXPIRATION_DATE = process.env.JWT_EXPIRATION_TIME;
 
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -28,6 +27,12 @@ export default async function handler(req, res) {
   if (!JWT_SECRET) {
     return res.status(500).json({ error: 'JWT secret is not configured' });
   }
+
+  console.log('Current Environment:', {
+    SECRET: process.env.JWT_SECRET,
+    DATE: process.env.JWT_EXPIRATION_TIME,
+    
+  });
 
   try {
     const payload = {
