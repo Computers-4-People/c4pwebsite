@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
-const axios = require('axios');
+const axios = require('axios/dist/node/axios.cjs');
+
 
 dotenv.config({
   path: './.env.local'
@@ -8,7 +9,7 @@ dotenv.config({
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION_DATE = process.env.JWT_EXPIRATION_TIME; 
-
+const t = "";
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
