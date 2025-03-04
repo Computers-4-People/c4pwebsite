@@ -26,6 +26,7 @@ import Paperapplication from "./homepage/paperapplication";
 import Checkin from "./homepage/checkin";
 import Uploadrecommendation from "./homepage/uploadrecommendation";
 import Eligibility from "./homepage/eligibility";
+import Auth from "./homepage/auth";
 import Boardapplication from "./homepage/boardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
@@ -70,6 +71,7 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/press" element={<Press />} />
           <Route path="/press.html" element={<Press />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/impact" element={<Impact />} />
           <Route path="/partner" element={<Partner />} />
           <Route path="/programs" element={<Programs />} />
