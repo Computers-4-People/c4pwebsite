@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       message: error.message,
       stack: error.stack,
       config: {
-        domain: domain,
+        domain: domainTwo,
         hasApiKey: !!process.env.API_KEY
       }
     });
