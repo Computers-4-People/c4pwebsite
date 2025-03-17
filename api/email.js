@@ -16,7 +16,7 @@ const mg = mailgun.client({
 
 const domain = process.env.DOMAIN;
 
-const domainTwo = 'www.computers4people.org'
+const domainTwo = 'computers4people.org'
 
 // need to create a one time token for the email url here
 
