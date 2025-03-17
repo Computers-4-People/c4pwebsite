@@ -75,7 +75,7 @@ function Auth() {
             setLoading(true);
             setError('');
             console.log(email);
-            // await sendEmail(email, 0);
+       //     await sendEmail(email, 0);
             console.log('awaiting JWT');
             const resp = await getJWT(email, 1);
 
@@ -83,7 +83,11 @@ function Auth() {
             console.log('jwtResp', jwtResp);
             
             console.log(resp);
+      
+            
             setSuccess(true);
+
+            await sendEmail(email, 1);
         } catch (error) {
             
             console.error('Error:', error);
