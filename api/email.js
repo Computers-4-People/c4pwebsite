@@ -46,14 +46,13 @@ export default async function handler(req, res) {
       
     });
 
-
     
-    await mg.messages.create(domainTwo, {
-      from: `Computers4People <mailgun@${domainTwo}>`,
+    await mg.messages.create('www.computers4people.org', {
+      from: "Mailgun Sandbox <postmaster@www.computers4people.org>",
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<p> ${recordId} enter the record Id here: www.computers4people.com/portal <p> `
+      html: `<h1> ${recordId} enter the record Id here: www.computers4people.com/portal <p> `
       // <p> enter the record Id here: www.computers4people.com/portal <p> 
 
       // old: `<h1> this is a test! </p>`
