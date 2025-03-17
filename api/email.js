@@ -16,7 +16,12 @@ const mg = mailgun.client({
 
 const domain = process.env.DOMAIN;
 
+const domainTwo = 'computers4people.org'
+
+// need to create a one time token for the email url here
+
 export default async function handler(req, res) {
+
   
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -43,13 +48,15 @@ export default async function handler(req, res) {
 
 
     
-    await mg.messages.create(domain, {
-      from: `Computers4People <mailgun@${domain}>`,
+    await mg.messages.create(domainTwo, {
+      from: `Computers4People <mailgun@${domainTwo}>`,
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<h1> this is a test! </p>`
+      html: `<p> ${recordId} enter the record Id here: www.computers4people.com/portal <p> `
       // <p> enter the record Id here: www.computers4people.com/portal <p> 
+
+      // old: `<h1> this is a test! </p>`
     });
 
     res.status(200).json({ message: 'Email sent successfully' });
@@ -58,7 +65,7 @@ export default async function handler(req, res) {
       message: error.message,
       stack: error.stack,
       config: {
-        domain: domain,
+        domain: domainTwo,
         hasApiKey: !!process.env.API_KEY
       }
     });
