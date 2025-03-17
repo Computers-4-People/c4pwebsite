@@ -41,7 +41,7 @@ export default async function handler(req, res) {
   try {
     const decodedEmail = decodeURIComponent(email);
     console.log('Current Environment:', {
-      DOMAIN: process.env.DOMAIN,
+      DOMAIN: domainTwo,
       hasApiKey: process.env.API_KEY,
       
     });
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<h1> ${recordId} enter the record Id here: www.computers4people.com/portal <p> `
+      html: `<h1> ${recordId} enter the record Id here: www.computers4people.com/portal </p> `
       // <p> enter the record Id here: www.computers4people.com/portal <p> 
 
       // old: `<h1> this is a test! </p>`
