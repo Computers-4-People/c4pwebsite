@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 
     
     await mg.messages.create('www.computers4people.org', {
-      from: "Mailgun Sandbox <postmaster@www.computers4people.org>",
+      from: "C4P Authentication <postmaster@www.computers4people.org>",
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
