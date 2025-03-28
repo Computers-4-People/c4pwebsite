@@ -20,6 +20,12 @@ const domainTwo = 'computers4people.org'
 
 // need to create a one time token for the email url here
 
+/**
+ * 
+ * @param {*} req request parameters include email and recordId
+ * @param {*} res response object with some message detailing an error or success
+ * @returns a json object with a message saying email was sent successfully, otherwise an error message
+ */
 export default async function handler(req, res) {
 
   

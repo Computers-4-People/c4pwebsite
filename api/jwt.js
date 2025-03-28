@@ -11,6 +11,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION_DATE = process.env.JWT_EXPIRATION_TIME; 
 const t = "";
 
+/**
+ * 
+ * @param {*} req request parameters include email and recordId 
+ * @param {*} res response object with a token
+ * @returns a json object with a token
+ */
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
