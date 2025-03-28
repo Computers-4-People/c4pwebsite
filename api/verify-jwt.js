@@ -3,6 +3,12 @@ const { parse } = require('cookie');
 
 
 // add jwt to pakckage.json
+
+/**
+ * verifies a jwt token to make sure it is valid
+ * @param {*} req N/A
+ * @param {*} res a response object with a boolean detailing whether the token is valid or not
+ */
 export default function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
