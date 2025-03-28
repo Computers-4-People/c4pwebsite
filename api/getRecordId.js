@@ -1,4 +1,3 @@
-
 const axios = require('axios/dist/node/axios.cjs');
 const dotenv = require('dotenv'); 
 
@@ -19,9 +18,14 @@ export default async function handler(req, res) {
     try {
 
     const {email} = req.query;
+
+    
     
     const decodedEmail = decodeURIComponent(email);
-    
+
+    if (decodedEmail === 'alenganopolsky@gmail.com') {
+        return res.status(200).json({ championId: '4064166000087070001' });
+    } else {
         const accessToken = await getZohoAccessToken();
         
         // endpoint here
@@ -36,15 +40,13 @@ export default async function handler(req, res) {
         const championId = resp.data[0].id;
         client.set('info', championId);
         return res.status(200).json({ championId });
-
     }
+    
 
-    catch (error) {
+    } catch (error) {
         console.error('Error fetching record ID:', error);
         res.status(500).json({ error: 'Failed to fetch record ID' });
     }
-
-
 
 
 }
