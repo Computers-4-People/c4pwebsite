@@ -79,7 +79,19 @@ function Auth() {
             setError('');
             console.log(email);
        //     await sendEmail(email, 0);
+
+            const recordResponse = await axios.get(`${API_BASE_URL}/api/getRecordId?email=${encodeURIComponent(email)}`)
+            .catch(error => {
+                if (error.response?.status === 404) {
+                    throw new Error('Email not found');
+                }
+                throw error;
+            });
+
+            const recordId = recordResponse.data.championId;
+
             console.log('awaiting JWT');
+            // change this to recordId later
             const resp = await getJWT(email, 1);
 
             const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
@@ -90,7 +102,7 @@ function Auth() {
             
             setSuccess(true);
 
-            await sendEmail(email, 1);
+            await sendEmail(email, recordId);
         } catch (error) {
             
             console.error('Error:', error);
