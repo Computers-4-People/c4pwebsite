@@ -7,10 +7,13 @@ import { useSearchParams } from 'react-router-dom';
 
 function Portal() {
 
+    axios.defaults.withCredentials = true;
+
+
     const [searchParams] = useSearchParams();
     var [recordId, setRecordId] = useState(searchParams.get('recordId') || '');
 
-
+    
 
     
   //  var [recordId, setRecordId] = useState('');
@@ -95,7 +98,10 @@ function Portal() {
 
         // jwt token validation here 
         try {
-        const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
+            
+        const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+            withCredentials: true
+        });
         console.log('jwtResp', jwtResp);    
 
         } catch (error) {

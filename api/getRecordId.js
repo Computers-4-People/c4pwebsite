@@ -26,11 +26,10 @@ export default async function handler(req, res) {
         
         const accessToken = await getZohoAccessToken();
         
-        const requestUrl = 
-        `https://www.zohoapis.com/crm/v2/Champions/search?criteria=(Email:equals:${encodeURIComponent(decodedEmail)})`;
+    
         
         // endpoint here
-        
+        const requestUrl = `https://www.zohoapis.com/crm/v2/Champions/search?criteria=email:equals:${encodeURIComponent(decodedEmail)}`;
 
         const resp = await axios.get(requestUrl, {
             headers: {
