@@ -1,3 +1,4 @@
+
 const axios = require('axios/dist/node/axios.cjs');
 const dotenv = require('dotenv'); 
 
@@ -6,11 +7,6 @@ dotenv.config({
   path: './.env.local'
 });
 const { getZohoAccessToken } = require('./_utils');
-
-const API_BASE_URL =
-        process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3000'
-            : '';
 
 
 export default async function handler(req, res) {
@@ -25,11 +21,16 @@ export default async function handler(req, res) {
 
     if (decodedEmail === 'alenganopolsky@gmail.com') {
         return res.status(200).json({ championId: '4064166000087070001' });
-    } else {
+    }
+    else {
+        
         const accessToken = await getZohoAccessToken();
         
+        const requestUrl = 
+        `https://www.zohoapis.com/crm/v2/Champions/search?criteria=(Email:equals:${encodeURIComponent(decodedEmail)})`;
+        
         // endpoint here
-        const requestUrl = `${API_BASE_URL}/api/championid?email=${encodeURIComponent(decodedEmail)}&moduleName=Champions&param=Email`;
+        
 
         const resp = await axios.get(requestUrl, {
             headers: {
@@ -37,9 +38,15 @@ export default async function handler(req, res) {
             }
         });
 
+        if (!resp.data || !resp.data.data || resp.data.data.length === 0) {
+            return res.status(404).json({ error: 'Champion not found' });
+        }
+
+
         const championId = resp.data[0].id;
         client.set('info', championId);
         return res.status(200).json({ championId });
+
     }
     
 

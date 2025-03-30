@@ -53,7 +53,9 @@ export default async function handler(req, res) {
       algorithm: 'HS256'
     });
 
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Strict`);
+    // changed cookie settings to lax
+
+    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Lax`);
     // Send the token in the response
     res.status(200).json({ token });
 

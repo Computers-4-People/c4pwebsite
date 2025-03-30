@@ -33,7 +33,8 @@ export default function handler(req, res) {
         
         res.status(200).json({ valid: true, user: decoded });
     } catch (error) {
-        
+        console.error(error);
+        console.log(token);
         res.status(401).json({ valid: false, error: 'Invalid token' });
     }
 } 

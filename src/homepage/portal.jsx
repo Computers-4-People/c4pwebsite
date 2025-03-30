@@ -2,8 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 
+// added this
+import { useSearchParams } from 'react-router-dom';
+
 function Portal() {
-    var [recordId, setRecordId] = useState('');
+
+    const [searchParams] = useSearchParams();
+    var [recordId, setRecordId] = useState(searchParams.get('recordId') || '');
+
+
+
+    
+  //  var [recordId, setRecordId] = useState('');
     const [championId, setChampionId] = useState('');
     var [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
     const [data, setData] = useState(null);
@@ -29,6 +39,19 @@ function Portal() {
         '/Hotspot/t10back.png',
         '/Hotspot/t10side.png'
     ];
+
+    
+    // added this
+    useEffect(() => {
+        const urlRecordId = searchParams.get('recordId');
+        if (urlRecordId) {
+            setRecordId(urlRecordId);
+            fetchData(); 
+        }
+    }, [searchParams]); 
+
+
+    
 
     // Auto-slide functionality (if using image slider)
     useEffect(() => {
