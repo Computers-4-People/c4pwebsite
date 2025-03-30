@@ -14,56 +14,57 @@ export default function About() {
     //'grid grid-cols-2 mb-4 col-span-4 rows-span-4'
     const cards = [
         {
-            titlePart1: "Founded by",
-            titlePart2: "A Teen Entrepreneur",
-            description: "In 2019, at the age of 15, Dylan Zajac launched Computers 4 People, inspired by the lack of access to technology in underserved communities.",
-            image: "../about/15-year-old.jpeg"
+            titlePart1: "Launched by a",
+            titlePart2: "Teen Visionary",
+            description: "In 2019, 15-year-old Dylan Zajac founded Computers 4 People to tackle the lack of access to technology in underserved communities, starting with just a handful of donated devices.",
+            image: "../about/teen.jpg",
         },
         {
-            titlePart1: "To Bridge the Digital",
-            titlePart2: "Gap across NJ & NYC",
-            description: "In 2021, Computers 4 People opened its first office in Hoboken, NJ, and continued its first program: refurbishing and redistributing donated devices to people in need.",
-            image: "../about/digital-gap.jpeg"
+            titlePart1: "Closing the Digital",
+            titlePart2: "Divide in NJ & NYC",
+            description: "In 2021, Computers 4 People opened its first office in Hoboken, NJ. The organization’s mission to refurbish and redistribute devices quickly gained traction, serving hundreds of individuals in need.",
+            image: "../about/njoffice.jpg",
         },
         {
-            titlePart1:"Through Various",
-            titlePart2:"Digital Programs",
-            description:"In 2023, Computers 4 People team quadrupled and the organization added two more programs-digital skills classes and internet access-to better serve the communitiy's needs",
-            image:"../about/digital-programs.jpeg"
+            titlePart1: "Expanding with",
+            titlePart2: "New Programs",
+            description: "By 2023, the team had quadrupled in size and introduced digital skills training and mobile hotspot distribution, addressing critical barriers to digital access for communities.",
+            image: "../about/newprograms.jpg",
         },
         {
-            titlePart1:"Computers 4 People",
-            titlePart2:"is Serving 3 States",
-            description:"In 2024, Computers 4 People opened a second office in Waltham, MA. This expansion allows us to bring our programs to underserved communities throughout the Bay State.",
-            image:"/about/serving-3-states.jpeg"
+            titlePart1: "Reaching New",
+            titlePart2: "Communities",
+            description: "In 2024, a second office opened in Waltham, MA, extending Computers 4 People’s impact to underserved communities across Massachusetts while strengthening its presence in the Northeast.",
+            image: "/about/maoffice.jpg",
         },
         {
-            titlePart1:"A Leading Force",
-            titlePart2:"in the Northeast",
-            description:"With significant advancements in digital equity and e-waste management, Computers 4 People has become a prominent advocate for tech access in the northeastern US.",
-            image:"/about/leading-force.jpeg"
-        }
-    ]
+            titlePart1: "Driving Digital Equity",
+            titlePart2: "and Sustainability",
+            description: "Today, Computers 4 People is a leader in the Northeast, providing access to technology, reducing e-waste, and championing digital access for thousands of individuals and families.",
+            image: "/about/sustainability.jpg ",
+        },
+    ];
+    
     
   const iconsData = [
     {
-      title: "Become an Electronics Drop-off Site",
-      image: "../maps.png",
-      alt: "E-Waste Drop-off Site",
-      link: "/ewastedropoff"
-    },
-    {
-      title: "Sponsor Digital Access",
-      image: "../handshake.png",
-      alt: "Sponsor Digital Access",
-      link: "/financialdonation"
-    },
-    {
-      title: "Volunteer",
-      image: "../hands.png",
-      alt: "Volunteer",
-      link: "/volunteer"
-    }
+        title: "Fund Digital Access",
+        image: "../Homepage/funddigitalaccess.jpg",
+        alt: "Sponsor Digital Access",
+        link: "/support"
+      },
+      {
+        title: "Donate Computers",
+        image: "../Homepage/donatecomputersicon.jpg",
+        alt: "Donate your computers today",
+        link: "/donate"
+      },
+      {
+        title: "Volunteer",
+        image: "../Homepage/volunteericon.jpg",
+        alt: "Volunteer",
+        link: "/volunteer"
+      }
   ];
     return (
         <div  id="main-content" className='font-sans'>
@@ -76,8 +77,8 @@ export default function About() {
                 }} /> 
 <div className='bg-cover bg-black p-16 text-white'>
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>3,607</div><p className='text-3xl'>Computers Donated</p></li>
-    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>55,907</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>4,136</div><p className='text-3xl'>Computers Donated</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>61,021</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
     <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>215</div><p className='text-3xl'>Digital Skills Classes</p></li>
   </ul>
 </div>
@@ -89,19 +90,19 @@ export default function About() {
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'Unlock Access to the Digital World.',
-                image: '../about/our_mission.jpeg',
+                desc2: 'Unlock Access to the Digital World. By refurbishing donated devices, teaching essential digital skills, and improving connectivity, we aim to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
+                image: '../about/missionstatement.png',
                 side: 'right'
             }}/> 
             <div className='bg-cover text-black'>
-                <h2 className='m-14 font-title text-7xl'>Our History</h2>
+                <h2 className='m-14 font-subtitle text-7xl'>Our History</h2>
                 <InfoCard cards={cards}></InfoCard>
             </div>
 
             <div className="bg-cover mb-40">
                 <div className="mx-20 md:grid grid-cols-3 md:grid-rows-2 gap-5">
-                    <h2 className="col-span-4 text-7xl font-title uppercase">How You Can Help</h2>
-                    <p className="col-span-2 text-2xl">Discover How You Can Contribute to Digital Equity in Your Community</p>
+                    <h2 className="col-span-4 text-7xl font-subtitle uppercase">How You Can Help</h2>
+                    <p className="col-span-2 text-2xl">Discover How You Can Contribute to Digital Access in Your Community</p>
                 </div>
                 <div className="mt-10">
                     <IconCards cards={iconsData} />
