@@ -10,10 +10,11 @@ const { parse } = require('cookie');
  * @param {*} res a response object with a boolean detailing whether the token is valid or not
  */
 export default function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    const origin = req.headers.origin || 'http://localhost:3000';
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     
     if (req.method !== 'GET') {
         return res.status(405).json({ error: 'Method not allowed' });
