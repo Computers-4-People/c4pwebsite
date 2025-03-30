@@ -24,6 +24,8 @@ export default function handler(req, res) {
     const token = cookies.token;
 
     if (!token) {
+        console.log(req.headers.cookie);
+        console.log(req.headers);
         return res.status(401).json({ valid: false, error: 'No token provided' });
     }
 

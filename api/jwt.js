@@ -55,7 +55,7 @@ export default async function handler(req, res) {
 
     // changed cookie settings to lax
 
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Lax`);
+    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=3600`);
     // Send the token in the response
     res.status(200).json({ token });
 

@@ -97,17 +97,17 @@ function Portal() {
         }
 
         // jwt token validation here 
-        try {
+      //  try {
             
-        const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-            withCredentials: true
-        });
-        console.log('jwtResp', jwtResp);    
+        // const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+        //     withCredentials: true
+        // });
+        // console.log('jwtResp', jwtResp);    
 
-        } catch (error) {
-            setError('Authentication failed. Please log in again.');
-            return;
-        }
+        // } catch (error) {
+        //     setError('Authentication failed. Please log in again.');
+        //     return;
+        // }
 
         
 
