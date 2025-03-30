@@ -49,7 +49,10 @@ function Portal() {
         const urlRecordId = searchParams.get('recordId');
         if (urlRecordId) {
             setRecordId(urlRecordId);
-            fetchData(); 
+        
+            setTimeout(() => {
+                fetchData();
+            }, 0);
         }
     }, [searchParams]); 
 
@@ -334,7 +337,7 @@ function Portal() {
                         <p>
                             Possible reasons for denial: Not located in NJ, NYC, MA; no
                             recommendation received; recommendation is not from a valid non-profit;
-                            don’t meet the income requirements.
+                            don't meet the income requirements.
                         </p>
                     </div>
                 );
