@@ -2,7 +2,6 @@
 const axios = require('axios/dist/node/axios.cjs');
 const dotenv = require('dotenv'); 
 
-
 dotenv.config({
   path: './.env.local'
 });
@@ -15,8 +14,6 @@ export default async function handler(req, res) {
 
     const {email} = req.query;
 
-    
-    
     const decodedEmail = decodeURIComponent(email);
 
     if (decodedEmail === 'alenganopolsky@gmail.com') {
@@ -29,7 +26,7 @@ export default async function handler(req, res) {
     
         
         // endpoint here
-        const requestUrl = `https://www.zohoapis.com/crm/v2/Champions/search?criteria=email:equals:${encodeURIComponent(decodedEmail)}`;
+        const requestUrl = `https://www.zohoapis.com/crm/v2/Champions/search?criteria=(email:equals:${decodedEmail})`;
 
         const resp = await axios.get(requestUrl, {
             headers: {
