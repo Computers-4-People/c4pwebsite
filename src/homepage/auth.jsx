@@ -47,20 +47,20 @@ const getJWT = async(email, recordID) => {
 }
 
 // display html that says "sending email... within react component"
-const getRecordId = async (email) => {
+const fetchWithChampion = async (Name, moduleName, param) => {
     try {
-    // might need to encode the other query params
-    const response = await axios.get(`${API_BASE_URL}/api/championid?email=${encodeURIComponent(email)}&moduleName=Contacts&param=Email`);
-    const recordId = response.data.id;
-    if (recordId) {
-        sendEmail(email, recordId);
-    }
+        const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
 
-    
+        console.log('url:', requestUrl);
+
+        const response = await axios.get(requestUrl);
+        console.log('response:', response.data);
+
+        return response.data;
     }
-    catch (error) {
-        console.error('Error getting recordId:', error);
-        throw error;
+    catch(e) {
+        console.error('Error fetching champion-related data:', e);
+        throw e;
     }
 }
 
@@ -78,29 +78,13 @@ function Auth() {
             console.log(email);
        //     await sendEmail(email, 0);
 
-            const recordResponse = await axios.get(`${API_BASE_URL}/api/getRecordId?email=${encodeURIComponent(email)}`)
-            .catch(error => {
-                if (error.response?.status === 404) {
-                    throw new Error('Email not found');
-                }
-                throw error;
-            });
+            const championResponse = await fetchWithChampion(email, 'Champions', 'Email');
 
-            const recordId = recordResponse.data.championId;
-
-            console.log('awaiting JWT');
-            // change this to recordId later
-            const resp = await getJWT(email, 1);
-
-            const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`);
-            console.log('jwtResp', jwtResp);
-            
-            console.log(resp);
-      
-            
+            const id = championResponse.data[0].id;
+           
             setSuccess(true);
 
-            await sendEmail(email, recordId);
+            await sendEmail(email, id);
         } catch (error) {
             
             console.error('Error:', error);
