@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       
     });
 
-    const encodedRecordId = encodeURIComponent(recordId);
+    
 
     
     await mg.messages.create('www.computers4people.org', {
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<h1> enter the record Id here: www.computers4people.com/portal?recordId=${encodedRecordId} </p> `
+      html: `<h1> enter the record Id here: www.computers4people.com/portal?recordId=${recordId} </p> `
       // <p> enter the record Id here: www.computers4people.com/portal <p> 
 
       // old: `<h1> this is a test! </p>`

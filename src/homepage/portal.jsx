@@ -46,16 +46,44 @@ function Portal() {
     
     // added this
     useEffect(() => {
+        (async () => {
+        try {
         const urlRecordId = searchParams.get('recordId');
         if (urlRecordId) {
             setRecordId(urlRecordId);
-        
+            const jwt = await getJWT(email, recordId);
+            console.log('jwt', jwt);
             setTimeout(() => {
                 fetchData();
             }, 0);
         }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        setError('Error fetching data. Please try again.');
+    }
+    })();
     }, [searchParams]); 
 
+
+    const getJWT = async(email, recordID) => {
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/jwt`, {
+                email,
+                recordID
+            }, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            return response.data;
+            
+        } catch (error) {
+            console.error('Error in getting JWT:', error);
+            throw error;
+        }
+    }
 
     
 
