@@ -51,8 +51,8 @@ function Portal() {
         const urlRecordId = searchParams.get('recordId');
         if (urlRecordId) {
             setRecordId(urlRecordId);
-            const jwt = await getJWT(email, recordId);
-            console.log('jwt', jwt);
+        
+      
             setTimeout(() => {
                 fetchData();
             }, 0);
