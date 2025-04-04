@@ -6,7 +6,7 @@ export default function Header(props) {
 
   const renderLinkItem = (link, index) => {
     const commonClasses =
-      "block flex items-center justify-center w-full sm:w-1/2 md:w-2/5 max-w-full text-left text-sm sm:text-lg md:text-xl animate-fade-up h-11 rounded-md px-4 sm:px-6 md:px-7";
+      "block flex items-center justify-center text-center text-sm sm:text-base md:text-lg animate-fade-up h-11 rounded-md px-4 sm:px-5 max-w-xs overflow-hidden text-ellipsis whitespace-nowrap";
     const styleClasses =
       index % 2 === 0
         ? "bg-c4p hover:bg-c4p-hover hover:text-white"
@@ -49,7 +49,7 @@ export default function Header(props) {
       style={{
         backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.5) 60%, transparent 100%), url('${bgImage}')`,
         backgroundSize: "cover",
-        backgroundPosition: "center center", // Desktop default
+        backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "scroll",
       }}
@@ -75,7 +75,6 @@ export default function Header(props) {
         </div>
       </div>
 
-      {/* Optional Bottom Left Section */}
       {logos && (
         <div className="md:absolute md:bottom-4 md:left-4 text-left mt-6 md:mt-0">
           <div className="flex justify-start space-x-4">
@@ -91,11 +90,10 @@ export default function Header(props) {
         </div>
       )}
 
-      {/* Responsive Styles */}
       <style jsx>{`
         @media (max-width: 768px) {
           .header-container {
-            background-position: right !important; /* Mobile: right-align background */
+            background-position: right !important;
           }
           .dynamic-font-mobile {
             font-size: clamp(2rem, 5vw, 4rem);
@@ -107,7 +105,6 @@ export default function Header(props) {
           }
         }
         @media (min-width: 769px) {
-          /* Desktop: larger fonts and tighter line spacing */
           .dynamic-font-mobile {
             font-size: 5rem;
             line-height: 1.1;
