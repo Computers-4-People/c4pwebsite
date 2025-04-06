@@ -1,136 +1,169 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import InfoCard from "../components/infocard";
 import IconCards from "../components/iconcards";
 import Header from "../components/header";
 import Testimonial from "../components/testimonial";
+import ImageMarquee from "../components/imagemarquee";
+import { Link } from "react-router-dom";
 
 const scrollToForm = () => {
-    document.getElementById("donation-form").scrollIntoView({ behavior: "smooth" });
-    
+  document.getElementById("donation-form").scrollIntoView({ behavior: "smooth" });
 };
 
-export default function Donate () {
-    const cards = [
-        {
-            titlePart1: "Donors",
-            titlePart2: "Arrange a Pickup",
-            description: "Complimentary e-waste pickup available for a minimum of 10 devices, covering all electronic computing items - except appliances - in",
-            image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpeg",
-            alt: 'Dylan Zjac talking to a donor.'
-        },
-        {
-            titlePart1: "Ambassadors Provide",
-            titlePart2: "Simple Device Pickup",
-            description: "Ambassadors transport electronic waste to the refurbishing center, where they are categorized into donatable and non-donatable devices",
-            image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg",
-            alt: 'Computers 4 People Ambassadors picking up a donation.'
-        },
-        {
-            titlePart1: "Donatable Devices",
-            titlePart2: "are Refurbished & Clean",
-            description: "Donatable devices undergo refurbishment to ensure optimal condition, including data wiping certified by NIST 800-88. Tax-receipts provided via email.",
-            image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.jpeg",
-            alt: 'Volunteer refurbishing a donated device.'
-        },
-        {
-            titlePart1: "Non-Donatable Devices",
-            titlePart2: "Are Properly Recycled",
-            description: "Non-donatable devices are properly recycled and disposed of with materials that can be reused and transformed into items such as cans and bottles.",
-            image: "/Programs/E-waste/Images/Volunteer_Sorting_ewaste.jpeg",
-            alt: 'Volunteer categorizing and recycling e waste and electronics.'
-        },
-        {
-            titlePart1: "Recipients",
-            titlePart2: "Obtain Computers",
-            description: "Refurbished devices are matched with individuals and organizations in need, fostering digital equity in under-resourced communities.",
-            image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpeg",
-            alt: 'A woman of advanced age receiving a refurbished computer and green computers 4 people tote bag.'
-        }
-    ]
-    const iconsData = [
-        {
-          title: "Fund Digital Access",
-          image: "../Homepage/funddigitalaccess.jpg",
-          alt: "Sponsor Digital Access",
-          link: "/support"
-        },
-        {
-          title: "Host a Computer Drive",
-          image: "../Homepage/donatecomputersicon.jpg",
-          alt: "Host a computer drive in your community",
-          link: "/contact"
-        },
-        {
-          title: "Volunteer",
-          image: "../Homepage/volunteericon.jpg",
-          alt: "Volunteer",
-          link: "/volunteer"
-        }
-      ];
-     return (
-        <div id="main-content" >
-        <div className='font-sans mb-20 overflow-x-hidden'>
-            <Header props={{
-                bgImage: '/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg',
-                titlePart1: 'Turn E-Waste',
-                titlePart2: 'into Opportunties',
-                description: <div className='space-y-10'><p>We're on a mission to collect unused devices, refurbishing what we can for communities and responsibly recycling the rest.</p><p>We're turning e-waste into tools for a responsible future.</p></div>,
-                links: [{text: 'Donate Computers', clickAction: scrollToForm}]
+export default function Donate() {
+  const cards = [
+    {
+      titlePart1: "Donate",
+      titlePart2: "10+ Devices",
+      description: "We’ll pick up your donation at no cost and handle everything securely.",
+      image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpeg",
+      alt: "Donor arranging pickup"
+    },
+    {
+      titlePart1: "Donate",
+      titlePart2: "<10 Devices",
+      description: "Easily drop off your devices at our dropoff locations.",
+      image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg",
+      alt: "Ambassador drop-off"
+    },
+    {
+      titlePart1: "Data",
+      titlePart2: "Destroyed",
+      description: "Data is erased using NIST 800-88 standards.",
+      image: "/Programs/E-waste/Images/Child_Building_Refurbished_PCs.jpeg",
+      alt: "Child refurbishing PC"
+    },
+    {
+      titlePart1: "Others",
+      titlePart2: "Are Recycled",
+      description: "Non-reusable items are responsibly recycled via R2-certified downstream partners.",
+      image: "/Programs/E-waste/Images/Volunteer_Sorting_ewaste.jpeg",
+      alt: "Sorting electronics"
+    },
+    {
+      titlePart1: "People",
+      titlePart2: "Get Connected",
+      description: "Your donated tech helps people access education, jobs, and services.",
+      image: "/Programs/E-waste/Images/Recipient_Receiving_Refurbished_Computer.jpeg",
+      alt: "Happy recipient"
+    }
+  ];
 
-                }}/>
-            <div className='bg-cover'>
-                <div className='pl-5 md:pl-14'>
-                    <h2 className='text-7xl font-subtitle mt-10'>GIVING UNUSED ELECTRONICS A NEW LIFE</h2>
-                    <p className='text-3xl mt-5'>Someone's disregard electronics can become a lifeline for others.</p>
-                </div>
-            <div>
-                    <InfoCard cards={cards}></InfoCard>
-                </div>
-            </div>
+  const iconsData = [
+    { title: "Fund Digital Access", image: "../Homepage/funddigitalaccess.jpg", alt: "Fund access", link: "/support" },
+    { title: "Host a Computer Drive", image: "../Homepage/donatecomputersicon.jpg", alt: "Host drive", link: "/contact" },
+    { title: "Volunteer", image: "../Homepage/volunteericon.jpg", alt: "Volunteer with us", link: "/volunteer" }
+  ];
 
-            <Testimonial props={{
-                title2: 'Easy and Convenient Electronics Drop-off sites in your community',
-                desc2: <div>
-                            <p className='my-5'>
-                                Computers 4 People provides a hassle-free, complimentary services with
-                                convenient drop-off points in NJ, NYC, and Massachusetts. Simply drop off
-                                your e-waste, and we'll handle the rest for you.
-                            </p>
-                            <p>Tax receipts are provided upon request.</p>
-                     </div>,
-                image: '/Programs/E-waste/Images/Donor_with_Bulk_Ewaste_Laptops.jpeg',
-                alt: 'Donor holding a bulk of donated laptops to be refurbished and redistributed to people in need.'
-            }}/>
-            </div>
-            <div className="bg-cover mt-40">
-                    <div className='self-center row-span-1col-span-2 mx-20'>
-                        <h2 className="col-span-2 text-7xl font-subtitle mb-3">Ways to Get Involved</h2>
-                        <p className="col-span-2 text-2xl"> Explore these ways to cultivate digital equity</p>
-                    </div>
-                </div>
-            <div className="my-5 p-5 mb-20 mt-10">
-  <IconCards cards={iconsData} />
-</div>
-                <div style={{
-  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg')`,
-  display: 'flex',
-  justifyContent: 'center', // This aligns the iframe horizontally
-  height: '100vh',
-  backgroundSize: window.innerWidth > 720 ? 'cover' : 'cover', // Keep cover for both
-  backgroundPosition: window.innerWidth > 720 ? 'center right' : 'center right', // Position more precisely for each view
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: window.innerWidth > 720 ? 'fixed' : 'scroll' // Fixed on desktop, scroll on mobile
-}} className="bg-fixed">
-  <iframe
-    scrolling="no"
-    id="donation-form"
-    aria-label='Donate Computers'
-    style={{ width: '100%', height: '100vh', border: 'none' }} // Make iframe fullscreen and remove border
-    src='https://forms.zohopublic.com/Computers4People/form/DonateYourElectronicstestKPIs/formperma/AsSpFP2nu9WN-cUFojNMNeHV3KcP-8xiM6-sWVFbwgA'
-  ></iframe>
-</div>
-            </div>
-            
-    )
+  const partnerLogos = [
+    { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+    { src: "/logos/Invesco.png", alt: "Invesco" },
+    { src: "/logos/babson.png", alt: "Babson College" },
+    { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
+    { src: "/logos/RadNet.png", alt: "Radnet" },
+    { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
+    { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
+    { src: "/logos/comcast.png", alt: "Comcast" },
+    { src: "/logos/wsaudiology.png", alt: "WS Audiology" },
+    { src: "/logos/qbe.png", alt: "QBE" },
+    { src: "/logos/stevens.png", alt: "Stevens Institute of Technology" },
+    { src: "/logos/junkteens.png", alt: "Junk Teens" },
+    { src: "/logos/att.png", alt: "AT&T" },
+    { src: "/logos/insightpartners.png", alt: "Insight Partners" },
+    { src: "/logos/bigbelly.png", alt: "Big Belly Solar" },
+  ];
+
+  return (
+    <div id="main-content" className="font-sans overflow-x-hidden">
+      <Header props={{
+        bgImage: '/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg',
+        titlePart1: 'Donate Tech',
+        titlePart2: 'Securely & Impactfully',
+        description: (
+          <p>We ensure your data is fully wiped and your devices go to someone in need. Schedule a free pickup for 10+ devices or drop off fewer anytime.</p>
+        ),
+        links: [{ text: 'Donate Now', clickAction: scrollToForm }]
+      }} />
+
+      <div className="bg-cover">
+        <div className="pl-5 md:pl-14">
+          <h2 className="text-5xl font-subtitle mt-16">How It Works</h2>
+          <p className="text-2xl mt-4 max-w-3xl">From your hands to someone in need - safely, simply, impactfully.</p>
+        </div>
+        <InfoCard cards={cards} />
+      </div>
+
+      {/* Drop-off testimonial */}
+      <Testimonial props={{
+        title2: 'Quick Drop-Off',
+        desc2: (
+          <div>
+            <p className="mb-4">
+              Have fewer than 10 devices?{' '}
+              <Link to="/ewastedropoff" className="underline text-c4p hover:text-c4p-hover font-medium">
+                Drop them off at a location near you.
+              </Link>
+            </p>
+            <p>We accept any electronics & provide tax deductible receipts.</p>
+          </div>
+        ),
+        image: '/Programs/E-waste/Images/Donor_with_Bulk_Ewaste_Laptops.jpeg',
+        alt: 'Donor dropping off laptops'
+      }} />
+
+      {/* Data security testimonial with image on right */}
+      <Testimonial props={{
+        side: "right",
+        title2: 'Your Data is Safe',
+        desc2: (
+          <p>We follow NIST 800-88 standards and provide a certificate of data destruction for every device upon request.</p>
+        ),
+        image: '/E-waste/datacert.png',
+        alt: 'Certificate of data destruction'
+      }} />
+
+      {/* Partner Logos */}
+      <div className="m-10">
+        <ImageMarquee
+          images={partnerLogos}
+          title="Join 180+ Leaders in Tech, Healthcare, Government, and Beyond."
+        />
+      </div>
+
+      {/* Get Involved */}
+      <div className="bg-cover mt-20">
+        <div className="mx-6 md:mx-20 text-center">
+          <h2 className="text-5xl font-subtitle mb-3">Get Involved</h2>
+          <p className="text-xl">Volunteer, sponsor, or host a drive – your impact starts here.</p>
+        </div>
+      </div>
+
+      <div className="my-5 p-5 mt-10">
+        <IconCards cards={iconsData} />
+      </div>
+
+      {/* Donation Form */}
+      <div
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg')`,
+          display: 'flex',
+          justifyContent: 'center',
+          height: '100vh',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center right',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: window.innerWidth > 720 ? 'fixed' : 'scroll'
+        }}
+        className="bg-fixed"
+      >
+        <iframe
+          scrolling="no"
+          id="donation-form"
+          aria-label="Donate Computers"
+          style={{ width: '100%', height: '100vh', border: 'none', marginBottom: '-1px' }}
+          src='https://forms.zohopublic.com/Computers4People/form/DonateYourElectronicstestKPIs/formperma/AsSpFP2nu9WN-cUFojNMNeHV3KcP-8xiM6-sWVFbwgA'
+        ></iframe>
+      </div>
+    </div>
+  );
 }

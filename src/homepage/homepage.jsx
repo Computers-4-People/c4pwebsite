@@ -46,15 +46,15 @@ export default function Homepage() {
       alt: 'Staff refurbishing donated computers to provide them to people in need.'
     },
     {
-      titlePart1: "Partners",
-      titlePart2: "With Non-Profits",
+      titlePart1: "Non-Profit",
+      titlePart2: "Partners",
       description: "We partner with 400+ non-profit partners across New Jersey, New York City, and Massachusetts to identify individuals lacking digital access.",
       image: "../Homepage/partners.jpg",
       alt: 'Computers 4 People ambassador delivering laptops to a non-profit partner'
     },
     {
       titlePart1: "Unlocks",
-      titlePart2: "The Digital World",
+      titlePart2: "Opportunity",
       description:
         "Our unique application process distributes computers to individuals, families, and organizations that need them the most.",
       image: "../Homepage/unlocks.jpg",
@@ -64,28 +64,30 @@ export default function Homepage() {
       titlePart1: "Enables",
       titlePart2: "Real Change",
       description:
-        "Recipients use their devices to obtain jobs, access education, entrepreneurship, telehealth, and beyond!",
+        "Recipients use their devices to obtain jobs, access education, entrepreneurship, health services, and beyond!",
       image: "../Homepage/enables.jpg",
       alt: 'Computer receipient holding their new laptop from Computers 4 People.'
     },
   ];
-  const partnerLogos = [
-    { src: "../logos/americanliverfoundation.png", alt: "American Liver Foundation" },
-    { src: "../logos/Invesco.png", alt: "Invesco" },
-    { src: "../logos/babson.png", alt: "Babson College" },
-    { src: "../logos/carlyle.png", alt: "The Carlyle Group" },
-    { src: "../logos/RadNet.png", alt: "Radnet" },
-    { src: "../logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
-    { src: "../logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
-    { src: "../logos/comcast.png", alt: "Comcast" },
-    { src: "../logos/wsaudiology.png", alt: "WS Audiology" },
-    { src: "../logos/qbe.png", alt: "QBE" },
-    { src: "../logos/stevens.png", alt: "Stevens Institute of Technology" },
-    { src: "../logos/junkteens.png", alt: "Junk Teens" },
-    { src: "../logos/att.png", alt: "AT&T" },
-    { src: "../logos/insightpartners.png", alt: "Insight Partners" },
-    { src: "../logos/bigbelly.png", alt: "Big Belly Solar" },
-  ];
+
+const partnerLogos = [
+  { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+  { src: "/logos/Invesco.png", alt: "Invesco" },
+  { src: "/logos/babson.png", alt: "Babson College" },
+  { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
+  { src: "/logos/RadNet.png", alt: "Radnet" },
+  { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
+  { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
+  { src: "/logos/comcast.png", alt: "Comcast" },
+  { src: "/logos/wsaudiology.png", alt: "WS Audiology" },
+  { src: "/logos/qbe.png", alt: "QBE" },
+  { src: "/logos/stevens.png", alt: "Stevens Institute of Technology" },
+  { src: "/logos/junkteens.png", alt: "Junk Teens" },
+  { src: "/logos/att.png", alt: "AT&T" },
+  { src: "/logos/insightpartners.png", alt: "Insight Partners" },
+  { src: "/logos/bigbelly.png", alt: "Big Belly Solar" },
+];
+
 
   return (
     <div id="main-content" className="overflow-x-hidden">
@@ -100,7 +102,7 @@ export default function Homepage() {
           ],
         }}
       />
-       <div className="m-10 font-quote"><ImageMarquee
+       <div className="m-10"><ImageMarquee
         images={partnerLogos}
         title="Join 180+ Leaders in Tech, Healthcare, Government, and Beyond."
       />
