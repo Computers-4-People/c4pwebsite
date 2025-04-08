@@ -23,14 +23,17 @@ export default function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { jwt } = req.query; 
+    const { urlJwt } = req.query; 
+
     
-    if (!jwt) {
+    if (!urlJwt) {
         return res.status(401).json({ valid: false, error: 'No token provided' });
     }
 
+    
+
     try {
-        const decoded = jwt.verify(jwt, process.env.JWT_SECRET);
+        const decoded = jwt.verify(urlJwt, process.env.JWT_SECRET);
         res.status(200).json({ valid: true, user: decoded });
     } catch (error) {
         console.error('JWT verification error:', error);
