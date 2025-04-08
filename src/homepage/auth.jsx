@@ -11,10 +11,10 @@ const API_BASE_URL =
 
 
 
-const sendEmail = async (email, recordId) => {
+const sendEmail = async (email, recordId, jwt) => {
     try {
         
-        const response = await axios.post(`${API_BASE_URL}/api/email?email=${encodeURIComponent(email)}&recordId=${recordId}`);
+        const response = await axios.post(`${API_BASE_URL}/api/email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`);
         if (!response.ok) {
             throw new Error('Failed to send email');
         }
@@ -84,7 +84,16 @@ function Auth() {
            
             setSuccess(true);
 
-            await sendEmail(email, id);
+            const tokenResp = await getJWT(email, id);
+
+            const jwt = tokenResp.token;
+
+            console.log('jwt:', jwt);
+
+
+            await sendEmail(email, id, jwt);
+
+
         } catch (error) {
             
             console.error('Error:', error);
