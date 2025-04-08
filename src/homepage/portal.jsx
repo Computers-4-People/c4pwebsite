@@ -50,8 +50,8 @@ function Portal() {
         (async () => {
         try {
         const urlRecordId = searchParams.get('recordId');
-        const urlJwt = searchParams.get('jwt');
-        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?jwt=${encodeURIComponent(urlJwt)}`);
+        const urlJwt = searchParams.get('jwt') || jwt;
+        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?jwt=${urlJwt}`);
         console.log('apiValidation:', apiValidation.data);
         if (urlRecordId && urlJwt && apiValidation.data.valid) {
             setRecordId(urlRecordId);
