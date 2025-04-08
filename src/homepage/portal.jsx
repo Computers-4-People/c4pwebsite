@@ -446,37 +446,279 @@ function Portal() {
         document.body.removeChild(link);
     };
 
-    return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+//     return (
+//         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+//             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl my-10 sm:my-16">
+//                 {!data ? (
+//                     <>
+//                         {/* <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2> */}
+//                         {/* <select
+//                             className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
+//                             value={module}
+//                             onChange={(e) => setModule(e.target.value)}
+//                         >
+//                             <option value="Contacts">Applicants</option>
+//                             <option value="Computer_Donors">Computer Donors</option>
+//                         </select> */}
+//                         {/* <input
+//                             type="text"
+//                             placeholder="Enter ID"
+//                             value={recordId}
+//                             onChange={(e) => setRecordId(e.target.value)}
+//                             className="border border-gray-300 rounded p-3 w-full mb-4"
+//                         /> */}
+//                         {/* <button
+//                             onClick={fetchData}
+//                             className="w-full sm:w-1/2 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
+//                             style={{ backgroundColor: '#17de43' }}
+//                         >
+//                             Fetch Details
+//                         </button> */}
+//                         {/* {error && <p className="text-red-500 mt-4 text-center">{error}</p>} */}
+//                     </>
+//                 ) : module === 'Contacts' ? (
+//                     <div className="applicant-info">
+//                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
+//                             Applicant Tracker
+//                         </h2>
+//                         <ProgressBar status={data.Status} />
+
+//                         <div className="bg-gray-100 p-4 rounded mb-4">
+//                             {renderStatusMessage()}
+//                         </div>
+//                         <div className="p-4 bg-white rounded shadow w-full">
+//                             <h2 className="text-2xl font-bold text-center mb-6 text-c4p">
+//                                 Applicant Information
+//                             </h2>
+//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+//                                 <p>
+//                                     <strong>Name:</strong> {data.Full_Name || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Email:</strong> {data.Email || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Phone:</strong> {data.Phone || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Nominating Organization:</strong>{' '}
+//                                     {data.Nominating_Organization || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Recommender Name:</strong>{' '}
+//                                     {`${data.Recommenders_Name || ''} ${
+//                                         data.Recommenders_Last_Name || ''
+//                                     }`.trim() || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Recommender Email:</strong>{' '}
+//                                     {data.Recommenders_Email || 'N/A'}
+//                                 </p>
+//                             </div>
+//                         </div>
+//                         <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
+//                             <h3 className="text-xl font-semibold text-c4p mb-2">
+//                                 Computer Request Details
+//                             </h3>
+//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+//                                 {data.Laptop_Quantity && (
+//                                     <p>
+//                                         <strong>Laptop Quantity:</strong> {data.Laptop_Quantity}
+//                                     </p>
+//                                 )}
+//                                 {data.Desktop_Quantity && (
+//                                     <p>
+//                                         <strong>Desktop Quantity:</strong> {data.Desktop_Quantity}
+//                                     </p>
+//                                 )}
+//                                 {data.Tablet_Quantity && (
+//                                     <p>
+//                                         <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
+//                                     </p>
+//                                 )}
+//                                 {/* Add more quantities if needed */}
+//                             </div>
+//                         </div>
+
+//                         {/* Display Assigned Computer Section if Applicant is a Client */}
+//                         {data.Status === 'Client' && inventoryData.length > 0 && (
+//                             <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
+//                                 <h3 className="text-xl font-semibold text-c4p mb-2">
+//                                     Assigned Computer(s)
+//                                 </h3>
+//                                 <div className="space-y-4">
+//                                     {inventoryData.map((item) => (
+//                                         <div key={item.ID} className="bg-white p-4 rounded shadow">
+//                                             <p>
+//                                                 <strong>Model:</strong> {item.Model || 'N/A'}
+//                                             </p>
+//                                             <p>
+//                                                 <strong>Status:</strong> {item.Status || 'N/A'}
+//                                             </p>
+//                                             <p>
+//                                                 <strong>Computer Type:</strong>{' '}
+//                                                 {item.Computer_Type || 'N/A'}
+//                                             </p>
+//                                             <p>
+//                                                 <strong>Location:</strong> {item.Location || 'N/A'}
+//                                             </p>
+//                                             {/* Add more fields as needed */}
+//                                         </div>
+//                                     ))}
+//                                 </div>
+//                             </div>
+//                         )}
+
+//                         <button
+//                             onClick={() => {
+//                                 setData(null);
+//                                 setInventoryData([]);
+//                             }}
+//                             className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
+//                             style={{ backgroundColor: '#17de43' }}
+//                         >
+//                             Back to Search
+//                         </button>
+//                     </div>
+//                 ) : (
+//                     // Donor details section
+//                     <div className="donor-info">
+//                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
+//                             Donor Details
+//                         </h2>
+//                         <div className="p-4 bg-green-50 rounded shadow w-full">
+//                             <h2 className="text-2xl font-bold mb-4 text-c4p">
+//                                 Computer Donor Information
+//                             </h2>
+//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+//                                 <p>
+//                                     <strong>Company:</strong> {data.Company || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Contact Person:</strong> {data.Name || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Email:</strong> {data.Email || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Phone:</strong> {data.Phone || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Location:</strong> {data.Location || 'N/A'}
+//                                 </p>
+//                                 <p>
+//                                     <strong>Mailing Address:</strong>{' '}
+//                                     {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${
+//                                         data.Mailing_State || ''
+//                                     } ${data.Mailing_Zip || ''}`.trim() || 'N/A'}
+//                                 </p>
+//                             </div>
+//                         </div>
+
+//                         {/* Display Donated Computers Section */}
+//                         {inventoryData.length > 0 && (
+//                             <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
+//                                 {/* Display Total Computers Donated and Total Weight */}
+//                                 <div className="flex flex-col sm:flex-row justify-around mb-6">
+//                                     <div className="text-center mb-4 sm:mb-0">
+//                                         <p className="text-4xl font-bold text-c4p">
+//                                             {inventoryData.length}
+//                                         </p>
+//                                         <p className="text-lg">Total Computers Donated</p>
+//                                     </div>
+//                                     <div className="text-center">
+//                                         <p className="text-4xl font-bold text-c4p">
+//                                             {calculateTotalWeight()} lbs
+//                                         </p>
+//                                         <p className="text-lg">Total Weight</p>
+//                                     </div>
+//                                 </div>
+
+//                                 {/* Download CSV Button */}
+//                                 <div className="flex justify-end mb-4">
+//                                     <button
+//                                         onClick={downloadCSV}
+//                                         className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700 transition-colors duration-300"
+//                                     >
+//                                         Download CSV
+//                                     </button>
+//                                 </div>
+
+//                                 <h3 className="text-xl font-semibold text-c4p mb-4">
+//                                     Donated Computers
+//                                 </h3>
+//                                 <div className="overflow-x-auto">
+//                                     <table className="min-w-full bg-white">
+//                                         <thead>
+//                                             <tr>
+//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+//                                                     Model
+//                                                 </th>
+//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+//                                                     Computer Type
+//                                                 </th>
+//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+//                                                     Date Added
+//                                                 </th>
+//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+//                                                     Date Donated
+//                                                 </th>
+//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
+//                                                     Date Recycled
+//                                                 </th>
+//                                             </tr>
+//                                         </thead>
+//                                         <tbody>
+//                                             {inventoryData.map((item, index) => (
+//                                                 <tr
+//                                                     key={item.ID}
+//                                                     className={index % 2 === 0 ? 'bg-gray-100' : ''}
+//                                                 >
+//                                                     <td className="py-2 px-4 border-b border-gray-200">
+//                                                         {item.Model || 'N/A'}
+//                                                     </td>
+//                                                     <td className="py-2 px-4 border-b border-gray-200">
+//                                                         {item.Computer_Type || 'N/A'}
+//                                                     </td>
+//                                                     <td className="py-2 px-4 border-b border-gray-200">
+//                                                         {item.Date_Added || 'N/A'}
+//                                                     </td>
+//                                                     <td className="py-2 px-4 border-b border-gray-200">
+//                                                         {item.Date_Donated || 'N/A'}
+//                                                     </td>
+//                                                     <td className="py-2 px-4 border-b border-gray-200">
+//                                                         {item.Date_Recycled || 'N/A'}
+//                                                     </td>
+//                                                 </tr>
+//                                             ))}
+//                                         </tbody>
+//                                     </table>
+//                                 </div>
+//                             </div>
+//                         )}
+
+//                         <button
+//                             onClick={() => {
+//                                 setData(null);
+//                                 setInventoryData([]);
+//                             }}
+//                             className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
+//                             style={{ backgroundColor: '#17de43' }}
+//                         >
+//                             Back to Search
+//                         </button>
+//                     </div>
+//                 )}
+//             </div>
+//         </div>
+//     );
+// }
+
+return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+        {data && (
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl my-10 sm:my-16">
-                {!data ? (
-                    <>
-                        <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2>
-                        {/* <select
-                            className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
-                            value={module}
-                            onChange={(e) => setModule(e.target.value)}
-                        >
-                            <option value="Contacts">Applicants</option>
-                            <option value="Computer_Donors">Computer Donors</option>
-                        </select> */}
-                        <input
-                            type="text"
-                            placeholder="Enter ID"
-                            value={recordId}
-                            onChange={(e) => setRecordId(e.target.value)}
-                            className="border border-gray-300 rounded p-3 w-full mb-4"
-                        />
-                        <button
-                            onClick={fetchData}
-                            className="w-full sm:w-1/2 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-                            style={{ backgroundColor: '#17de43' }}
-                        >
-                            Fetch Details
-                        </button>
-                        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
-                    </>
-                ) : module === 'Contacts' ? (
+                {module === 'Contacts' ? (
                     <div className="applicant-info">
                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
                             Applicant Tracker
@@ -536,11 +778,9 @@ function Portal() {
                                         <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
                                     </p>
                                 )}
-                                {/* Add more quantities if needed */}
                             </div>
                         </div>
 
-                        {/* Display Assigned Computer Section if Applicant is a Client */}
                         {data.Status === 'Client' && inventoryData.length > 0 && (
                             <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
                                 <h3 className="text-xl font-semibold text-c4p mb-2">
@@ -562,7 +802,6 @@ function Portal() {
                                             <p>
                                                 <strong>Location:</strong> {item.Location || 'N/A'}
                                             </p>
-                                            {/* Add more fields as needed */}
                                         </div>
                                     ))}
                                 </div>
@@ -581,7 +820,6 @@ function Portal() {
                         </button>
                     </div>
                 ) : (
-                    // Donor details section
                     <div className="donor-info">
                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
                             Donor Details
@@ -615,10 +853,8 @@ function Portal() {
                             </div>
                         </div>
 
-                        {/* Display Donated Computers Section */}
                         {inventoryData.length > 0 && (
                             <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
-                                {/* Display Total Computers Donated and Total Weight */}
                                 <div className="flex flex-col sm:flex-row justify-around mb-6">
                                     <div className="text-center mb-4 sm:mb-0">
                                         <p className="text-4xl font-bold text-c4p">
@@ -634,7 +870,6 @@ function Portal() {
                                     </div>
                                 </div>
 
-                                {/* Download CSV Button */}
                                 <div className="flex justify-end mb-4">
                                     <button
                                         onClick={downloadCSV}
@@ -710,8 +945,9 @@ function Portal() {
                     </div>
                 )}
             </div>
-        </div>
-    );
+        )}
+    </div>
+);
 }
 
 export default Portal;
