@@ -25,12 +25,12 @@ export default function handler(req, res) {
 
     const { jwt } = req.query; 
     
-    if (!token) {
+    if (!jwt) {
         return res.status(401).json({ valid: false, error: 'No token provided' });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(jwt, process.env.JWT_SECRET);
         res.status(200).json({ valid: true, user: decoded });
     } catch (error) {
         console.error('JWT verification error:', error);
