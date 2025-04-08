@@ -23,7 +23,7 @@ export default function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { token } = req.query; 
+    const { jwt } = req.query; 
     
     if (!token) {
         return res.status(401).json({ valid: false, error: 'No token provided' });
