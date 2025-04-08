@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, recordID } = req.body;
+  const { email, recordID} = req.body;
 
   if (!email || !recordID) {
     return res.status(400).json({ error: 'email and recordId are required' });
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
 
     // changed cookie settings to lax
 
-    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=3600`);
+   // res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=3600`);
     // Send the token in the response
     res.status(200).json({ token });
 

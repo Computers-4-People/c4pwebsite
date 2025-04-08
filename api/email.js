@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, recordId } = req.query;
+  const { email, recordId, jwt } = req.query;
 
   
   if (!email || !recordId) {
@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       to: [decodedEmail],
       subject: 'Welcome to Computers4People!',
       text: `Your record ID is ${recordId}`,
-      html: `<h1> enter the record Id here: www.computers4people.com/portal?recordId=${recordId} </p> `
+      html: `<h1> enter the record Id here: www.computers4people.com/portal?recordId=${recordId}&jwt=${jwt} </p> `
       // <p> enter the record Id here: www.computers4people.com/portal <p> 
 
       // old: `<h1> this is a test! </p>`
