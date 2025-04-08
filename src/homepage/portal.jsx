@@ -12,6 +12,7 @@ function Portal() {
 
     const [searchParams] = useSearchParams();
     var [recordId, setRecordId] = useState(searchParams.get('recordId') || '');
+    var [jwt, setJwt] = useState(searchParams.get('jwt') || '');
 
     
 
@@ -49,7 +50,10 @@ function Portal() {
         (async () => {
         try {
         const urlRecordId = searchParams.get('recordId');
-        if (urlRecordId) {
+        const urlJwt = searchParams.get('jwt');
+        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?jwt=${urlJwt}`);
+        console.log('apiValidation:', apiValidation.data);
+        if (urlRecordId && urlJwt && apiValidation.data.valid) {
             setRecordId(urlRecordId);
         
       
