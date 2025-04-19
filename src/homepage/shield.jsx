@@ -31,17 +31,19 @@ export default function ShieldHeader() {
             Unlimited Internet. Lowest Monthly Price in America. Zero Strings Attached.
           </p>
 
-          {/* CTA button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-10 bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
-          >
-            Get Connected Now
-          </motion.button>
+          {/* CTA button (scrolls to info/features) */}
+          <a href="#features" className="mt-10">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
+            >
+              Get Connected Now
+            </motion.button>
+          </a>
         </motion.div>
 
-        {/* Bottom logo bar with spread out logos */}
+        {/* Bottom logo bar */}
         <div className="w-full py-6 bg-white border-t border-gray-200">
           <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-x-10 gap-y-4 px-4">
             {[
@@ -63,12 +65,12 @@ export default function ShieldHeader() {
       </div>
 
       {/* Second Viewport: Features */}
-      <div className="bg-white py-20 px-6">
+      <div id="features" className="bg-white py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
           {/* Image side */}
           <div className="flex-1 w-full">
             <img
-              src="/Hotspot/happycustomer.png" // Replace with your actual image
+              src="/Hotspot/happycustomer.png"
               alt="Happy customer"
               className="rounded-[2rem] w-full object-cover"
             />
@@ -77,7 +79,7 @@ export default function ShieldHeader() {
           {/* Text content */}
           <div className="flex-1 w-full text-left ml-10">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            Take Back Control of <br />Your Internet
+              Take Back Control of <br />Your Internet
             </h2>
             <ul className="text-gray-800 space-y-3 text-lg">
               <li>No Contracts</li>
@@ -85,87 +87,89 @@ export default function ShieldHeader() {
               <li>Speeds up to 500mbps</li>
               <li>100% of profits are donated to charity</li>
             </ul>
-            <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition">
-              Buy Now
-            </button>
+            <a href="#plans">
+              <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition">
+                Buy Now
+              </button>
+            </a>
           </div>
         </div>
       </div>
-      {/* How It Works Section with Image */}
-<div className="bg-gray-100 py-20 px-6 border-t border-gray-200">
-  <div className="max-w-4xl mx-auto text-center">
-    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10">
-      How it Works
-    </h2>
-    <div className="flex justify-center">
-      <img
-        src="/Hotspot/howitworks.png" // Rename to match your uploaded file
-        alt="How it Works"
-        className="rounded-2xl shadow-lg w-full max-w-2xl"
-      />
-    </div>
-  </div>
-</div>
-<div className="bg-gray-100 py-20 px-6">
-  <div className="max-w-7xl mx-auto">
-    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
-      Choose Your Plan
-    </h2>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {/* Card 1 */}
-      <a
-        href="/Shieldsimcard"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
-        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
-          <div className="flex justify-center items-center flex-grow">
+      {/* How It Works Section */}
+      <div className="bg-gray-100 py-20 px-6 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10">
+            How it Works
+          </h2>
+          <div className="flex justify-center">
             <img
-              src="/Hotspot/simcard.png"
-              alt="Internet Service Only"
-              className="h-40 object-contain"
+              src="/Hotspot/howitworks.png"
+              alt="How it Works"
+              className="rounded-2xl shadow-lg w-full max-w-2xl"
             />
           </div>
-          <div className="pt-6 text-left">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
-            <p className="text-gray-600 text-sm">$15/Month</p>
-          </div>
         </div>
-      </a>
+      </div>
 
-      {/* Card 2 */}
-      <a
-        href="https://your-zoho-checkout-url.com/device-bundle"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
-        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
-          <div className="flex justify-center items-center flex-grow">
-            <img
-              src="/Hotspot/hotspotsim.png"
-              alt="Internet and 4G Device"
-              className="h-40 object-contain"
-            />
+      {/* Plans Section */}
+      <div id="plans" className="bg-gray-100 py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
+            Choose Your Plan
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {/* Card 1 */}
+            <a
+              href="/shieldsimcard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
+                <div className="flex justify-center items-center flex-grow">
+                  <img
+                    src="/Hotspot/simcard.png"
+                    alt="Internet Service Only"
+                    className="h-40 object-contain"
+                  />
+                </div>
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
+                  <p className="text-gray-600 text-sm">$15/Month</p>
+                </div>
+              </div>
+            </a>
+
+            {/* Card 2 */}
+            <a
+              href="/shieldhotspotsim"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
+                <div className="flex justify-center items-center flex-grow">
+                  <img
+                    src="/Hotspot/hotspotsim.png"
+                    alt="Internet and 4G Device"
+                    className="h-40 object-contain"
+                  />
+                </div>
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Device</h3>
+                  <p className="text-gray-600 text-sm">$15/Month + $60</p>
+                </div>
+              </div>
+            </a>
           </div>
-          <div className="pt-6 text-left">
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Device</h3>
-            <p className="text-gray-600 text-sm">$15/Month + $60</p>
-          </div>
+
+          <p className="mt-40 text-sm text-gray-400 font-medium text-center">
+            100% of profit supports closing the digital divide
+          </p>
         </div>
-      </a>
-    </div>
-
-    <p className="mt-40 text-sm text-gray-400 font-medium text-center">
-      100% of profit supports closing the digital divide
-    </p>
-  </div>
-</div>
-
-
-
+      </div>
     </>
   );
 }
