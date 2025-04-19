@@ -115,7 +115,7 @@ export default function ShieldHeader() {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {/* Card 1 */}
       <a
-        href="https://your-zoho-checkout-url.com/sim-only"
+        href="/Shieldsimcard"
         target="_blank"
         rel="noopener noreferrer"
         className="block"
