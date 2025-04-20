@@ -52,7 +52,7 @@ export default function Shieldsimcard() {
               Unlimited 4G & 5G Internet Plan (SIM Card Only, Device Not Included)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-              Get unlimited 4G & 5G internet for just $15/month, with no contract, no hidden fees, and auto-pay included. The SIM card is free and works in any unlocked hotspot, tablet, or GSM phone (T-Mobile compatible).
+              Get unlimited 4G & 5G internet for just $14.89/month, with no contract, no hidden fees, and auto-pay included. The SIM card is free and works in any unlocked hotspot, tablet, or GSM phone (T-Mobile compatible).
               <br /><br />
               Just insert the SIM, power on your device, and you’re online, no setup needed. Perfect for home backup, remote work, school, or on-the-go use. Typical speeds range from 72-245 Mbps on 5G and 37-119 Mbps on 4G LTE.
               <br /><br />
