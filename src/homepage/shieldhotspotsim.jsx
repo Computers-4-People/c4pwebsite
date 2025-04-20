@@ -52,7 +52,7 @@ export default function Shieldsimcard() {
             Unlimited 4G & 5G Internet + T10 Hotspot (SIM Card Included)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-            Get reliable, high-speed internet anywhere with this complete package: unlimited 4G & 5G internet for just $15/month, plus a powerful T10 mobile hotspot for a one-time fee of $60. The SIM card comes pre-installed in the device, so all you need to do is power it on and connect. The T10 hotspot connects up to 10 devices simultaneously.
+            Get reliable, high-speed internet anywhere with this complete package: unlimited 4G & 5G internet for just $14.89/month, plus a powerful T10 mobile hotspot for a one-time fee of $60. The SIM card comes pre-installed in the device, so all you need to do is power it on and connect. The T10 hotspot connects up to 10 devices simultaneously.
 <br/><br/>
 Making it perfect for:
 <br/>

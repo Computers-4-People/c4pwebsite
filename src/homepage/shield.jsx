@@ -137,7 +137,7 @@ export default function ShieldHeader() {
                 </div>
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
-                  <p className="text-gray-600 text-sm">$15/Month</p>
+                  <p className="text-gray-600 text-sm">$14.89/Month</p>
                 </div>
               </div>
             </a>
@@ -159,7 +159,7 @@ export default function ShieldHeader() {
                 </div>
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Device</h3>
-                  <p className="text-gray-600 text-sm">$15/Month + $60</p>
+                  <p className="text-gray-600 text-sm">$14.89/Month + $60</p>
                 </div>
               </div>
             </a>
