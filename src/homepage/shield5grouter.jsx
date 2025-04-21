@@ -66,6 +66,7 @@ To use it, you must also purchase a <a className="text-c4p" href="/shieldsimcard
 - Built-in battery lasts up to 4 hours unplugged<br />
 - Fully portable - take it anywhere<br />
 
+
 <br /><br />
 <b>Note:</b><br />
 This is a pre-order. It’s not shipping yet, but we’ll notify you as soon as it’s on the way.
@@ -80,7 +81,7 @@ This is a pre-order. It’s not shipping yet, but we’ll notify you as soon as 
             src="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/120"
             title="Zoho Subscription Checkout"
             width="100%"
-            height="1000px"
+            height="1300px"
             frameBorder="0"
             scrolling="no"
             style={{
