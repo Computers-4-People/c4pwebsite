@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Shieldsimcard() {
-  const images = ["/Hotspot/simcard.png"];
+  const images = ["/Hotspot/simcard.png", "/Hotspot/tmobilesimside.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
@@ -49,15 +49,25 @@ export default function Shieldsimcard() {
           {/* Title & Description */}
           <div className="pt-8 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              Unlimited 4G & 5G Internet Plan (SIM Card Only, Device Not Included)
+              Unlimited Internet Plan – SIM Card Only (No Device Included)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-              Get unlimited 4G & 5G internet for just $14.89/month, with no contract, no hidden fees, and auto-pay included. The SIM card is free and works in any unlocked hotspot, tablet, or GSM phone (T-Mobile compatible).
-              <br /><br />
-              Just insert the SIM, power on your device, and you’re online, no setup needed. Perfect for home backup, remote work, school, or on-the-go use. Typical speeds range from 72-245 Mbps on 5G and 37-119 Mbps on 4G LTE.
-              <br /><br />
-              No throttling, no overage charges, just simple, fast, affordable internet.
-            </p>
+Already have your own device? This plan gives you unlimited 4G and 5G internet for only $14.89/month.
+
+<br /><br />
+<b>This does not include a device.</b><br />
+You need to use your own hotspot, tablet, or wearable. It must be unlocked and work with T-Mobile or GSM SIM cards.
+
+<br /><br />
+<b>How it works:</b><br />
+- We ship you a free SIM card<br />
+- Put it into your device<br />
+- Turn it on and start using the internet
+
+<br /><br />
+No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
+</p>
+
           </div>
         </div>
 
