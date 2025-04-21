@@ -1,4 +1,86 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const faqs = [
+  {
+    question: "Who qualifies for this service?",
+    answer:
+      "Anyone whose household income is below 200% of the Federal Poverty Level. Most people on SNAP, Medicaid, SSI, or free/reduced lunch qualify. You must self-verify eligibility during checkout.",
+  },
+  {
+    question: "How do I verify eligibility?",
+    answer:
+      "Simply confirm your eligibility when placing your order - no documents needed at this time.",
+  },
+  {
+    question: "When will my order ship?",
+    answer:
+      "Most orders are delivered within 10 days. If you order just the SIM card, it’s shipped by itself. If you order the T10 hotspot bundle, the SIM card will be pre-installed inside the device. For pre-orders (like the Shield 5G Home Router), the shipping timeline is currently unknown - we’ll send updates as soon as we have tracking.",
+  },
+  {
+    question: "What does the internet plan include?",
+    answer:
+      "You’ll get unlimited monthly internet access on one of America’s largest 5G networks. No contract, no credit check, no hidden fees - just fast, reliable connectivity.",
+  },
+  {
+    question: "Is the router locked or restricted?",
+    answer:
+      "Nope! The Shield 5G Router is fully unlocked and portable. It supports 5G/4G/3G networks and works with most nano SIM cards. It works best with our monthly Shield internet plan",
+  },
+  {
+    question: "What if I have technical issues?",
+    answer:
+      "We’ve got your back. You’ll get access to email support, setup instructions, and tips for optimizing your signal.",
+  },
+  {
+    question: "Where does my money go?",
+    answer:
+      "100% of profits are donated directly to the 501(c)(3) non-profit Computers 4 People. Closing the digital divide and helping others get connected through free computers and digital literacy training.",
+  },
+];
+
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState(null);
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <div className="bg-white py-20 px-6 border-t border-gray-200">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border-b border-gray-200 pb-4">
+              <button
+                onClick={() => toggleFAQ(index)}
+                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center"
+              >
+                {faq.question}
+                <span>{openIndex === index ? "−" : "+"}</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden text-gray-700 mt-2 text-base"
+                  >
+                    {faq.answer}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ShieldHeader() {
   return (
@@ -88,8 +170,14 @@ export default function ShieldHeader() {
               <li>100% of profits are donated to charity</li>
             </ul>
             <a href="#plans">
-              <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition">
-                Buy Now
+              <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold rounded-lg shadow-lg transition">
+              <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
+            >
+              Buy Now
+            </motion.button>
               </button>
             </a>
           </div>
@@ -191,6 +279,8 @@ export default function ShieldHeader() {
           </p>
         </div>
       </div>
+      {/* FAQ Section */}
+      <FAQSection />
     </>
   );
 }
