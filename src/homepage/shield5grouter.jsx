@@ -49,23 +49,28 @@ export default function Shield5grouter() {
           {/* Title & Description */}
           <div className="pt-8 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              Shield 5G Home WiFi 6 Router - Pre-Order (Device Only)
+            Shield 5G Home Hotspot - Device Only (Pre-Order)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-            Pre-Order Only - Limited Availability<br/>
-            Secure your Shield 5G Indoor CPE Router today! This unlocked, portable 5G router offers blazing-fast speeds with WiFi 6 (AX1800), dual-band support (2.4GHz & 5GHz), and a built-in 5200mAh battery for true wireless freedom. Ideal for high-speed connectivity at home or on the go.
-            <br/><br/>
-Key Features:<br/>
--Supports 5G/4G/3G networks with nano SIM slot<br/>
--WiFi 6 performance: up to 2.1Gbps on 5GHz band<br/>
--Supports latest Wi-Fi standards: 802.11ax/ac/n/a/g/b<br/>
--Battery: 5200mAh built-in rechargeable<br/>
--WPA3/WPA2 encryption for secure access<br/>
--Portable, unlocked & contract-free<br/><br/>
+Need stronger Wi-Fi for your whole home? This is it.  
+The Shield 5G Home Hotspot is a powerful device that delivers fast, reliable internet throughout your house. Ideal for families, video calls, streaming, and connecting multiple devices at once.
 
-⚠️ Shipping Timeline Unknown:<br/>
-This item is currently available for pre-order only. Shipping dates are not yet confirmed. We will notify you as soon as units are available.<br /><br />
-            </p>
+<br /><br />
+<b>This product includes only the hardware.</b><br />
+To use it, you must also purchase a <a className="text-c4p" href="/shieldsimcard">Shield Internet subscription</a> separately for $14.89/month.  
+
+<br /><br />
+<b>Why choose this router:</b><br />
+- Stronger signal and faster speeds than a hotspot<br />
+- Supports many devices at once<br />
+- Built-in battery lasts up to 4 hours unplugged<br />
+- Fully portable - take it anywhere<br />
+
+<br /><br />
+<b>Note:</b><br />
+This is a pre-order. It’s not shipping yet, but we’ll notify you as soon as it’s on the way.
+</p>
+
           </div>
         </div>
 

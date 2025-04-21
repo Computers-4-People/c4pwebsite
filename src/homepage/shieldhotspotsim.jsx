@@ -49,25 +49,43 @@ export default function Shieldsimcard() {
           {/* Title & Description */}
           <div className="pt-8 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Unlimited 4G & 5G Internet + T10 Hotspot (SIM Card Included)
+            T10 Mobile Hotspot with Unlimited Nationwide Internet
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-            Get reliable, high-speed internet anywhere with this complete package: unlimited 4G & 5G internet for just $14.89/month, plus a powerful T10 mobile hotspot for a one-time fee of $60. The SIM card comes pre-installed in the device, so all you need to do is power it on and connect. The T10 hotspot connects up to 10 devices simultaneously.
-<br/><br/>
-Making it perfect for:
-<br/>
--Home internet backup
-<br/>
--Remote work or school
-<br/>
--Traveling with consistent Wi-Fi
-<br/>
--Sharing internet with family or team members
-<br/><br/>
-Your service runs on the T-Mobile network, with typical download speeds of 72–245 Mbps on 5G and 37–119 Mbps on 4G LTE. There are no contracts, no overage charges, no throttling, and auto-pay is enabled so your service stays active without interruption.
-<br/><br/>
-The hotspot is compact, rechargeable, and ready to go out of the box, no setup required.
-            </p>
+Take fast internet with you anywhere.  
+This small, rechargeable device fits in your bag or pocket and gives you unlimited 4G internet you can use at home, in the car, at work, or on the move.  
+
+<br /><br />
+<b>What’s included:</b><br />
+- Unlimited 4G LTE internet (T-Mobile Network)<br />
+- T10 hotspot device (SIM card already inside)<br />
+- Connect up to 10 devices at the same time<br />
+- Just turn it on and connect - no setup needed  
+
+<br /><br />
+<b>How to charge it:</b><br />
+- Comes with a USB-C charger<br />
+- Plug into any outlet or USB port<br />
+- A full charge lasts about 8 hours  
+
+<br /><br />
+<b>Perfect for:</b><br />
+- Doing school or work from anywhere<br />
+- Watching videos or using apps<br />
+- Road trips or travel<br />
+- Sharing internet with your family  
+
+<br /><br />
+<b>No surprises:</b><br />
+- No contracts - cancel anytime<br />
+- No hidden fees<br />
+- No internet toggling<br />
+- You keep the device forever  
+
+<br /><br />
+Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
+</p>
+
           </div>
         </div>
 

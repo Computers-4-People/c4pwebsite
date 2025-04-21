@@ -3,41 +3,42 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
   {
-    question: "Who qualifies for this service?",
+    question: "Why We Call It Shield",
     answer:
-      "Anyone whose household income is below 200% of the Federal Poverty Level. Most people on SNAP, Medicaid, SSI, or free/reduced lunch qualify. You must self-verify eligibility during checkout.",
+      "Shield means protection. Shield Internet is part of Computers 4 People, a nonprofit that gives free computers to those in need. Shield protects your right to connect: offering affordable, reliable internet, privacy, and freedom from big contracts. Every dollar goes back to providing free computers and digital skills. Shield is more than a name, it’s our promise to stand with you.",
   },
   {
-    question: "How do I verify eligibility?",
+    question: "Who can get Shield Internet?",
     answer:
-      "Simply confirm your eligibility when placing your order - no documents needed at this time.",
+      "If your household gets SNAP, Medicaid, SSI, free school lunch, or earns under 200% of the Federal Poverty Level, you’re likely eligible. Just check a box to confirm when you order. No documentation. No paperwork. No stress.",
   },
   {
-    question: "When will my order ship?",
+    question: "When will my order arrive?",
     answer:
-      "Most orders are delivered within 10 days. If you order just the SIM card, it’s shipped by itself. If you order the T10 hotspot bundle, the SIM card will be pre-installed inside the device. For pre-orders (like the Shield 5G Home Router), the shipping timeline is currently unknown - we’ll send updates as soon as we have tracking.",
+      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Router (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",
   },
   {
     question: "What does the internet plan include?",
     answer:
-      "You’ll get unlimited monthly internet access on one of America’s largest 5G networks. No contract, no credit check, no hidden fees - just fast, reliable connectivity.",
+      "You get unlimited internet on one of the biggest 5G networks in the country. There’s no contract, no credit check, and no hidden fees - just fast, reliable internet you can count on.",
   },
   {
     question: "Is the router locked or restricted?",
     answer:
-      "Nope! The Shield 5G Router is fully unlocked and portable. It supports 5G/4G/3G networks and works with most nano SIM cards. It works best with our monthly Shield internet plan",
-  },
+      "The Shield 5G Home Router is fully unlocked and portable. It works with most SIM cards and supports 5G, 4G, and 3G networks. The Shield Hotspot, however, is locked to work only with our Shield Internet (T-Mobile) plan.",
+  },  
   {
     question: "What if I have technical issues?",
     answer:
-      "We’ve got your back. You’ll get access to email support, setup instructions, and tips for optimizing your signal.",
+      "We’ve got you covered. You’ll get easy setup instructions, tips to boost your signal, and email support if you need help. Just reach out anytime at info@computers4people.org.",
   },
   {
     question: "Where does my money go?",
     answer:
-      "100% of profits are donated directly to the 501(c)(3) non-profit Computers 4 People. Closing the digital divide and helping others get connected through free computers and digital literacy training.",
+      "100% of profits go to Computers 4 People, a nonprofit working to close the digital divide by giving away free computers and digital training to people who need them.",
   },
 ];
+
 
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -164,9 +165,11 @@ export default function ShieldHeader() {
               Take Back Control of <br />Your Internet
             </h2>
             <ul className="text-gray-800 space-y-3 text-lg">
-              <li>No Contracts</li>
-              <li>The Largest and Most Reliable 5G Network</li>
-              <li>Speeds up to 500mbps</li>
+          
+              <li>No contract. No credit check.</li>
+              <li>Fast speeds for videos, school, and work.</li>
+              <li>Truly unlimited - use it as much as you want.</li>
+              <li>Starts at $14.89/month.</li>
               <li>100% of profits are donated to charity</li>
             </ul>
             <a href="#plans">
@@ -204,69 +207,89 @@ export default function ShieldHeader() {
       <div id="plans" className="bg-gray-100 py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
-            Choose Your Plan
+            Choose What You Need
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {/* Card 1 */}
-            <a
-              href="/shieldsimcard"
-              className="block"
-            >
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
-                <div className="flex justify-center items-center flex-grow">
-                  <img
-                    src="/Hotspot/simcard.png"
-                    alt="Internet Service Only"
-                    className="h-40 object-contain"
-                  />
-                </div>
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
-                  <p className="text-gray-600 text-sm">$14.89/Month</p>
-                </div>
-              </div>
-            </a>
 
-            {/* Card 2 */}
-            <a
-              href="/shieldhotspotsim"
-              className="block"
-            >
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
-                <div className="flex justify-center items-center flex-grow">
-                  <img
-                    src="/Hotspot/hotspotsim.png"
-                    alt="Internet and 4G Device"
-                    className="h-40 object-contain"
-                  />
-                </div>
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Hotspot</h3>
-                  <p className="text-gray-600 text-sm">$14.89/Month + $60</p>
-                </div>
-              </div>
-            </a>
-             {/* Card 3 */}
-             <a
-              href="/shield5grouter"
-              className="block"
-            >
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
-                <div className="flex justify-center items-center flex-grow">
-                  <img
-                    src="/Hotspot/shieldrouterfront.png"
-                    alt="Internet and 4G Device"
-                    className="h-40 object-contain"
-                  />
-                </div>
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home Router</h3>
-                  <p className="text-gray-600 text-sm">PRE-ORDER $149</p>
-                </div>
-              </div>
-            </a>
-          </div>
+{/* Card 1: Hotspot + Internet */}
+<a href="/shieldhotspotsim" className="block">
+  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+    
+    {/* Title at Top */}
+    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I need internet on the go</h4>
+
+    {/* Image */}
+    <div className="flex justify-center items-center">
+      <img
+        src="/Hotspot/hotspotsim.png"
+        alt="Shield Hotspot"
+        className="h-40 object-contain"
+      />
+    </div>
+
+    {/* 3 Lines Under Image */}
+    <div className="pt-6 text-left">
+      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield Hotspot + Internet</h3>
+      <p className="text-gray-900 text-sm font-medium mb-1">$60 Device + $14.89/Month</p>
+      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Connect 10 devices!</p>
+    </div>
+  </div>
+</a>
+
+{/* Card 2: 5G Home Router */}
+<a href="/shield5grouter" className="block">
+  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+    
+    {/* Title at Top */}
+    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I need internet at home</h4>
+
+    {/* Image */}
+    <div className="flex justify-center items-center">
+      <img
+        src="/Hotspot/shieldrouterfront.png"
+        alt="Shield Router"
+        className="h-40 object-contain"
+      />
+    </div>
+
+    {/* 3 Lines Under Image */}
+    <div className="pt-6 text-left">
+      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home Hotspot</h3>
+      <p className="text-gray-900 text-sm font-medium mb-1">PRE-ORDER $149</p>
+      <p className="text-gray-600 text-sm">Stronger signal and great for families or shared spaces.</p>
+    </div>
+  </div>
+</a>
+
+{/* Card 3: SIM Card Only */}
+<a href="/shieldsimcard" className="block">
+  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+    
+    {/* Title at Top */}
+    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I already have a device, but need internet service</h4>
+
+    {/* Image */}
+    <div className="flex justify-center items-center">
+      <img
+        src="/Hotspot/simcard.png"
+        alt="SIM Card"
+        className="h-40 object-contain"
+      />
+    </div>
+
+    {/* 3 Lines Under Image */}
+    <div className="pt-6 text-left">
+      <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
+      <p className="text-gray-900 text-sm font-medium mb-1">$14.89/Month</p>
+      <p className="text-gray-600 text-sm">Works with hotspots, tablets, or wearables that take a SIM card.</p>
+    </div>
+  </div>
+</a>
+
+</div>
+
+
 
           <p className="mt-40 text-sm text-gray-400 font-medium text-center">
             100% of profit supports closing the digital divide
