@@ -211,8 +211,6 @@ export default function ShieldHeader() {
             {/* Card 1 */}
             <a
               href="/shieldsimcard"
-              target="_blank"
-              rel="noopener noreferrer"
               className="block"
             >
               <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
@@ -233,8 +231,6 @@ export default function ShieldHeader() {
             {/* Card 2 */}
             <a
               href="/shieldhotspotsim"
-              target="_blank"
-              rel="noopener noreferrer"
               className="block"
             >
               <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
@@ -254,8 +250,6 @@ export default function ShieldHeader() {
              {/* Card 3 */}
              <a
               href="/shield5grouter"
-              target="_blank"
-              rel="noopener noreferrer"
               className="block"
             >
               <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
