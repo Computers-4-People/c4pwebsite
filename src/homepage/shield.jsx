@@ -158,8 +158,29 @@ export default function ShieldHeader() {
                   />
                 </div>
                 <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Device</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet and 4G Hotspot</h3>
                   <p className="text-gray-600 text-sm">$14.89/Month + $60</p>
+                </div>
+              </div>
+            </a>
+             {/* Card 3 */}
+             <a
+              href="/shield5grouter"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[380px]">
+                <div className="flex justify-center items-center flex-grow">
+                  <img
+                    src="/Hotspot/shieldrouterfront.png"
+                    alt="Internet and 4G Device"
+                    className="h-40 object-contain"
+                  />
+                </div>
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home Router</h3>
+                  <p className="text-gray-600 text-sm">PRE-ORDER $149</p>
                 </div>
               </div>
             </a>
