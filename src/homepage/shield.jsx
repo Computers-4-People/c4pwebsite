@@ -5,7 +5,7 @@ const faqs = [
   {
     question: "Why We Call It Shield",
     answer:
-      "Shield means protection. Shield Internet is part of Computers 4 People, a nonprofit that gives free computers to those in need. Shield protects your right to connect: offering affordable, reliable internet, privacy, and freedom from big contracts. Every dollar goes back to providing free computers and digital skills. Shield is more than a name, it’s our promise to stand with you.",
+      "Shield means protection. Shield Internet is part of Computers 4 People, a nonprofit that gives free computers to those in need. Shield protects your right to connect: offering affordable, reliable internet, and freedom from big contracts. Every dollar goes back to providing free computers and digital skills. Shield is more than a name, it’s our promise to stand with you.",
   },
   {
     question: "Who can get Shield Internet?",
@@ -126,26 +126,26 @@ export default function ShieldHeader() {
           </a>
         </motion.div>
 
-        {/* Bottom logo bar */}
-        <div className="w-full py-6 bg-white border-t border-gray-200">
-          <div className="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-x-10 gap-y-4 px-4">
-            {[
-              { src: "/logos/forbes.png", alt: "Forbes" },
-              { src: "/logos/nbc.png", alt: "NBC" },
-              { src: "/logos/abc7.png", alt: "ABC 7" },
-              { src: "/logos/yahoonews.png", alt: "Yahoo News" },
-              { src: "/logos/bloomberg.png", alt: "Bloomberg" },
-            ].map((logo) => (
-              <img
-                key={logo.alt}
-                src={logo.src}
-                alt={logo.alt}
-                className="h-8 sm:h-10 object-contain grayscale hover:grayscale-0 transition duration-300"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+{/* Bottom logo bar */}
+<div className="w-full py-6 bg-white border-t border-gray-200">
+  <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
+    {[
+      { src: "/logos/forbes.png", alt: "Forbes" },
+      { src: "/logos/nbc.png", alt: "NBC" },
+      { src: "/logos/abc7.png", alt: "ABC 7" },
+      { src: "/logos/yahoonews.png", alt: "Yahoo News" },
+      { src: "/logos/bloomberg.png", alt: "Bloomberg" },
+    ].map((logo) => (
+      <img
+        key={logo.alt}
+        src={logo.src}
+        alt={logo.alt}
+        className="h-8 sm:h-16 object-contain grayscale hover:grayscale-0 transition duration-300"
+      />
+    ))}
+  </div>
+</div>
+</div>
 
       {/* Second Viewport: Features */}
       <div id="features" className="bg-white py-20 px-6">
@@ -169,7 +169,7 @@ export default function ShieldHeader() {
               <li>No contract. No credit check.</li>
               <li>Fast speeds for videos, school, and work.</li>
               <li>Truly unlimited - use it as much as you want.</li>
-              <li>Starts at $14.89/month.</li>
+              <li>Only $14.89/month.</li>
               <li>100% of profits are donated to charity</li>
             </ul>
             <a href="#plans">
