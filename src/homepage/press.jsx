@@ -53,6 +53,12 @@ export default function Press() {
 
     const pressItems2 = [
         {
+            image: '/press/C4P Nationwide Dropoff.png ',
+            title: 'Computers 4 People Launches Nationwide Device Donation Program',
+            date: 'April 22, 2025',
+            link: '/press/Nationwide Laptop Donation Program - Press Release.pdf'
+        },
+        {
             image: '/press/IMG_9672.jpeg',
             title: 'Computers 4 People has partnered with Dvine Konektion and 123 Recycling to distribute  150 refurbished computers to families in West New York, NJ',
             date: 'November 5, 2024',
