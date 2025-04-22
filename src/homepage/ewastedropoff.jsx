@@ -15,10 +15,10 @@ export default function DropOffLocations() {
       <Header
         props={{
           bgImage: "/ewastedropoff/dropoffbackground.jpeg",
-          titlePart1: "Find Nearby",
-          titlePart2: "Electronic Drop-Off Locations",
+          titlePart1: "Drop Off Your",
+          titlePart2: "Computers",
           description:
-            "Search for the most convenient locations to drop off your electronics. Together, we can close the digital divide and promote sustainability.",
+            "Donate your used tech at over 10,000 locations nationwide. It's fast, easy, and completely free.",
           links: [
             {
               text: "Find a drop-off site near me",
@@ -31,13 +31,25 @@ export default function DropOffLocations() {
       {/* Drop-Off Locations Section */}
       <div className="container mx-auto px-4 py-16 mb-20" style={{ marginBottom: "20rem" }}>
         <div id="findadropoff" className="space-y-6">
-          <h2 className="text-3xl md:text-5xl lg:text-7xl font-subtitle">
-            Find a Drop-Off Site Near You
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-subtitle">
+            Drop Off Nationwide. Make an Impact.
           </h2>
-          <p className="text-lg md:text-lg leading-7 md:leading-8">
-            Drop off your electronics securely at our partner locations. Complete the{" "}
-            <a href="/donate" className="text-blue-500 hover:underline">donate form</a> and attach your Donor ID to get a tax receipt and track your donation. We’ll handle recycling, refurbishment, or redistribution to those in need.
+          <p className="text-lg leading-7 md:leading-8">
+            Computers 4 People now accepts <strong>laptops, smartphones, and tablets</strong> at over
+            10,000 FedEx and Walgreens locations across the U.S. - completely FREE.
+            <br /><br />
+            To donate:
+            <br />1. Fill out the <a href="/donate" className="text-c4p hover:underline">donate form</a>  
+            <br />2. Get your QR code  
+            <br />3. Drop off your boxed device at <a className="text-c4p" href="https://local.fedex.com/en/search">a location near you  </a>
+            <br /><br />
+            We securely wipe all devices, refurbish what we can, and donate them to people in need. Anything we can’t reuse is recycled responsibly.
           </p>
+          <p className="text-lg leading-7 md:leading-8">
+            Want to donate <strong>other electronics</strong> like desktops, monitors, or printers?
+            Please bring them to one of our official C4P office locations in New Jersey or Massachusetts.
+          </p>
+
           {/* Embedded Google Maps Locator */}
           <div className="relative w-full pb-[56.25%] mt-8">
             <iframe
@@ -51,7 +63,7 @@ export default function DropOffLocations() {
         </div>
       </div>
 
-      {/* Additional Large Margin to Extend Page Height */}
+      {/* Spacer */}
       <div style={{ height: "10rem" }}></div>
     </div>
   );
