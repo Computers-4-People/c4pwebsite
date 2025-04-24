@@ -50,10 +50,12 @@ function Portal() {
         (async () => {
         try {
         const urlRecordId = searchParams.get('recordId');
-        const urlJwt = searchParams.get('jwt') || jwt;
-        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
-        console.log('apiValidation:', apiValidation.data);
-        if (urlRecordId && urlJwt && apiValidation.data.valid) {
+      //  const urlJwt = searchParams.get('jwt') || jwt;
+     //   const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
+      //  console.log('apiValidation:', apiValidation.data);
+
+        // make sure to add back in urlJWt and apiValidation.data.valid after testing
+        if (urlRecordId) {
             setRecordId(urlRecordId);
         
       
@@ -131,24 +133,7 @@ function Portal() {
             return;
         }
 
-        // jwt token validation here 
-      //  try {
-            
-        // const jwtResp = await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-        //     withCredentials: true
-        // });
-        // console.log('jwtResp', jwtResp);    
-
-        // } catch (error) {
-        //     setError('Authentication failed. Please log in again.');
-        //     return;
-        // }
-
-        
-
-       
-
-
+    
         // recordId here is the champion recordId
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
         const championResp = await axios.get(reqChampion);
@@ -178,10 +163,23 @@ function Portal() {
             reqName = await fetchWithChampion(email, 'Contacts', 'Email');
         }
         
+        // put this in a helper function
+        let dateList = [];
+        for (let i = 0; i < reqName.data.length; i++) { 
+            console.log(`${i}&${reqName.data[i].Entry_Date}`, reqName.data[i]);
+            var d = Date.parse(reqName.data[i].Entry_Date);
+            dateList.push(d);
+        }
+
+        let maximum = dateList.indexOf(Math.max(...dateList));
+
+        console.log('max entry', reqName.data[maximum]);
+        console.log(dateList);
+        console.log(reqName.data[maximum].Entry_Date);
         console.log('successfully retrieved applicant information', reqName);
+        
 
-
-        const id = reqName.data[0].id;
+        const id = reqName.data[maximum].id;
         
         console.log('recordId before:', recordId);
         console.log('recordId after:', id);
@@ -195,7 +193,7 @@ function Portal() {
         //     newModule = 'Computer_Donors';
         // }
 
-        if (reqName.data[0].Status === "Donated") {
+        if (reqName.data[maximum].Status === "Donated" || reqName.data[maximum].Status === "Archived") {
             console.log('Applicant is not a client');
             newModule = 'Computer_Donors';
         }
@@ -206,19 +204,8 @@ function Portal() {
         }
 
         
-        // // fix this, there are more types of statuses
-        // if (reqName.data[0].Status === 'Client' || reqName.data[0].Status === "Applicants No Recommendation" || 
-        //     reqName.data[0].Status === "Approved Applicants") {
-        //     console.log('Applicant is a client');
-        //     newModule = 'Contacts';
-        // }
-
-        // else {
-        //     console.log('Applicant is not a client');
-        //     newModule = 'Computer_Donors';
-        // }
-
-
+        console.log('newModule', newModule);
+        console.log('module', module);
         // get recordId from request and put it here
         const requestUrl = `${API_BASE_URL}/api/${newModule}/${recordId}`;
         
@@ -233,6 +220,9 @@ function Portal() {
             } else {
                 setData(response.data);
                 setModule(newModule);
+                console.log(newModule);
+                console.log(module);
+                module = newModule;
 
                 // Fetch inventory data based on Applicant ID or Donor_ID
                 if (module === 'Contacts') {
@@ -240,7 +230,9 @@ function Portal() {
                         fetchInventoryByRecipientId(recordId);
                     }
                 } else if (module === 'Computer_Donors') {
+                    
                     const donorId = response.data.Donor_ID;
+                    console.log('donorId', donorId);
                     if (donorId) {
                         fetchInventoryByDonorId(donorId);
                     }
@@ -315,6 +307,7 @@ function Portal() {
             if (response.data && response.data.length > 0) {
                 setInventoryData(response.data);
                 console.log('Inventory Data:', response.data);
+                console.log(inventoryData);
             } else {
                 console.log('No inventory data found for this donor.');
             }
