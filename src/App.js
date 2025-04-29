@@ -35,6 +35,7 @@ import Shieldsimcard from "./homepage/shieldsimcard";
 import Shieldhotspotsim from "./homepage/shieldhotspotsim";
 import Shield5grouter from "./homepage/shield5grouter";
 import PageNotFound from "./homepage/404page";
+import Champions from "./homepage/champions";
 import "./App.css";
 
 function App() {
@@ -97,6 +98,7 @@ function App() {
           <Route path="/shieldhotspotsim" element={<Shieldhotspotsim />} />
           <Route path="/shield5grouter" element={<Shield5grouter />} />
           <Route path="/portal" element={<Portal />} />
+          <Route path="/champions" element={<Champions />} />
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />
