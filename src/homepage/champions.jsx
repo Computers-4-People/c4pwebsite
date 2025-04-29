@@ -24,10 +24,8 @@ function Champions() {
 
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate('/portal');
+        navigate(`/portal?recordId=${championResp.id}`);
     };
-
-
 
     console.log(userData);
 
@@ -126,7 +124,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Address:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center font-size: 5px">{userData.address || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.address || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -178,7 +176,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Email:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center font-size: 5px">{userData.email || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-[9px]">{userData.email || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -200,7 +198,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Phone:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.phone || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.phone || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -230,25 +228,8 @@ function Champions() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 shadow-sm mt-auto">
-        <div className="flex justify-between items-center px-6 py-2">
-          <a href="/" className="text-green-500 font-medium">
-            Computers 4 People
-          </a>
-          <nav className="flex space-x-6">
-            <a href="/programs" className="text-gray-200">
-              Programs
-            </a>
-            <a href="/about" className="text-gray-200">
-              About Us
-            </a>
-            <a href="/involved" className="text-gray-200">
-              Get Involved
-            </a>
-          </nav>
-        </div>
-      </footer>
+      
+
     </div>
     );
 }

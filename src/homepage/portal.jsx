@@ -166,10 +166,12 @@ function Portal() {
         
         if (type === 'Computer Donor' || type === 'Loser') {
             reqName = await fetchWithChampion(email, 'Computer_Donors', 'Email');
+            sessionStorage.setItem('type', 'Computer Donor');
         }
 
         else {
             reqName = await fetchWithChampion(email, 'Contacts', 'Email');
+            sessionStorage.setItem('type', 'Contacts');
         }
         
         // put this in a helper function
