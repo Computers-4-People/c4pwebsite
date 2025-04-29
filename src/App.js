@@ -32,6 +32,7 @@ import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
 import Connect from "./homepage/connect";
 import PageNotFound from "./homepage/404page";
+import Champions from "./homepage/champions";
 import "./App.css";
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/connect" element={<Connect />} />
           <Route path="/portal" element={<Portal />} />
+          <Route path="/champions" element={<Champions />} />
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />

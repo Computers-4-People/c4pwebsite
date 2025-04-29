@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
+import { useNavigate } from 'react-router-dom';
 
 // added this
 import { useSearchParams } from 'react-router-dom';
 
 function Portal() {
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/champions');
+      };
 
     axios.defaults.withCredentials = true;
 
@@ -138,6 +144,9 @@ function Portal() {
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
         const championResp = await axios.get(reqChampion);
         console.log('successfully retrieved champion information', championResp.data);
+
+        // cache the championResp data in sessionStorage to use in Champions.jsx
+        sessionStorage.setItem('championResp', JSON.stringify(championResp.data));
 
         const name = championResp.data?.Name;
         const email = championResp.data?.Email;
@@ -805,7 +814,7 @@ return (
                             </div>
                         )}
 
-                        <button
+                        {/* <button
                             onClick={() => {
                                 setData(null);
                                 setInventoryData([]);
@@ -814,7 +823,15 @@ return (
                             style={{ backgroundColor: '#17de43' }}
                         >
                             Back to Search
+                        </button> */}
+                        <div className="flex left-50 items-center">
+                        <button
+                            onClick={handleClick}
+                            className=" bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg"
+                        >
+                            Champions
                         </button>
+                        </div>
                     </div>
                 ) : (
                     <div className="donor-info">
@@ -929,7 +946,7 @@ return (
                             </div>
                         )}
 
-                        <button
+                        {/* <button
                             onClick={() => {
                                 setData(null);
                                 setInventoryData([]);
@@ -938,7 +955,14 @@ return (
                             style={{ backgroundColor: '#17de43' }}
                         >
                             Back to Search
+                        </button> */}
+                        <button
+                            onClick={handleClick}
+                            className="fixed right-4 top-20 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg"
+                        >
+                            Champions
                         </button>
+                        
                     </div>
                 )}
             </div>
