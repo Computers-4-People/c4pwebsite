@@ -37,7 +37,7 @@ function Champions() {
       
 
       {/* Main Content */}
-      <main style={{fontSize: '16px'}} className="flex-grow p-6 max-w-7xl mx-auto w-full">
+      <main className="flex-grow p-6 max-w-7xl mx-auto w-full">
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
@@ -126,7 +126,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Address:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.address || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center font-size: 5px">{userData.address || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -178,7 +178,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Email:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.email || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center font-size: 5px">{userData.email || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
