@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
     console.log(championResp);
+
+
     const [userData, setUserData] = useState({
         firstName: '' || championResp.First_Name,    
         lastName: '' || championResp.Last_Name,
@@ -14,9 +16,9 @@ function Champions() {
         phone: '' || championResp.Phone_1,
         address: '' || championResp.Address,
         aptSuiteUnit: '' || championResp.aptSuiteUnit,
-        city: '' || championResp.city,
+        city: '' || championResp.City,
         stateRegion: '' || championResp.State,
-        country: '' || championResp.country,
+        country: '' || championResp.Country,
         roles: [] 
     });
 
@@ -31,31 +33,11 @@ function Champions() {
 
     return (
         
-
-
-        <div className="flex flex-col min-h-screen">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="flex justify-between items-center px-6 py-2">
-          <a href="/" className="text-green-500 font-medium">
-            Computers 4 People
-          </a>
-          <nav className="flex space-x-6">
-            <a href="/programs" className="text-gray-200">
-              Programs
-            </a>
-            <a href="/about" className="text-gray-200">
-              About Us
-            </a>
-            <a href="/involved" className="text-gray-200">
-              Get Involved
-            </a>
-          </nav>
-        </div>
-      </header>
+      <div className="flex flex-col min-h-screen">
+      
 
       {/* Main Content */}
-      <main className="flex-grow p-6 max-w-7xl mx-auto w-full">
+      <main style={{fontSize: '16px'}} className="flex-grow p-6 max-w-7xl mx-auto w-full">
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
