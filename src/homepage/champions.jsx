@@ -7,15 +7,15 @@ function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
     console.log(championResp);
     const [userData, setUserData] = useState({
-        firstName: '' || championResp.firstName,    
-        lastName: '' || championResp.lastName,
+        firstName: '' || championResp.First_Name,    
+        lastName: '' || championResp.Last_Name,
         title: '' || championResp.title,
-        email: '' || championResp.email,
-        phone: '' || championResp.phone,
-        address: '' || championResp.address,
+        email: '' || championResp.Email,
+        phone: '' || championResp.Phone_1,
+        address: '' || championResp.Address,
         aptSuiteUnit: '' || championResp.aptSuiteUnit,
         city: '' || championResp.city,
-        stateRegion: '' || championResp.stateRegion,
+        stateRegion: '' || championResp.State,
         country: '' || championResp.country,
         roles: [] 
     });
@@ -23,13 +23,16 @@ function Champions() {
     const navigate = useNavigate();
     const handleClick = () => {
         navigate('/portal');
-      };
+    };
 
 
 
-
+    console.log(userData);
 
     return (
+        
+
+
         <div className="flex flex-col min-h-screen">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
