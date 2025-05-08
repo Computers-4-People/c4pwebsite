@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import PortalDropdown from '../components/portaldropdown';
 
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
+    
     console.log(championResp);
 
 
@@ -24,10 +25,8 @@ function Champions() {
 
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate('/portal');
+        navigate(`/portal?recordId=${championResp.id}`);
     };
-
-
 
     console.log(userData);
 
@@ -37,7 +36,7 @@ function Champions() {
       
 
       {/* Main Content */}
-      <main style={{fontSize: '16px'}} className="flex-grow p-6 max-w-7xl mx-auto w-full">
+      <main className="flex-grow p-6 max-w-7xl mx-auto w-full">
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
@@ -48,30 +47,14 @@ function Champions() {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left Sidebar Navigation */}
           <div className="w-full md:w-64 space-y-2">
-            <div className="bg-green-400 text-white p-3 rounded-lg font-medium">Champion</div>
-            <button
-              className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300"
-              onClick={() => handleClick("/donations")}
-            >
-              Computer Donations
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Financial Donations
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Volunteering</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Computer Applications
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Recommenders</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Hotspot Applications
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Internet Subscriptions
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Grants</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">C4P Apps</button>
+          <div>
+          <PortalDropdown className="flex-shrink-0" type={"Champions"} />
           </div>
+          </div>
+
+          
+
+
 
           {/* Center Profile Section */}
           <div className="flex-grow bg-green-50 p-6 rounded-lg relative">
@@ -126,7 +109,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Address:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.address || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.address || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -178,7 +161,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Email:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.email || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-[9px]">{userData.email || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -200,7 +183,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Phone:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.phone || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.phone || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -230,25 +213,8 @@ function Champions() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 shadow-sm mt-auto">
-        <div className="flex justify-between items-center px-6 py-2">
-          <a href="/" className="text-green-500 font-medium">
-            Computers 4 People
-          </a>
-          <nav className="flex space-x-6">
-            <a href="/programs" className="text-gray-200">
-              Programs
-            </a>
-            <a href="/about" className="text-gray-200">
-              About Us
-            </a>
-            <a href="/involved" className="text-gray-200">
-              Get Involved
-            </a>
-          </nav>
-        </div>
-      </footer>
+      
+
     </div>
     );
 }
