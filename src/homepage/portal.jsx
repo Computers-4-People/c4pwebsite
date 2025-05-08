@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 import { useNavigate } from 'react-router-dom';
+import PortalDropdown from '../components/portaldropdown';
 
 // added this
 import { useSearchParams } from 'react-router-dom';
@@ -139,7 +140,6 @@ function Portal() {
             return;
         }
 
-    
         // recordId here is the champion recordId
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
         const championResp = await axios.get(reqChampion);
@@ -163,10 +163,9 @@ function Portal() {
             return -1;
         }
 
-        
         if (type === 'Computer Donor' || type === 'Loser') {
             reqName = await fetchWithChampion(email, 'Computer_Donors', 'Email');
-            sessionStorage.setItem('type', 'Computer Donor');
+            sessionStorage.setItem('type', 'Computer Donations');
         }
 
         else {
@@ -189,7 +188,6 @@ function Portal() {
         console.log(reqName.data[maximum].Entry_Date);
         console.log('successfully retrieved applicant information', reqName);
         
-
         const id = reqName.data[maximum].id;
         
         console.log('recordId before:', recordId);
@@ -197,12 +195,6 @@ function Portal() {
 
         //mutates to computer_donor or applicant record id
         recordId = id;
-
-
-        // if (reqName.data[0].Status === "Computer Donor" || reqName.data[0].Status === "Loser") {
-        //     console.log('Applicant is not a client');
-        //     newModule = 'Computer_Donors';
-        // }
 
         if (reqName.data[maximum].Status === "Donated" || reqName.data[maximum].Status === "Archived") {
             console.log('Applicant is not a client');
@@ -214,12 +206,10 @@ function Portal() {
             newModule = 'Contacts';
         }
 
-        
         console.log('newModule', newModule);
         console.log('module', module);
         // get recordId from request and put it here
         const requestUrl = `${API_BASE_URL}/api/${newModule}/${recordId}`;
-        
         
         console.log('Attempting to fetch from:', requestUrl);
 
@@ -723,9 +713,22 @@ function Portal() {
 // }
 
 return (
+
+
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+
+        {data && 
+        <div className="flex justify-center items-start gap-x-4 mt-10 sm:mt-16">
+        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')}/>
+        </div>
+        }
+
+
         {data && (
+            
+            
             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl my-10 sm:my-16">
+                
                 {module === 'Contacts' ? (
                     <div className="applicant-info">
                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
@@ -836,6 +839,7 @@ return (
                         </div>
                     </div>
                 ) : (
+                    
                     <div className="donor-info">
                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
                             Donor Details
@@ -957,17 +961,22 @@ return (
                             style={{ backgroundColor: '#17de43' }}
                         >
                             Back to Search
+
+
                         </button> */}
-                        <button
+                        {/* <button
                             onClick={handleClick}
-                            className="fixed right-4 top-20 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg"
+                            className="fixed right-4 top-20 bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center"
                         >
                             Champions
-                        </button>
+                        </button> */}
+
                         
                     </div>
                 )}
             </div>
+
+            
         )}
     </div>
 );

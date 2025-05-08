@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import PortalDropdown from '../components/portaldropdown';
 
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
+    
     console.log(championResp);
 
 
@@ -46,30 +47,14 @@ function Champions() {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left Sidebar Navigation */}
           <div className="w-full md:w-64 space-y-2">
-            <div className="bg-green-400 text-white p-3 rounded-lg font-medium">Champion</div>
-            <button
-              className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300"
-              onClick={() => handleClick("/donations")}
-            >
-              Computer Donations
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Financial Donations
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Volunteering</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Computer Applications
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Recommenders</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Hotspot Applications
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">
-              Internet Subscriptions
-            </button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">Grants</button>
-            <button className="w-full bg-gray-200 p-3 rounded-lg text-left hover:bg-gray-300">C4P Apps</button>
+          <div>
+          <PortalDropdown className="flex-shrink-0" type={"Champions"} />
           </div>
+          </div>
+
+          
+
+
 
           {/* Center Profile Section */}
           <div className="flex-grow bg-green-50 p-6 rounded-lg relative">
