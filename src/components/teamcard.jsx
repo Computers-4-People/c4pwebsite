@@ -1,18 +1,17 @@
 import React from 'react';
 
 const TeamCard = ({ name, title, company, photo, link }) => {
-    // Handle the card's structure and make it clickable if a link is provided.
-    const Wrapper = link ? 'a' : 'div';  // Use <a> if a link is provided, otherwise <div>
+    const Wrapper = link ? 'a' : 'div';
 
     return (
         <Wrapper
             href={link || '#'}
             target={link ? '_blank' : undefined}
             rel={link ? 'noopener noreferrer' : undefined}
-            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform hover:scale-105 duration-300 mx-auto h-full flex flex-col cursor-pointer"
+            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform hover:scale-105 duration-300 cursor-pointer flex flex-col h-[350px]" // Adjust total height as needed
         >
-            {/* Image Section */}
-            <div className="w-full h-64 overflow-hidden flex-shrink-0">
+            {/* Larger Image Section */}
+            <div className="w-full h-60 overflow-hidden">
                 <img 
                     src={photo} 
                     alt={name} 
@@ -21,11 +20,11 @@ const TeamCard = ({ name, title, company, photo, link }) => {
             </div>
 
             {/* Text Section */}
-            <div className="p-6 text-center flex-grow flex flex-col justify-between">
+            <div className="p-4 text-center flex flex-col justify-between flex-grow">
                 <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{name}</h3>
-                    <p className="text-gray-600 text-md">{title}</p>
-                    {company && <p className="text-gray-500 text-sm mt-1">{company}</p>}
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{name}</h3>
+                    <p className="text-gray-600 text-sm">{title}</p>
+                    {company && <p className="text-gray-500 text-xs mt-1">{company}</p>}
                 </div>
             </div>
         </Wrapper>
@@ -34,7 +33,7 @@ const TeamCard = ({ name, title, company, photo, link }) => {
 
 const TeamGrid = ({ teamMembers }) => {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-8">
             {teamMembers.map((member, index) => (
                 <TeamCard 
                     key={index}
@@ -42,7 +41,7 @@ const TeamGrid = ({ teamMembers }) => {
                     title={member.title}
                     company={member.company}
                     photo={member.photo}
-                    link={member.link}  // Pass the link for clickability
+                    link={member.link}
                 />
             ))}
         </div>
