@@ -95,6 +95,7 @@ export default function ShieldHeader() {
           transition={{ duration: 0.8 }}
           className="flex-grow flex flex-col items-center justify-center"
         >
+          
           {/* Shield icon + text */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6">
             <img
@@ -124,6 +125,15 @@ export default function ShieldHeader() {
               Get Connected Now
             </motion.button>
           </a>
+          {/* Mission Telecom Image at bottom of hero section */}
+<div className="mt-10">
+  <img
+    src="/Hotspot/missiontelecom.png"
+    alt="Mission Telecom"
+    className="mx-auto h-12 sm:h-16 object-contain"
+  />
+</div>
+
         </motion.div>
 
 {/* Bottom logo bar */}
