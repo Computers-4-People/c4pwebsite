@@ -30,12 +30,6 @@ const missionControlMembers = [
     link: "",
   },
   {
-    name: "Salvador Medina",
-    title: "Ambassador NJ/NYC",
-    photo: "SalvadorMedina.jpeg",
-    link: "",
-  },
-  {
     name: "Elmehdi Ghardi",
     title: "Ambassador MA (Logistics)",
     photo: "ElmehdiGhardi.jpeg",
@@ -91,6 +85,20 @@ const teamMembers = [
     company: "PGIM", 
     photo: "DavidNeves.jpeg",
     link: "https://www.linkedin.com/in/david-neves-digital-marketing-executive/"
+  },
+  { 
+    name: "Michele Schueli", 
+    title: "Board Member", 
+    company: "ARMYN Capital", 
+    photo: "micheleschueli.jpeg",
+    link: "https://www.linkedin.com/in/michele2992/"
+  },
+  { 
+    name: "Joanne Oplustil", 
+    title: "Board Member", 
+    company: "CAMBA/CAMBA Housing Ventures", 
+    photo: "joanneoplustil.png",
+    link: "https://www.linkedin.com/in/joanne-oplustil-281966ab/"
   },
 ];
 
