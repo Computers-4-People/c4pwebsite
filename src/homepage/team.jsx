@@ -149,7 +149,7 @@ const pressItems1 = [
 
 const handleScroll = (id) => {
   const element = document.getElementById(id);
-  const offset = 100; // Adjust this value to leave space above the h1
+  const offset = 100;
   const bodyRect = document.body.getBoundingClientRect().top;
   const elementRect = element.getBoundingClientRect().top;
   const elementPosition = elementRect - bodyRect;
@@ -164,7 +164,6 @@ const handleScroll = (id) => {
 export default function Team() {
   return (
     <div id="main-content" className="font-sans overflow-x-hidden">
-      {/* Header */}
       <Header
         props={{
           bgImage: "/team/teambackground.jpeg",
@@ -177,35 +176,31 @@ export default function Team() {
         }}
       />
 
-      {/* Mission Control Section */}
-      <div id="team" className="px-20 mt-20">
-        <h2 className="text-7xl font-subtitle uppercase">MISSION CONTROL</h2>
-        <div className="container mx-auto mt-8">
+      <div id="team" className="px-4 sm:px-6 md:px-10 lg:px-20 mt-20">
+        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-subtitle uppercase">MISSION CONTROL</h2>
+        <div className="mt-8">
           <TeamGrid teamMembers={missionControlMembers} />
         </div>
       </div>
 
-      {/* Board of Directors Section */}
-      <div id="board" className="px-20 mt-20">
-        <h2 className="text-7xl font-subtitle uppercase">BOARD OF DIRECTORS</h2>
-        <div className="container mx-auto mt-8">
+      <div id="board" className="px-4 sm:px-6 md:px-10 lg:px-20 mt-20">
+        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-subtitle uppercase">BOARD OF DIRECTORS</h2>
+        <div className="mt-8">
           <TeamGrid teamMembers={teamMembers} />
         </div>
       </div>
 
-      {/* Media Highlights Section */}
-      <div id="media-highlights" className="mt-20">
-        <h2 className="ml-14 mt-20 mb-4 text-7xl font-subtitle text-gray">
+      <div id="media-highlights" className="mt-20 px-4 sm:px-6 md:px-10">
+        <h2 className="mt-20 mb-4 text-4xl sm:text-5xl lg:text-7xl font-subtitle text-gray">
           Explore our media highlights
         </h2>
-        <p className="font-paragraph ml-14 text-black text-xl md:text-2xl mb-10">
+        <p className="font-paragraph text-black text-lg sm:text-xl md:text-2xl mb-10">
           Discover how our work is making waves through news articles,
           interviews, and features across various media outlets.
         </p>
       </div>
 
-      {/* Press Cards */}
-      <div className="mb-40">
+      <div className="px-4 sm:px-6 md:px-10 mb-40">
         <PressCard pressItems={pressItems1} />
       </div>
     </div>
