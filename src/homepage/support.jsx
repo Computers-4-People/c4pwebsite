@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DonationProgressBar from '../components/DonationProgressBar';
 import Header from '../components/header';
 
 const scrollToForm = () => {
@@ -49,7 +50,7 @@ export default function Support() {
                     </p>
                 </div>
             </div>
-
+<DonationProgressBar />
             <div style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url('/refurbished/refurbishedbackground.jpeg')`,
                 display: 'flex',
