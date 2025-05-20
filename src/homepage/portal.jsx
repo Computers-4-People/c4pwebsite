@@ -4,6 +4,7 @@ import ProgressBar from '../components/ProgressBar';
 import { useNavigate } from 'react-router-dom';
 import PortalDropdown from '../components/portaldropdown';
 
+
 // added this
 import { useSearchParams } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ function Portal() {
     const [error, setError] = useState('');
     const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+    const [selectedDonation, setSelectedDonation] = useState("")
 
     const [type, setType] = useState(null);
     var newModule = null;
@@ -182,6 +184,8 @@ function Portal() {
         }
 
         let maximum = dateList.indexOf(Math.max(...dateList));
+        setSelectedDonation(reqName.data[maximum].Entry_Date + " Donation");
+
 
         console.log('max entry', reqName.data[maximum]);
         console.log(dateList);
@@ -306,7 +310,9 @@ function Portal() {
             });
             console.log('Inventory Data Response:', response.data);
             if (response.data && response.data.length > 0) {
+
                 setInventoryData(response.data);
+                
                 console.log('Inventory Data:', response.data);
                 console.log(inventoryData);
             } else {
@@ -719,7 +725,7 @@ return (
 
         {data && 
         <div className="flex justify-center items-start gap-x-4 mt-10 sm:mt-16">
-        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')}/>
+        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')} recordId={searchParams.get('recordId')} jwt={""}/>
         </div>
         }
 
@@ -840,146 +846,135 @@ return (
                     </div>
                 ) : (
                     
-                    <div className="donor-info">
-                        <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
-                            Donor Details
-                        </h2>
-                        <div className="p-4 bg-green-50 rounded shadow w-full">
-                            <h2 className="text-2xl font-bold mb-4 text-c4p">
-                                Computer Donor Information
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <p>
-                                    <strong>Company:</strong> {data.Company || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Contact Person:</strong> {data.Name || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Email:</strong> {data.Email || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Phone:</strong> {data.Phone || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Location:</strong> {data.Location || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Mailing Address:</strong>{' '}
-                                    {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${
-                                        data.Mailing_State || ''
-                                    } ${data.Mailing_Zip || ''}`.trim() || 'N/A'}
-                                </p>
-                            </div>
+                    <div>
+                    {data && (
+                      
+                      <div className="donor-details bg-green-50 p-6 rounded-md">
+                        <div className="underline">
+                            Welcome back {JSON.parse(sessionStorage.getItem('championResp')).First_Name},
+                            We made this portal specifically for you.
                         </div>
+                        <div className="flex justify-between items-center mb-6">
+                            <div className="ml-auto flex items-center space-x-4">
+                                <a
+                                href="#"
+                                onClick={downloadCSV}
+                                className="text-green-500 hover:text-green-700 font-medium underline"
+                                >
+                                Download Tax Receipt
+                                </a>
 
-                        {inventoryData.length > 0 && (
-                            <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
-                                <div className="flex flex-col sm:flex-row justify-around mb-6">
-                                    <div className="text-center mb-4 sm:mb-0">
-                                        <p className="text-4xl font-bold text-c4p">
-                                            {inventoryData.length}
-                                        </p>
-                                        <p className="text-lg">Total Computers Donated</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="text-4xl font-bold text-c4p">
-                                            {calculateTotalWeight()} lbs
-                                        </p>
-                                        <p className="text-lg">Total Weight</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex justify-end mb-4">
-                                    <button
-                                        onClick={downloadCSV}
-                                        className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700 transition-colors duration-300"
-                                    >
-                                        Download CSV
-                                    </button>
-                                </div>
-
-                                <h3 className="text-xl font-semibold text-c4p mb-4">
-                                    Donated Computers
-                                </h3>
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full bg-white">
-                                        <thead>
-                                            <tr>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Model
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Computer Type
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Added
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Donated
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Recycled
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {inventoryData.map((item, index) => (
-                                                <tr
-                                                    key={item.ID}
-                                                    className={index % 2 === 0 ? 'bg-gray-100' : ''}
-                                                >
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Model || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Computer_Type || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Added || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Donated || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Recycled || 'N/A'}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                <div className="relative">
+                                <button className="flex items-center justify-between w-64 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                                    <span>{selectedDonation}</span>
+                                </button>
                                 </div>
                             </div>
-                        )}
-
-                        {/* <button
-                            onClick={() => {
-                                setData(null);
-                                setInventoryData([]);
-                            }}
-                            className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-                            style={{ backgroundColor: '#17de43' }}
-                        >
-                            Back to Search
-
-
-                        </button> */}
-                        {/* <button
-                            onClick={handleClick}
-                            className="fixed right-4 top-20 bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center"
-                        >
-                            Champions
-                        </button> */}
-
-                        
-                    </div>
+                            </div>
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full bg-green-100 border-collapse">
+                            <thead>
+                              <tr className="border border-gray-300">
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Model</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Serial #</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Added</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Donated</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Recycled</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">Erasure Date</th>
+                                <th className="py-2 px-4 text-left border border-gray-300 font-medium">View Data Certificate</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {inventoryData.length > 0
+                                ? inventoryData.map((item, index) => (
+                                    <tr key={item.ID} className="border border-gray-300">
+                                      <td className="py-2 px-4 border border-gray-300">{item.Model || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">{item.Barcode_Save || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">{item.Date_Added || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">{item.Date_Donated || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">{item.Date_Recycled || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">{item.Erasure_Date || "N/A"}</td>
+                                      <td className="py-2 px-4 border border-gray-300">
+                                        {item.Data_Certificate ? (
+                                          <a href={item.Data_Certificate} className="text-blue-600 hover:underline">
+                                            View
+                                          </a>
+                                        ) : (
+                                          "N/A"
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))
+                                : 
+                                  Array.from({ length: 15 }).map((_, index) => (
+                                    <tr key={index} className="border border-gray-300">
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                      <td className="py-2 px-4 border border-gray-300"></td>
+                                    </tr>
+                                  ))}
+                            </tbody>
+                          </table>
+                        </div>
+              
+                        {/* Hidden donor information section that can be toggled if needed */}
+                        {/* <div className="hidden mt-6">
+                          <h2 className="text-center text-3xl font-bold mb-4 text-green-700">Donor Details</h2>
+                          <div className="p-4 bg-green-50 rounded shadow w-full">
+                            <h2 className="text-2xl font-bold mb-4 text-green-700">Computer Donor Information</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <p>
+                                <strong>Company:</strong> {data.Company || "N/A"}
+                              </p>
+                              <p>
+                                <strong>Contact Person:</strong> {data.Name || "N/A"}
+                              </p>
+                              <p>
+                                <strong>Email:</strong> {data.Email || "N/A"}
+                              </p>
+                              <p>
+                                <strong>Phone:</strong> {data.Phone || "N/A"}
+                              </p>
+                              <p>
+                                <strong>Location:</strong> {data.Location || "N/A"}
+                              </p>
+                              <p>
+                                <strong>Mailing Address:</strong>{" "}
+                                {`${data.Mailing_Street || ""}, ${data.Mailing_City || ""}, ${
+                                  data.Mailing_State || ""
+                                } ${data.Mailing_Zip || ""}`.trim() || "N/A"}
+                              </p>
+                            </div>
+                          </div>
+              
+                          <div className="flex flex-col sm:flex-row justify-around mb-6 mt-4">
+                            <div className="text-center mb-4 sm:mb-0">
+                              <p className="text-4xl font-bold text-green-700">{inventoryData.length}</p>
+                              <p className="text-lg">Total Computers Donated</p>
+                            </div>
+                            <div className="text-center">
+                              <p className="text-4xl font-bold text-green-700">{calculateTotalWeight()} lbs</p>
+                              <p className="text-lg">Total Weight</p>
+                            </div>
+                          </div>
+                        </div> */}
+                      </div>
+                    )}
+                  </div>
                 )}
             </div>
 
             
         )}
     </div>
+    
+
 );
+
 }
 
 export default Portal;

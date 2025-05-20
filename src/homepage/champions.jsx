@@ -36,7 +36,7 @@ function Champions() {
       
 
       {/* Main Content */}
-      <main className="flex-grow p-6 max-w-7xl mx-auto w-full">
+      <main className="flex-grow p-6 max-w-7xl mx-auto w-full mt-20">
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
@@ -48,7 +48,7 @@ function Champions() {
           {/* Left Sidebar Navigation */}
           <div className="w-full md:w-64 space-y-2">
           <div>
-          <PortalDropdown className="flex-shrink-0" type={"Champions"} />
+          <PortalDropdown className="flex-shrink-0" type={"Champions"} recordId={championResp.id}/>
           </div>
           </div>
 
@@ -79,7 +79,7 @@ function Champions() {
                       <path d="M100 130C120 130 140 140 140 160H60C60 140 80 130 100 130Z" fill="#5F3DC4" />
                       <path
                         d="M100 120C90 120 80 110 80 95C80 80 90 70 100 70C110 70 120 80 120 95C120 110 110 120 100 120Z"
-                        fill="#DEE2E6"
+                        fill="5F3DC4"
                       />
                     </svg>
                   </div>
