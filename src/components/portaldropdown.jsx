@@ -18,7 +18,6 @@ const PortalDropdown = ({type, applicantType}) => {
             <div className="flex flex-col gap-2">
                 <PortalButton type={type} page={"Champions"} onClick="/champions">Champion</PortalButton>
                 <PortalButton type={type} page={"Computer Donations"} onClick="/portal">{name}</PortalButton>
-                <PortalButton type={type} page={"Contacts"} onClick="/applications">Computer Applications</PortalButton>
             </div>
         </div>
     );
