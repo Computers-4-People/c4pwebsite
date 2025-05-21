@@ -5,8 +5,9 @@ import PortalDropdown from '../components/portaldropdown';
 
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
-    
+    const applicantType = sessionStorage.getItem('type');
     console.log(championResp);
+    console.log(applicantType);
 
 
     const [userData, setUserData] = useState({
@@ -48,7 +49,7 @@ function Champions() {
           {/* Left Sidebar Navigation */}
           <div className="w-full md:w-64 space-y-2">
           <div>
-          <PortalDropdown className="flex-shrink-0" type={"Champions"} recordId={championResp.id}/>
+          <PortalDropdown className="flex-shrink-0" type={"Champions"} applicantType={applicantType}/>
           </div>
           </div>
 
@@ -141,7 +142,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Title:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.title || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{applicantType || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>

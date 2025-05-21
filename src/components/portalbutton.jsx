@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PortalButton = ({ children, onClick, type, page, recordId}) => {
+const PortalButton = ({ children, onClick, type, page}) => {
+
   const navigate = useNavigate();
   
   const handleClick = () => {
-    navigate(onClick + `?recordId=${recordId}`);
+    navigate(onClick + `?recordId=${sessionStorage.getItem('recordId')}`);
   };
 
   return (

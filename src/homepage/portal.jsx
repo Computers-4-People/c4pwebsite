@@ -149,6 +149,7 @@ function Portal() {
 
         // cache the championResp data in sessionStorage to use in Champions.jsx
         sessionStorage.setItem('championResp', JSON.stringify(championResp.data));
+        sessionStorage.setItem('recordId', championResp.data.id);
 
         const name = championResp.data?.Name;
         const email = championResp.data?.Email;
@@ -725,7 +726,7 @@ return (
 
         {data && 
         <div className="flex justify-center items-start gap-x-4 mt-10 sm:mt-16">
-        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')} recordId={searchParams.get('recordId')} jwt={""}/>
+        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')} applicantType={sessionStorage.getItem('type')}/>
         </div>
         }
 

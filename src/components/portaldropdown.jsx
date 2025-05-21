@@ -1,14 +1,24 @@
 import React from 'react';
 import PortalButton from './portalbutton';
 
-const PortalDropdown = ({type}, {recordId}) => {
+const PortalDropdown = ({type, applicantType}) => {
+
+    console.log(applicantType);
+    let name = "";
+
+    if (applicantType === 'Computer Donations') {
+        name = 'Computer Donations';
+    } else if (applicantType === 'Contacts') {
+        name = 'Computer Applications';
+    }
+
     return (
         <div className="w-full md:w-64 space-y-2">
             
             <div className="flex flex-col gap-2">
-                <PortalButton type={type} page={"Champions"} onClick="/champions" recordId={recordId}>Champion</PortalButton>
-                <PortalButton type={type} page={"Computer Donations"} onClick="/portal" recordId={recordId}>Computer Donations</PortalButton>
-                <PortalButton type={type} page={"Contacts"} onClick="/applications" recordId={recordId}>Computer Applications</PortalButton>
+                <PortalButton type={type} page={"Champions"} onClick="/champions">Champion</PortalButton>
+                <PortalButton type={type} page={"Computer Donations"} onClick="/portal">{name}</PortalButton>
+                <PortalButton type={type} page={"Contacts"} onClick="/applications">Computer Applications</PortalButton>
             </div>
         </div>
     );
