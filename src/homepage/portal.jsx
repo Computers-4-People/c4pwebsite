@@ -67,10 +67,6 @@ function Portal() {
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
         if (urlRecordId) {
             setRecordId(urlRecordId);
-
-            
-        
-                
             setTimeout(() => {
                 fetchData();
             }, 0);
@@ -141,10 +137,10 @@ function Portal() {
 
     const fetchData = async () => {
 
-        const cachedInventory = sessionStorage.getItem('inv');
-        const cachedData = sessionStorage.getItem('data');
-        console.log(cachedInventory, cachedData);
-        if (await cachedFetch(cachedInventory, cachedData)) {
+        // const cachedInventory = sessionStorage.getItem('inv');
+        // const cachedData = sessionStorage.getItem('data');
+        // console.log(cachedInventory, cachedData);
+        if (await cachedFetch()) {
             return;
         }
        
@@ -243,7 +239,9 @@ function Portal() {
                 setError(response.data.error);
             } else {
                 setData(response.data);
-                sessionStorage.setItem('data', JSON.stringify(response.data));
+
+                await cacheData(`${searchParams.get('recordId')}`, 'data', response.data);
+
                 setModule(newModule);
                 console.log(newModule);
                 console.log(module);
@@ -253,14 +251,14 @@ function Portal() {
                 // Fetch inventory data based on Applicant ID or Donor_ID
                 if (module === 'Contacts') {
                     if (response.data.Status === 'Client') {
-                        fetchInventoryByRecipientId(recordId);
+                        fetchInventoryByRecipientId(recordId, `${searchParams.get('recordId')}`);
                     }
                 } else if (module === 'Computer_Donors') {
                     
                     const donorId = response.data.Donor_ID;
                     console.log('donorId', donorId);
                     if (donorId) {
-                        fetchInventoryByDonorId(donorId);
+                        fetchInventoryByDonorId(donorId,`${searchParams.get('recordId')}`);
                     }
                 }
                 setIsloading(false);
@@ -280,32 +278,79 @@ function Portal() {
     };
 
 
+    const cacheData = async (key, typeOfData, value) => {
+        await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+            key: key,
+            typeOfData: typeOfData,
+            value: value
+        });
+    }
 
-    const cachedFetch = async (cachedInventory, cachedData) => {
-        if (cachedInventory && cachedData) {
-            const module = sessionStorage.getItem('module');
-            const selectedDonation = sessionStorage.getItem('selectedDonationOld');
-            console.log('Retrieved from cache:', { module, selectedDonation });
 
-            const parsedInventory = JSON.parse(cachedInventory);
-            const parsedData = JSON.parse(cachedData);
-            
-            
-            await Promise.all([
-                setSelectedDonation(selectedDonation),
-                setModule(module),
-                setInventoryData(parsedInventory),
-                setData(parsedData)
-            ]).then(() => {
-                console.log('All states updated');
-                console.log('Using cached inventory data');
-                console.log(selectedDonation);
-                setIsloading(false);
+
+    const cachedFetch = async () => {
+        try {
+
+            const cachedInventory = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: `${recordId}`, typeOfData: 'inventory' },
             });
 
-            return true;
+            const cachedData = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: `${recordId}`, typeOfData: 'data' },
+            });
+
+            if (cachedInventory && cachedData) {
+                const module = sessionStorage.getItem('module');
+                const selectedDonation = sessionStorage.getItem('selectedDonationOld');
+
+
+                await Promise.all([
+                    setSelectedDonation(selectedDonation),
+                    setModule(module),
+                    setInventoryData(cachedInventory),
+                    setData(cachedData)
+                ]).then(()=> {
+                    console.log('All states updated');
+                    console.log('Using cached inventory data');
+                    console.log(selectedDonation);
+                    setIsloading(false);
+                });
+                return true;
+            }
+            console.log('No cached data found');
+            return false;
+
+        } catch (error) {
+            console.error('Error fetching from Redis cache:', error);
+            return false;
         }
-        return false;
+
+
+        }
+        // if (cachedInventory && cachedData) {
+        //     const module = sessionStorage.getItem('module');
+        //     const selectedDonation = sessionStorage.getItem('selectedDonationOld');
+        //     console.log('Retrieved from cache:', { module, selectedDonation });
+
+        //     const parsedInventory = JSON.parse(cachedInventory);
+        //     const parsedData = JSON.parse(cachedData);
+            
+            
+        //     await Promise.all([
+        //         setSelectedDonation(selectedDonation),
+        //         setModule(module),
+        //         setInventoryData(parsedInventory),
+        //         setData(parsedData)
+        //     ]).then(() => {
+        //         console.log('All states updated');
+        //         console.log('Using cached inventory data');
+        //         console.log(selectedDonation);
+        //         setIsloading(false);
+        //     });
+
+        //     return true;
+        // }
+        // return false;
     };
 
 
@@ -334,7 +379,7 @@ function Portal() {
         }
     }
 
-    const fetchInventoryByRecipientId = async (recipientId) => {
+    const fetchInventoryByRecipientId = async (recipientId, recordId) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Recipient', searchValue: recipientId },
@@ -344,7 +389,9 @@ function Portal() {
 
 
                 setInventoryData(response.data);
-                sessionStorage.setItem('inv', JSON.stringify(response.data));
+                await cacheData(recordId, 'inventory', response.data);
+
+
                 console.log('Inventory Data:', response.data);
             } else {
                 console.log('No inventory data found for this recipient.');
@@ -354,7 +401,7 @@ function Portal() {
         }
     };
 
-    const fetchInventoryByDonorId = async (donorId) => {
+    const fetchInventoryByDonorId = async (donorId, recordId) => {
         try {
             const req = `${API_BASE_URL}/api/computer-inventory`;
             const params = { searchField: 'Donor_ID', searchValue: donorId };
@@ -367,7 +414,8 @@ function Portal() {
             if (response.data && response.data.length > 0) {
 
                 setInventoryData(response.data);
-                sessionStorage.setItem('inv', JSON.stringify(response.data));
+                await cacheData(recordId, 'inventory', response.data);
+                
                 console.log('Inventory Data:', response.data);
                 console.log(inventoryData);
             } else {
@@ -713,6 +761,6 @@ return (
     </div>
 );
 
-}
+
 
 export default Portal;
