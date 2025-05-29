@@ -324,34 +324,7 @@ function Portal() {
             console.error('Error fetching from Redis cache:', error);
             return false;
         }
-
-
-        }
-        // if (cachedInventory && cachedData) {
-        //     const module = sessionStorage.getItem('module');
-        //     const selectedDonation = sessionStorage.getItem('selectedDonationOld');
-        //     console.log('Retrieved from cache:', { module, selectedDonation });
-
-        //     const parsedInventory = JSON.parse(cachedInventory);
-        //     const parsedData = JSON.parse(cachedData);
-            
-            
-        //     await Promise.all([
-        //         setSelectedDonation(selectedDonation),
-        //         setModule(module),
-        //         setInventoryData(parsedInventory),
-        //         setData(parsedData)
-        //     ]).then(() => {
-        //         console.log('All states updated');
-        //         console.log('Using cached inventory data');
-        //         console.log(selectedDonation);
-        //         setIsloading(false);
-        //     });
-
-        //     return true;
-        // }
-        // return false;
-    };
+    }
 
 
     /**
@@ -553,7 +526,9 @@ function Portal() {
         document.body.removeChild(link);
     };
 
-return (
+
+
+    return (
     
     <div className="flex flex-col min-h-screen">
         {/* Main Content */}
@@ -561,7 +536,7 @@ return (
             {/* Welcome Header */}
             
             <div className="mb-6">
-                <h1 className="text-4xl font-bold text-black">Welcome back, {JSON.parse(sessionStorage.getItem('championResp')).First_Name} </h1>
+                <h1 className="text-4xl font-bold text-black">Welcome back,  </h1>
                 <p className="text-gray-700">We created this portal specifically for you.</p>
 
             </div>
@@ -760,7 +735,7 @@ return (
         </main>
     </div>
 );
-
+}
 
 
 export default Portal;
