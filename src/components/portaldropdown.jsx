@@ -3,7 +3,7 @@ import PortalButton from './portalbutton';
 
 const PortalDropdown = ({type, applicantType}) => {
 
-    console.log(applicantType);
+    
     let name = "";
 
     if (applicantType === 'Computer Donations') {

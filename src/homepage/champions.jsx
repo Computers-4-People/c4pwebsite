@@ -6,9 +6,18 @@ import PortalDropdown from '../components/portaldropdown';
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
     const applicantType = sessionStorage.getItem('type');
+    const fontSize = "text-4xl";
     console.log(championResp);
     console.log(applicantType);
 
+    // Add custom styles for hiding scrollbars
+    const scrollbarStyles = {
+      scrollbarWidth: 'none',  /* Firefox */
+      msOverflowStyle: 'none',  /* IE and Edge */
+      '&::-webkit-scrollbar': {  /* Chrome, Safari and Opera */
+        display: 'none'
+      }
+    };
 
     const [userData, setUserData] = useState({
         firstName: '' || championResp.First_Name,    
@@ -100,7 +109,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">First Name:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.firstName}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.firstName}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -110,7 +119,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Address:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.address || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap overflow-x-auto scrollbar-hide select-text">{userData.address || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -120,7 +129,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Last Name:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.lastName}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.lastName}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -130,7 +139,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Apt/Suite/Unit:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">
                     {userData.aptSuiteUnit || ""}
                   </div>
                   <button className="text-gray-600">
@@ -142,7 +151,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Title:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{applicantType || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{applicantType || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -162,7 +171,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Email:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-[9px]">{userData.email || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{userData.email || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -184,7 +193,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Phone:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.phone || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.phone || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
