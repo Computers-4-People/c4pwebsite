@@ -13,34 +13,22 @@ const missionControlMembers = [
   },
   {
     name: "Bárbara Cristina De Souza Pinto",
-    title: "Program Manager MA",
+    title: "Head of Partnerships",
     photo: "Barbara.jpg",
     link: "https://www.linkedin.com/in/barbaraspinto/",
   },
   {
     name: "Devin Monserrate",
-    title: "Program Manager NJ/NYC",
+    title: "Head of Operations",
     photo: "DevinMonserrate.jpeg",
     link: "https://www.linkedin.com/in/devin-monserrate21/",
   },
   {
     name: "Hector Ramos",
-    title: "Computer Donation Supervisor NJ/NYC",
+    title: "Computer Donation Supervisor",
     photo: "HectorRamos.jpeg",
     link: "",
   },
-  {
-    name: "Elmehdi Ghardi",
-    title: "Ambassador MA (Logistics)",
-    photo: "ElmehdiGhardi.jpeg",
-    link: "https://www.linkedin.com/in/elmehdi-ghardi-6b73a1233/",
-  },
-  {
-    name: "Arnold Ssemuyaga",
-    title: "Ambassador MA (Tech)",
-    photo: "ArnoldSsemuyaga.jpeg",
-    link: "https://www.linkedin.com/in/arnold-ssemuyaga-012581264/",
-  }
 ];
 
 // Board of Directors Members

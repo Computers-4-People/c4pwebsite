@@ -1,43 +1,35 @@
-// api/donations-total.js
-const axios = require('axios');
+import axios from 'axios';
+import dotenv from 'dotenv';
+import { getZohoAccessToken } from './_utils.js';
 
-let cachedToken = null;
-let lastTokenTime = 0;
-
-const getAccessToken = async () => {
-    if (cachedToken && Date.now() - lastTokenTime < 50 * 60 * 1000) return cachedToken;
-
-    const response = await axios.post(`https://accounts.zoho.com/oauth/v2/token`, null, {
-        params: {
-            refresh_token: process.env.ZOHO_REFRESH_TOKEN,
-            client_id: process.env.ZOHO_CLIENT_ID,
-            client_secret: process.env.ZOHO_CLIENT_SECRET,
-            grant_type: 'refresh_token'
-        }
-    });
-
-    cachedToken = response.data.access_token;
-    lastTokenTime = Date.now();
-    return cachedToken;
-};
+dotenv.config({ path: './.env.local' });
 
 export default async function handler(req, res) {
-    try {
-        const token = await getAccessToken();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-        const response = await axios.get(`https://www.zohoapis.com/crm/v2/Financial_Donations/search`, {
-            headers: { Authorization: `Zoho-oauthtoken ${token}` },
-            params: {
-                criteria: `(Date:between:2025-01-01,2025-12-31)`
-            }
-        });
+  try {
+    const accessToken = await getZohoAccessToken();
 
-        const donations = response.data.data || [];
-        const total = donations.reduce((sum, d) => sum + (d.Amount || 0), 0);
-
-        res.status(200).json({ total });
-    } catch (err) {
-        console.error(err.response?.data || err.message);
-        res.status(500).json({ error: 'Internal Server Error' });
+    if (!accessToken) {
+      return res.status(500).json({ error: 'Failed to obtain access token' });
     }
+
+    const url = `https://www.zohoapis.com/crm/v2/Financial_Donations/search?criteria=(Date:between:2025-01-01,2025-12-31)`;
+
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Zoho-oauthtoken ${accessToken}`
+      }
+    });
+
+    const records = response.data.data || [];
+    const total = records.reduce((sum, r) => sum + (r.Amount || 0), 0);
+
+    return res.status(200).json({ total });
+  } catch (error) {
+    console.error('Donation API Error:', error.response?.data || error.message);
+    return res.status(500).json({ error: 'Failed to fetch donation total' });
+  }
 }

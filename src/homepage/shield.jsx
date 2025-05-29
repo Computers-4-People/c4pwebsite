@@ -299,8 +299,6 @@ export default function ShieldHeader() {
 
 </div>
 
-
-
           <p className="mt-40 text-sm text-gray-400 font-medium text-center">
             100% of profit supports closing the digital divide
           </p>
