@@ -21,6 +21,6 @@ const initializeRedis = async () => {
 };
 
 
-await initializeRedis();
+initializeRedis();
 
 export default client;
