@@ -67,15 +67,24 @@ function Portal() {
                 const urlRecordId = searchParams.get('recordId');
                 const urlAuthCode = searchParams.get('jwt') || null;
                 const cookieValue = sessionStorage.getItem('session') || null;
-    
+                
+                // Add detailed logging
+                console.log('Cookie value from sessionStorage:', cookieValue);
+                console.log('Type of cookie value:', typeof cookieValue);
+                console.log('Stringified cookie value:', JSON.stringify(cookieValue));
+
                 // If we have a session, we don't need to validate
                 if (cookieValue) {
                     console.log('Using existing session');
                     setRecordId(urlRecordId);
                     
                     console.log('Using existing cookie');
+                    // Log the exact params being sent
+                    const params = { urlJwt: cookieValue, recordId: urlRecordId };
+                    console.log('Verify JWT params:', params);
+                    
                     await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-                        params: { urlJwt: cookieValue, recordId: urlRecordId },
+                        params: params
                     });
                     
                     console.log('Setting auth header');
