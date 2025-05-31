@@ -79,21 +79,59 @@ function Portal() {
                     console.log('Using existing session');
                     setRecordId(urlRecordId);
                     
-                    console.log('Using existing cookie');
-                    const params = { urlJwt: cookieValue, recordId: urlRecordId };
-                    console.log('Verify JWT params:', params);
-                    
-                    await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-                        params: params
-                    });
-                    
-                    console.log('Setting auth header');
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
-                    
-                    console.log('Calling fetchData');
-                    await fetchData();
-                    console.log('fetchData completed');
-                    return;
+                    // Add pre-verification checks
+                    try {
+                        // Decode the JWT without verifying the signature
+                        const base64Url = cookieValue.split('.')[1];
+                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                        }).join(''));
+
+                        const decoded = JSON.parse(jsonPayload);
+                        console.log('Pre-verification JWT payload:', decoded);
+
+                        // Check if the recordId matches before making the API call
+                        if (decoded.recordID !== urlRecordId) {
+                            console.log('RecordId mismatch in JWT, clearing session');
+                            sessionStorage.removeItem('session');
+                            // Optionally redirect or show error
+                            setError('Session expired. Please log in again.');
+                            return;
+                        }
+
+                        // Check if the token is expired
+                        const currentTime = Math.floor(Date.now() / 1000);
+                        if (decoded.exp < currentTime) {
+                            console.log('JWT expired, clearing session');
+                            sessionStorage.removeItem('session');
+                            setError('Session expired. Please log in again.');
+                            return;
+                        }
+
+                        // // If we get here, the token looks valid, proceed with verification
+                        // console.log('Using existing cookie');
+                        // const params = { urlJwt: cookieValue, recordId: urlRecordId };
+                        // console.log('Verify JWT params:', params);
+                        
+                        // await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+                        //     params: params
+                        // });
+                        
+                        console.log('Setting auth header');
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
+                        
+                        console.log('Calling fetchData');
+                        await fetchData();
+                        console.log('fetchData completed');
+                        return;
+                    } catch (error) {
+                        console.error('Error in pre-verification:', error);
+                        // Clear invalid session
+                        sessionStorage.removeItem('session');
+                        setError('Invalid session. Please log in again.');
+                        return;
+                    }
                 }
     
                 // Only do auth code validation if we don't have a session
