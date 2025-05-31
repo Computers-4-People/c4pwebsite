@@ -94,9 +94,17 @@ function Auth() {
 
          //   const tokenResp = await getJWT(email, id);
 
-            const jwt = await getAuthCode(id);
+            const time = Date.now();
 
-         //   const jwt = tokenResp.token;
+            const jwt = await getAuthCode(id, time);
+
+            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+                key: id,
+                typeOfData: 'authCode',
+                value: time
+            });
+
+         
 
             console.log('code', jwt);
 
