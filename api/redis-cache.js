@@ -18,6 +18,7 @@ export default async function handler(req, res) {
         try {
             const cachedData = await getCache(key, typeOfData);
             if (cachedData) {
+                console.log('GET')
                 return res.json({ data: cachedData});
             }
             return res.status(404).json({ error: 'Cache miss' });
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
         }
 
         try {
+            console.log('POST')
             await setCache(key, value, typeOfData, expiryInSeconds);
             return res.json({ success: true });
         } catch (error) {
@@ -45,11 +47,14 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
         const { key, typeOfData } = req.query;
         if (!key || !typeOfData) {
+           
             return res.status(400).json({ error: 'Cache key is required' });
         }
 
         try {
+            console.log('DELETE')
             await deleteCache(key, typeOfData);
+           
             return res.json({ success: true, message: 'Cache deleted successfully' });
         } catch (error) {
             console.error('Error deleting from cache:', error);
