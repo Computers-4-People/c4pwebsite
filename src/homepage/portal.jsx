@@ -63,6 +63,10 @@ function Portal() {
     useEffect(() => {
         (async () => {
         try {
+
+            
+        const urlRecordId = searchParams.get('recordId');
+        const urlAuthCode = searchParams.get('jwt') || jwt;
     
         // let getCachedCode = null;
         const cookieValue = sessionStorage.getItem('session') || null;
@@ -80,8 +84,8 @@ function Portal() {
 
 
 
-        const urlRecordId = searchParams.get('recordId');
-        const urlAuthCode = searchParams.get('jwt') || jwt;
+        // const urlRecordId = searchParams.get('recordId');
+        // const urlAuthCode = searchParams.get('jwt') || jwt;
         // const getCode = await getAuthCode(urlRecordId);
         
         // const truthy = !getCachedCode || cookieValue;
