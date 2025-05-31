@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PortalDropdown from '../components/portaldropdown';
 
 
+
 // added this
 import { useSearchParams } from 'react-router-dom';
 
@@ -59,14 +60,30 @@ function Portal() {
     useEffect(() => {
         (async () => {
         try {
+
         const urlRecordId = searchParams.get('recordId');
-      //  const urlJwt = searchParams.get('jwt') || jwt;
-     //   const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
-      //  console.log('apiValidation:', apiValidation.data);
+        const urlAuthCode = searchParams.get('jwt') || jwt;
+        const getCode = await getAuthCode(urlRecordId);
+        const getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+            params: { key: urlAuthCode, typeOfData: 'authCode' },
+        }) || null;
+      
 
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId) {
+        if (urlRecordId && urlAuthCode === getCode && !getCachedCode) {
             setRecordId(urlRecordId);
+            
+            const jwt = await getJWT(urlRecordId);
+            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+                key: urlAuthCode,
+                typeOfData: 'authCode',
+                value: urlRecordId
+            });
+            
+
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
             setTimeout(() => {
                 fetchData();
             }, 0);
@@ -83,10 +100,15 @@ function Portal() {
     }, [searchParams]); 
 
 
-    const getJWT = async(email, recordID) => {
+
+    const getAuthCode = async (userId) => {
+        const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+        return response.data.authCode;
+    }
+
+    const getJWT = async(recordID) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/api/jwt`, {
-                email,
                 recordID
             }, {
                 withCredentials: true,
