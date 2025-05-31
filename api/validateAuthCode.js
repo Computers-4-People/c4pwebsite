@@ -6,6 +6,7 @@ export default function handler(req, res) {
 
     const { authCode, timestamp, userId } = req.query;
     console.log('Received params:', { authCode, timestamp, userId });
+    currentTime = Date.now();
 
     try {
         const ip = req.headers['x-forwarded-for'] || 
