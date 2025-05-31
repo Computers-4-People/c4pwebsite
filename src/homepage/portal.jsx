@@ -60,13 +60,18 @@ function Portal() {
     useEffect(() => {
         (async () => {
         try {
-
+    
+        let getCachedCode = null;
         const urlRecordId = searchParams.get('recordId');
         const urlAuthCode = searchParams.get('jwt') || jwt;
         const getCode = await getAuthCode(urlRecordId);
-        const getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
-            params: { key: urlAuthCode, typeOfData: 'authCode' },
-        }) || null;
+        try {
+            const getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: urlAuthCode, typeOfData: 'authCode' },
+            });
+        } catch (error) {
+            console.error('Error fetching cached auth code:', error);
+        }
       
 
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
