@@ -34,7 +34,7 @@ export default function handler(req, res) {
         console.log('Decoded JWT:', decoded);
         
         
-        if (decoded.recordId !== recordId) {
+        if (decoded.recordID !== recordId) {
             return res.status(401).json({ valid: false, error: 'Token recordId mismatch' });
         }
 
