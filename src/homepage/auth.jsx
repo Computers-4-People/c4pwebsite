@@ -47,8 +47,8 @@ const getJWT = async(email, recordID) => {
     }
 }
 
-const getAuthCode = async (userId) => {
-    const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+const getAuthCode = async (userId, timestamp) => {
+    const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}&timestamp=${timestamp}`);
     return response.data.authCode;
 }
 
