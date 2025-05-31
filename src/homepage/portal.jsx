@@ -62,57 +62,49 @@ function Portal() {
     // added this
     useEffect(() => {
         (async () => {
-        try {
+            try {
+                const urlRecordId = searchParams.get('recordId');
+                const urlAuthCode = searchParams.get('jwt') || jwt;
+                const cookieValue = sessionStorage.getItem('session') || null;
+                
+                const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                    params: { key: urlRecordId, typeOfData: 'time' },
+                });
 
+                const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
+                    params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
+                });
 
-        const urlRecordId = searchParams.get('recordId');
-        const urlAuthCode = searchParams.get('jwt') || jwt;
-    
-        // let getCachedCode = null;
-        const cookieValue = sessionStorage.getItem('session') || null;
-        const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
-            params: { key: urlRecordId, typeOfData: 'time' },
-        });
+                if (validate.data.valid) {
+                    await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
+                        params: { key: urlRecordId, typeOfData: 'time' },
+                    });
 
-        const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
-            params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
-        });
+                    setRecordId(urlRecordId);
 
-        if (validate.data.valid) {
-            // Delete only after successful validation
-            await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
-                params: { key: urlRecordId, typeOfData: 'time' },
-            });
+                    let authToken;
+                    if (cookieValue) {
+                        await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+                            params: { urlJwt: cookieValue, recordId: urlRecordId },
+                        });
+                        authToken = cookieValue;
+                    } else {
+                        authToken = await getJWT(urlRecordId);
+                        sessionStorage.setItem('session', authToken);
+                    }
 
-            setRecordId(urlRecordId);
-
-            if (cookieValue) {
-              await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-                params: { urlJwt: cookieValue, recordId: urlRecordId },
-              });
+                    // Set the authorization header with the correct token
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+                    
+                    // Call fetchData directly instead of using setTimeout
+                    await fetchData();
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Error fetching data. Please try again.');
             }
-
-            else {
-                const jwt = await getJWT(urlRecordId);
-                sessionStorage.setItem('session', jwt);
-            }
-
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-
-            setTimeout(() => {
-                fetchData();
-            }, 0);
-
-
-        }
-
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
-    }
-    })();
-    }, [searchParams]); 
+        })();
+    }, [searchParams]);
 
 
 
