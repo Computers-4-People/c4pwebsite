@@ -3,9 +3,7 @@ import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 import { useNavigate } from 'react-router-dom';
 import PortalDropdown from '../components/portaldropdown';
-
-
-
+import { decodeJWT, validateJWT } from '../utils/jwtValidation';
 
 // added this
 import { useSearchParams } from 'react-router-dom';
@@ -19,21 +17,16 @@ function Portal() {
 
     axios.defaults.withCredentials = true;
 
-
     const [searchParams] = useSearchParams();
     var [recordId, setRecordId] = useState(searchParams.get('recordId') || '');
     var [jwt, setJwt] = useState(searchParams.get('jwt') || '');
 
-    
-
-    
-  //  var [recordId, setRecordId] = useState('');
     const [championId, setChampionId] = useState('');
-    var [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
+    var [module, setModule] = useState('Contacts'); // Default to Contacts for Applicants
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
-    const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+    const [inventoryData, setInventoryData] = useState([]); 
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0); 
     const [selectedDonation, setSelectedDonation] = useState("")
     var [isloading, setIsloading] = useState(true);
     
@@ -63,7 +56,7 @@ function Portal() {
     useEffect(() => {
         (async () => {
             try {
-                console.log('Starting useEffect');
+             
                 const urlRecordId = searchParams.get('recordId');
                 const urlAuthCode = searchParams.get('jwt') || null;
                 
@@ -71,108 +64,59 @@ function Portal() {
                 const storedToken = sessionStorage.getItem('session');
                 const cookieValue = typeof storedToken === 'string' ? storedToken : null;
                 
-                console.log('Cookie value from sessionStorage:', cookieValue);
-                console.log('Type of cookie value:', typeof cookieValue);
-
                 // If we have a valid session token, we don't need to validate
                 if (cookieValue) {
                     console.log('Using existing session');
                     setRecordId(urlRecordId);
                     
-                    // Add pre-verification checks
-                    try {
-                        // Decode the JWT without verifying the signature
-                        const base64Url = cookieValue.split('.')[1];
-                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                        }).join(''));
-
-                        const decoded = JSON.parse(jsonPayload);
-                        console.log('Pre-verification JWT payload:', decoded);
-
-                        // Check if the recordId matches before making the API call
-                        if (decoded.recordID !== urlRecordId) {
-                            console.log('RecordId mismatch in JWT, clearing session');
-                            sessionStorage.removeItem('session');
-                            // Optionally redirect or show error
-                            setError('Session expired. Please log in again.');
-                            return;
-                        }
-
-                        // Check if the token is expired
-                        const currentTime = Math.floor(Date.now() / 1000);
-                        if (decoded.exp < currentTime) {
-                            console.log('JWT expired, clearing session');
-                            sessionStorage.removeItem('session');
-                            setError('Session expired. Please log in again.');
-                            return;
-                        }
-
-                        // // If we get here, the token looks valid, proceed with verification
-                        // console.log('Using existing cookie');
-                        // const params = { urlJwt: cookieValue, recordId: urlRecordId };
-                        // console.log('Verify JWT params:', params);
-                        
-                        // await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-                        //     params: params
-                        // });
-                        
-                        console.log('Setting auth header');
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
-                        
-                        console.log('Calling fetchData');
-                        await fetchData();
-                        console.log('fetchData completed');
-                        return;
-                    } catch (error) {
-                        console.error('Error in pre-verification:', error);
-                        // Clear invalid session
+                    const validation = validateJWT(cookieValue, urlRecordId);
+                    
+                    if (!validation.isValid) {
+                        console.log(validation.message);
                         sessionStorage.removeItem('session');
-                        setError('Invalid session. Please log in again.');
+                        setError('Session expired. Please log in again.');
                         return;
                     }
+ 
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
+                    
+                    console.log('Calling fetchData');
+                    await fetchData();
+                    
+                    return;
                 }
     
                 // Only do auth code validation if we don't have a session
                 if (!cookieValue) {
-                    console.log('Getting timestamp for:', urlRecordId);
+                    
                     const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                         params: { key: urlRecordId, typeOfData: 'time' },
                     });
-                    console.log('Timestamp response:', timestamp.data);
-    
-                    console.log('Validating auth code');
+                    
                     const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
-                        params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
+                        params: { authCode: urlAuthCode, timestamp: 
+                            timestamp.data.data, userId: urlRecordId },
                     });
-                    console.log('Validation response:', validate.data);
+                    
     
                     if (validate.data.valid) {
-                        console.log('Validation successful, deleting cache');
+                       
                         await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
                             params: { key: urlRecordId, typeOfData: 'time' },
                         });
     
                         setRecordId(urlRecordId);
-                        console.log('RecordId set to:', urlRecordId);
-    
-                        console.log('Getting new JWT');
+                        
                         const authToken = await getJWT(urlRecordId);
                         sessionStorage.setItem('session', authToken);
-                        console.log('authToken', authToken);
-
-
-
-    
-                        console.log('Setting auth header');
-                        axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+            
+                        axios.defaults.headers.common['Authorization'] = 
+                        `Bearer ${authToken}`;
                         
-                        console.log('Calling fetchData');
                         await fetchData();
-                        console.log('fetchData completed');
+                       
                     } else {
-                        console.log('Validation failed');
+                     
                         setError('Invalid or expired authentication code');
                     }
                 }
@@ -183,12 +127,6 @@ function Portal() {
         })();
     }, [searchParams]);
 
-
-
-    // const getAuthCode = async (userId) => {
-    //     const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
-    //     return response.data.authCode;
-    // }
 
     const getJWT = async(recordID) => {
         try {
@@ -201,9 +139,6 @@ function Portal() {
                 }
             });
     
-            // Log the response to see its structure
-            console.log('JWT Response:', response.data);
-            
             // Ensure we're getting a token string
             const token = response.data.token;
             if (!token || typeof token !== 'string') {
@@ -213,8 +148,7 @@ function Portal() {
             
             // Store the token as a string
             sessionStorage.setItem('session', token);
-            console.log('Stored token:', token);
-            
+           
             return token;
             
         } catch (error) {
@@ -223,7 +157,7 @@ function Portal() {
         }
     }
 
-    
+    // -----------------------------------------------------------------------------
 
     // Auto-slide functionality (if using image slider)
     useEffect(() => {
@@ -253,17 +187,12 @@ function Portal() {
 
 
 
-    
+    // -----------------------------------------------------------------------------
 
     const fetchData = async () => {
-
-        // const cachedInventory = sessionStorage.getItem('inv');
-        // const cachedData = sessionStorage.getItem('data');
-        // console.log(cachedInventory, cachedData);
-
-        console.log('test');
+      
         if (sessionStorage.getItem('module')){
-            console.log('test2');
+           
             if (await cachedFetch()) {
                 console.log('conditional hit');
                 return;
@@ -279,24 +208,19 @@ function Portal() {
             return;
         }
 
-        // recordId here is the champion recordId
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
         const championResp = await axios.get(reqChampion);
-        console.log('successfully retrieved champion information', championResp.data);
 
-        // cache the championResp data in sessionStorage to use in Champions.jsx
         sessionStorage.setItem('championResp', JSON.stringify(championResp.data));
         sessionStorage.setItem('recordId', championResp.data.id);
 
         const name = championResp.data?.Name;
         const email = championResp.data?.Email;
         const found = championResp.data?.Champion_Type;
-        console.log("here is the champion's name", name);
-        console.log("here is the Champion's Email", email);
-        console.log("Champion types:", found);
 
-        const type = found.find(t => t === 'Computer Donor' || t === 'Computer Applicant' || t === 'Loser');
-        console.log("type", type);
+        const type = found.find(t => t === 'Computer Donor' 
+            || t === 'Computer Applicant' || t === 'Loser');
+
         if (!type) {
             console.error('Champion type not found:', found);
             setError('Invalid champion type');
@@ -313,10 +237,10 @@ function Portal() {
             sessionStorage.setItem('type', 'Contacts');
         }
         
-        // put this in a helper function
+        // put this in a helper function --
         let dateList = [];
         for (let i = 0; i < reqName.data.length; i++) { 
-            console.log(`${i}&${reqName.data[i].Entry_Date}`, reqName.data[i]);
+
             var d = Date.parse(reqName.data[i].Entry_Date);
             dateList.push(d);
         }
@@ -325,42 +249,26 @@ function Portal() {
         const newSelectedDonation = reqName.data[maximum].Entry_Date + " Donation";
         setSelectedDonation(newSelectedDonation);        
         sessionStorage.setItem('selectedDonationOld', newSelectedDonation);
-        console.log(sessionStorage.getItem('selectedDonationOld'));
-
-
-        console.log('max entry', reqName.data[maximum]);
-        console.log(dateList);
-        console.log(reqName.data[maximum].Entry_Date);
-        console.log('successfully retrieved applicant information', reqName);
-        
+  
         const id = reqName.data[maximum].id;
         
-        console.log('recordId before:', recordId);
-        console.log('recordId after:', id);
-
-        //mutates to computer_donor or applicant record id
         recordId = id;
 
-        if (reqName.data[maximum].Status === "Donated" || reqName.data[maximum].Status === "Archived") {
-            console.log('Applicant is not a client');
+        if (reqName.data[maximum].Status === "Donated" || 
+            reqName.data[maximum].Status === "Archived") {
+ 
             newModule = 'Computer_Donors';
         }
 
         else {
-            console.log('Applicant is a client');
             newModule = 'Contacts';
         }
 
-        console.log('newModule', newModule);
-        console.log('module', module);
-        // get recordId from request and put it here
         const requestUrl = `${API_BASE_URL}/api/${newModule}/${recordId}`;
         
-        console.log('Attempting to fetch from:', requestUrl);
-
         try {
             const response = await axios.get(requestUrl);
-            console.log('API Response:', response.data);
+   
             if (response.data.error) {
                 setError(response.data.error);
             } else {
@@ -368,35 +276,33 @@ function Portal() {
 
                 await cacheData(`${searchParams.get('recordId')}`, 'data', response.data);
                 const resp = await getCachedData(`${searchParams.get('recordId')}`, 'data');
-                console.log('resp for cached data', resp);
-
+    
                 setModule(newModule);
-                console.log(newModule);
-                console.log(module);
+  
                 module = newModule;
                 sessionStorage.setItem('module', newModule);
 
-                // Fetch inventory data based on Applicant ID or Donor_ID
                 if (module === 'Contacts') {
                     if (response.data.Status === 'Client') {
-                        fetchInventoryByRecipientId(recordId, `${searchParams.get('recordId')}`);
+                        fetchInventoryByRecipientId(recordId, 
+                            `${searchParams.get('recordId')}`);
                     }
                 } else if (module === 'Computer_Donors') {
                     
                     const donorId = response.data.Donor_ID;
-                    console.log('donorId', donorId);
+   
                     if (donorId) {
-                        fetchInventoryByDonorId(donorId,`${searchParams.get('recordId')}`);
+                        fetchInventoryByDonorId(donorId,
+                            `${searchParams.get('recordId')}`);
                     }
                 }
                 setIsloading(false);
             }
         } catch (error) {
-            console.log(module);
-            console.log(recordId);
-            console.log(API_BASE_URL);
+     
             console.error('Error fetching data:', error);
-            if (error.response && error.response.data && error.response.data.error) {
+            if (error.response && error.response.data 
+                && error.response.data.error) {
                 setError(error.response.data.error);
             } else {
                 setError('Network Error: Unable to retrieve data.');
@@ -444,15 +350,13 @@ function Portal() {
                 cachedInventory = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                     params: { key: `${recordId}`, typeOfData: 'inventory' },
                 });
-                console.log('cachedInventory', cachedInventory);
+         
             }
 
             const cachedData = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                 params: { key: `${recordId}`, typeOfData: 'data' },
             });
-            console.log('cachedData', cachedData);
-
-            // Check if we have data in the response
+        
             if (cachedData?.data?.data) {
                 const module = sessionStorage.getItem('module');
                 const selectedDonation = sessionStorage.getItem('selectedDonationOld');
@@ -464,22 +368,19 @@ function Portal() {
                 ];
 
                 console.log('cachedInventory', cachedInventory);
-                // Only add inventory update if we have inventory data
+        
                 if (cachedInventory?.data?.data) {
-                    console.log('cachedInventory', cachedInventory);
+         
                     stateUpdates.push(setInventoryData(cachedInventory.data.data));
                 }
 
                 await Promise.all(stateUpdates).then(() => {
-                    console.log('All states updated');
-                    console.log('Using cached data');
-                    console.log(selectedDonation);
+
                     setIsloading(false);
                 });
                 return true;
             }
-            
-            console.log('No cached data found');
+
             return false;
 
         } catch (error) {
@@ -499,13 +400,11 @@ function Portal() {
     // fetch donor or applicant data with champion name
     const fetchWithChampion = async (Name, moduleName, param) => {
         try {
-            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
-
-            console.log('url:', requestUrl);
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}
+            &moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
 
             const response = await axios.get(requestUrl);
-            console.log('response:', response.data);
-
+   
             return response.data;
         }
         catch(e) {
@@ -519,7 +418,7 @@ function Portal() {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Recipient', searchValue: recipientId },
             });
-            console.log('Inventory Data Response:', response.data);
+    
             if (response.data && response.data.length > 0) {
 
 
@@ -527,11 +426,7 @@ function Portal() {
                await cacheData(recordId, 'inventory', response.data);
 
                const cachedInventory = await getCachedData(recordId, 'inventory');
-               console.log('cachedInventory', cachedInventory);
-                
-
-
-                console.log('Inventory Data:', response.data);
+   
             } else {
                 console.log('No inventory data found for this recipient.');
             }
@@ -544,23 +439,18 @@ function Portal() {
         try {
             const req = `${API_BASE_URL}/api/computer-inventory`;
             const params = { searchField: 'Donor_ID', searchValue: donorId };
-            console.log('here');
-            console.log(req, params);
+   
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Donor_ID', searchValue: donorId },
             });
-            console.log('Inventory Data Response:', response.data);
+    
             if (response.data && response.data.length > 0) {
 
                 setInventoryData(response.data);
                 await cacheData(recordId, 'inventory', response.data);
 
                 const cachedInventory = await getCachedData(recordId, 'inventory');
-                console.log('cachedInventory', cachedInventory);
 
-                
-                console.log('Inventory Data:', response.data);
-                console.log(inventoryData);
             } else {
                 console.log('No inventory data found for this donor.');
             }
@@ -568,6 +458,9 @@ function Portal() {
             console.error('Error fetching inventory data:', error);
         }
     };
+
+
+        
 
     const renderStatusMessage = () => {
         if (module !== 'Contacts' || !data) return null;
