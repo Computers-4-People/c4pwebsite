@@ -64,23 +64,24 @@ function Portal() {
         (async () => {
             try {
                 console.log('Starting useEffect');
+                let validate = {data: {valid: false}};
                 const urlRecordId = searchParams.get('recordId');
                 const urlAuthCode = searchParams.get('jwt') || jwt;
                 const cookieValue = sessionStorage.getItem('session') || null;
-                
-                console.log('Getting timestamp for:', urlRecordId);
-                const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
-                    params: { key: urlRecordId, typeOfData: 'time' },
-                });
-                console.log('Timestamp response:', timestamp.data);
+                if (!cookieValue) {
+                    console.log('Getting timestamp for:', urlRecordId);
+                    const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                        params: { key: urlRecordId, typeOfData: 'time' },
+                    });
+                    console.log('Timestamp response:', timestamp.data);
 
-                console.log('Validating auth code');
-                const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
-                    params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
-                });
-                console.log('Validation response:', validate.data);
-
-                if (validate.data.valid) {
+                    console.log('Validating auth code');
+                    validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
+                        params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
+                    });
+                    console.log('Validation response:', validate.data);
+                }
+                if (validate.data.valid || cookieValue) {
                     console.log('Validation successful, deleting cache');
                     await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
                         params: { key: urlRecordId, typeOfData: 'time' },
