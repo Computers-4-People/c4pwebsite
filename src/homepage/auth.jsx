@@ -47,6 +47,11 @@ const getJWT = async(email, recordID) => {
     }
 }
 
+const getAuthCode = async (userId) => {
+    const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+    return response.data.authCode;
+}
+
 
 
 // display html that says "sending email... within react component"
@@ -87,11 +92,13 @@ function Auth() {
            
             setSuccess(true);
 
-            const tokenResp = await getJWT(email, id);
+         //   const tokenResp = await getJWT(email, id);
 
-            const jwt = tokenResp.token;
+            const jwt = await getAuthCode(id);
 
-            console.log('jwt:', jwt);
+         //   const jwt = tokenResp.token;
+
+            console.log('code', jwt);
 
 
             await sendEmail(email, id, jwt);
