@@ -63,44 +63,56 @@ function Portal() {
     useEffect(() => {
         (async () => {
             try {
+                console.log('Starting useEffect');
                 const urlRecordId = searchParams.get('recordId');
                 const urlAuthCode = searchParams.get('jwt') || jwt;
                 const cookieValue = sessionStorage.getItem('session') || null;
                 
+                console.log('Getting timestamp for:', urlRecordId);
                 const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                     params: { key: urlRecordId, typeOfData: 'time' },
                 });
+                console.log('Timestamp response:', timestamp.data);
 
+                console.log('Validating auth code');
                 const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
                     params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
                 });
+                console.log('Validation response:', validate.data);
 
                 if (validate.data.valid) {
+                    console.log('Validation successful, deleting cache');
                     await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
                         params: { key: urlRecordId, typeOfData: 'time' },
                     });
 
                     setRecordId(urlRecordId);
+                    console.log('RecordId set to:', urlRecordId);
 
                     let authToken;
                     if (cookieValue) {
+                        console.log('Using existing cookie');
                         await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
                             params: { urlJwt: cookieValue, recordId: urlRecordId },
                         });
                         authToken = cookieValue;
                     } else {
+                        console.log('Getting new JWT');
                         authToken = await getJWT(urlRecordId);
                         sessionStorage.setItem('session', authToken);
                     }
 
-                    // Set the authorization header with the correct token
+                    console.log('Setting auth header');
                     axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
                     
-                    // Call fetchData directly instead of using setTimeout
+                    console.log('Calling fetchData');
                     await fetchData();
+                    console.log('fetchData completed');
+                } else {
+                    console.log('Validation failed');
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error in useEffect:', error);
                 setError('Error fetching data. Please try again.');
             }
         })();
