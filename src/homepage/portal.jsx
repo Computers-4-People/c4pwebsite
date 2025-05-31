@@ -66,11 +66,11 @@ function Portal() {
         const urlAuthCode = searchParams.get('jwt') || jwt;
         const getCode = await getAuthCode(urlRecordId);
         try {
-            const getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+            getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                 params: { key: urlAuthCode, typeOfData: 'authCode' },
             });
         } catch (error) {
-            console.error('Error fetching cached auth code:', error);
+            console.log('no cached code found');
         }
       
 
