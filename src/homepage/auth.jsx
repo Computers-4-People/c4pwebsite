@@ -100,9 +100,10 @@ function Auth() {
 
             await axios.post(`${API_BASE_URL}/api/redis-cache`, {
                 key: id,
-                typeOfData: 'authCode',
-                value: time
+                value: time,
+                typeOfData: 'time'
             });
+
 
          
 

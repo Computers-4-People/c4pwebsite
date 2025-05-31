@@ -74,25 +74,16 @@ function Portal() {
             params: { key: urlRecordId, typeOfData: 'time' },
         });
 
-        await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
-            params: { key: urlRecordId, typeOfData: 'time' },
-        });
-        
         const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
-            params: { authCode: urlAuthCode, timestamp: timestamp, userId: urlRecordId },
+            params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
         });
 
+        if (validate.data.valid) {
+            // Delete only after successful validation
+            await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: urlRecordId, typeOfData: 'time' },
+            });
 
-
-        // const urlRecordId = searchParams.get('recordId');
-        // const urlAuthCode = searchParams.get('jwt') || jwt;
-        // const getCode = await getAuthCode(urlRecordId);
-        
-        // const truthy = !getCachedCode || cookieValue;
-      
-
-        // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId && validate.data.valid) {
             setRecordId(urlRecordId);
 
             if (cookieValue) {
