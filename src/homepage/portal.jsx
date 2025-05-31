@@ -64,53 +64,66 @@ function Portal() {
         (async () => {
             try {
                 console.log('Starting useEffect');
-                let validate = {data: {valid: false}};
                 const urlRecordId = searchParams.get('recordId');
-                const urlAuthCode = searchParams.get('jwt') || jwt;
+                const urlAuthCode = searchParams.get('jwt') || null;
                 const cookieValue = sessionStorage.getItem('session') || null;
+    
+                // If we have a session, we don't need to validate
+                if (cookieValue) {
+                    console.log('Using existing session');
+                    setRecordId(urlRecordId);
+                    
+                    console.log('Using existing cookie');
+                    await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+                        params: { urlJwt: cookieValue, recordId: urlRecordId },
+                    });
+                    
+                    console.log('Setting auth header');
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
+                    
+                    console.log('Calling fetchData');
+                    await fetchData();
+                    console.log('fetchData completed');
+                    return;
+                }
+    
+                // Only do auth code validation if we don't have a session
                 if (!cookieValue) {
                     console.log('Getting timestamp for:', urlRecordId);
                     const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                         params: { key: urlRecordId, typeOfData: 'time' },
                     });
                     console.log('Timestamp response:', timestamp.data);
-
+    
                     console.log('Validating auth code');
-                    validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
+                    const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
                         params: { authCode: urlAuthCode, timestamp: timestamp.data.data, userId: urlRecordId },
                     });
                     console.log('Validation response:', validate.data);
-                }
-                if (validate.data.valid || cookieValue) {
-                    console.log('Validation successful, deleting cache');
-                    await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
-                        params: { key: urlRecordId, typeOfData: 'time' },
-                    });
-
-                    setRecordId(urlRecordId);
-                    console.log('RecordId set to:', urlRecordId);
-
-                    let authToken;
-                    if (cookieValue) {
-                        console.log('Using existing cookie');
-                        await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
-                            params: { urlJwt: cookieValue, recordId: urlRecordId },
+    
+                    if (validate.data.valid) {
+                        console.log('Validation successful, deleting cache');
+                        await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
+                            params: { key: urlRecordId, typeOfData: 'time' },
                         });
-                        authToken = cookieValue;
-                    } else {
+    
+                        setRecordId(urlRecordId);
+                        console.log('RecordId set to:', urlRecordId);
+    
                         console.log('Getting new JWT');
-                        authToken = await getJWT(urlRecordId);
+                        const authToken = await getJWT(urlRecordId);
                         sessionStorage.setItem('session', authToken);
+    
+                        console.log('Setting auth header');
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+                        
+                        console.log('Calling fetchData');
+                        await fetchData();
+                        console.log('fetchData completed');
+                    } else {
+                        console.log('Validation failed');
+                        setError('Invalid or expired authentication code');
                     }
-
-                    console.log('Setting auth header');
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
-                    
-                    console.log('Calling fetchData');
-                    await fetchData();
-                    console.log('fetchData completed');
-                } else {
-                    console.log('Validation failed');
                 }
             } catch (error) {
                 console.error('Error in useEffect:', error);
