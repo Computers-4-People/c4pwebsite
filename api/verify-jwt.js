@@ -23,6 +23,7 @@ export default function handler(req, res) {
     }
 
     const { urlJwt, recordId } = req.query; 
+    console.log('Received params:', { urlJwt, recordId });
 
     if (!urlJwt || !recordId) {
         return res.status(401).json({ valid: false, error: 'Missing token or recordId' });
@@ -30,6 +31,7 @@ export default function handler(req, res) {
 
     try {
         const decoded = jwt.verify(urlJwt, process.env.JWT_SECRET);
+        console.log('Decoded JWT:', decoded);
         
         
         if (decoded.recordId !== recordId) {
