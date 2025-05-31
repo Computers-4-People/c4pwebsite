@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   const {recordID} = req.body;
 
-  if (!email || !recordID) {
+  if (!recordID) {
     return res.status(400).json({ error: 'email and recordId are required' });
   }
 
