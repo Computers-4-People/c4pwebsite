@@ -6,6 +6,7 @@ import PortalDropdown from '../components/portaldropdown';
 
 
 
+
 // added this
 import { useSearchParams } from 'react-router-dom';
 
@@ -35,8 +36,10 @@ function Portal() {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
     const [selectedDonation, setSelectedDonation] = useState("")
     var [isloading, setIsloading] = useState(true);
+    
 
     const [type, setType] = useState(null);
+   
     var newModule = null;
     var reqName = null;
 
@@ -61,31 +64,43 @@ function Portal() {
         (async () => {
         try {
     
-        let getCachedCode = null;
+        // let getCachedCode = null;
+        const cookieValue = sessionStorage.getItem('session') || null;
+        const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+            params: { key: urlRecordId, typeOfData: 'time' },
+        });
+
+        await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
+            params: { key: urlRecordId, typeOfData: 'time' },
+        });
+        
+        const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
+            params: { authCode: urlAuthCode, timestamp: timestamp, userId: urlRecordId },
+        });
+
+
+
         const urlRecordId = searchParams.get('recordId');
         const urlAuthCode = searchParams.get('jwt') || jwt;
-        const getCode = await getAuthCode(urlRecordId);
-        try {
-            getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
-                params: { key: urlAuthCode, typeOfData: 'authCode' },
-            });
-        } catch (error) {
-            console.log('no cached code found');
-        }
+        // const getCode = await getAuthCode(urlRecordId);
+        
+        // const truthy = !getCachedCode || cookieValue;
       
 
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId && urlAuthCode === getCode && !getCachedCode) {
+        if (urlRecordId && validate.data.valid) {
             setRecordId(urlRecordId);
-            
-            const jwt = await getJWT(urlRecordId);
-            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
-                key: urlAuthCode,
-                typeOfData: 'authCode',
-                value: urlRecordId
-            });
-            
 
+            if (cookieValue) {
+              await axios.get(`${API_BASE_URL}/api/verify-jwt`, {
+                params: { urlJwt: cookieValue, recordId: urlRecordId },
+              });
+            }
+
+            else {
+            const jwt = await getJWT(urlRecordId);
+            sessionStorage.setItem('session', jwt);
+            }
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 

@@ -18,10 +18,12 @@ export default async function handler(req, res) {
               req.socket.remoteAddress;
 
     
-    const { userId } = req.query;
+
+    
+    const { userId, timestamp } = req.query;
 
     // Create a unique string combining IP, timestamp, and user ID
-    const dataToHash = `${ip}-${userId}-${process.env.AUTH_SECRET}`;
+    const dataToHash = `${ip}-${userId}-${process.env.AUTH_SECRET}-${timestamp}`;
     
     // Generate hash
     const authCode = crypto
@@ -33,7 +35,7 @@ export default async function handler(req, res) {
     // Set expiration to 1 minute
     //const expiresAt = new Date(timestamp + 60000);
     
-    return res.status(200).json({ authCode, active: true });
+    return res.status(200).json({ authCode, active: true});
 
 
   } catch (error) {

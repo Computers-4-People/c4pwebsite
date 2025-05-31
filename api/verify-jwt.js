@@ -14,7 +14,6 @@ export default function handler(req, res) {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
@@ -23,20 +22,23 @@ export default function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { urlJwt } = req.query; 
+    const { urlJwt, recordId } = req.query; 
 
-    
-    if (!urlJwt) {
-        return res.status(401).json({ valid: false, error: 'No token provided' });
+    if (!urlJwt || !recordId) {
+        return res.status(401).json({ valid: false, error: 'Missing token or recordId' });
     }
-
-    
 
     try {
         const decoded = jwt.verify(urlJwt, process.env.JWT_SECRET);
+        
+        
+        if (decoded.recordId !== recordId) {
+            return res.status(401).json({ valid: false, error: 'Token recordId mismatch' });
+        }
+
         res.status(200).json({ valid: true, user: decoded });
     } catch (error) {
         console.error('JWT verification error:', error);
         res.status(401).json({ valid: false, error: 'Invalid token' });
     }
-} 
+}
