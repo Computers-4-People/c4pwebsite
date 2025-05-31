@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PortalDropdown from '../components/portaldropdown';
 
 
+
 // added this
 import { useSearchParams } from 'react-router-dom';
 
@@ -62,19 +63,27 @@ function Portal() {
 
         const urlRecordId = searchParams.get('recordId');
         const urlAuthCode = searchParams.get('jwt') || jwt;
-        const getAuthCode = await getAuthCode(urlRecordId);
-      //  const urlJwt = searchParams.get('jwt') || jwt;
-     //   const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
-      //  console.log('apiValidation:', apiValidation.data);
+        const getCode = await getAuthCode(urlRecordId);
+        const getCachedCode = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+            params: { key: urlAuthCode, typeOfData: 'authCode' },
+        }) || null;
+      
 
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId && urlAuthCode === getAuthCode) {
+        if (urlRecordId && urlAuthCode === getCode && !getCachedCode) {
             setRecordId(urlRecordId);
-            const jwt = await getJWT(email, urlRecordId);
+            
+            const jwt = await getJWT(urlRecordId);
+            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+                key: urlAuthCode,
+                typeOfData: 'authCode',
+                value: urlRecordId
+            });
+            
 
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-            
+
             setTimeout(() => {
                 fetchData();
             }, 0);
@@ -90,6 +99,12 @@ function Portal() {
     })();
     }, [searchParams]); 
 
+
+
+    const getAuthCode = async (userId) => {
+        const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+        return response.data.authCode;
+    }
 
     const getJWT = async(recordID) => {
         try {
