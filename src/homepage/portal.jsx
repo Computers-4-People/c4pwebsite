@@ -66,20 +66,20 @@ function Portal() {
                 console.log('Starting useEffect');
                 const urlRecordId = searchParams.get('recordId');
                 const urlAuthCode = searchParams.get('jwt') || null;
-                const cookieValue = sessionStorage.getItem('session') || null;
                 
-                // Add detailed logging
+                // Get the session token and ensure it's a string
+                const storedToken = sessionStorage.getItem('session');
+                const cookieValue = typeof storedToken === 'string' ? storedToken : null;
+                
                 console.log('Cookie value from sessionStorage:', cookieValue);
                 console.log('Type of cookie value:', typeof cookieValue);
-                console.log('Stringified cookie value:', JSON.stringify(cookieValue));
 
-                // If we have a session, we don't need to validate
+                // If we have a valid session token, we don't need to validate
                 if (cookieValue) {
                     console.log('Using existing session');
                     setRecordId(urlRecordId);
                     
                     console.log('Using existing cookie');
-                    // Log the exact params being sent
                     const params = { urlJwt: cookieValue, recordId: urlRecordId };
                     console.log('Verify JWT params:', params);
                     
@@ -163,7 +163,21 @@ function Portal() {
                 }
             });
     
-            return response.data.token;
+            // Log the response to see its structure
+            console.log('JWT Response:', response.data);
+            
+            // Ensure we're getting a token string
+            const token = response.data.token;
+            if (!token || typeof token !== 'string') {
+                console.error('Invalid token received:', token);
+                throw new Error('Invalid token format received');
+            }
+            
+            // Store the token as a string
+            sessionStorage.setItem('session', token);
+            console.log('Stored token:', token);
+            
+            return token;
             
         } catch (error) {
             console.error('Error in getting JWT:', error);
