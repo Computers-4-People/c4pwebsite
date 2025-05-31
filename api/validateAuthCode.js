@@ -5,15 +5,14 @@ export default function handler(req, res) {
     // ... existing headers ...
 
     const { authCode, timestamp, userId } = req.query;
-    console.log('Received params:', { authCode, timestamp, userId });
     const currentTime = Date.now();
+    console.log('Received params:', { authCode, timestamp, userId });
 
     try {
         const ip = req.headers['x-forwarded-for'] || 
                   req.connection.remoteAddress || 
                   req.socket.remoteAddress;
         
-       
         console.log('Timestamp:', timestamp);
         console.log('Time difference:', currentTime - timestamp);
         
