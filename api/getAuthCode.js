@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     const { userId, timestamp } = req.query;
 
     // Create a unique string combining IP, timestamp, and user ID
-    const dataToHash = `${ip}-${userId}-${process.env.AUTH_SECRET}-${timestamp}`;
+    const dataToHash = `${ip}-${userId}-${timestamp}-${process.env.AUTH_SECRET}`;
     
     // Generate hash
     const authCode = crypto
