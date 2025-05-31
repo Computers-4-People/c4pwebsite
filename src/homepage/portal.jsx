@@ -113,6 +113,10 @@ function Portal() {
                         console.log('Getting new JWT');
                         const authToken = await getJWT(urlRecordId);
                         sessionStorage.setItem('session', authToken);
+                        console.log('authToken', authToken);
+
+
+
     
                         console.log('Setting auth header');
                         axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
@@ -134,10 +138,10 @@ function Portal() {
 
 
 
-    const getAuthCode = async (userId) => {
-        const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
-        return response.data.authCode;
-    }
+    // const getAuthCode = async (userId) => {
+    //     const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+    //     return response.data.authCode;
+    // }
 
     const getJWT = async(recordID) => {
         try {
@@ -150,7 +154,7 @@ function Portal() {
                 }
             });
     
-            return response.data;
+            return response.data.token;
             
         } catch (error) {
             console.error('Error in getting JWT:', error);
