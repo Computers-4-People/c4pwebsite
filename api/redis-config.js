@@ -24,10 +24,10 @@ const keyCount = async () => {
 
     const keyCount = await client.dbSize();
     console.log('Number of keys:', keyCount);
-    if (keyCount > 50) {
-        await client.flushAll();
-        console.log('Redis flushed');
-    }
+    // if (keyCount > 50) {
+    //     await client.flushAll();
+    //     console.log('Redis flushed');
+    // }
 }
 
 

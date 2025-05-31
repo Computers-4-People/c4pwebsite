@@ -64,7 +64,7 @@ function Portal() {
         (async () => {
         try {
 
-            
+
         const urlRecordId = searchParams.get('recordId');
         const urlAuthCode = searchParams.get('jwt') || jwt;
     
@@ -102,8 +102,8 @@ function Portal() {
             }
 
             else {
-            const jwt = await getJWT(urlRecordId);
-            sessionStorage.setItem('session', jwt);
+                const jwt = await getJWT(urlRecordId);
+                sessionStorage.setItem('session', jwt);
             }
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
