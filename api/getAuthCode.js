@@ -34,6 +34,13 @@ export default async function handler(req, res) {
 
     // Set expiration to 1 minute
     //const expiresAt = new Date(timestamp + 60000);
+
+    console.log('getAuthCode - IP:', ip);
+    console.log('getAuthCode - userId:', userId);
+    console.log('getAuthCode - timestamp:', timestamp);
+    console.log('getAuthCode - secret:', process.env.AUTH_SECRET);
+    console.log('getAuthCode - dataToHash:', dataToHash);
+    console.log('getAuthCode - generated code:', authCode);
     
     return res.status(200).json({ authCode, active: true});
 

@@ -12,8 +12,7 @@ export default function handler(req, res) {
                   req.connection.remoteAddress || 
                   req.socket.remoteAddress;
         
-        const currentTime = Date.now();
-        console.log('Current time:', currentTime);
+       
         console.log('Timestamp:', timestamp);
         console.log('Time difference:', currentTime - timestamp);
         
@@ -23,7 +22,7 @@ export default function handler(req, res) {
             return res.status(401).json({ valid: false, error: 'Code expired' });
         }
 
-        const dataToHash = `${ip}-${userId}-${timestamp}-${process.env.AUTH_SECRET || 'default-secret'}`;
+        const dataToHash = `${ip}-${userId}-${timestamp}-${process.env.AUTH_SECRET}`;
         console.log('Data to hash:', dataToHash);
         
         const expectedCode = crypto
@@ -32,11 +31,22 @@ export default function handler(req, res) {
             .digest('hex')
             .substring(0, 32);
         
-        console.log('Expected code:', expectedCode);
-        console.log('Provided code:', authCode);
+        
         
         const isValid = authCode === expectedCode;
         console.log('Is valid:', isValid);
+
+
+
+        console.log('validateAuthCode - IP:', ip);
+        console.log('validateAuthCode - userId:', userId);
+        console.log('validateAuthCode - timestamp:', timestamp);
+        console.log('validateAuthCode - secret:', process.env.AUTH_SECRET);
+        console.log('validateAuthCode - dataToHash:', dataToHash);
+        console.log('validateAuthCode - expected code:', expectedCode);
+
+
+
         
         return res.status(200).json({valid: isValid});
     } catch (error) {
