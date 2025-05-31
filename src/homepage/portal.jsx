@@ -59,14 +59,22 @@ function Portal() {
     useEffect(() => {
         (async () => {
         try {
+
         const urlRecordId = searchParams.get('recordId');
+        const urlAuthCode = searchParams.get('jwt') || jwt;
+        const getAuthCode = await getAuthCode(urlRecordId);
       //  const urlJwt = searchParams.get('jwt') || jwt;
      //   const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
       //  console.log('apiValidation:', apiValidation.data);
 
         // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId) {
+        if (urlRecordId && urlAuthCode === getAuthCode) {
             setRecordId(urlRecordId);
+            const jwt = await getJWT(email, urlRecordId);
+
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+            
             setTimeout(() => {
                 fetchData();
             }, 0);
@@ -83,10 +91,9 @@ function Portal() {
     }, [searchParams]); 
 
 
-    const getJWT = async(email, recordID) => {
+    const getJWT = async(recordID) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/api/jwt`, {
-                email,
                 recordID
             }, {
                 withCredentials: true,
