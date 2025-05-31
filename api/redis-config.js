@@ -20,7 +20,20 @@ const initializeRedis = async () => {
     }
 };
 
+const keyCount = async () => {
+
+    const keyCount = await client.dbSize();
+    console.log('Number of keys:', keyCount);
+    if (keyCount > 10) {
+        await client.flushAll();
+        console.log('Redis flushed');
+    }
+}
+
+
+
 
 initializeRedis();
+keyCount();
 
 export default client;

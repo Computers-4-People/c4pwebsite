@@ -140,8 +140,14 @@ function Portal() {
         // const cachedInventory = sessionStorage.getItem('inv');
         // const cachedData = sessionStorage.getItem('data');
         // console.log(cachedInventory, cachedData);
-        if (await cachedFetch()) {
-            return;
+
+        console.log('test');
+        if (sessionStorage.getItem('module')){
+            console.log('test2');
+            if (await cachedFetch()) {
+                console.log('conditional hit');
+                return;
+            }
         }
        
         setError('');
@@ -241,6 +247,8 @@ function Portal() {
                 setData(response.data);
 
                 await cacheData(`${searchParams.get('recordId')}`, 'data', response.data);
+                const resp = await getCachedData(`${searchParams.get('recordId')}`, 'data');
+                console.log('resp for cached data', resp);
 
                 setModule(newModule);
                 console.log(newModule);
@@ -279,44 +287,78 @@ function Portal() {
 
 
     const cacheData = async (key, typeOfData, value) => {
-        await axios.post(`${API_BASE_URL}/api/redis-cache`, {
-            key: key,
-            typeOfData: typeOfData,
-            value: value
-        });
+        try {
+            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+                key: key,
+                typeOfData: typeOfData,
+                value: value
+            });
+        } catch (error) {
+            console.error('Error in cacheData:', error);
+        }
+    }
+
+    const getCachedData = async (key, typeOfData) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: key, typeOfData: typeOfData },
+            });
+            
+            if (response?.data?.data) {
+                return response.data.data;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error in getCachedData:', error);
+            return null;
+        }
     }
 
 
 
     const cachedFetch = async () => {
         try {
+            let cachedInventory = null;  // Initialize as null instead
 
-            const cachedInventory = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
-                params: { key: `${recordId}`, typeOfData: 'inventory' },
-            });
+            if (sessionStorage.getItem('module') !== 'Contacts') {
+                cachedInventory = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                    params: { key: `${recordId}`, typeOfData: 'inventory' },
+                });
+                console.log('cachedInventory', cachedInventory);
+            }
 
             const cachedData = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
                 params: { key: `${recordId}`, typeOfData: 'data' },
             });
+            console.log('cachedData', cachedData);
 
-            if (cachedInventory && cachedData) {
+            // Check if we have data in the response
+            if (cachedData?.data?.data) {
                 const module = sessionStorage.getItem('module');
                 const selectedDonation = sessionStorage.getItem('selectedDonationOld');
-
-
-                await Promise.all([
+                
+                const stateUpdates = [
                     setSelectedDonation(selectedDonation),
                     setModule(module),
-                    setInventoryData(cachedInventory),
-                    setData(cachedData)
-                ]).then(()=> {
+                    setData(cachedData.data.data)
+                ];
+
+                console.log('cachedInventory', cachedInventory);
+                // Only add inventory update if we have inventory data
+                if (cachedInventory?.data?.data) {
+                    console.log('cachedInventory', cachedInventory);
+                    stateUpdates.push(setInventoryData(cachedInventory.data.data));
+                }
+
+                await Promise.all(stateUpdates).then(() => {
                     console.log('All states updated');
-                    console.log('Using cached inventory data');
+                    console.log('Using cached data');
                     console.log(selectedDonation);
                     setIsloading(false);
                 });
                 return true;
             }
+            
             console.log('No cached data found');
             return false;
 
@@ -362,7 +404,11 @@ function Portal() {
 
 
                 setInventoryData(response.data);
-                await cacheData(recordId, 'inventory', response.data);
+               await cacheData(recordId, 'inventory', response.data);
+
+               const cachedInventory = await getCachedData(recordId, 'inventory');
+               console.log('cachedInventory', cachedInventory);
+                
 
 
                 console.log('Inventory Data:', response.data);
@@ -388,6 +434,10 @@ function Portal() {
 
                 setInventoryData(response.data);
                 await cacheData(recordId, 'inventory', response.data);
+
+                const cachedInventory = await getCachedData(recordId, 'inventory');
+                console.log('cachedInventory', cachedInventory);
+
                 
                 console.log('Inventory Data:', response.data);
                 console.log(inventoryData);
@@ -557,7 +607,7 @@ function Portal() {
 
                 {/* Center Content Section */}
                 <div className="flex-grow">
-                    {data && !isloading && (
+                    {data && (
                         <div className="bg-green-50 p-6 rounded-lg">
                             {module === 'Contacts' ? (
                                 <div className="applicant-info">
@@ -649,14 +699,7 @@ function Portal() {
                                         </div>
                                     )}
 
-                                    <div className="flex left-50 items-center">
-                                        <button
-                                            onClick={handleClick}
-                                            className=" bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg"
-                                        >
-                                            Champions
-                                        </button>
-                                    </div>
+                                    
                                 </div>
                             ) : (
                                 <div className="donor-details">
