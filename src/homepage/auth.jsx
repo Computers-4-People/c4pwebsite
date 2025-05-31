@@ -47,10 +47,10 @@ const getJWT = async(email, recordID) => {
     }
 }
 
-const getAuthCode = async (userId) => {
-    const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
-    return response.data.authCode;
-}
+// const getAuthCode = async (userId) => {
+//     const response = await axios.get(`${API_BASE_URL}/api/getAuthCode?userId=${userId}`);
+//     return response.data.authCode;
+// }
 
 
 
@@ -96,7 +96,9 @@ function Auth() {
 
             const time = Date.now();
 
-            const jwt = await getAuthCode(id, time);
+            const jwt = await axios.get(`${API_BASE_URL}/api/getAuthCode`, {
+                params: { userId: id, timestamp: time }
+            });
 
             await axios.post(`${API_BASE_URL}/api/redis-cache`, {
                 key: id,
