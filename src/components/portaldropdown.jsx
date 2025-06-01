@@ -2,7 +2,7 @@ import React from 'react';
 import PortalButton from './portalbutton';
 
 const PortalDropdown = ({type, applicantType}) => {
-
+    console.log(applicantType, type);
 
     /// ??? ;0  
     
@@ -15,7 +15,11 @@ const PortalDropdown = ({type, applicantType}) => {
     } else if (applicantType === 'Contacts') {
         name = 'Computer Applications'; 
         page = 'Computer Applications';
+
     }
+    console.log(name, page);
+
+    
 
 
 
