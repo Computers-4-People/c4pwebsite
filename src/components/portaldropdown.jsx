@@ -8,7 +8,7 @@ const PortalDropdown = ({type, applicantType}) => {
     
     let name = "";
     let page = "";
-    let applicantType = "";
+   // let applicantType = "";
 
     if (applicantType === 'Computer Donations') {
         name = 'Computer Donations';
