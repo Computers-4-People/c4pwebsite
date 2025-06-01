@@ -14,7 +14,8 @@ const PortalDropdown = ({type, applicantType}) => {
         page = 'Computer Donations';
     } else if (applicantType === 'Contacts') {
         name = 'Computer Applications'; 
-        page = 'Computer Applications';
+        page = 'Contacts';
+        type = 'Contacts';
 
     }
     console.log(name, page);
