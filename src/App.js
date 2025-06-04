@@ -36,6 +36,7 @@ import Shieldhotspotsim from "./homepage/shieldhotspotsim";
 import Shield5grouter from "./homepage/shield5grouter";
 import PageNotFound from "./homepage/404page";
 import Champions from "./homepage/champions";
+import Jackdorsey from "./homepage/jackdorsey144";
 import "./App.css";
 
 function App() {
@@ -102,6 +103,7 @@ function App() {
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />
+          <Route path="/jackdorsey144" element={<Jackdorsey />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
