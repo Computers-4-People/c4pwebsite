@@ -53,7 +53,7 @@ export default function DropOffLocations() {
           {/* Embedded Google Maps Locator */}
           <div className="relative w-full pb-[56.25%] mt-8">
             <iframe
-              src="https://storage.googleapis.com/maps-solutions-37fwki99o4/locator-plus/bqa2/locator-plus.html"
+              src="https://storage.googleapis.com/maps-solutions-a1tj472skq/locator-plus/mjpc/locator-plus.html"
               className="absolute top-0 left-0 w-full h-full border-0 rounded-md"
               loading="lazy"
               title="Drop-Off Locations Map"
