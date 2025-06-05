@@ -14,18 +14,18 @@ export default function Programs() {
             alt: 'Teacher holding donated a computer with green tote bag from Computers 4 People.'
         },
         {
+          titlePart1: "Affordable",
+          titlePart2: "Internet Access",
+          description: <p>We provide the most affordable internet access in the country through our new program, Shield. Shield ensures reliable access for education, work, and healthcare. Learn more <a className="text-c4p" href="/shield">here.</a></p>,
+          image: "/Programs/acptent.jpg",
+          alt: "Refurbished computers with the logo of Computers 4 People"
+        },
+        {
             titlePart1:"Foundational",
             titlePart2: "Digital Skills",
             description: "In partnership with non-profits, we hire local instructors to deliver digital skills training in multiple languages. These classes cover internet navigation, Google Workspace, and online safety, empowering participants with confidence for the digital age.",
             image:"/Programs/dsclasses.jpg",
             alt: 'Teenager volunteer refurbishing donated computers to provide them to people in need.'
-        },
-        {
-            titlePart1:"Affordable",
-            titlePart2: "Internet Access",
-            description: "While the Affordable Connectivity Program (ACP) has concluded, we continue to address connectivity challenges by distributing mobile hotspots to individuals without internet access. Through this initiative, we help bridge the gap for those needing reliable online connections for education, work, and healthcare.",
-            image:"/Programs/acptent.jpg",
-            alt: 'Refurbished computers with the logo of Computers 4 People '
         }
     ]
     const iconsData = [

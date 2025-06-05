@@ -95,9 +95,18 @@ export default function Support() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <DonationProgressBar />
-      </div>
+      <div className="flex flex-col items-center py-10 px-4">
+  <div className="w-full max-w-5xl h-48 rounded-xl overflow-hidden shadow-lg border">
+    <iframe
+      title="Donation Analytics"
+      src="https://analytics.zoho.com/open-view/2989565000001939405"
+      className="w-full h-full"
+      frameBorder="0"
+    ></iframe>
+  </div>
+  <p className="text-sm text-gray-500 mt-2 italic">Progress bar updated daily</p>
+</div>
+
 
       <div
         id="donation-section"
