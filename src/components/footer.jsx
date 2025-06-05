@@ -45,11 +45,11 @@ export default function Footer() {
             <Link to="/apply" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Apply for a Computer
             </Link>
-            <Link to="/dsclasses" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-              Digital Skills Classes
+            <Link to="/shield" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+              Affordable Internet
             </Link>
             <Link to="/dsclasses" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-              PC Building Classes
+              Digital Skills Classes
             </Link>
             <Link to="/partner" className="hover:text-c4p">Non-Profit Partners</Link>
           </div>

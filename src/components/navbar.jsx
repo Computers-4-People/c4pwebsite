@@ -51,6 +51,7 @@ export default function Navbar() {
                 <div className='h-full'>
                     <ul className='h-full flex flex-col justify-around text-l font-bold font-sans border-b-2 md:border-b-0 border-black'>
                         <Link to="/apply" className="hover:text-c4p" onClick={closeMobileMenu}>Apply for a Computer</Link>
+                        <Link to="/shield" className="hover:text-c4p" onClick={closeMobileMenu}>Affordable Internet</Link>
                         <Link to="/DSClasses" className="hover:text-c4p" onClick={closeMobileMenu}>Digital Skills Courses</Link>
                         <Link to="/partner" className="hover:text-c4p" onClick={closeMobileMenu}>Non-Profit Partnerships</Link>
                     </ul>
