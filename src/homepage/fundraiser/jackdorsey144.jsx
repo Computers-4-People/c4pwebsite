@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../components/header';
-import DonationProgressBar from '../components/DonationProgressBar';
+import Header from '../../components/header';
+import DonationProgressBar from '../../components/DonationProgressBar';
 
 export default function Support() {
   const [amount, setAmount] = useState(10000);
@@ -70,6 +70,10 @@ export default function Support() {
             <p className="text-lg">
               With your support we can close the digital divide nationwide.
             </p>
+            <p className="text-lg">
+              dylan@computers4people.org<br/>
+              2014234666
+            </p>
             <button
               onClick={() => handleScroll('donation-section')}
               className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition duration-300"
@@ -79,10 +83,17 @@ export default function Support() {
           </div>
         </div>
       </div>
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <DonationProgressBar />
-      </div>
-
+      <div className="flex flex-col items-center py-10 px-4">
+  <div className="w-full max-w-5xl h-48 rounded-xl overflow-hidden shadow-lg border">
+    <iframe
+      title="Donation Analytics"
+      src="https://analytics.zoho.com/open-view/2989565000001939405"
+      className="w-full h-full"
+      frameBorder="0"
+    ></iframe>
+  </div>
+  <p className="text-sm text-gray-500 mt-2 italic">Progress bar updated daily</p>
+</div>
       <div id="donation-section" className="max-w-4xl mx-auto px-6 py-16 space-y-8">
         <h3 className="text-3xl font-bold text-center">Test Your Donation’s Impact</h3>
 

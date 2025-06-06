@@ -36,8 +36,10 @@ import Shieldhotspotsim from "./homepage/shieldhotspotsim";
 import Shield5grouter from "./homepage/shield5grouter";
 import PageNotFound from "./homepage/404page";
 import Champions from "./homepage/champions";
-import Jackdorsey from "./homepage/jackdorsey144";
+import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
+import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
 import "./App.css";
+
 
 function App() {
   useEffect(() => {
@@ -104,6 +106,7 @@ function App() {
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />
           <Route path="/jackdorsey144" element={<Jackdorsey />} />
+          <Route path="/craignewmarknotmanagementsince2000" element={<CraigNewmark />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />

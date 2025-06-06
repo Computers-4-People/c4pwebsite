@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Header from '../components/header';
-import DonationProgressBar from '../components/DonationProgressBar';
+import Header from '../../components/header';
+import DonationProgressBar from '../../components/DonationProgressBar';
 
-export default function Support() {
+export default function CraigNewmark() {
   const [amount, setAmount] = useState(10000);
   const [method, setMethod] = useState('credit');
 
@@ -44,57 +44,45 @@ export default function Support() {
   };
 
   return (
-    <div className="font-sans">
-      <Header
-        props={{
-          bgImage: '/Financial Contribution/supportbackground.png',
-          titlePart1: 'Everyone Deserves',
-          titlePart2: 'Digital Access',
-          description:
-            'We are raising a transformative $2,000,000 to close the digital access gap.',
-          links: [
-            {
-              text: 'Donate Now',
-              clickAction: () => handleScroll('donation-section'),
-            },
-            { text: 'Donate Computers', url: '/donate' },
-          ],
-        }}
-      />
-      <div className="mt-20 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <div className="rounded-xl overflow-hidden shadow-lg">
-          <iframe
-            className="w-full h-64 md:h-80"
-            src="https://www.youtube.com/embed/6IxUYncb8OE"
-            title="Why Donate"
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">I will close the Gap</h2>
-          <p>
-            I started Computers 4 People when I was 15, just picking up old devices and
-            fixing them in my bedroom. I couldn't stop thinking about how many people were
-            missing out just because they didn’t have a computer.
-          </p>
-          <p>
-            Since then, we’ve donated thousands of computers, delivered over a million hours
-            of internet access, and reached people across NJ, NYC, and now Massachusetts.
-          </p>
-          <p className="italic font-semibold">
-            Our goal is big: 1 million computers donated by 2030.
-          </p>
-          <p>
-            We’re raising to donate 40,000 computers in 2026, launch a scalable nationwide
-            model, and roll out an AI assistant to automate digital skills training. Please
-            consider being a part of this journey.
-          </p>
-          <p className="font-semibold">–Dylan Zajac</p>
+    <div id="main-content">
+      <div className="bg-gray-100 py-20 px-6 md:px-20 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-10">
+          <div className="w-[360px] h-[640px] rounded-3xl overflow-hidden shadow-lg border border-gray-300">
+            <iframe
+              width="360"
+              height="640"
+              src="https://www.youtube.com/embed/nfVTAmpPPIk"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            ></iframe>
+          </div>
+          <div className="text-left space-y-6 max-w-xl">
+            <h1 className="text-4xl font-bold">Craig, Will You Join Us?</h1>
+            <p className="text-lg">
+              We’re raising $2 million to donate 40,000 computers, build a nationwide model, and launch Granson, your AI grandson that teaches people how to use a computer.
+            </p>
+            <p className="text-lg">
+              At Computers 4 People, we’ve already delivered thousands of refurbished devices, over 5 million hours of internet, and digital skills training across NJ, NYC, and MA.
+            </p>
+            <p className="text-lg">
+              With your support we can close the digital divide nationwide.
+            </p>
+            <p className="text-lg">
+              dylan@computers4people.org<br/>
+              2014234666
+            </p>
+            <button
+              onClick={() => handleScroll('donation-section')}
+              className="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition duration-300"
+            >
+              Help Us Make It Happen
+            </button>
+          </div>
         </div>
       </div>
-
       <div className="flex flex-col items-center py-10 px-4">
   <div className="w-full max-w-5xl h-48 rounded-xl overflow-hidden shadow-lg border">
     <iframe
@@ -106,25 +94,14 @@ export default function Support() {
   </div>
   <p className="text-sm text-gray-500 mt-2 italic">Progress bar updated daily</p>
 </div>
-
-
-      <div
-        id="donation-section"
-        className="max-w-4xl mx-auto px-6 py-16 space-y-8"
-      >
-        <h3 className="text-3xl font-bold text-center">
-          Test Your Donation’s Impact
-        </h3>
+      <div id="donation-section" className="max-w-4xl mx-auto px-6 py-16 space-y-8">
+        <h3 className="text-3xl font-bold text-center">Test Your Donation’s Impact</h3>
 
         {/* Larger formatted input with dollar sign and commas */}
         <div>
-          <label htmlFor="donation-input" className="sr-only">
-            Donation Amount
-          </label>
+          <label htmlFor="donation-input" className="sr-only">Donation Amount</label>
           <div className="relative">
-            <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 select-none">
-              $
-            </span>
+            <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500 select-none">$</span>
             <input
               id="donation-input"
               type="text"
@@ -168,11 +145,7 @@ export default function Support() {
               onClick={() => setMethod(opt)}
               className={`
                 px-6 py-4 rounded-lg border-2 font-semibold text-lg
-                ${
-                  method === opt
-                    ? 'bg-green-500 text-white border-green-600'
-                    : 'bg-white text-black border-gray-300 hover:bg-gray-50'
-                }
+                ${method === opt ? 'bg-green-500 text-white border-green-600' : 'bg-white text-black border-gray-300 hover:bg-gray-50'}
               `}
             >
               {opt.toUpperCase()}
@@ -208,18 +181,13 @@ export default function Support() {
 
           {method === 'check' && (
             <div className="border p-4 rounded-lg shadow text-sm">
-              <p>
-                Make checks payable to{' '}
-                <strong>Computers For People Inc.</strong>
-              </p>
+              <p>Make checks payable to <strong>Computers For People Inc.</strong></p>
               <p>EIN: <strong>83-3405612</strong></p>
               <p>Mail to:</p>
               <p>
                 <strong>
-                  321 Newark St #32
-                  <br />
-                  Hoboken, NJ 07030
-                  <br />
+                  321 Newark St #32<br />
+                  Hoboken, NJ 07030<br/>
                   United States
                 </strong>
               </p>
@@ -239,4 +207,3 @@ export default function Support() {
     </div>
   );
 }
-

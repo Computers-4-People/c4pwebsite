@@ -47,6 +47,13 @@ const teamMembers = [
     link: "https://www.linkedin.com/in/gregcamas/" 
   },
   { 
+    name: "Michele Schueli", 
+    title: "Secretary",
+    company: "ARMYN Capital", 
+    photo: "micheleschueli.jpeg",
+    link: "https://www.linkedin.com/in/michele2992/"
+  },
+  { 
     name: "Paul Zajac", 
     title: "Vice President", 
     company: "Invesco", 
@@ -73,13 +80,6 @@ const teamMembers = [
     company: "PGIM", 
     photo: "DavidNeves.jpeg",
     link: "https://www.linkedin.com/in/david-neves-digital-marketing-executive/"
-  },
-  { 
-    name: "Michele Schueli", 
-    title: "Board Member", 
-    company: "ARMYN Capital", 
-    photo: "micheleschueli.jpeg",
-    link: "https://www.linkedin.com/in/michele2992/"
   },
   { 
     name: "Joanne Oplustil", 
