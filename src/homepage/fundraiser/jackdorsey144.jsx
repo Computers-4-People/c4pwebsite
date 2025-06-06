@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../components/header';
-import DonationProgressBar from '../components/DonationProgressBar';
+import Header from '../../components/header';
+import DonationProgressBar from '../../components/DonationProgressBar';
 
 export default function Support() {
   const [amount, setAmount] = useState(10000);
