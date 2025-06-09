@@ -3,7 +3,7 @@ import Header from '../../components/header';
 import DonationProgressBar from '../../components/DonationProgressBar';
 
 export default function RobertSmith() {
-  const [amount, setAmount] = useState(10000);
+  const [amount, setAmount] = useState(1000000);
   const [method, setMethod] = useState('credit');
 
   // Helper: format number with commas
@@ -51,7 +51,7 @@ export default function RobertSmith() {
             <iframe
               width="360"
               height="640"
-              src="https://www.youtube.com/embed/DK6dEwQuCMQ"
+              src="https://www.youtube.com/embed/3sAjAe24c70"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -60,7 +60,7 @@ export default function RobertSmith() {
             ></iframe>
           </div>
           <div className="text-left space-y-6 max-w-xl">
-            <h1 className="text-4xl font-bold">Jack, Will You Join Us?</h1>
+            <h1 className="text-4xl font-bold">Mr. Robert F. Smith, Will You Join Us?</h1>
             <p className="text-lg">
               We’re raising $2 million to donate 40,000 computers, build a nationwide model, and launch Granson, your AI grandson that teaches people how to use a computer.
             </p>
@@ -68,9 +68,10 @@ export default function RobertSmith() {
               At Computers 4 People, we’ve already delivered thousands of refurbished devices, over 5 million hours of internet, and digital skills training across NJ, NYC, and MA.
             </p>
             <p className="text-lg">
-              With your support we can close the digital divide nationwide.
+              With your support we can close the digital divide nationwide. Will you lead our fundraise with a $1M commitment?
             </p>
             <p className="text-lg">
+              contact me:<br/>
               dylan@computers4people.org<br/>
               2014234666
             </p>
