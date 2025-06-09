@@ -41,6 +41,7 @@ import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince20
 import RobertSmith from "./homepage/fundraiser/robertfsmith";
 import EricSchmidt from "./homepage/fundraiser/ericschmidt";
 import MichaelBloomberg from "./homepage/fundraiser/michaelbloomberg108";
+import Evan from "./homepage/fundraiser/evan";
 import "./App.css";
 
 
@@ -113,6 +114,7 @@ function App() {
           <Route path="/robertfsmith" element={<RobertSmith />} />
           <Route path="/ericschmidt" element={<EricSchmidt />} />
           <Route path="/michaelbloomberg108" element={<MichaelBloomberg />} />
+          <Route path="/evan" element={<Evan />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
