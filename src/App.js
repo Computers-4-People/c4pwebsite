@@ -42,6 +42,7 @@ import RobertSmith from "./homepage/fundraiser/robertfsmith";
 import EricSchmidt from "./homepage/fundraiser/ericschmidt";
 import MichaelBloomberg from "./homepage/fundraiser/michaelbloomberg108";
 import Evan from "./homepage/fundraiser/evan";
+import DavidRubenstein from "./homepage/fundraiser/davidrubenstein";
 import "./App.css";
 
 
@@ -115,6 +116,7 @@ function App() {
           <Route path="/ericschmidt" element={<EricSchmidt />} />
           <Route path="/michaelbloomberg108" element={<MichaelBloomberg />} />
           <Route path="/evan" element={<Evan />} />
+          <Route path="/davidrubenstein" element={<DavidRubenstein />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
