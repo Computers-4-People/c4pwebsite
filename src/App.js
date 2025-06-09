@@ -39,6 +39,9 @@ import Champions from "./homepage/champions";
 import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
 import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
 import RobertSmith from "./homepage/fundraiser/robertfsmith";
+import EricSchmidt from "./homepage/fundraiser/ericschmidt";
+import MichaelBloomberg from "./homepage/fundraiser/michaelbloomberg108";
+import Evan from "./homepage/fundraiser/evan";
 import "./App.css";
 
 
@@ -109,6 +112,9 @@ function App() {
           <Route path="/jackdorsey144" element={<Jackdorsey />} />
           <Route path="/craignewmarknotmanagementsince2000" element={<CraigNewmark />} />
           <Route path="/robertfsmith" element={<RobertSmith />} />
+          <Route path="/ericschmidt" element={<EricSchmidt />} />
+          <Route path="/michaelbloomberg108" element={<MichaelBloomberg />} />
+          <Route path="/evan" element={<Evan />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
