@@ -43,6 +43,17 @@ import EricSchmidt from "./homepage/fundraiser/ericschmidt";
 import MichaelBloomberg from "./homepage/fundraiser/michaelbloomberg108";
 import Evan from "./homepage/fundraiser/evan";
 import DavidRubenstein from "./homepage/fundraiser/davidrubenstein";
+import MichaelDell          from "./homepage/fundraiser/michaeldell";
+import ReidHoffman          from "./homepage/fundraiser/reidhoffman";
+import ReedHastings         from "./homepage/fundraiser/reedhastings";
+import LarryEllison         from "./homepage/fundraiser/larryellison";
+import SergeyBrin           from "./homepage/fundraiser/sergeybrin";
+import CharlesKoch          from "./homepage/fundraiser/charleskoch";
+import PriscillaChan        from "./homepage/fundraiser/priscillachan";
+import SamAltman            from "./homepage/fundraiser/samaltman";
+import SheriKerschSchultz   from "./homepage/fundraiser/sherikerschschultz";
+import MarcBenioff          from "./homepage/fundraiser/marcbenioff";
+
 import "./App.css";
 
 
@@ -117,6 +128,16 @@ function App() {
           <Route path="/michaelbloomberg108" element={<MichaelBloomberg />} />
           <Route path="/evan" element={<Evan />} />
           <Route path="/davidrubenstein" element={<DavidRubenstein />} />
+          <Route path="/michaeldell"            element={<MichaelDell />} />
+          <Route path="/reidhoffman"            element={<ReidHoffman />} />
+          <Route path="/reedhastings"           element={<ReedHastings />} />
+          <Route path="/larryellison"           element={<LarryEllison />} />
+          <Route path="/sergeybrin"             element={<SergeyBrin />} />
+          <Route path="/charleskoch"            element={<CharlesKoch />} />
+          <Route path="/priscillachan"          element={<PriscillaChan />} />
+          <Route path="/samaltman"              element={<SamAltman />} />
+          <Route path="/sherikerschschultz"     element={<SheriKerschSchultz />} />
+          <Route path="/marcbenioff"            element={<MarcBenioff />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
