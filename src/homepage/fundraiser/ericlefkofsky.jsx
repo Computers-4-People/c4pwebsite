@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '../../components/header';
 import DonationProgressBar from '../../components/DonationProgressBar';
 
-export default function JanKoum() {
+export default function EricLefkofsky() {
   const [amount, setAmount] = useState(1000000);
   const [method, setMethod] = useState('credit');
 
@@ -60,7 +60,7 @@ export default function JanKoum() {
             ></iframe>
           </div>
           <div className="text-left space-y-6 max-w-xl">
-            <h1 className="text-4xl font-bold">Jan, Will You Join Us?</h1>
+            <h1 className="text-4xl font-bold">Eric, Will You Join Us?</h1>
             <p className="text-lg">
               We’re raising $2 million to donate 40,000 computers, build a nationwide model, and launch Granson, your AI grandson that teaches people how to use a computer.
             </p>
