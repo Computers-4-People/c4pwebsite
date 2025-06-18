@@ -54,7 +54,7 @@ import SamAltman            from "./homepage/fundraiser/samaltman";
 import SheriKerschSchultz   from "./homepage/fundraiser/sherikerschschultz";
 import MarcBenioff          from "./homepage/fundraiser/marcbenioff";
 import VinodKhosla          from "./homepage/fundraiser/vinodkhosla";
-
+import CameronWinklevoss          from "./homepage/fundraiser/cameronwinklevoss";
 import "./App.css";
 
 
@@ -140,6 +140,7 @@ function App() {
           <Route path="/sherikerschschultz"     element={<SheriKerschSchultz />} />
           <Route path="/marcbenioff"            element={<MarcBenioff />} />
           <Route path="/vinodkhosla"            element={<VinodKhosla />} />
+          <Route path="/cameronwinklevoss"            element={<CameronWinklevoss />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
