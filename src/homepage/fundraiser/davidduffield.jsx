@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Header from '../../components/header';
 import DonationProgressBar from '../../components/DonationProgressBar';
 
-export default function VinodKhosla() {
+export default function DavidDuffield() {
   const [amount, setAmount] = useState(1000000);
   const [method, setMethod] = useState('credit');
 
@@ -51,7 +51,7 @@ export default function VinodKhosla() {
             <iframe
               width="360"
               height="640"
-              src="https://www.youtube.com/embed/WYfNMojvKYA"
+              src="https://www.youtube.com/embed/-Q0NKOR9IHs"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -60,7 +60,7 @@ export default function VinodKhosla() {
             ></iframe>
           </div>
           <div className="text-left space-y-6 max-w-xl">
-            <h1 className="text-4xl font-bold">Mr. Khosla, Will You Join Us?</h1>
+            <h1 className="text-4xl font-bold">Mr. Duffield, Will You Join Us?</h1>
             <p className="text-lg">
               We’re raising $2 million to donate 40,000 computers, build a nationwide model, and launch Granson, your AI grandson that teaches people how to use a computer.
             </p>
