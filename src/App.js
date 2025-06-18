@@ -55,9 +55,7 @@ import SheriKerschSchultz   from "./homepage/fundraiser/sherikerschschultz";
 import MarcBenioff          from "./homepage/fundraiser/marcbenioff";
 import VinodKhosla          from "./homepage/fundraiser/vinodkhosla";
 import CameronWinklevoss          from "./homepage/fundraiser/cameronwinklevoss";
-
 import "./App.css";
-import CameronWinklevoss from "./homepage/fundraiser/cameronwinklevoss";
 
 
 function App() {
