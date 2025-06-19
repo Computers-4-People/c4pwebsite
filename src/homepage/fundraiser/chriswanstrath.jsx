@@ -51,7 +51,7 @@ export default function ChrisWanstrath() {
             <iframe
               width="360"
               height="640"
-              src="https://www.youtube.com/embed/Q0NKOR9IHs"
+              src="https://www.youtube.com/embed/HQ3dWhBjmYY"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
