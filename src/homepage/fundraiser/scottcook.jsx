@@ -51,7 +51,7 @@ export default function ScottCook() {
             <iframe
               width="360"
               height="640"
-              src="https://www.youtube.com/embed/WYfNMojvKYA"
+              src="https://www.youtube.com/embed/Xyi3Ui9exVU"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
