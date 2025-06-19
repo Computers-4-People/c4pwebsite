@@ -68,7 +68,7 @@ export default function RobertSmith() {
               At Computers 4 People, we’ve already delivered thousands of refurbished devices, over 5 million hours of internet, and digital skills training across NJ, NYC, and MA.
             </p>
             <p className="text-lg">
-              With your support we can close the digital divide nationwide. Will you lead our fundraise with a $1M commitment?
+              With your support we can close the digital divide nationwide. Will you lead our fundraise?
             </p>
             <p className="text-lg">
               contact me:<br/>
