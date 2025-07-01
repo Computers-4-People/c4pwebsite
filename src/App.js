@@ -90,6 +90,15 @@ import RichBarton              from "./homepage/fundraiser/richbarton";
 import SaraBlakely             from "./homepage/fundraiser/sarablakely";
 import StephenMandel           from "./homepage/fundraiser/stephenmandel";
 import TravisKalanick          from "./homepage/fundraiser/traviskalanick";
+import RomeshWadhwani      from "./homepage/fundraiser/romeshwadhwani";
+import StacySchusterman    from "./homepage/fundraiser/stacyschusterman";
+import AllisonThoreson     from "./homepage/fundraiser/allisonthoreson";
+import CariTuna            from "./homepage/fundraiser/carituna";
+import DavidMerage         from "./homepage/fundraiser/davidmerage";
+import TomSteyer           from "./homepage/fundraiser/tomsteyer";
+import JosephTsai          from "./homepage/fundraiser/josephtsai";
+import ChrisSacca          from "./homepage/fundraiser/chrissacca";
+import ThierryCruanes        from "./homepage/fundraiser/thierrycruanes";
 import "./App.css";
 
 
@@ -211,6 +220,15 @@ function App() {
           <Route path="/sarablakely"            element={<SaraBlakely />} />
           <Route path="/stephenmandel"          element={<StephenMandel />} />
           <Route path="/traviskalanick"         element={<TravisKalanick />} />
+          <Route path="/romeshwadhwani"      element={<RomeshWadhwani />} />
+          <Route path="/stacyschusterman"    element={<StacySchusterman />} />
+          <Route path="/allisonthoreson"     element={<AllisonThoreson />} />
+          <Route path="/carituna"            element={<CariTuna />} />
+          <Route path="/davidmerage"         element={<DavidMerage />} />
+          <Route path="/tomsteyer"           element={<TomSteyer />} />
+          <Route path="/josephtsai"          element={<JosephTsai />} />
+          <Route path="/chrissacca"          element={<ChrisSacca />} />
+          <Route path="/thierrycruanes"          element={<ThierryCruanes />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />

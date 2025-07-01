@@ -104,7 +104,7 @@ const partnerLogos = [
       />
        <div className="m-10"><ImageMarquee
         images={partnerLogos}
-        title="Join 180+ Leaders in Tech, Healthcare, Government, and Beyond."
+        title="Join 180+ Computer Donors."
       />
       </div>
       <h2 className="ml-14 mt-20 text-7xl font-subtitle text-left">
