@@ -63,7 +63,7 @@ export default function AllisonThoreson() {
           <div className="text-left space-y-6 max-w-xl">
             <h1 className="text-4xl font-bold">Allison, Will You Join Us?</h1>
             <p className="text-lg">
-              We’re raising $2 million to donate 40,000 computers, build a nationwide model, and launch Granson, your AI grandson that teaches people how to use a computer.
+              We’re raising $2 million to donate 40,000 computers, build a nation-wide model, and launch Granson, your AI grandson that teaches people how to use a computer.
             </p>
             <p className="text-lg">
               At Computers 4 People, we’ve already delivered thousands of refurbished devices, over 5 million hours of internet, and digital skills training across NJ, NYC, and MA.
