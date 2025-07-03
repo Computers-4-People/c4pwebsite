@@ -99,6 +99,12 @@ import TomSteyer           from "./homepage/fundraiser/tomsteyer";
 import JosephTsai          from "./homepage/fundraiser/josephtsai";
 import ChrisSacca          from "./homepage/fundraiser/chrissacca";
 import ThierryCruanes        from "./homepage/fundraiser/thierrycruanes";
+import MarkCuban        from "./homepage/fundraiser/markcuban";
+import PalmerLuckey     from "./homepage/fundraiser/palmerluckey";
+import AndyFang         from "./homepage/fundraiser/andyfang";
+import JohnMorgridge    from "./homepage/fundraiser/johnmorgridge";
+import HowardMorgan     from "./homepage/fundraiser/howardmorgan";
+import AnneWojcicki     from "./homepage/fundraiser/annewojcicki";
 import "./App.css";
 
 
@@ -229,6 +235,12 @@ function App() {
           <Route path="/josephtsai"          element={<JosephTsai />} />
           <Route path="/chrissacca"          element={<ChrisSacca />} />
           <Route path="/thierrycruanes"          element={<ThierryCruanes />} />
+          <Route path="/markcuban"        element={<MarkCuban />} />
+          <Route path="/palmerluckey"     element={<PalmerLuckey />} />
+          <Route path="/andyfang"         element={<AndyFang />} />
+          <Route path="/johnmorgridge"    element={<JohnMorgridge />} />
+          <Route path="/howardmorgan"     element={<HowardMorgan />} />
+          <Route path="/annewojcicki"     element={<AnneWojcicki />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
