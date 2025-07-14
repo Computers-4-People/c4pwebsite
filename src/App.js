@@ -105,6 +105,22 @@ import AndyFang         from "./homepage/fundraiser/andyfang";
 import JohnMorgridge    from "./homepage/fundraiser/johnmorgridge";
 import HowardMorgan     from "./homepage/fundraiser/howardmorgan";
 import AnneWojcicki     from "./homepage/fundraiser/annewojcicki";
+import DouglasLeone        from "./homepage/fundraiser/douglasleone";
+import SeanParker          from "./homepage/fundraiser/seanparker";
+import JimGoodnight        from "./homepage/fundraiser/jimgoodnight";
+import MatthewRoszak       from "./homepage/fundraiser/matthewroszak";
+import MichaelMoritz       from "./homepage/fundraiser/michaelmoritz";
+import ThomasSiebel        from "./homepage/fundraiser/thomassiebel";
+import MackenzieScott      from "./homepage/fundraiser/mackenziescott";
+import SteveBallmer        from "./homepage/fundraiser/steveballmer";
+import PhilKnight          from "./homepage/fundraiser/philknight";
+import DrewHouston         from "./homepage/fundraiser/drewhouston";
+import EricYuan            from "./homepage/fundraiser/ericyuan";
+import SusanCrown          from "./homepage/fundraiser/susancrown";
+import SherylSandberg      from "./homepage/fundraiser/sherylsandberg";
+import StewartButterfield  from "./homepage/fundraiser/stewartbutterfield";
+import RichardSands        from "./homepage/fundraiser/richardsands";
+import DavidSteward        from "./homepage/fundraiser/davidsteward";
 import "./App.css";
 
 
@@ -241,6 +257,22 @@ function App() {
           <Route path="/johnmorgridge"    element={<JohnMorgridge />} />
           <Route path="/howardmorgan"     element={<HowardMorgan />} />
           <Route path="/annewojcicki"     element={<AnneWojcicki />} />
+          <Route path="/douglasleone"        element={<DouglasLeone />} />
+          <Route path="/seanparker"          element={<SeanParker />} />
+          <Route path="/jimgoodnight"        element={<JimGoodnight />} />
+          <Route path="/matthewroszak"       element={<MatthewRoszak />} />
+          <Route path="/michaelmoritz"       element={<MichaelMoritz />} />
+          <Route path="/thomassiebel"        element={<ThomasSiebel />} />
+          <Route path="/mackenziescott"      element={<MackenzieScott />} />
+          <Route path="/steveballmer"        element={<SteveBallmer />} />
+          <Route path="/philknight"         element={<PhilKnight />} />
+          <Route path="/drewhouston"         element={<DrewHouston />} />
+          <Route path="/ericyuan"            element={<EricYuan />} />
+          <Route path="/susancrown"          element={<SusanCrown />} />
+          <Route path="/sherylsandberg"      element={<SherylSandberg />} />
+          <Route path="/stewartbutterfield"  element={<StewartButterfield />} />
+          <Route path="/richardsands"        element={<RichardSands />} />
+          <Route path="/davidsteward"        element={<DavidSteward />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
