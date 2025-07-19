@@ -266,8 +266,8 @@ export default function ShieldHeader() {
     {/* 3 Lines Under Image */}
     <div className="pt-6 text-left">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home Hotspot</h3>
-      <p className="text-gray-900 text-sm font-medium mb-1">PRE-ORDER $149</p>
-      <p className="text-gray-600 text-sm">Stronger signal and great for families or shared spaces.</p>
+      <p className="text-gray-900 text-sm font-medium mb-1">$149 Device + $14.89/Month</p>
+      <p className="text-gray-600 text-sm">Stronger signal and great for shared spaces. Connect up to 32 devices!</p>
     </div>
   </div>
 </a>

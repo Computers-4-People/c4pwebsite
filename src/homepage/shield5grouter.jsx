@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function Shield5grouter() {
-  const images = ["/Hotspot/shieldrouterfront.png", "/Hotspot/shieldrouterside.png", "/Hotspot/shieldrouterside1.png", "/Hotspot/shieldrouterback.png", "/Hotspot/shieldrouterbottom.png"];
+  const images = ["/Hotspot/shieldrouterfront.png", "/Hotspot/shieldrouterside.png", "/Hotspot/shieldrouterside1.png", "/Hotspot/shieldrouterback.png", "/Hotspot/simcard.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
@@ -49,36 +49,46 @@ export default function Shield5grouter() {
           {/* Title & Description */}
           <div className="pt-8 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Shield 5G Home Hotspot - Device Only (Pre-Order)
+              Shield 5G Home Hotspot + Unlimited Internet (May be Delayed Due to Limited Supply)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-Need stronger Wi-Fi for your whole home? This is it.  
-The Shield 5G Home Hotspot is a powerful device that delivers fast, reliable internet throughout your house. Ideal for families, video calls, streaming, and connecting multiple devices at once.
+              Need stronger Wi-Fi for your whole home? This is it.
+              The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
 
-<br /><br />
-<b>This product includes only the hardware.</b><br />
-To use it, you must also purchase a <a className="text-c4p" href="/shieldsimcard">Shield Internet subscription</a> separately for $14.89/month.  
+              <br /><br />
+              <b>What’s included:</b><br />
+              - Shield 5G Home Router<br />
+              - Unlimited 4G/5G Internet via T-Mobile network<br />
+              - SIM card shipped seperately<br />
+              - Connect multiple devices simultaneously<br />
 
-<br /><br />
-<b>Why choose this router:</b><br />
-- Stronger signal and faster speeds than a hotspot<br />
-- Supports many devices at once<br />
-- Built-in battery lasts up to 4 hours unplugged<br />
-- Fully portable - take it anywhere<br />
+              <br />
+              <b>Features:</b><br />
+              - Faster & stronger signal than mobile hotspots<br />
+              - Battery backup lasts up to 4 hours unplugged<br />
+              - Fully portable - use it at home or on the go<br />
+              - Just turn it on and connect - no setup required<br />
+              - Built in VPN for security<br />
 
+              <br />
+              <b>Plan Details:</b><br />
+              - $14.89/month for truly unlimited internet<br />
+              - No data caps, no throttling, no surprise fees<br />
+              - Cancel anytime - no contracts<br />
 
-<br /><br />
-<b>Note:</b><br />
-This is a pre-order. It’s not shipping yet, but we’ll notify you as soon as it’s on the way.
-</p>
-
+              <br />
+              Free shipping anywhere in the U.S. Your device arrives pre-configured and ready to use.
+              <br /><br />
+              <b>Note:</b><br />
+We currently have limited inventory and are shipping in waves. Orders may be delayed depending on demand. You’ll receive a confirmation email with tracking information once your unit is ready to ship.
+            </p>
           </div>
         </div>
 
         {/* Right: Zoho Checkout Embed (aligned to image top) */}
         <div className="w-full mt-0 lg:-mt-20">
           <iframe
-            src="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/120"
+            src="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105?addon_code%5B0%5D=5&addon_quantity%5B0%5D=1"
             title="Zoho Subscription Checkout"
             width="100%"
             height="1300px"
