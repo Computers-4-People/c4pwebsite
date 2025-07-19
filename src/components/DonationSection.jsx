@@ -3,8 +3,8 @@ import React, { useState } from "react";
 /**
  * <DonationSection />
  * -------------------
- * Encapsulates everything from the donation-progress bar down to the
- * payment-method forms, plus a "Past Supporters" logo banner.
+ * Encapsulates everything from the donation‑progress bar down to the
+ * payment‑method forms, plus a "Past Supporters" logo banner.
  */
 export default function DonationSection() {
   const [amount, setAmount] = useState(10000);
@@ -55,18 +55,6 @@ export default function DonationSection() {
         </div>
       </section>
 
-      {/* <div className="flex flex-col items-center py-10 px-4">
-  <div className="w-full max-w-5xl h-48 rounded-xl overflow-hidden shadow-lg border">
-    <iframe
-      title="Donation Analytics"
-      src="https://analytics.zoho.com/open-view/2989565000001939405"
-      className="w-full h-full"
-      frameBorder="0"
-    ></iframe>
-  </div>
-  <p className="text-sm text-gray-500 mt-2 italic">Progress bar updated daily</p>
-</div> */}
-
       {/* --- Impact calculator & payment options ----------------------- */}
       <div id="donation-section" className="max-w-4xl mx-auto px-6 py-16 space-y-8">
         <h3 className="text-3xl font-bold text-center">Test Your Impact and Donate Today</h3>
@@ -90,28 +78,22 @@ export default function DonationSection() {
         {/* Impact stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           <div className="p-4 border rounded-lg shadow">
-            <p className="text-3xl font-bold flex items-center justify-center gap-2">
-              💻 {impact.devices.toLocaleString()}
-            </p>
+            <p className="text-3xl font-bold flex items-center justify-center gap-2">💻 {impact.devices.toLocaleString()}</p>
             <p className="text-sm">Devices + AI Access</p>
           </div>
           <div className="p-4 border rounded-lg shadow">
-            <p className="text-3xl font-bold flex items-center justify-center gap-2">
-              👥 {Math.floor(impact.lives).toLocaleString()}+
-            </p>
+            <p className="text-3xl font-bold flex items-center justify-center gap-2">👥 {Math.floor(impact.lives).toLocaleString()}+</p>
             <p className="text-sm">Lives Impacted (2.5×)</p>
           </div>
           <div className="p-4 border rounded-lg shadow">
-            <p className="text-3xl font-bold flex items-center justify-center gap-2">
-              💵 ${impact.gdp.toLocaleString()}
-            </p>
+            <p className="text-3xl font-bold flex items-center justify-center gap-2">💵 ${impact.gdp.toLocaleString()}</p>
             <p className="text-sm">Est. Lifetime GDP Impact</p>
           </div>
         </div>
 
         {/* Payment method buttons */}
         <div className="flex flex-wrap gap-3 justify-center">
-          {["credit", "ach", "check", "wire", "crypto"].map((opt) => (
+          {["credit", "ach", "check", "wire", "crypto", "venmo", "zelle"].map((opt) => (
             <button
               key={opt}
               onClick={() => setMethod(opt)}
@@ -151,19 +133,37 @@ export default function DonationSection() {
           )}
 
           {method === "check" && (
-            <div className="border p-4 rounded-lg shadow text-sm">
+            <div className="border p-4 rounded-lg shadow text-sm space-y-2">
               <p>Make checks payable to <strong>Computers For People Inc.</strong></p>
               <p>EIN: <strong>83-3405612</strong></p>
               <p>Mail to:</p>
-              <p>
-                <strong>
-                  321 Newark St #32
-                  <br />
-                  Hoboken, NJ 07030
-                  <br />
-                  United States
-                </strong>
-              </p>
+              <address className="not-italic">
+                321 Newark St #32<br />
+                Hoboken, NJ 07030<br />
+                United States
+              </address>
+            </div>
+          )}
+
+          {method === "venmo" && (
+            <div className="border p-6 rounded-lg shadow text-center space-y-4">
+              <h4 className="text-xl font-semibold">Venmo</h4>
+              <img src="/Financial Contribution/venmoqr.jpg" alt="Venmo QR" className="mx-auto h-48 w-48" />
+              <p className="text-sm">Scan or send to <strong>@Computers4People</strong></p>
+              <a
+                href="https://venmo.com/u/Computers4People"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+              >Open Venmo</a>
+            </div>
+          )}
+
+          {method === "zelle" && (
+            <div className="border p-6 rounded-lg shadow text-center space-y-4">
+              <h4 className="text-xl font-semibold">Zelle</h4>
+              <img src="/Financial Contribution/zelleqr.jpg" alt="Zelle QR" className="mx-auto h-48 w-48" />
+              <p className="text-sm">Send to email: <strong>info@computers4people.org</strong></p>
             </div>
           )}
         </div>
