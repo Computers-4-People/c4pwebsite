@@ -37,6 +37,11 @@ const faqs = [
     answer:
       "100% of profits go to Computers 4 People, a nonprofit working to close the digital divide by giving away free computers and digital training to people who need them.",
   },
+  {
+    question: "Can I buy in bulk?",
+    answer:
+      "Yes! If you're looking to provide internet access for a group, organization, or program, please reach out to us to explore a custom partnership: info@computers4people.org",
+  }  
 ];
 
 
@@ -97,18 +102,17 @@ export default function ShieldHeader() {
         >
           
           {/* Shield icon + text */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-6">
-            <img
-              src="/Hotspot/shieldlogo.png"
-              alt="Shield Icon"
-              className="w-32 sm:w-40"
-            />
-            <img
-              src="/Hotspot/shield.png"
-              alt="Shield Text"
-              className="w-60 sm:w-80"
-            />
-          </div>
+{/* Shield icon + text */}
+<div className="flex flex-col sm:flex-row items-center justify-center mb-6">
+  <div className="w-full max-w-[400px] sm:max-w-[500px]">
+    <img
+      src="/Hotspot/shield.png"
+      alt="Shield Text"
+      className="w-full h-auto"
+    />
+  </div>
+</div>
+
 
           {/* Subheadline */}
           <p className="text-lg sm:text-xl text-gray-800">
