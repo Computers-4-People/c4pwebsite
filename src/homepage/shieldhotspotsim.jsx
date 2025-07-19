@@ -85,7 +85,9 @@ This small, rechargeable device fits in your bag or pocket and gives you unlimit
 <br /><br />
 Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
 </p>
-
+<p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
+</p>
           </div>
         </div>
 

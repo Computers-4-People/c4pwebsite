@@ -67,7 +67,9 @@ You need to use your own hotspot, tablet, or wearable. It must be unlocked and w
 <br /><br />
 No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
 </p>
-
+<p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
+</p>
           </div>
         </div>
 

@@ -82,6 +82,9 @@ export default function Shield5grouter() {
               <b>Note:</b><br />
 We currently have limited inventory and are shipping in waves. Orders may be delayed depending on demand. You’ll receive a confirmation email with tracking information once your unit is ready to ship.
             </p>
+            <p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
+</p>
           </div>
         </div>
 
