@@ -53,12 +53,12 @@ export default function Shieldsimcard() {
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
 Take fast internet with you anywhere.  
-This small, rechargeable device fits in your bag or pocket and gives you unlimited 4G internet you can use at home, in the car, at work, or on the move.  
+This small, rechargeable device fits in your bag or pocket and gives you unlimited internet you can use at home, in the car, at work, or on the move.  
 
 <br /><br />
 <b>What’s included:</b><br />
-- Unlimited 4G LTE internet (T-Mobile Network)<br />
-- T10 hotspot device (SIM card already inside)<br />
+- Unlimited 4G/5G Internet<br />
+- T10 hotspot device 4G LTE only (SIM card already inside)<br />
 - Connect up to 10 devices at the same time<br />
 - Just turn it on and connect - no setup needed  
 
