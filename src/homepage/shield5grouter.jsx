@@ -58,7 +58,7 @@ export default function Shield5grouter() {
               <br /><br />
               <b>What’s included:</b><br />
               - Shield 5G Home Router<br />
-              - Unlimited 4G/5G Internet via T-Mobile network<br />
+              - Unlimited 4G/5G Internet<br />
               - SIM card shipped seperately<br />
               - Connect multiple devices simultaneously<br />
 
