@@ -36,6 +36,7 @@ import Shieldhotspotsim from "./homepage/shieldhotspotsim";
 import Shield5grouter from "./homepage/shield5grouter";
 import PageNotFound from "./homepage/404page";
 import Champions from "./homepage/champions";
+import Contribution       from "./homepage/addacontribution";
 import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
 import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
 import RobertSmith from "./homepage/fundraiser/robertfsmith";
@@ -185,6 +186,7 @@ function App() {
           <Route path="/shield5grouter" element={<Shield5grouter />} />
           <Route path="/portal" element={<Portal />} />
           <Route path="/champions" element={<Champions />} />
+          <Route path="/addacontribution" element={<Contribution />} />
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />
