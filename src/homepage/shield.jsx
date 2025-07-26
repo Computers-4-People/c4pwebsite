@@ -13,6 +13,22 @@ const faqs = [
       "If your household gets SNAP, Medicaid, SSI, free school lunch, or earns under 200% of the Federal Poverty Level, you’re likely eligible. Just check a box to confirm when you order. No documentation. No paperwork. No stress.",
   },
   {
+    question: "What is the coverage of Shield Internet?",
+    answer: (
+      <>
+        Shield Internet uses the largest nationwide 5G network (Only available in the United States). You can check coverage in your area by visiting this{" "}
+        <a
+          href="https://www.t-mobile.com/coverage/coverage-map?icid=MGPO_TMO_P_TMOSWAPPNP_0BLNXB4P50PQBSLHM30956"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 underline"
+        >
+          View Coverage Map
+        </a>.
+      </>
+    ),
+  },  
+  {
     question: "When will my order arrive?",
     answer:
       "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Router (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",
@@ -25,7 +41,7 @@ const faqs = [
   {
     question: "Is the router locked or restricted?",
     answer:
-      "The Shield 5G Home Router is fully unlocked and portable. It works with most SIM cards and supports 5G, 4G, and 3G networks. The Shield Hotspot, however, is locked to work only with our Shield Internet (T-Mobile) plan.",
+      "The Shield 5G Home Router is fully unlocked and portable. It works with most SIM cards and supports 5G, 4G, and 3G networks. The Shield 5G Hotspot, however, is locked to work only with our Shield Internet plan.",
   },  
   {
     question: "What if I have technical issues?",
