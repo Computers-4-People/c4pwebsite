@@ -4,15 +4,18 @@
       {
         "source": "/:path*",
         "has": [{ "type": "host", "value": "shieldinternet.org" }],
-        "destination": "https://www.computers4people.org/shield",
+        "destination": "https://www.computers4people.org/shield/:path*",
         "permanent": true
       },
       {
         "source": "/:path*",
         "has": [{ "type": "host", "value": "www.shieldinternet.org" }],
-        "destination": "https://www.computers4people.org/shield",
+        "destination": "https://www.computers4people.org/shield/:path*",
         "permanent": true
       }
+    ],
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
     ]
   }
   
