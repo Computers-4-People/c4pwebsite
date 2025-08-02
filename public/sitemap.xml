@@ -58,6 +58,32 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Shield Internet Program -->
+  <url>
+    <loc>https://www.computers4people.org/shield</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.computers4people.org/shield5grouter</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.computers4people.org/shieldhotspotsim</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.computers4people.org/shieldsimcard</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Engagement -->
   <url>
     <loc>https://www.computers4people.org/volunteer</loc>
@@ -138,4 +164,11 @@
     <priority>0.1</priority>
   </url>
 
+  <!-- Optional: Redirect Domain -->
+  <url>
+    <loc>https://shieldinternet.org</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>
