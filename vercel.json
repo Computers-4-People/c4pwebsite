@@ -1,9 +1,16 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
     "redirects": [
       {
         "source": "/:path*",
         "has": [{ "type": "host", "value": "shieldinternet.org" }],
-        "destination": "https://www.computers4people.org/shield/:path*",
+        "destination": "https://www.computers4people.org/shield#plans",
+        "statusCode": 308
+      },
+      {
+        "source": "/:path*",
+        "has": [{ "type": "host", "value": "www.shieldinternet.org" }],
+        "destination": "https://www.computers4people.org/shield#plans",
         "statusCode": 308
       }
     ]
