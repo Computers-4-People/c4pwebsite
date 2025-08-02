@@ -5,18 +5,6 @@
         "has": [{ "type": "host", "value": "shieldinternet.org" }],
         "destination": "https://www.computers4people.org/shield/:path*",
         "statusCode": 308
-      },
-      {
-        "source": "/:path*",
-        "has": [{ "type": "host", "value": "www.shieldinternet.org" }],
-        "destination": "https://www.computers4people.org/shield/:path*",
-        "statusCode": 308
-      },
-      {
-        "source": "/:path*",
-        "has": [{ "type": "host", "value": "computers4people.org" }],
-        "destination": "https://www.computers4people.org/:path*",
-        "statusCode": 308
       }
     ]
   }
