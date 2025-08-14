@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "https://www.shieldinternet.org/",
+      "destination": "https://www.computers4people.org/shield",
+      "permanent": true
+    }
+  ]
+}
