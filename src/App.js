@@ -70,6 +70,7 @@ import JanKoum               from "./homepage/fundraiser/jankoum";
 import ToddMcKinnon          from "./homepage/fundraiser/toddmckinnon";
 import RyanSmith             from "./homepage/fundraiser/ryansmith";
 import ScottCook             from "./homepage/fundraiser/scottcook";
+
 import ChrisWanstrath       from "./homepage/fundraiser/chriswanstrath";
 import GeorgeRoberts        from "./homepage/fundraiser/georgeroberts";
 import AlexisLeQuoc            from "./homepage/fundraiser/alexislequoc";
