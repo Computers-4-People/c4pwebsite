@@ -47,7 +47,7 @@ export default function DropOffLocations() {
           </p>
           <p className="text-lg leading-7 md:leading-8">
             Want to donate <strong>other electronics</strong> like desktops, monitors, or printers?
-            Please bring them to one of our official C4P office locations in New Jersey or Massachusetts.
+            Please bring them to one of our official C4P facilities.
           </p>
 
           {/* Embedded Google Maps Locator */}
