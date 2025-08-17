@@ -10,8 +10,8 @@ const faqs = [
   {
     question: "Who can get Shield Internet?",
     answer:
-      "If your household gets SNAP, Medicaid, SSI, free school lunch, or earns under 200% of the Federal Poverty Level, you’re likely eligible. Just check a box to confirm when you order. No documentation. No paperwork. No stress.",
-  },
+      "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
+  },  
   {
     question: "What is the coverage of Shield Internet?",
     answer: (
@@ -156,6 +156,7 @@ export default function Shield5grouter() {
               Shield 5G Home Hotspot + Unlimited Internet – Preorder Now (No Guarenteed Delivery Timeline)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
+              First batch sold out! Secure your spot in the next shipment today. Supplies are limited, and delivery may take a couple of months - don’t miss your chance to lock in Shield 5G.<br/><br/>
               Need stronger Wi-Fi for your whole home? This is it.
               The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
 
@@ -183,8 +184,12 @@ export default function Shield5grouter() {
               <br />
               Free shipping anywhere in the U.S. Your device arrives pre-configured and ready to use.
               <br /><br />
-              <b>Note:</b><br />
-We currently have limited inventory and are shipping in waves. Orders may be delayed depending on demand. You’ll receive a confirmation email with tracking information once your unit is ready to ship.
+              <b>Return & Service Policy</b><br />
+14-Day Return Policy<br />
+You may return your Shield device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
+
+Prepaid Service<br />
+Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
             </p>
             <p className="text-sm text-gray-600 mt-10">
   <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.

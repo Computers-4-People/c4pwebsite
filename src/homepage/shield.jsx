@@ -10,8 +10,8 @@ const faqs = [
   {
     question: "Who can get Shield Internet?",
     answer:
-      "If your household gets SNAP, Medicaid, SSI, free school lunch, or earns under 200% of the Federal Poverty Level, you’re likely eligible. Just check a box to confirm when you order. No documentation. No paperwork. No stress.",
-  },
+      "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
+  },  
   {
     question: "What is the coverage of Shield Internet?",
     answer: (

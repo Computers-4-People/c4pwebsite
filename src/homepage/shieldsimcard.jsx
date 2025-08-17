@@ -10,8 +10,8 @@ const faqs = [
   {
     question: "Who can get Shield Internet?",
     answer:
-      "If your household gets SNAP, Medicaid, SSI, free school lunch, or earns under 200% of the Federal Poverty Level, you’re likely eligible. Just check a box to confirm when you order. No documentation. No paperwork. No stress.",
-  },
+      "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
+  },  
   {
     question: "What is the coverage of Shield Internet?",
     answer: (
@@ -163,12 +163,16 @@ You need to use your own hotspot, tablet, or wearable. It must be unlocked and w
 
 <br /><br />
 <b>How it works:</b><br />
-- We ship you a free SIM card<br />
+- We ship you a free SIM card (1-2 weeks)<br />
 - Put it into your device<br />
 - Turn it on and start using the internet
 
 <br /><br />
 No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
+<br/><br/>
+Prepaid Service<br />
+Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
+            
 </p>
 <p className="text-sm text-gray-600 mt-10">
   <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
