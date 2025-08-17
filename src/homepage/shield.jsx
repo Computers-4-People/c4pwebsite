@@ -262,7 +262,7 @@ export default function ShieldHeader() {
     <div className="pt-6 text-left">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 4G Hotspot + Internet</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$60 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Connect 10 devices!</p>
+      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices!</p>
     </div>
   </div>
 </a>
@@ -285,9 +285,9 @@ export default function ShieldHeader() {
 
     {/* 3 Lines Under Image */}
     <div className="pt-6 text-left">
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home Hotspot</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home + Internet</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$175 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Stronger signal and great for shared spaces. Connect up to 32 devices!</p>
+      <p className="text-gray-600 text-sm">(Preorder) Stronger signal and great for shared spaces. Up to 32 devices!</p>
     </div>
   </div>
 </a>
