@@ -161,6 +161,7 @@ function App() {
           <Route path="/contact.html" element={<Contact />} />
           <Route path="/ewastedropoff" element={<Ewastedropoff />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/give" element={<Support />} />
           <Route path="/press" element={<Press />} />
           <Route path="/press.html" element={<Press />} />
           <Route path="/auth" element={<Auth />} />
