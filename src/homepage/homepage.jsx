@@ -97,8 +97,8 @@ const partnerLogos = [
           titlePart1: "TRANSFORM A LIFE",
           titlePart2: "WITH TECHNOLOGY",
           links: [
-            { text: "Donate Today", url: "/support" },
-            { text: "Discover our programs", url: "/programs" },
+            { text: "Donate Computers", url: "/donate" },
+            { text: "Support Our Growth", url: "/support" },
           ],
         }}
       />
