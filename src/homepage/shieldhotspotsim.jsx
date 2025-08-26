@@ -36,7 +36,7 @@ const faqs = [
   {
     question: "What does the internet plan include?",
     answer:
-      "You get unlimited internet on one of the biggest 5G networks in the country. There’s no contract, no credit check, and no hidden fees - just fast, reliable internet you can count on.",
+      "You get unlimited internet on one of the biggest 5G networks in the country. No data overages. No annual service contract. On network coverage only, no domestic roaming. During congestion, customers on this plan may notice speeds lower than other customers and further reduction if using >100GB/mo., due to data prioritization.",
   },
   {
     question: "Is the router locked or restricted?",
