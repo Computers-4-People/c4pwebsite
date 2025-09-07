@@ -68,7 +68,7 @@ function FAQSection() {
   };
 
   return (
-    <div className="bg-white py-20 px-6 border-t border-gray-200">
+    <div className="bg-white py-20 border-t border-gray-200">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
           Frequently Asked Questions
@@ -108,7 +108,7 @@ export default function ShieldHeader() {
   return (
     <>
       {/* First Viewport: Hero + Media Logos */}
-      <div className="min-h-screen flex flex-col justify-between bg-gray-100 px-4 text-center">
+      <div className="min-h-screen flex flex-col justify-between bg-gray-100 text-center">
         {/* Main header section centered vertically */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -152,9 +152,26 @@ export default function ShieldHeader() {
     alt="Mission Telecom"
     className="mx-auto h-12 sm:h-16 object-contain"
   />
-</div>
-
+</div>  
         </motion.div>
+
+        {/* Back-to-School Sale Banner (added only) */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="w-full bg-red-50 border-b border-red-200"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 text-center">
+            <span className="text-sm sm:text-base font-medium text-red-700">
+              Back-to-School Sale runs until <span className="underline decoration-red-300">September 14</span>.
+            </span>
+            <a href="#plans" className="ml-2 text-sm sm:text-base font-semibold text-red-700 underline">
+              See prepaid bundles
+            </a>
+          </div>
+        </motion.div>
+        
 
 {/* Bottom logo bar */}
 <div className="w-full py-6 bg-white border-t border-gray-200">
