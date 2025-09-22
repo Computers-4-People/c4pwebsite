@@ -38,7 +38,7 @@ const teamMembers = [
     title: "President", 
     company: "Metro Flood Defense", 
     photo: "SallyBowman.jpeg",
-    link: "https://www.linkedin.com/in/sally-bowman-4883a0ba/"
+    link: "https://www.linkedin.com/in/sally-bowman-wedg-4883a0ba/"
   },
   { 
     name: "Greg Camas", 
@@ -86,7 +86,7 @@ const teamMembers = [
     title: "Board Member", 
     company: "CAMBA/CAMBA Housing Ventures", 
     photo: "joanneoplustil.png",
-    link: "https://www.linkedin.com/in/joanne-oplustil-281966ab/"
+    link: "https://www.linkedin.com/in/joanne-m-oplustil-281966ab/"
   },
 ];
 
