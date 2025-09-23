@@ -30,6 +30,8 @@ import Auth from "./homepage/auth";
 import Boardapplication from "./homepage/boardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
+import PrivacyPolicy from "./homepage/privacypolicy";
+import Termsofservice from "./homepage/terms-of-service";
 import Shield from "./homepage/shield";
 import Shieldsimcard from "./homepage/shieldsimcard";
 import Shieldhotspotsim from "./homepage/shieldhotspotsim";
@@ -193,6 +195,8 @@ function App() {
           <Route path="/portal" element={<Portal />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/addacontribution" element={<Contribution />} />
+          <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<Termsofservice />} />
           <Route path="/pepper" element={<Pepper />} />
           <Route path="/pepper.html" element={<Pepper />} />
           <Route path="/Pepper-Fest" element={<Pepper />} />
