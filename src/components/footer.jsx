@@ -30,9 +30,13 @@ export default function Footer() {
             <Link to="/contact" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Contact Us
             </Link>
-            <Link to="https://careers.computers4people.org" className="hover:text-c4p">
-              Work @ C4P
+            <Link to="/terms-of-service" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+              Terms of Service
             </Link>
+            <Link to="/privacypolicy" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+              Privacy Policy
+            </Link>
+            
           </div>
 
           {/* Column 2 */}
@@ -70,7 +74,12 @@ export default function Footer() {
             <Link to="/ewastedropoff" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               E-Waste Dropoff
             </Link>
-            <Link to="/volunteer" className="hover:text-c4p">Volunteer</Link>
+            <Link to="/volunteer" className="hover:text-c4p">
+            Volunteer
+            </Link>
+            <Link to="https://careers.computers4people.org" className="hover:text-c4p">
+              Work @ C4P
+            </Link>
           </div>
 
           {/* Column 4 - Newsletter on Top and Social Media Below */}
