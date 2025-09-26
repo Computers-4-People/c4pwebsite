@@ -138,11 +138,11 @@ export default function ShieldSimCardTwelveMonths() {
             <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto relative">
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className="inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Back to School Sale
+                  Fall Sale
                 </span>
               </div>
               <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                Ends Sept 14
+                Ends Oct 31st
               </span>
               <img src={selectedImage} alt="SIM Card" className="max-h-full max-w-full object-contain" />
             </div>
@@ -188,24 +188,6 @@ export default function ShieldSimCardTwelveMonths() {
               <li>Job seekers and remote workers</li>
               <li>Anyone who wants reliable, nationwide connectivity</li>
             </ul>
-
-            <p className="mt-4 text-sm font-medium text-red-600">Act fast! This Back-to-School Flash Sale ends September 14th.</p>
-
-            {/* Buttons */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={CHECKOUT_URL}
-                className="inline-flex items-center justify-center rounded-lg bg-c4p px-6 py-3 font-semibold text-white shadow hover:opacity-95"
-              >
-                Sign Up Today – $156
-              </a>
-              <a
-                href="/shieldsimcard6months"
-                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-50"
-              >
-                Prefer one semester?
-              </a>
-            </div>
 
             <p className="text-xs text-gray-500 mt-6">
               Your payment includes shipping and processing. Service begins about 10 days after signup.
