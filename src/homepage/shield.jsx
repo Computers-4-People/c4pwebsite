@@ -164,7 +164,7 @@ export default function ShieldHeader() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 text-center">
             <span className="text-sm sm:text-base font-medium text-red-700">
-              Back-to-School Sale runs until <span className="underline decoration-red-300">September 14</span>.
+              Fall sale runs until <span className="underline decoration-red-300">October 31st</span>.
             </span>
             <a href="#plans" className="ml-2 text-sm sm:text-base font-semibold text-red-700 underline">
               See prepaid bundles
@@ -260,49 +260,16 @@ export default function ShieldHeader() {
 {/* SALE ROW (2 cards) */}
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
 
-  {/* 6-Month Prepaid */}
-  <a href="/shieldsimcard6months" className="block">
-    <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-
-      {/* Badges */}
-      <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Back to School Sale
-      </span>
-      <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Ends Sept 14
-      </span>
-
-      {/* Title at Top */}
-      <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-        Internet Service only
-      </h4>
-
-      {/* Image */}
-      <div className="flex justify-center items-center">
-        <img src="/Hotspot/simcard.png" alt="Shield SIM" className="h-40 object-contain" />
-      </div>
-
-      {/* Copy */}
-      <div className="pt-6 text-left">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">6-Month Prepaid Bundle</h3>
-        <p className="text-gray-900 text-sm font-medium mb-1">$84 One-Time</p>
-        <p className="text-gray-600 text-sm">
-        Unlimited 4G & 5G internet service only (no device). SIM included, just insert and go. Perfect for a full semester.
-        </p>
-      </div>
-    </div>
-  </a>
-
   {/* 12-Month Prepaid */}
   <a href="/shieldsimcard12months" className="block">
     <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
 
       {/* Badges */}
       <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Back to School Sale
+        Fall Sale
       </span>
       <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Ends Sept 14
+        Ends Oct 31st
       </span>
 
       {/* Title at Top */}
@@ -317,8 +284,8 @@ export default function ShieldHeader() {
 
       {/* Copy */}
       <div className="pt-6 text-left">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">12-Month Prepaid Bundle</h3>
-        <p className="text-gray-900 text-sm font-medium mb-1">$156 One-Time</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-1">Yearly Subscription – Internet Only</h3>
+        <p className="text-gray-900 text-sm font-medium mb-1">$156/Year</p>
         <p className="text-gray-600 text-sm">
         Unlimited 4G & 5G internet service only (no device). SIM included, just insert and go. Perfect to cover your entire school year.
         </p>
@@ -350,7 +317,7 @@ export default function ShieldHeader() {
     <div className="pt-6 text-left">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 4G Hotspot + Internet</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$60 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices!</p>
+      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices! (Backordered - allow 4 weeks for shipping)</p>
     </div>
   </div>
 </a>
@@ -375,7 +342,7 @@ export default function ShieldHeader() {
     <div className="pt-6 text-left">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home + Internet</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$175 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">(Preorder) Stronger signal and great for shared spaces. Up to 32 devices!</p>
+      <p className="text-gray-600 text-sm">Stronger signal and great for shared spaces. Up to 32 devices! (Pre-order today. Estimated shipping: mid-November)</p>
     </div>
   </div>
 </a>
@@ -398,7 +365,7 @@ export default function ShieldHeader() {
 
     {/* 3 Lines Under Image */}
     <div className="pt-6 text-left">
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">Internet Service Only</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-1">Monthly Subscription – Internet Only</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$14.89/Month</p>
       <p className="text-gray-600 text-sm">Works with hotspots, tablets, or wearables that take a SIM card.</p>
     </div>
