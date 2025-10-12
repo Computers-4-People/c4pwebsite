@@ -15,8 +15,8 @@ export default function Contact() {
                 bgImage: '/Contact Us/contactbackground.jpeg',
                 titlePart1: 'Contact Us',
                 titlePart2: `We're Here to Assist You`,
-                description: <div className='space-y-7'><p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m. EST</p> 
-                <p>Click the floating button in the bottom left corner to access our Help Center for instant answers or reach out for further assistance.</p></div>,
+                description: <div className='space-y-7'><p>Phone: (201) 669-3062</p> <p>Hours: Monday-Friday 9:00 a.m. to 5:00 p.m. EST</p>
+                <p>Click the floating "i" button in the bottom left corner to access our Help Center for instant answers or reach out for further assistance.</p></div>,
                 links: [{text: 'Contact our Team', clickAction: scrollToForm}]
             }}/>
             <div style={{
