@@ -82,7 +82,7 @@ export default function Refurbished() {
         <ul className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 list-disc list-inside">
           <li>
             <strong>Service Area:</strong> The organization must provide services
-            and have a physical location in New Jersey, New York City, or
+            and have a physical location in New Jersey, New York, or
             Massachusetts.
           </li>
           <li>
@@ -98,8 +98,7 @@ export default function Refurbished() {
           </li>
           <li>
             <strong>Application Process:</strong> To apply, complete the Partner
-            Form before <strong>February 15th</strong>. Applications submitted
-            after this date will be considered in the next cycle.
+            Form below. Applications are reviewed on a rolling basis.
           </li>
         </ul>
       ),

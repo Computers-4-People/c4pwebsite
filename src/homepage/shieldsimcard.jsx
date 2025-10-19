@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
+import ZohoCheckoutFrame from "../components/ZohoCheckoutFrame";
 
 const faqs = [
   {
@@ -106,6 +108,7 @@ function FAQSection() {
 export default function Shieldsimcard() {
   const images = ["/Hotspot/simcard.png", "/Hotspot/tmobilesimside.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  useAffiliatePrefill();
 
   return (
     <div className="bg-white py-20 px-4 sm:px-8">
@@ -182,18 +185,9 @@ Shield Internet service is prepaid and billed monthly on the 1st. If you cancel,
 
         {/* Right: Zoho Checkout Embed (aligned to image top) */}
         <div className="w-full mt-0 lg:-mt-20">
-          <iframe
-            src="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
-            title="Zoho Subscription Checkout"
-            width="100%"
-            height="1300px"
-            frameBorder="0"
-            scrolling="no"
-            style={{
-              border: "none",
-              backgroundColor: "#ffffff",
-            }}
-          ></iframe>
+        <ZohoCheckoutFrame
+  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
+/>
         </div>
       </div>
       <FAQSection/>

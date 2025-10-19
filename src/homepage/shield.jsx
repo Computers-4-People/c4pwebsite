@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
+
 
 const faqs = [
   {
@@ -105,6 +107,7 @@ function FAQSection() {
 }
 
 export default function ShieldHeader() {
+  useAffiliatePrefill();
   return (
     <>
       {/* First Viewport: Hero + Media Logos */}
