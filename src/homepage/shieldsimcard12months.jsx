@@ -1,6 +1,8 @@
 // pages/shieldsimcard12months.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
+import ZohoCheckoutFrame from "../components/ZohoCheckoutFrame";
 
 const CHECKOUT_URL =
   "https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/1000";
@@ -108,6 +110,7 @@ function FAQSection() {
 export default function ShieldSimCardTwelveMonths() {
   const images = ["/Hotspot/simcard.png", "/Hotspot/tmobilesimside.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  useAffiliatePrefill();
 
   return (
     <div className="bg-white py-20 px-4 sm:px-8">
@@ -199,15 +202,9 @@ export default function ShieldSimCardTwelveMonths() {
 
         {/* Right: checkout */}
         <div className="w-full mt-0 lg:-mt-20">
-          <iframe
-            src={CHECKOUT_URL}
-            title="12-Month Shield Internet Checkout"
-            width="100%"
-            height="1300px"
-            frameBorder="0"
-            scrolling="no"
-            style={{ border: "none", backgroundColor: "#ffffff" }}
-          />
+        <ZohoCheckoutFrame
+  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/1000"
+/>
         </div>
       </div>
 
