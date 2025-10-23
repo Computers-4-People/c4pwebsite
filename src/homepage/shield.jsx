@@ -201,13 +201,15 @@ export default function ShieldHeader() {
       {/* Second Viewport: Features */}
       <div id="features" className=" py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
-          {/* Image side */}
-          <div className="flex-1 w-full flex justify-center">
-  <TikTokEmbed
-    url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
-    width={400}
-    height={700}
-  />
+         {/* TikTok video - simple + responsive */}
+<div className="flex-1 w-full flex justify-center">
+  <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[600px]">
+    <TikTokEmbed
+      url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
+      width="100%"
+      height="100%"
+    />
+  </div>
 </div>
           {/* Text content */}
           <div className="flex-1 w-full text-left ml-10">
@@ -320,7 +322,7 @@ export default function ShieldHeader() {
     <div className="pt-6 text-left">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 4G Hotspot + Internet</h3>
       <p className="text-gray-900 text-sm font-medium mb-1">$60 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices! (Backordered - allow 4 weeks for shipping)</p>
+      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices!</p>
     </div>
   </div>
 </a>
