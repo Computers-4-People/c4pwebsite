@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
+import { TikTokEmbed } from 'react-social-media-embed';
 
 
 const faqs = [
@@ -198,17 +199,16 @@ export default function ShieldHeader() {
 </div>
 
       {/* Second Viewport: Features */}
-      <div id="features" className="bg-white py-20 px-6">
+      <div id="features" className=" py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
           {/* Image side */}
-          <div className="flex-1 w-full">
-            <img
-              src="/Hotspot/happycustomer.png"
-              alt="Happy customer"
-              className="rounded-[2rem] w-full object-cover"
-            />
-          </div>
-
+          <div className="flex-1 w-full flex justify-center">
+  <TikTokEmbed
+    url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
+    width={400}
+    height={700}
+  />
+</div>
           {/* Text content */}
           <div className="flex-1 w-full text-left ml-10">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
@@ -217,7 +217,7 @@ export default function ShieldHeader() {
             <ul className="text-gray-800 space-y-3 text-lg">
           
               <li>No contract. No credit check.</li>
-              <li>Fast speeds for videos, school, and work.</li>
+              <li>Fast speeds for school and work.</li>
               <li>Truly unlimited - use it as much as you want.</li>
               <li>Only $14.89/month.</li>
               <li>100% of profits are donated to charity</li>
