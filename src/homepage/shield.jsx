@@ -201,13 +201,15 @@ export default function ShieldHeader() {
       {/* Second Viewport: Features */}
       <div id="features" className=" py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
-          {/* Image side */}
-          <div className="flex-1 w-full flex justify-center">
-  <TikTokEmbed
-    url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
-    width={400}
-    height={700}
-  />
+         {/* TikTok video - simple + responsive */}
+<div className="flex-1 w-full flex justify-center">
+  <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[600px]">
+    <TikTokEmbed
+      url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
+      width="100%"
+      height="100%"
+    />
+  </div>
 </div>
           {/* Text content */}
           <div className="flex-1 w-full text-left ml-10">
