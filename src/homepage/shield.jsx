@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
-import { TikTokEmbed } from 'react-social-media-embed';
-
+import { TikTokEmbed } from "react-social-media-embed";
 
 const faqs = [
   {
@@ -14,7 +13,7 @@ const faqs = [
     question: "Who can get Shield Internet?",
     answer:
       "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
-  },  
+  },
   {
     question: "What is the coverage of Shield Internet?",
     answer: (
@@ -27,10 +26,11 @@ const faqs = [
           className="text-blue-500 underline"
         >
           View Coverage Map
-        </a>.
+        </a>
+        .
       </>
     ),
-  },  
+  },
   {
     question: "When will my order arrive?",
     answer:
@@ -45,7 +45,7 @@ const faqs = [
     question: "Is the router locked or restricted?",
     answer:
       "The Shield 5G Home Router is fully unlocked and portable. It works with most SIM cards and supports 5G, 4G, and 3G networks. The Shield 5G Hotspot, however, is locked to work only with our Shield Internet plan.",
-  },  
+  },
   {
     question: "What if I have technical issues?",
     answer:
@@ -60,9 +60,8 @@ const faqs = [
     question: "Can I buy in bulk?",
     answer:
       "Yes! If you're looking to provide internet access for a group, organization, or program, please reach out to us to explore a custom partnership: info@computers4people.org",
-  }  
+  },
 ];
-
 
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -107,117 +106,242 @@ function FAQSection() {
   );
 }
 
+// Timed promo popup component (updated)
+function PromoModal({ isOpen, onClose, onGoToDeal }) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* dark backdrop */}
+          <motion.div
+            className="fixed inset-0 bg-black/50 z-[200]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+          
+          {/* modal card */}
+          <motion.div
+            className="fixed inset-0 z-[210] flex items-center justify-center p-4"
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center">
+              
+              {/* X button */}
+              <button
+                onClick={onClose}
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-sm font-medium"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+
+              {/* SIM Card image */}
+              <img
+                src="/Hotspot/simcard.png"
+                alt="Shield SIM Card"
+                className="w-32 mx-auto mb-4 rounded-lg shadow-md"
+              />
+
+              {/* Headline */}
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                Fall Sale Ends <span className="text-red-600">October 31</span>
+              </h2>
+
+              {/* Subtext */}
+              <p className="text-gray-700 text-base leading-relaxed mb-6">
+                Lock in a full year of unlimited Shield Internet for <b>$156 total</b>.
+                After Oct 31, this promo disappears.
+              </p>
+
+              {/* CTA button */}
+              <button
+                onClick={onGoToDeal}
+                className="w-full bg-c4p text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-black/30 hover:opacity-95 transition"
+              >
+                Take Me to the Deal
+              </button>
+
+              {/* Subnote */}
+              <p className="text-[11px] text-gray-400 mt-4">
+                100% of profit supports closing the digital divide.
+              </p>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
+
 export default function ShieldHeader() {
   useAffiliatePrefill();
+
+  // state for promo popup
+  const [showPromo, setShowPromo] = useState(false);
+
+  // show after ~8s
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setShowPromo(true);
+    }, 8000);
+    return () => clearTimeout(t);
+  }, []);
+
+  // scroll to the yearly plan ("12-Month Prepaid") and close popup
+  const handleGoToDeal = () => {
+    const plansSection = document.getElementById("plans");
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: "smooth" });
+    }
+    setShowPromo(false);
+  };
+
   return (
     <>
-      {/* First Viewport: Hero + Media Logos */}
-      <div className="min-h-screen flex flex-col justify-between bg-gray-100 text-center">
-        {/* Main header section centered vertically */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex-grow flex flex-col items-center justify-center"
-        >
-          
-          {/* Shield icon + text */}
-{/* Shield icon + text */}
-<div className="flex flex-col sm:flex-row items-center justify-center mb-6">
-  <div className="w-full max-w-[400px] sm:max-w-[500px]">
-    <img
-      src="/Hotspot/shield.png"
-      alt="Shield Text"
-      className="w-full h-auto"
-    />
-  </div>
-</div>
+     {/* First Viewport: Hero + Media Logos */}
+<div
+  className={`
+    relative
+    min-h-screen
+    flex flex-col
+    text-center
+    bg-no-repeat bg-cover
+    bg-[position:90%_60%]
+    sm:bg-[position:85%_65%]
+    md:bg-[position:80%_80%]
+  `}
+  style={{
+    backgroundImage: "url('/Hotspot/shieldheader.png')",
+    backgroundColor: "#f5f5f5",
+  }}
+>
+  {/* overlay for readability */}
+  <div className="absolute inset-0 bg-white/70 sm:bg-white/60 md:bg-white/50 pointer-events-none" />
 
+  {/* Main hero content (Shield wordmark, tagline, CTA, mission) */}
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8 }}
+    className={`
+      relative z-10 flex flex-col items-center
+      px-4
+      pt-24 pb-32               /* was pb-20, now more bottom space so it sits lower overall */
+      sm:pt-28 sm:pb-40
+      md:pt-32 md:pb-48         /* on desktop, nudges the block downward */
+      lg:pt-36 lg:pb-48
+      flex-grow
+    `}
+  >
+    {/* Shield icon / wordmark */}
+    <div className="flex flex-col items-center justify-center mb-8">
+      <div className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px]">
+        <img
+          src="/Hotspot/shield.png"
+          alt="Shield Text"
+          className="w-full h-auto"
+        />
+      </div>
+    </div>
 
-          {/* Subheadline */}
-          <p className="text-lg sm:text-xl text-gray-800">
-            Unlimited Internet. Lowest Monthly Price in America. Zero Strings Attached.
-          </p>
+    {/* Subheadline */}
+    <p
+      className={`
+        text-lg sm:text-xl text-gray-800 font-medium leading-snug
+        max-w-[42rem] px-2
+        lg:max-w-none lg:px-0
+        text-center
+      `}
+    >
+      Unlimited Internet. Lowest Monthly Price in America. Zero Strings Attached.
+    </p>
 
-          {/* CTA button (scrolls to info/features) */}
-          <a href="#features" className="mt-10">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
-            >
-              Get Connected Now
-            </motion.button>
-          </a>
-          {/* Mission Telecom Image at bottom of hero section */}
-<div className="mt-10">
-  <img
-    src="/Hotspot/missiontelecom.png"
-    alt="Mission Telecom"
-    className="mx-auto h-12 sm:h-16 object-contain"
-  />
-</div>  
-        </motion.div>
+    {/* CTA */}
+    <a href="#features" className="mt-8">
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="
+          bg-c4p hover:bg-c4p text-white font-semibold
+          py-3 px-6
+          rounded-lg
+          shadow-lg shadow-black/30
+          transition
+        "
+      >
+        Get Connected Now
+      </motion.button>
+    </a>
 
-        {/* Back-to-School Sale Banner (added only) */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="w-full bg-red-50 border-b border-red-200"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 text-center">
-            <span className="text-sm sm:text-base font-medium text-red-700">
-              Fall sale runs until <span className="underline decoration-red-300">October 31st</span>.
-            </span>
-            <a href="#plans" className="ml-2 text-sm sm:text-base font-semibold text-red-700 underline">
-              See prepaid bundles
-            </a>
-          </div>
-        </motion.div>
-        
-
-{/* Bottom logo bar */}
-<div className="w-full py-6 bg-white border-t border-gray-200">
-  <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-    {[
-      { src: "/logos/forbes.png", alt: "Forbes" },
-      { src: "/logos/nbc.png", alt: "NBC" },
-      { src: "/logos/abc7.png", alt: "ABC 7" },
-      { src: "/logos/yahoonews.png", alt: "Yahoo News" },
-      { src: "/logos/bloomberg.png", alt: "Bloomberg" },
-    ].map((logo) => (
+    {/* Mission Telecom */}
+    <div className="mt-8">
       <img
-        key={logo.alt}
-        src={logo.src}
-        alt={logo.alt}
-        className="h-8 sm:h-16 object-contain grayscale hover:grayscale-0 transition duration-300"
+        src="/Hotspot/missiontelecom.png"
+        alt="Mission Telecom"
+        className="
+          mx-auto
+          h-12
+          sm:h-12
+          md:h-16
+          object-contain
+        "
       />
-    ))}
+    </div>
+  </motion.div>
+
+  {/* Press / Seen on bar pinned to bottom of hero */}
+  <div className="absolute bottom-0 left-0 right-0 z-10 w-full bg-white/80 backdrop-blur-[2px] border-t border-gray-200 py-6">
+    <div className="max-w-7xl mx-auto flex flex-col items-center gap-y-4 px-4">
+      <div className="text-gray-700 text-sm font-medium uppercase tracking-wide">
+        Seen on:
+      </div>
+      <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
+        {[
+          { src: "/logos/forbes.png", alt: "Forbes" },
+          { src: "/logos/nbc.png", alt: "NBC" },
+          { src: "/logos/abc7.png", alt: "ABC 7" },
+          { src: "/logos/yahoonews.png", alt: "Yahoo News" },
+          { src: "/logos/bloomberg.png", alt: "Bloomberg" },
+        ].map((logo) => (
+          <img
+            key={logo.alt}
+            src={logo.src}
+            alt={logo.alt}
+            className="h-8 sm:h-12 md:h-14 object-contain grayscale hover:grayscale-0 transition duration-300"
+          />
+        ))}
+      </div>
+    </div>
   </div>
-</div>
 </div>
 
       {/* Second Viewport: Features */}
-      <div id="features" className=" py-20 px-6">
+      <div id="features" className="py-20 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
-         {/* TikTok video - simple + responsive */}
-<div className="flex-1 w-full flex justify-center">
-  <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[600px]">
-    <TikTokEmbed
-      url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
-      width="100%"
-      height="100%"
-    />
-  </div>
-</div>
+          {/* TikTok video - simple + responsive */}
+          <div className="flex-1 w-full flex justify-center">
+            <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[600px]">
+              <TikTokEmbed
+                url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
+                width="100%"
+                height="100%"
+              />
+            </div>
+          </div>
+
           {/* Text content */}
           <div className="flex-1 w-full text-left ml-10">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-              Take Back Control of <br />Your Internet
+              Take Back Control of <br />
+              Your Internet
             </h2>
             <ul className="text-gray-800 space-y-3 text-lg">
-          
               <li>No contract. No credit check.</li>
               <li>Fast speeds for school and work.</li>
               <li>Truly unlimited - use it as much as you want.</li>
@@ -226,13 +350,13 @@ export default function ShieldHeader() {
             </ul>
             <a href="#plans">
               <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold rounded-lg shadow-lg transition">
-              <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
-            >
-              Buy Now
-            </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
+                >
+                  Buy Now
+                </motion.button>
               </button>
             </a>
           </div>
@@ -258,134 +382,162 @@ export default function ShieldHeader() {
       {/* Plans Section */}
       <div id="plans" className="bg-gray-100 py-20 px-6">
         <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
-    Choose What You Need
-</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
+            Choose What You Need
+          </h2>
 
-{/* SALE ROW (2 cards) */}
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
+          {/* SALE ROW (1 card highlighted - Yearly Subscription) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
+            {/* 12-Month Prepaid */}
+            <a href="/shieldsimcard12months" className="block">
+              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                {/* Badges */}
+                <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
+                  Fall Sale
+                </span>
+                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
+                  Ends Oct 31st
+                </span>
 
-  {/* 12-Month Prepaid */}
-  <a href="/shieldsimcard12months" className="block">
-    <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                {/* Title at Top */}
+                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
+                  Internet Service only
+                </h4>
 
-      {/* Badges */}
-      <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Fall Sale
-      </span>
-      <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-        Ends Oct 31st
-      </span>
+                {/* Image */}
+                <div className="flex justify-center items-center">
+                  <img
+                    src="/Hotspot/simcard.png"
+                    alt="Shield SIM"
+                    className="h-40 object-contain"
+                  />
+                </div>
 
-      {/* Title at Top */}
-      <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-        Internet Service only
-      </h4>
+                {/* Copy */}
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Yearly Subscription – Internet Only
+                  </h3>
+                  <p className="text-gray-900 text-sm font-medium mb-1">
+                    $156/Year
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Unlimited 4G & 5G internet service only (no device). SIM
+                    included, just insert and go. Perfect to cover your entire
+                    school year.
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
 
-      {/* Image */}
-      <div className="flex justify-center items-center">
-        <img src="/Hotspot/simcard.png" alt="Shield SIM" className="h-40 object-contain" />
-      </div>
+          {/* MAIN PRODUCTS ROW (3 cards) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {/* Card 1: Hotspot + Internet */}
+            <a href="/shieldhotspotsim" className="block">
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
+                  I need internet on the go
+                </h4>
 
-      {/* Copy */}
-      <div className="pt-6 text-left">
-        <h3 className="text-lg font-semibold text-gray-900 mb-1">Yearly Subscription – Internet Only</h3>
-        <p className="text-gray-900 text-sm font-medium mb-1">$156/Year</p>
-        <p className="text-gray-600 text-sm">
-        Unlimited 4G & 5G internet service only (no device). SIM included, just insert and go. Perfect to cover your entire school year.
-        </p>
-      </div>
-    </div>
-  </a>
-</div>
+                <div className="flex justify-center items-center">
+                  <img
+                    src="/Hotspot/hotspotsim.png"
+                    alt="Shield Hotspot"
+                    className="h-40 object-contain"
+                  />
+                </div>
 
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Shield 4G Hotspot + Internet
+                  </h3>
+                  <p className="text-gray-900 text-sm font-medium mb-1">
+                    $60 Device + $14.89/Month
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Portable Wi-Fi you can take anywhere. Up to 10 devices!
+                  </p>
+                </div>
+              </div>
+            </a>
 
-{/* MAIN PRODUCTS ROW (3 cards) */}
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-  {/* Card 1: Hotspot + Internet */}
-<a href="/shieldhotspotsim" className="block">
-  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-    
-    {/* Title at Top */}
-    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I need internet on the go</h4>
+            {/* Card 2: 5G Home Router */}
+            <a href="/shield5grouter" className="block">
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
+                  I need internet at home
+                </h4>
 
-    {/* Image */}
-    <div className="flex justify-center items-center">
-      <img
-        src="/Hotspot/hotspotsim.png"
-        alt="Shield Hotspot"
-        className="h-40 object-contain"
-      />
-    </div>
+                <div className="flex justify-center items-center">
+                  <img
+                    src="/Hotspot/shieldrouterfront.png"
+                    alt="Shield Router"
+                    className="h-40 object-contain"
+                  />
+                </div>
 
-    {/* 3 Lines Under Image */}
-    <div className="pt-6 text-left">
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 4G Hotspot + Internet</h3>
-      <p className="text-gray-900 text-sm font-medium mb-1">$60 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Portable Wi-Fi you can take anywhere. Up to 10 devices!</p>
-    </div>
-  </div>
-</a>
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Shield 5G Home + Internet
+                  </h3>
+                  <p className="text-gray-900 text-sm font-medium mb-1">
+                    $175 Device + $14.89/Month
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Stronger signal and great for shared spaces. Up to 32
+                    devices! (Pre-order today. Estimated shipping: mid-November)
+                  </p>
+                </div>
+              </div>
+            </a>
 
-{/* Card 2: 5G Home Router */}
-<a href="/shield5grouter" className="block">
-  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-    
-    {/* Title at Top */}
-    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I need internet at home</h4>
+            {/* Card 3: SIM Card Only */}
+            <a href="/shieldsimcard" className="block">
+              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
+                  I already have a device, but need internet service
+                </h4>
 
-    {/* Image */}
-    <div className="flex justify-center items-center">
-      <img
-        src="/Hotspot/shieldrouterfront.png"
-        alt="Shield Router"
-        className="h-40 object-contain"
-      />
-    </div>
+                <div className="flex justify-center items-center">
+                  <img
+                    src="/Hotspot/simcard.png"
+                    alt="SIM Card"
+                    className="h-40 object-contain"
+                  />
+                </div>
 
-    {/* 3 Lines Under Image */}
-    <div className="pt-6 text-left">
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">Shield 5G Home + Internet</h3>
-      <p className="text-gray-900 text-sm font-medium mb-1">$175 Device + $14.89/Month</p>
-      <p className="text-gray-600 text-sm">Stronger signal and great for shared spaces. Up to 32 devices! (Pre-order today. Estimated shipping: mid-November)</p>
-    </div>
-  </div>
-</a>
-
-{/* Card 3: SIM Card Only */}
-<a href="/shieldsimcard" className="block">
-  <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-    
-    {/* Title at Top */}
-    <h4 className="text-sm font-medium text-center text-gray-500 mb-2">I already have a device, but need internet service</h4>
-
-    {/* Image */}
-    <div className="flex justify-center items-center">
-      <img
-        src="/Hotspot/simcard.png"
-        alt="SIM Card"
-        className="h-40 object-contain"
-      />
-    </div>
-
-    {/* 3 Lines Under Image */}
-    <div className="pt-6 text-left">
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">Monthly Subscription – Internet Only</h3>
-      <p className="text-gray-900 text-sm font-medium mb-1">$14.89/Month</p>
-      <p className="text-gray-600 text-sm">Works with hotspots, tablets, or wearables that take a SIM card.</p>
-    </div>
-  </div>
-</a>
-
-</div>
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Monthly Subscription – Internet Only
+                  </h3>
+                  <p className="text-gray-900 text-sm font-medium mb-1">
+                    $14.89/Month
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Works with hotspots, tablets, or wearables that take a SIM
+                    card.
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
 
           <p className="mt-40 text-sm text-gray-400 font-medium text-center">
             100% of profit supports closing the digital divide
           </p>
         </div>
       </div>
+
       {/* FAQ Section */}
       <FAQSection />
+
+      {/* Timed Promo Popup */}
+      <PromoModal
+        isOpen={showPromo}
+        onClose={() => setShowPromo(false)}
+        onGoToDeal={handleGoToDeal}
+      />
     </>
   );
 }
