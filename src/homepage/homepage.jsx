@@ -70,23 +70,31 @@ export default function Homepage() {
     },
   ];
 
-const partnerLogos = [
-  { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
-  { src: "/logos/Invesco.png", alt: "Invesco" },
-  { src: "/logos/babson.png", alt: "Babson College" },
-  { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
-  { src: "/logos/RadNet.png", alt: "Radnet" },
-  { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
-  { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
-  { src: "/logos/comcast.png", alt: "Comcast" },
-  { src: "/logos/wsaudiology.png", alt: "WS Audiology" },
-  { src: "/logos/qbe.png", alt: "QBE" },
-  { src: "/logos/stevens.png", alt: "Stevens Institute of Technology" },
-  { src: "/logos/junkteens.png", alt: "Junk Teens" },
-  { src: "/logos/att.png", alt: "AT&T" },
-  { src: "/logos/insightpartners.png", alt: "Insight Partners" },
-  { src: "/logos/bigbelly.png", alt: "Big Belly Solar" },
-];
+  const partnerLogos = [
+    { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+    { src: "/logos/hudsoncounty.png", alt: "Hudson County" },
+    { src: "/logos/vista.png", alt: "Vista Equity Partners" },
+    { src: "/logos/att.png", alt: "AT&T" },
+    { src: "/logos/invesco.png", alt: "Invesco" },
+    { src: "/logos/comcast.png", alt: "Comcast" },
+    { src: "/logos/junkteens.png", alt: "Junk Teens" },
+    { src: "/logos/brightHorizons.png", alt: "Bright Horizons" },
+    { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
+    { src: "/logos/dazn.png", alt: "DAZN" },
+    { src: "/logos/babson.png", alt: "Babson College" },
+    { src: "/logos/edrington.png", alt: "Edrington" },
+    { src: "/logos/bigbelly.png", alt: "Big Belly Solar" },
+    { src: "/logos/stevens.png", alt: "Stevens Institute of Technology" },
+    { src: "/logos/qbe.png", alt: "QBE" },
+    { src: "/logos/wsaudiology.png", alt: "WS Audiology" },
+    { src: "/logos/columbiauniversity.png", alt: "Columbia University" },
+    { src: "/logos/cityofboston.png", alt: "The City of Boston" },
+    { src: "/logos/insightpartners.png", alt: "Insight Partners" },
+    { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
+    { src: "/logos/lincolncenter.png", alt: "Lincoln Center Theater" },
+    { src: "/logos/radnet.png", alt: "Radnet" },
+    { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
+  ];
 
 
   return (
