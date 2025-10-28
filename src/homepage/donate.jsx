@@ -79,7 +79,7 @@ export default function Donate() {
     { src: "/logos/insightpartners.png", alt: "Insight Partners" },
     { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
     { src: "/logos/lincolncenter.png", alt: "Lincoln Center Theater" },
-    { src: "/logos/radnet.png", alt: "Radnet" },
+    { src: "/logos/radnetlogo.png", alt: "Radnet" },
     { src: "/logos/junkteens.png", alt: "Junk Teens" },
     { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
   ];
