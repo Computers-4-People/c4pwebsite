@@ -62,7 +62,7 @@ export default function Donate() {
     { src: "/logos/aspeninstitute.png", alt: "The Aspen Institute" },
     { src: "/logos/vista.png", alt: "Vista Equity Partners" },
     { src: "/logos/att.png", alt: "AT&T" },
-    { src: "/logos/invesco.png", alt: "Invesco" },
+    { src: "/logos/invescologo.png", alt: "Invesco" },
     { src: "/logos/comcast.png", alt: "Comcast" },
     { src: "/logos/brighthorizons.png", alt: "Bright Horizons" },
     { src: "/logos/charitynavigator.png", alt: "Charity Navigator" },
