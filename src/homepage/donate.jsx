@@ -58,12 +58,14 @@ export default function Donate() {
   const partnerLogos = [
     { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
     { src: "/logos/hudsoncounty.png", alt: "Hudson County" },
+    { src: "/logos/wayfair.png", alt: "Wayfair" },
+    { src: "/logos/aspeninstitute.png", alt: "The Aspen Institute" },
     { src: "/logos/vista.png", alt: "Vista Equity Partners" },
     { src: "/logos/att.png", alt: "AT&T" },
     { src: "/logos/invesco.png", alt: "Invesco" },
     { src: "/logos/comcast.png", alt: "Comcast" },
-    { src: "/logos/junkteens.png", alt: "Junk Teens" },
-    { src: "/logos/brightHorizons.png", alt: "Bright Horizons" },
+    { src: "/logos/brighthorizons.png", alt: "Bright Horizons" },
+    { src: "/logos/charitynavigator.png", alt: "Charity Navigator" },
     { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "/logos/dazn.png", alt: "DAZN" },
     { src: "/logos/babson.png", alt: "Babson College" },
@@ -78,6 +80,7 @@ export default function Donate() {
     { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
     { src: "/logos/lincolncenter.png", alt: "Lincoln Center Theater" },
     { src: "/logos/radnet.png", alt: "Radnet" },
+    { src: "/logos/junkteens.png", alt: "Junk Teens" },
     { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
   ];
 
