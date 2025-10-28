@@ -137,7 +137,7 @@ export default function Donate() {
       <div className="m-10">
         <ImageMarquee
           images={partnerLogos}
-          title="Join 180+ Leaders in Tech, Healthcare, Government, and Beyond."
+          title="Join 250+ Leaders in Tech, Healthcare, Government, and Beyond."
         />
       </div>
 

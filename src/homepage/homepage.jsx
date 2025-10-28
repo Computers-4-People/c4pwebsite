@@ -115,7 +115,7 @@ export default function Homepage() {
       />
        <div className="m-10"><ImageMarquee
         images={partnerLogos}
-        title="Join 180+ Computer Donors."
+        title="Join 250+ Computer Donors."
       />
       </div>
       <h2 className="ml-14 mt-20 text-7xl font-subtitle text-left">
