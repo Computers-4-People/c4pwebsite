@@ -149,13 +149,12 @@ function PromoModal({ isOpen, onClose, onGoToDeal }) {
 
               {/* Headline */}
               <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Fall Sale Ends <span className="text-red-600">October 31</span>
+              SNAP Relief - <span className="text-red-600">Available Now</span>
               </h2>
 
               {/* Subtext */}
               <p className="text-gray-700 text-base leading-relaxed mb-6">
-                Lock in a full year of unlimited Shield Internet for <b>$156 total</b>.
-                After Oct 31, this promo disappears.
+              If you receive SNAP or Medicaid benefits, use coupon code "SNAP" for 1 month of free Shield Internet. Ends November 30th, 2025.
               </p>
 
               {/* CTA button */}
@@ -163,7 +162,7 @@ function PromoModal({ isOpen, onClose, onGoToDeal }) {
                 onClick={onGoToDeal}
                 className="w-full bg-c4p text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-black/30 hover:opacity-95 transition"
               >
-                Take Me to the Deal
+                Claim My Free Month
               </button>
 
               {/* Subnote */}
@@ -386,17 +385,16 @@ export default function ShieldHeader() {
             Choose What You Need
           </h2>
 
-          {/* SALE ROW (1 card highlighted - Yearly Subscription) */}
+          {/* Highlighted product */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
-            {/* 12-Month Prepaid */}
-            <a href="/shieldsimcard12months" className="block">
+            <a href="/shieldsimcard" className="block">
               <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
                 {/* Badges */}
                 <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Fall Sale
+                 1 Month Free
                 </span>
                 <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Ends Oct 31st
+                  For SNAP Recipients
                 </span>
 
                 {/* Title at Top */}
@@ -416,15 +414,14 @@ export default function ShieldHeader() {
                 {/* Copy */}
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Yearly Subscription – Internet Only
+                    Monthly Subscription – Internet Only
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $156/Year
+                    $14.89/Month
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Unlimited 4G & 5G internet service only (no device). SIM
-                    included, just insert and go. Perfect to cover your entire
-                    school year.
+                  Works with hotspots, tablets, or wearables that take a SIM
+                  card.
                   </p>
                 </div>
               </div>
@@ -453,8 +450,9 @@ export default function ShieldHeader() {
                     Shield 4G Hotspot + Internet
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $60 Device + $14.89/Month
-                  </p>
+  <span className="line-through text-gray-400">$60</span> <span className="text-red-500">$30</span> Device + $14.89/Month
+</p>
+
                   <p className="text-gray-600 text-sm">
                     Portable Wi-Fi you can take anywhere. Up to 10 devices!
                   </p>
@@ -493,7 +491,7 @@ export default function ShieldHeader() {
             </a>
 
             {/* Card 3: SIM Card Only */}
-            <a href="/shieldsimcard" className="block">
+            <a href="/shieldsimcard12months" className="block">
               <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
                 <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
                   I already have a device, but need internet service
@@ -509,14 +507,15 @@ export default function ShieldHeader() {
 
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Monthly Subscription – Internet Only
+                    Yearly Subscription – Internet Only
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $14.89/Month
+                    $156/year
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Works with hotspots, tablets, or wearables that take a SIM
-                    card.
+                    Unlimited 4G & 5G internet service only (no device). SIM
+                    included, just insert and go. Perfect to cover your entire
+                    school year.
                   </p>
                 </div>
               </div>
