@@ -56,7 +56,7 @@ export default function Press() {
             image: '/press/shieldsnap.png ',
             title: 'Amid Federal Shutdown, This Nonprofit is Offering Free Internet for SNAP Recipients Nationwide',
             date: 'Oct 30, 2025',
-            link: '/press/shieldsnaprelief.pdf'
+            link: 'https://www.prnewswire.com/news-releases/amid-federal-shutdown-this-nonprofit-is-offering-free-internet-for-snap-recipients-nationwide-302600493.html?tc=eml_cleartime'
         },
         {
             image: '/press/shield5g.png ',
