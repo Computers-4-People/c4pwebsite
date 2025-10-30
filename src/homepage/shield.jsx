@@ -154,7 +154,7 @@ function PromoModal({ isOpen, onClose, onGoToDeal }) {
 
               {/* Subtext */}
               <p className="text-gray-700 text-base leading-relaxed mb-6">
-              If you receive SNAP or Medicaid benefits, use coupon code "SNAP" for 1 month of free Shield Internet. Ends November 30th, 2025.
+              If you receive SNAP or Medicaid benefits, use coupon code "SNAP" for 1 month of free Shield Internet. Ends November 15th, 2025.
               </p>
 
               {/* CTA button */}
@@ -391,10 +391,10 @@ export default function ShieldHeader() {
               <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
                 {/* Badges */}
                 <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                 1 Month Free
+                 1 Month Free for SNAP
                 </span>
                 <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  For SNAP Recipients
+                  Ends Nov 15th
                 </span>
 
                 {/* Title at Top */}
