@@ -53,6 +53,18 @@ export default function Press() {
 
     const pressItems2 = [
         {
+            image: '/press/shieldsnap.png ',
+            title: 'Amid Federal Shutdown, This Nonprofit is Offering Free Internet for SNAP Recipients Nationwide',
+            date: 'Oct 30, 2025',
+            link: '/press/shieldsnaprelief.pdf'
+        },
+        {
+            image: '/press/shield5g.png ',
+            title: 'Mission Telecom, Computers 4 People Partner on Low-Cost Hotspot, Access',
+            date: 'June 5, 2025',
+            link: 'https://www.telecompetitor.com/mission-telecom-computers-4-people-partner-on-low-cost-hotspot-access/'
+        },
+        {
             image: '/press/C4P Nationwide Dropoff.png ',
             title: 'Computers 4 People Launches Nationwide Device Donation Program',
             date: 'April 22, 2025',
