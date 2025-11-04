@@ -173,11 +173,16 @@ export default function Shield5grouter() {
 
               <br />
               <b>Features:</b><br />
-              - Faster & stronger signal than mobile hotspots<br />
-              - Battery backup lasts up to 4 hours unplugged<br />
-              - Fully portable - use it at home or on the go<br />
-              - Just turn it on and connect - no setup required<br />
-              - Built in VPN for security<br />
+              - Stronger and faster signal than standard mobile hotspots<br />
+              - Built-in battery lasts up to 4 hours when unplugged<br />
+              - Fully portable, use it at home, work, or on the go<br />
+              - Simple plug-and-play setup, just power on and connect<br />
+              - Integrated VPN for secure browsing<br />
+              - Customizable Wi-Fi name (SSID) and password<br />
+              - Dual-band 2.4 GHz + 5 GHz networks, combine or separate as needed<br />
+              - Dedicated guest network for visitors<br />
+              - Smart “best placement” signal test to find the strongest spot in your home<br />
+              - And more advanced features available<br />
 
               <br />
               <b>Plan Details:</b><br />
