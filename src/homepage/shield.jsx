@@ -450,7 +450,7 @@ export default function ShieldHeader() {
                     Shield 4G Hotspot + Internet
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-  <span className="line-through text-gray-400">$60</span> <span className="text-red-500">$30</span> Device + $14.89/Month
+  $60 Device + $14.89/Month
 </p>
 
                   <p className="text-gray-600 text-sm">
