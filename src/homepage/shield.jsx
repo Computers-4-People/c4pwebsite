@@ -32,6 +32,22 @@ const faqs = [
     ),
   },
   {
+    question: "See Shield Internet's Broadband Label",
+    answer: (
+      <div>
+        <p>
+          Here is Shield Internet&apos;s Broadband Facts label, showing key details
+          about pricing, speeds, and terms in a simple, transparent format.
+        </p>
+        <img
+          src="/Hotspot/shieldbroadbandfacts.png"
+          alt="Shield Internet Broadband Facts Label"
+          className="mt-4 w-full max-w-xl rounded-lg shadow-md border border-gray-200"
+        />
+      </div>
+    ),
+  },
+  {
     question: "When will my order arrive?",
     answer:
       "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Router (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",

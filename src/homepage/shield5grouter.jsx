@@ -30,7 +30,23 @@ const faqs = [
         </a>.
       </>
     ),
-  },  
+  }, 
+  {
+    question: "See Shield Internet's Broadband Label",
+    answer: (
+      <div>
+        <p>
+          Here is Shield Internet&apos;s Broadband Facts label, showing key details
+          about pricing, speeds, and terms in a simple, transparent format.
+        </p>
+        <img
+          src="/Hotspot/shieldbroadbandfacts.png"
+          alt="Shield Internet Broadband Facts Label"
+          className="mt-4 w-full max-w-xl rounded-lg shadow-md border border-gray-200"
+        />
+      </div>
+    ),
+  }, 
   {
     question: "When will my order arrive?",
     answer:
