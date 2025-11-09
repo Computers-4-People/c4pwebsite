@@ -4,9 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
 import ZohoCheckoutFrame from "../components/ZohoCheckoutFrame";
 
-const CHECKOUT_URL =
-  "https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/60";
-
 const faqs = [
   {
     question: "Why We Call It Shield",
@@ -210,24 +207,8 @@ export default function ShieldSimCardSixMonths() {
 
             <p className="mt-4 text-sm font-medium text-red-600">Act fast! This Back-to-School Flash Sale ends September 14th.</p>
 
-            {/* Buttons */}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={CHECKOUT_URL}
-                className="inline-flex items-center justify-center rounded-lg bg-c4p px-6 py-3 font-semibold text-white shadow hover:opacity-95"
-              >
-                Sign Up Today – $84
-              </a>
-              <a
-                href="/shieldsimcard12months"
-                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-6 py-3 font-semibold text-gray-800 hover:bg-gray-50"
-              >
-                Prefer full school year?
-              </a>
-            </div>
-
             <p className="text-xs text-gray-500 mt-6">
-              Your payment includes shipping and processing. Service begins about 10 days after signup.
+              Your payment includes shipping and processing. Service begins about 10 days after subscribing.
               Shield Internet is a prepaid service. Bundles automatically renew at the end of each term unless cancelled before the renewal date.
               No partial refunds are provided for unused days.
             </p>
