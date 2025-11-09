@@ -4,9 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
 import ZohoCheckoutFrame from "../components/ZohoCheckoutFrame";
 
-const CHECKOUT_URL =
-  "https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/1000";
-
 const faqs = [
   {
     question: "Why We Call It Shield",
