@@ -208,7 +208,7 @@ export default function ShieldSimCardSixMonths() {
             <p className="mt-4 text-sm font-medium text-red-600">Act fast! This Back-to-School Flash Sale ends September 14th.</p>
 
             <p className="text-xs text-gray-500 mt-6">
-              Your payment includes shipping and processing. Service begins about 10 days after signup.
+              Your payment includes shipping and processing. Service begins about 10 days after subscribing.
               Shield Internet is a prepaid service. Bundles automatically renew at the end of each term unless cancelled before the renewal date.
               No partial refunds are provided for unused days.
             </p>
