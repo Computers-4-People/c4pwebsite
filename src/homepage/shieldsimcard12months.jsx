@@ -19,6 +19,22 @@ const faqs = [
       "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
   },
   {
+    question: "See Shield Internet's Broadband Label",
+    answer: (
+      <div>
+        <p>
+          Here is Shield Internet&apos;s Broadband Facts label, showing key details
+          about pricing, speeds, and terms in a simple, transparent format.
+        </p>
+        <img
+          src="/Hotspot/shieldbroadbandfacts.png"
+          alt="Shield Internet Broadband Facts Label"
+          className="mt-4 w-full max-w-xl rounded-lg shadow-md border border-gray-200"
+        />
+      </div>
+    ),
+  },
+  {
     question: "What is the coverage of Shield Internet?",
     answer: (
       <>
