@@ -122,100 +122,100 @@ function FAQSection() {
   );
 }
 
-// Timed promo popup component (updated)
-function PromoModal({ isOpen, onClose, onGoToDeal }) {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* dark backdrop */}
-          <motion.div
-            className="fixed inset-0 bg-black/50 z-[200]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          
-          {/* modal card */}
-          <motion.div
-            className="fixed inset-0 z-[210] flex items-center justify-center p-4"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center">
-              
-              {/* X button */}
-              <button
-                onClick={onClose}
-                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-sm font-medium"
-                aria-label="Close"
-              >
-                ✕
-              </button>
+// Timed promo popup component (updated) - COMMENTED OUT - SNAP DEAL ENDED
+// function PromoModal({ isOpen, onClose, onGoToDeal }) {
+//   return (
+//     <AnimatePresence>
+//       {isOpen && (
+//         <>
+//           {/* dark backdrop */}
+//           <motion.div
+//             className="fixed inset-0 bg-black/50 z-[200]"
+//             initial={{ opacity: 0 }}
+//             animate={{ opacity: 1 }}
+//             exit={{ opacity: 0 }}
+//             onClick={onClose}
+//           />
+//
+//           {/* modal card */}
+//           <motion.div
+//             className="fixed inset-0 z-[210] flex items-center justify-center p-4"
+//             initial={{ opacity: 0, scale: 0.9, y: 20 }}
+//             animate={{ opacity: 1, scale: 1, y: 0 }}
+//             exit={{ opacity: 0, scale: 0.9, y: 20 }}
+//             transition={{ duration: 0.2 }}
+//           >
+//             <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 text-center">
+//
+//               {/* X button */}
+//               <button
+//                 onClick={onClose}
+//                 className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-sm font-medium"
+//                 aria-label="Close"
+//               >
+//                 ✕
+//               </button>
 
-              {/* SIM Card image */}
-              <img
-                src="/Hotspot/simcard.png"
-                alt="Shield SIM Card"
-                className="w-32 mx-auto mb-4 rounded-lg shadow-md"
-              />
+//               {/* SIM Card image */}
+//               <img
+//                 src="/Hotspot/simcard.png"
+//                 alt="Shield SIM Card"
+//                 className="w-32 mx-auto mb-4 rounded-lg shadow-md"
+//               />
 
-              {/* Headline */}
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              SNAP Relief - <span className="text-red-600">Available Now</span>
-              </h2>
+//               {/* Headline */}
+//               <h2 className="text-2xl font-bold text-gray-900 mb-3">
+//               SNAP Relief - <span className="text-red-600">Available Now</span>
+//               </h2>
 
-              {/* Subtext */}
-              <p className="text-gray-700 text-base leading-relaxed mb-6">
-              If you receive SNAP or Medicaid benefits, use coupon code "SNAP" for 1 month of free Shield Internet. Ends November 15th, 2025.
-              </p>
+//               {/* Subtext */}
+//               <p className="text-gray-700 text-base leading-relaxed mb-6">
+//               If you receive SNAP or Medicaid benefits, use coupon code "SNAP" for 1 month of free Shield Internet. Ends November 15th, 2025.
+//               </p>
 
-              {/* CTA button */}
-              <button
-                onClick={onGoToDeal}
-                className="w-full bg-c4p text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-black/30 hover:opacity-95 transition"
-              >
-                Claim My Free Month
-              </button>
+//               {/* CTA button */}
+//               <button
+//                 onClick={onGoToDeal}
+//                 className="w-full bg-c4p text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-black/30 hover:opacity-95 transition"
+//               >
+//                 Claim My Free Month
+//               </button>
 
-              {/* Subnote */}
-              <p className="text-[11px] text-gray-400 mt-4">
-                100% of profit supports closing the digital divide.
-              </p>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-}
+//               {/* Subnote */}
+//               <p className="text-[11px] text-gray-400 mt-4">
+//                 100% of profit supports closing the digital divide.
+//               </p>
+//             </div>
+//           </motion.div>
+//         </>
+//       )}
+//     </AnimatePresence>
+//   );
+// }
 
 
 export default function ShieldHeader() {
   useAffiliatePrefill();
 
-  // state for promo popup
-  const [showPromo, setShowPromo] = useState(false);
+  // state for promo popup - COMMENTED OUT - SNAP DEAL ENDED
+  // const [showPromo, setShowPromo] = useState(false);
 
-  // show after ~8s
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setShowPromo(true);
-    }, 8000);
-    return () => clearTimeout(t);
-  }, []);
+  // // show after ~8s
+  // useEffect(() => {
+  //   const t = setTimeout(() => {
+  //     setShowPromo(true);
+  //   }, 8000);
+  //   return () => clearTimeout(t);
+  // }, []);
 
-  // scroll to the yearly plan ("12-Month Prepaid") and close popup
-  const handleGoToDeal = () => {
-    const plansSection = document.getElementById("plans");
-    if (plansSection) {
-      plansSection.scrollIntoView({ behavior: "smooth" });
-    }
-    setShowPromo(false);
-  };
+  // // scroll to the yearly plan ("12-Month Prepaid") and close popup
+  // const handleGoToDeal = () => {
+  //   const plansSection = document.getElementById("plans");
+  //   if (plansSection) {
+  //     plansSection.scrollIntoView({ behavior: "smooth" });
+  //   }
+  //   setShowPromo(false);
+  // };
 
   return (
     <>
@@ -500,7 +500,7 @@ export default function ShieldHeader() {
                   </p>
                   <p className="text-gray-600 text-sm">
                     Stronger signal and great for shared spaces. Up to 32
-                    devices! (Pre-order today. Estimated shipping: mid-November)
+                    devices! (Pre-order today. Estimated shipping: November)
                   </p>
                 </div>
               </div>
@@ -547,12 +547,12 @@ export default function ShieldHeader() {
       {/* FAQ Section */}
       <FAQSection />
 
-      {/* Timed Promo Popup */}
-      <PromoModal
+      {/* Timed Promo Popup - COMMENTED OUT - SNAP DEAL ENDED */}
+      {/* <PromoModal
         isOpen={showPromo}
         onClose={() => setShowPromo(false)}
         onGoToDeal={handleGoToDeal}
-      />
+      /> */}
     </>
   );
 }
