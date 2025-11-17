@@ -72,7 +72,9 @@ export default function Homepage() {
 
   const partnerLogos = [
     { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+    { src: "/logos/pkf.png", alt: "PKF O'Conner Davies" },
     { src: "/logos/hudsoncounty.png", alt: "Hudson County" },
+    { src: "/logos/kroll.png", alt: "Kroll" },
     { src: "/logos/wayfair.png", alt: "Wayfair" },
     { src: "/logos/aspeninstitute.png", alt: "The Aspen Institute" },
     { src: "/logos/vista.png", alt: "Vista Equity Partners" },
@@ -83,6 +85,7 @@ export default function Homepage() {
     { src: "/logos/charitynavigator.png", alt: "Charity Navigator" },
     { src: "/logos/sgainc.png", alt: "Software Guidance & Assistance, Inc." },
     { src: "/logos/dazn.png", alt: "DAZN" },
+    { src: "/logos/ef.png", alt: "Education Foundation" },
     { src: "/logos/babson.png", alt: "Babson College" },
     { src: "/logos/edrington.png", alt: "Edrington" },
     { src: "/logos/bigbelly.png", alt: "Big Belly Solar" },
@@ -95,6 +98,7 @@ export default function Homepage() {
     { src: "/logos/universityofmass.png", alt: "University of Massachusetts Honors College" },
     { src: "/logos/lincolncenter.png", alt: "Lincoln Center Theater" },
     { src: "/logos/radnetlogo.png", alt: "Radnet" },
+    { src: "/logos/hultprize.png", alt: "The Hult Prize" },
     { src: "/logos/junkteens.png", alt: "Junk Teens" },
     { src: "/logos/carlyle.png", alt: "The Carlyle Group" },
   ];
