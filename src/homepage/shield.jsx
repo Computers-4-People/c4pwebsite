@@ -406,12 +406,12 @@ export default function ShieldHeader() {
             <a href="/shieldsimcard" className="block">
               <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
                 {/* Badges */}
-                <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
+                {/* <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
                  1 Month Free for SNAP
                 </span>
                 <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
                   Ends Nov 15th
-                </span>
+                </span> */}
 
                 {/* Title at Top */}
                 <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
