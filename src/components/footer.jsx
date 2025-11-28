@@ -107,9 +107,26 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
-        <div className="mt-10 text-center text-sm text-gray-400">
-          © 2025 Computers For People Inc.
+        {/* Bottom Section - Candid Seal and Copyright */}
+        <div className="relative w-full max-w-7xl px-10">
+          {/* Candid Seal - Positioned on left side */}
+          <div className="absolute left-20 -top-20 hidden md:block z-20">
+            <a href="https://app.candid.org/profile/9813077/computers-for-people-inc-83-3405612" target="_blank" rel="noopener noreferrer">
+              <img src="https://widgets.guidestar.org/prod/v1/pdp/transparency-seal/9813077/svg" alt="Candid Seal" className="h-24 cursor-pointer" />
+            </a>
+          </div>
+
+          {/* Candid Seal - Mobile version (centered above copyright) */}
+          <div className="flex justify-center mb-4 md:hidden">
+            <a href="https://app.candid.org/profile/9813077/computers-for-people-inc-83-3405612" target="_blank" rel="noopener noreferrer">
+              <img src="https://widgets.guidestar.org/prod/v1/pdp/transparency-seal/9813077/svg" alt="Candid Seal" className="h-20" />
+            </a>
+          </div>
+
+          {/* Copyright - Centered */}
+          <div className="text-center text-sm text-gray-400 py-6">
+            © 2025 Computers For People Inc.
+          </div>
         </div>
       </div>
     </div>

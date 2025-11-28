@@ -56,8 +56,9 @@ export default function Donate() {
   ];
 
   const partnerLogos = [
-      { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
+    { src: "/logos/americanliverfoundation.png", alt: "American Liver Foundation" },
     { src: "/logos/pkf.png", alt: "PKF O'Conner Davies" },
+    { src: "/logos/prudential.png", alt: "Prudential" },
     { src: "/logos/hudsoncounty.png", alt: "Hudson County" },
     { src: "/logos/kroll.png", alt: "Kroll" },
     { src: "/logos/wayfair.png", alt: "Wayfair" },
