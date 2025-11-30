@@ -229,26 +229,51 @@ function Champions() {
                     </div>
                 </div>
 
-                {/* Debug: Show Donation Records */}
-                {donations.length > 0 && (
-                    <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 mb-8">
-                        <h3 className="text-xl font-bold text-yellow-900 mb-4">📋 Debug: Donation Records Found</h3>
+                {/* Debug: Show ALL API Data */}
+                <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 mb-8">
+                    <h3 className="text-xl font-bold text-yellow-900 mb-4">📋 Debug: API Data</h3>
+                    <div className="bg-white p-4 rounded border border-yellow-200 mb-4">
+                        <p><strong>Champion Email:</strong> {championResp.Email || 'N/A'}</p>
+                        <p><strong>Champion Company:</strong> {championResp.Company || 'N/A'}</p>
+                        <p><strong>Champion Type:</strong> {championResp.Champion_Type?.join(', ') || 'N/A'}</p>
+                    </div>
+
+                    <div className="bg-white p-4 rounded border border-yellow-200 mb-4">
+                        <p><strong>Computer_Donors Records Found:</strong> {donations.length}</p>
+                    </div>
+
+                    {donations.length > 0 ? (
                         <div className="space-y-2">
+                            <p className="font-semibold text-yellow-900">Donation Records:</p>
                             {donations.map((donation, index) => (
                                 <div key={index} className="bg-white p-4 rounded border border-yellow-200">
                                     <p><strong>Donation {index + 1}:</strong></p>
                                     <p><strong>Date:</strong> {donation.Entry_Date || donation.Date_Donated || 'N/A'}</p>
                                     <p><strong>Donor ID:</strong> {donation.Donor_ID || 'N/A'}</p>
                                     <p><strong>Status:</strong> {donation.Status || 'N/A'}</p>
+                                    <p><strong>Email in record:</strong> {donation.Email || 'N/A'}</p>
                                     <p><strong>Laptops:</strong> {donation.Laptop_Quantity || 0}</p>
+                                    <p><strong>All fields:</strong></p>
+                                    <pre className="text-xs overflow-auto bg-gray-100 p-2 rounded mt-2">
+                                        {JSON.stringify(donation, null, 2)}
+                                    </pre>
                                     <p className="text-sm text-gray-600 mt-2">
                                         Computers found in inventory with this Donor ID: {allInventoryData.filter(item => item.Donor_ID === donation.Donor_ID).length}
                                     </p>
                                 </div>
                             ))}
                         </div>
+                    ) : (
+                        <div className="bg-red-50 border border-red-300 p-4 rounded">
+                            <p className="text-red-800"><strong>❌ No Computer_Donors records found for email: {championResp.Email}</strong></p>
+                            <p className="text-sm text-red-600 mt-2">Check if Computer_Donors module has records with this email address</p>
+                        </div>
+                    )}
+
+                    <div className="bg-white p-4 rounded border border-yellow-200 mt-4">
+                        <p><strong>Total Inventory Records Found:</strong> {allInventoryData.length}</p>
                     </div>
-                )}
+                </div>
 
                 {/* Computer Inventory Table */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
