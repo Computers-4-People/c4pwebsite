@@ -37,6 +37,7 @@ export async function getZohoAccessToken() {
 }
 
 // Function to obtain Zoho CRM access token using the refresh token
+// Falls back to regular Zoho credentials if CRM-specific ones aren't set
 export async function getZohoCRMAccessToken() {
     const currentTime = Date.now();
 
@@ -46,11 +47,18 @@ export async function getZohoCRMAccessToken() {
     }
 
     try {
+        // Use CRM-specific credentials if available, otherwise fall back to regular credentials
+        const refreshToken = process.env.ZOHO_CRM_REFRESH_TOKEN || process.env.ZOHO_REFRESH_TOKEN;
+        const clientId = process.env.ZOHO_CRM_CLIENT_ID || process.env.ZOHO_CLIENT_ID;
+        const clientSecret = process.env.ZOHO_CRM_CLIENT_SECRET || process.env.ZOHO_CLIENT_SECRET;
+
+        console.log("Using " + (process.env.ZOHO_CRM_REFRESH_TOKEN ? "CRM-specific" : "shared") + " credentials for CRM access");
+
         const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
             params: {
-                refresh_token: process.env.ZOHO_CRM_REFRESH_TOKEN,
-                client_id: process.env.ZOHO_CRM_CLIENT_ID,
-                client_secret: process.env.ZOHO_CRM_CLIENT_SECRET,
+                refresh_token: refreshToken,
+                client_id: clientId,
+                client_secret: clientSecret,
                 grant_type: 'refresh_token',
             },
         });
