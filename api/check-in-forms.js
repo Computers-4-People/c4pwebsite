@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config({
     path: './.env.local'
 });
-const { getZohoAccessToken } = require('./_utils');
+const { getZohoCRMAccessToken } = require('./_utils');
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -20,23 +20,22 @@ export default async function handler(req, res) {
     console.log(`Fetching testimonials for ${recipientIds.length} recipients`);
 
     try {
-        const accessToken = await getZohoAccessToken();
+        const accessToken = await getZohoCRMAccessToken();
         if (!accessToken) {
-            return res.status(500).json({ error: 'Failed to obtain access token' });
+            return res.status(500).json({ error: 'Failed to obtain CRM access token' });
         }
 
-        // Limit to first 20 recipient IDs to avoid URL length issues
+        // Limit to first 20 recipient IDs to avoid query length issues
         const recipientIdArray = recipientIds.slice(0, 20);
 
-        // Build criteria to match recipients
-        const recipientCriteria = recipientIdArray.map(id => `(Application == ${id})`).join(' || ');
-        const criteria = `((Can_we_share_this_response_publicly == "Yes") && (Is_the_computer_working_well == "Yes") && (${recipientCriteria}))`;
-        const encodedCriteria = encodeURIComponent(criteria);
+        // Build CRM API criteria for searching check-in forms
+        const criteriaArray = recipientIdArray.map(id => `(Application:equals:${id})`);
+        const criteria = `((Can_we_share_this_response_publicly:equals:Yes)and(Is_the_computer_working_well:equals:Yes)and(or(${criteriaArray.join(',')})))`;
 
-        // Fetch check-in forms
-        const url = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Computer_Check_in_Forms?criteria=${encodedCriteria}`;
+        // Fetch check-in forms from Zoho CRM
+        const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`;
 
-        console.log("Requesting testimonials URL:", url);
+        console.log("Requesting testimonials from CRM:", url);
 
         const response = await axios.get(url, {
             headers: {
@@ -47,12 +46,12 @@ export default async function handler(req, res) {
         const checkInForms = response.data.data || [];
         console.log(`Found ${checkInForms.length} check-in forms`);
 
-        // Fetch applicant details for each check-in form
+        // Fetch applicant details for each check-in form from CRM
         const testimonialsWithDetails = await Promise.all(
             checkInForms.map(async (form) => {
                 try {
-                    // Fetch the applicant details (Computer Applications module is called Contacts)
-                    const applicantUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Contacts/${form.Application}`;
+                    // Fetch the contact (applicant) details from CRM
+                    const applicantUrl = `https://www.zohoapis.com/crm/v2/Contacts/${form.Application}`;
 
                     const applicantResponse = await axios.get(applicantUrl, {
                         headers: {
@@ -60,14 +59,14 @@ export default async function handler(req, res) {
                         },
                     });
 
-                    const applicant = applicantResponse.data.data;
+                    const applicant = applicantResponse.data.data[0];
 
                     return {
                         ...form,
                         applicant: {
                             First_Name: applicant.First_Name,
                             Last_Name: applicant.Last_Name,
-                            Address_1_City: applicant.Address_1_City,
+                            Address_1_City: applicant.Mailing_City || applicant.Address_1_City,
                             Age: applicant.Age
                         }
                     };
