@@ -121,15 +121,25 @@ function Champions() {
             return;
         }
 
-        const headers = ['Model', 'Serial #', 'Computer Type', 'Date Added', 'Date Donated', 'Date Recycled', 'Date Destroyed', 'Weight'];
+        // Determine filename based on selected donation
+        let filename;
+        if (selectedDonation === 'all') {
+            filename = `${companyName.replace(/\s+/g, '_')}_All_Donations.csv`;
+        } else {
+            const donationIndex = donations.findIndex(d => d.Donor_ID === selectedDonation);
+            const donationDate = donations[donationIndex]?.Entry_Date || donations[donationIndex]?.Date_Donated || 'Unknown';
+            filename = `${companyName.replace(/\s+/g, '_')}_Donation_${donationDate}.csv`;
+        }
+
+        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Date Picked Up', 'Date Donated', 'Date Recycled', 'Weight'];
         const rows = inventoryData.map(item => [
             item.Model || '',
             item.System_Serial_Number || '',
+            item.Barcode_Save || '',
             item.Computer_Type || '',
             item.Date_Added || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
-            item.Date_Destroyed || '',
             item.Weight || ''
         ]);
 
@@ -138,7 +148,7 @@ function Champions() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${companyName.replace(/\s+/g, '_')}_Donations.csv`;
+        link.download = filename;
         link.click();
         URL.revokeObjectURL(url);
     };
@@ -232,52 +242,24 @@ function Champions() {
                     </div>
                 </div>
 
-                {/* Debug: Show ALL API Data */}
-                <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 mb-8">
-                    <h3 className="text-xl font-bold text-yellow-900 mb-4">📋 Debug: API Data</h3>
-                    <div className="bg-white p-4 rounded border border-yellow-200 mb-4">
-                        <p><strong>Champion ID:</strong> {championResp.id || championResp.ID || 'N/A'}</p>
-                        <p><strong>Champion Email:</strong> {championResp.Email || 'N/A'}</p>
-                        <p><strong>Champion Company:</strong> {championResp.Company || 'N/A'}</p>
-                        <p><strong>Champion Type:</strong> {championResp.Champion_Type?.join(', ') || 'N/A'}</p>
-                    </div>
-
-                    <div className="bg-white p-4 rounded border border-yellow-200 mb-4">
-                        <p><strong>Computer_Donors Records Found:</strong> {donations.length}</p>
-                    </div>
-
-                    {donations.length > 0 ? (
-                        <div className="space-y-2">
-                            <p className="font-semibold text-yellow-900">Donation Records:</p>
-                            {donations.map((donation, index) => (
-                                <div key={index} className="bg-white p-4 rounded border border-yellow-200">
-                                    <p><strong>Donation {index + 1}:</strong></p>
-                                    <p><strong>Date:</strong> {donation.Entry_Date || donation.Date_Donated || 'N/A'}</p>
-                                    <p><strong>Donor ID:</strong> {donation.Donor_ID || 'N/A'}</p>
-                                    <p><strong>Status:</strong> {donation.Status || 'N/A'}</p>
-                                    <p><strong>Email in record:</strong> {donation.Email || 'N/A'}</p>
-                                    <p><strong>Laptops:</strong> {donation.Laptop_Quantity || 0}</p>
-                                    <p><strong>All fields:</strong></p>
-                                    <pre className="text-xs overflow-auto bg-gray-100 p-2 rounded mt-2">
-                                        {JSON.stringify(donation, null, 2)}
-                                    </pre>
-                                    <p className="text-sm text-gray-600 mt-2">
-                                        Computers found in inventory with this Donor ID: {allInventoryData.filter(item => item.Donor_ID === donation.Donor_ID).length}
-                                    </p>
-                                </div>
-                            ))}
+                {/* Disclaimer for donations with no inventory */}
+                {donations.length > 0 && inventoryData.length === 0 && (
+                    <div className="bg-blue-50 border-2 border-blue-300 rounded-xl p-6 mb-8">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-blue-100 p-3 rounded-full">
+                                <FiPackage className="text-2xl text-blue-600" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-blue-900 mb-2">About Your Donation Records</h3>
+                                <p className="text-blue-800">
+                                    We have records of your generous donations, but the individual computer inventory details may not be available.
+                                    This could be because these items were part of our old tracking system before we implemented detailed inventory tracking,
+                                    or they were donated anonymously. Thank you for your continued support!
+                                </p>
+                            </div>
                         </div>
-                    ) : (
-                        <div className="bg-red-50 border border-red-300 p-4 rounded">
-                            <p className="text-red-800"><strong>❌ No Computer_Donors records found for Champion ID: {championResp.id || championResp.ID}</strong></p>
-                            <p className="text-sm text-red-600 mt-2">Check if Computer_Donors module has records with the "Champion" lookup field pointing to this Champion ID</p>
-                        </div>
-                    )}
-
-                    <div className="bg-white p-4 rounded border border-yellow-200 mt-4">
-                        <p><strong>Total Inventory Records Found:</strong> {allInventoryData.length}</p>
                     </div>
-                </div>
+                )}
 
                 {/* Computer Inventory Table */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -327,10 +309,11 @@ function Champions() {
                                     <tr>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Model</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Added</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Picked Up</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Destroyed</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Certificate</th>
                                     </tr>
@@ -340,10 +323,11 @@ function Champions() {
                                         <tr key={item.ID || index} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Model || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Added || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Destroyed || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Recycled || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 {item.Data_Certificate ? (
