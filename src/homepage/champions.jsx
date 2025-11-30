@@ -79,7 +79,14 @@ function Champions() {
 
                         const computers = inventoryResp.data || [];
                         console.log(`Found ${computers.length} computers for donor ${donorId}`);
-                        allComputers.push(...computers);
+
+                        // Add Date_Picked_Up from the donation record to each inventory item
+                        const computersWithPickupDate = computers.map(computer => ({
+                            ...computer,
+                            Date_Picked_Up: donor.Date_Picked_Up || donor.Pickup_Date || 'N/A'
+                        }));
+
+                        allComputers.push(...computersWithPickupDate);
                     } catch (err) {
                         console.error(`Error fetching inventory for donor ${donorId}:`, err);
                     }
@@ -137,7 +144,7 @@ function Champions() {
             item.System_Serial_Number || '',
             item.Barcode_Save || '',
             item.Computer_Type || '',
-            item.Date_Added || '',
+            item.Date_Picked_Up || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
             item.Weight || ''
@@ -325,7 +332,7 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Added || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Picked_Up || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Recycled || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
