@@ -9,7 +9,22 @@ module.exports = {
       colors: {
         c4p: {
           DEFAULT: "#00d64e",
-          hover: "#00a33b"
+          hover: "#00a33b",
+          dark: "#007029",
+          darker: "#003d16",
+          darkest: "#00280e",
+        },
+        brand: {
+          green: "#00d64e",
+          'green-dark': "#00a33b",
+          'green-darker': "#007029",
+          black: "#001407",
+        },
+        neutral: {
+          50: "#f4f9f6",
+          100: "#eef4f1",
+          200: "#eaefec",
+          300: "#dbe0dd",
         },
         black: "#001407",
         white: "#f4f9f6",

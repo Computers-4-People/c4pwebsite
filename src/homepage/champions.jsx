@@ -211,7 +211,7 @@ function Champions() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 pt-20">
+        <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 pt-20 font-subtitle">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="max-w-7xl mx-auto px-6 py-10">
@@ -222,7 +222,7 @@ function Champions() {
                         </div>
                         <button
                             onClick={downloadCSV}
-                            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+                            className="flex items-center gap-2 bg-c4p hover:bg-c4p-hover text-brand-black px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
                         >
                             <FiDownload className="text-xl" />
                             Download Report
@@ -234,14 +234,14 @@ function Champions() {
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Computers</p>
                                 <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalComputers}</p>
                             </div>
-                            <div className="bg-green-100 p-4 rounded-full">
-                                <FiPackage className="text-3xl text-green-600" />
+                            <div className="bg-neutral-100 p-4 rounded-full">
+                                <FiPackage className="text-3xl text-c4p-dark" />
                             </div>
                         </div>
                     </div>
@@ -289,10 +289,10 @@ function Champions() {
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">What Our Recipients Are Saying</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {testimonials.map((testimonial, index) => (
-                                <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                                <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                                     <div className="flex items-start gap-3 mb-4">
-                                        <div className="bg-green-100 p-2 rounded-full">
-                                            <FiCheck className="text-xl text-green-600" />
+                                        <div className="bg-neutral-100 p-2 rounded-full">
+                                            <FiCheck className="text-xl text-c4p-dark" />
                                         </div>
                                         <div className="flex-1">
                                             <p className="font-semibold text-gray-900">
@@ -310,7 +310,7 @@ function Champions() {
                                     <p className="text-gray-700 italic mb-4">
                                         "{testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
                                     </p>
-                                    <div className="flex items-center gap-2 text-green-600">
+                                    <div className="flex items-center gap-2 text-c4p-dark">
                                         <FiCheck className="text-lg" />
                                         <span className="text-sm font-medium">Computer working well</span>
                                     </div>
@@ -321,7 +321,7 @@ function Champions() {
                 )}
 
                 {/* Impact Message */}
-                <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg p-8 mb-8 text-white">
+                <div className="bg-gradient-to-r from-c4p-dark to-c4p-darker rounded-xl shadow-lg p-8 mb-8 text-white">
                     <div className="flex items-start gap-4">
                         <div className="bg-white bg-opacity-20 p-3 rounded-full">
                             <FiCheck className="text-3xl" />
@@ -368,7 +368,7 @@ function Champions() {
                                     <select
                                         value={selectedDonation}
                                         onChange={(e) => setSelectedDonation(e.target.value)}
-                                        className="bg-white text-gray-900 px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none"
+                                        className="bg-white text-gray-900 px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-c4p focus:ring-2 focus:ring-green-200 outline-none"
                                     >
                                         <option value="all">All Donations ({stats.totalComputers} computers)</option>
                                         {donations.map((donation, index) => {
