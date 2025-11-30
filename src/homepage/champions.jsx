@@ -187,7 +187,7 @@ function Champions() {
             filename = `${companyName.replace(/\s+/g, '_')}_Donation_${donationDate}.csv`;
         }
 
-        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Donation Date', 'Date Donated', 'Date Recycled', 'Weight'];
+        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Delivered to Facility Date', 'Date Donated', 'Date Recycled', 'Weight'];
         const rows = inventoryData.map(item => [
             item.Model || '',
             item.System_Serial_Number || '',
@@ -405,7 +405,7 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation ID</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation Date</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Delivered to Facility Date</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
