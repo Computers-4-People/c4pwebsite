@@ -128,16 +128,6 @@ function Champions() {
                     console.log(`Fetching inventory for Donor_ID: ${donorId}`);
 
                     try {
-                        // Fetch Computer_Donors from CRM to get Date_Picked_Up
-                        let datePickedUp = 'N/A';
-                        try {
-                            const crmDonorResp = await axios.get(`${API_BASE_URL}/api/crm-donor?donorId=${donorId}`);
-                            datePickedUp = crmDonorResp.data.Date_Picked_Up || 'N/A';
-                            console.log(`Got Date_Picked_Up from CRM: ${datePickedUp}`);
-                        } catch (crmErr) {
-                            console.log(`Could not fetch Date_Picked_Up from CRM: ${crmErr.message}`);
-                        }
-
                         let computers = [];
                         try {
                             const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
@@ -154,10 +144,9 @@ function Champions() {
                             }
                         }
 
-                        // Add donation date and donor ID from the Computer_Donors record to each inventory item
+                        // Add donor ID to each inventory item
                         const computersWithDonationInfo = computers.map(computer => ({
                             ...computer,
-                            Donation_Date: datePickedUp,
                             Donation_ID: donor.Donor_ID
                         }));
 
@@ -215,14 +204,13 @@ function Champions() {
             filename = `${companyName.replace(/\s+/g, '_')}_Donation_${donationDate}.csv`;
         }
 
-        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Delivered to Facility Date', 'Date Donated', 'Date Recycled', 'Weight'];
+        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Date Donated', 'Date Recycled', 'Weight'];
         const rows = inventoryData.map(item => [
             item.Model || '',
             item.System_Serial_Number || '',
             item.Barcode_Save || '',
             item.Computer_Type || '',
             item.Donation_ID || '',
-            item.Donation_Date || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
             item.Weight || ''
@@ -433,7 +421,6 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation ID</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Delivered to Facility Date</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
@@ -448,7 +435,6 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Donation_ID || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Donation_Date || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Recycled || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>

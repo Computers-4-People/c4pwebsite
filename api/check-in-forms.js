@@ -36,6 +36,7 @@ export default async function handler(req, res) {
         const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`;
 
         console.log("Requesting testimonials from CRM:", url);
+        console.log("Searching for recipient IDs:", recipientIdArray);
 
         const response = await axios.get(url, {
             headers: {
@@ -48,6 +49,11 @@ export default async function handler(req, res) {
 
         if (checkInForms.length === 0) {
             console.log('No testimonials found matching criteria');
+            console.log('This could mean:');
+            console.log('1. No check-in forms exist for these recipients');
+            console.log('2. Check-in forms exist but Can_we_share_this_response_publicly is not "Yes"');
+            console.log('3. Check-in forms exist but Is_the_computer_working_well is not "Yes"');
+            console.log('4. Application field in check-in forms does not match recipient IDs');
             return res.json([]);
         }
 
