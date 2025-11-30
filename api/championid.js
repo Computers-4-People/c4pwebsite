@@ -26,10 +26,12 @@ export default async function handler(req, res) {
 
     try {
         // Use CRM token for CRM modules, Creator token for Creator modules
-        // CRM modules: Computer_Donors, Computer_Check_in_Forms, Contacts
-        // Creator modules: Champions, and others
-        const crmModules = ['Computer_Donors', 'Computer_Check_in_Forms', 'Contacts'];
+        // CRM modules: Computer_Check_in_Forms, Contacts
+        // Creator modules: Champions, Computer_Donors, and others
+        const crmModules = ['Computer_Check_in_Forms', 'Contacts'];
         const useCRM = crmModules.includes(moduleName);
+
+        console.log(`Module: ${moduleName}, Using CRM: ${useCRM}`);
 
         const accessToken = useCRM
             ? await getZohoCRMAccessToken()
