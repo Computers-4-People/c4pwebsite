@@ -58,10 +58,15 @@ export default async function handler(req, res) {
     await mg.messages.create('www.computers4people.org', {
       from: "C4P Authentication <postmaster@www.computers4people.org>",
       to: [decodedEmail],
-      subject: 'Welcome to Computers4People!',
-      text: `Your record ID is ${recordId}`,
-      html: `<h1> enter the record Id here: www.computers4people.com/portal?recordId=${recordId}&jwt=${jwt} </p> `
-      // <p> enter the record Id here: www.computers4people.com/portal <p> 
+      subject: 'Welcome to Computers4People Portal!',
+      text: `Access your portal at: www.computers4people.org/portal?recordId=${recordId}&jwt=${jwt}`,
+      html: `
+        <h1>Welcome to Computers4People!</h1>
+        <p>Click the link below to access your portal:</p>
+        <p><a href="https://www.computers4people.org/portal?recordId=${recordId}&jwt=${jwt}">Access Your Portal</a></p>
+        <p>Or copy and paste this link: www.computers4people.org/portal?recordId=${recordId}&jwt=${jwt}</p>
+        <p>This link will expire in 24 hours for security purposes.</p>
+      ` 
 
       // old: `<h1> this is a test! </p>`
     });
