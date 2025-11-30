@@ -7,13 +7,17 @@ dotenv.config({
 const { getZohoAccessToken } = require('./_utils');
 
 export default async function handler(req, res) {
-    const { recipientIds, limit = 3 } = req.query;
-
-    if (!recipientIds) {
-        return res.status(400).json({ error: 'recipientIds parameter is required' });
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    console.log(`Fetching testimonials for recipients: ${recipientIds}`);
+    const { recipientIds, limit = 3 } = req.body;
+
+    if (!recipientIds || !Array.isArray(recipientIds) || recipientIds.length === 0) {
+        return res.status(400).json({ error: 'recipientIds array is required in request body' });
+    }
+
+    console.log(`Fetching testimonials for ${recipientIds.length} recipients`);
 
     try {
         const accessToken = await getZohoAccessToken();
@@ -21,8 +25,8 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        // Parse recipient IDs
-        const recipientIdArray = recipientIds.split(',');
+        // Limit to first 20 recipient IDs to avoid URL length issues
+        const recipientIdArray = recipientIds.slice(0, 20);
 
         // Build criteria to match recipients
         const recipientCriteria = recipientIdArray.map(id => `(Application == ${id})`).join(' || ');
