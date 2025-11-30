@@ -44,16 +44,19 @@ function Champions() {
             setLoading(true);
 
             console.log('Champion data:', championResp);
-            console.log('Fetching donations for email:', championResp.Email);
 
-            if (!championResp.Email) {
-                console.error('No email found in championResp');
+            // Get the Champion's record ID
+            const championId = championResp.id || championResp.ID;
+            console.log('Fetching donations for Champion ID:', championId);
+
+            if (!championId) {
+                console.error('No Champion ID found in championResp');
                 setLoading(false);
                 return;
             }
 
-            // Get ALL donor records for this champion's email
-            const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${encodeURIComponent(championResp.Email)}&moduleName=Computer_Donors&param=Email`);
+            // Get ALL Computer_Donors records for this champion using the Champion lookup field
+            const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${championId}&moduleName=Computer_Donors&param=Champion`);
 
             console.log('Donor response:', donorResp.data);
 
@@ -233,6 +236,7 @@ function Champions() {
                 <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 mb-8">
                     <h3 className="text-xl font-bold text-yellow-900 mb-4">📋 Debug: API Data</h3>
                     <div className="bg-white p-4 rounded border border-yellow-200 mb-4">
+                        <p><strong>Champion ID:</strong> {championResp.id || championResp.ID || 'N/A'}</p>
                         <p><strong>Champion Email:</strong> {championResp.Email || 'N/A'}</p>
                         <p><strong>Champion Company:</strong> {championResp.Company || 'N/A'}</p>
                         <p><strong>Champion Type:</strong> {championResp.Champion_Type?.join(', ') || 'N/A'}</p>
@@ -265,8 +269,8 @@ function Champions() {
                         </div>
                     ) : (
                         <div className="bg-red-50 border border-red-300 p-4 rounded">
-                            <p className="text-red-800"><strong>❌ No Computer_Donors records found for email: {championResp.Email}</strong></p>
-                            <p className="text-sm text-red-600 mt-2">Check if Computer_Donors module has records with this email address</p>
+                            <p className="text-red-800"><strong>❌ No Computer_Donors records found for Champion ID: {championResp.id || championResp.ID}</strong></p>
+                            <p className="text-sm text-red-600 mt-2">Check if Computer_Donors module has records with the "Champion" lookup field pointing to this Champion ID</p>
                         </div>
                     )}
 
