@@ -12,7 +12,7 @@ function Champions() {
     const [stats, setStats] = useState({
         totalComputers: 0,
         totalWeight: 0,
-        thisMonth: 0,
+        donatedPercentage: 0,
         totalDonations: 0
     });
 
@@ -99,17 +99,17 @@ function Champions() {
 
                 // Calculate stats across ALL donations
                 const totalWeight = allComputers.reduce((sum, item) => sum + (parseFloat(item.Weight) || 0), 0);
-                const thisMonth = allComputers.filter(item => {
-                    const donateDate = new Date(item.Date_Donated);
-                    const now = new Date();
-                    return donateDate.getMonth() === now.getMonth() &&
-                           donateDate.getFullYear() === now.getFullYear();
-                }).length;
+
+                // Calculate percentage donated (computers with Date_Donated vs Date_Recycled)
+                const donatedCount = allComputers.filter(item => item.Date_Donated && item.Date_Donated !== 'N/A').length;
+                const donatedPercentage = allComputers.length > 0
+                    ? Math.round((donatedCount / allComputers.length) * 100)
+                    : 0;
 
                 setStats({
                     totalComputers: allComputers.length,
                     totalWeight: totalWeight.toFixed(2),
-                    thisMonth,
+                    donatedPercentage,
                     totalDonations: donorRecords.length
                 });
             } else {
@@ -213,11 +213,11 @@ function Champions() {
                     <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">This Month</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.thisMonth}</p>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.donatedPercentage}<span className="text-2xl text-gray-600">%</span></p>
                             </div>
                             <div className="bg-purple-100 p-4 rounded-full">
-                                <FiCalendar className="text-3xl text-purple-600" />
+                                <FiCheck className="text-3xl text-purple-600" />
                             </div>
                         </div>
                     </div>
