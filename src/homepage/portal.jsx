@@ -3,6 +3,7 @@ import axios from 'axios';
 import ProgressBar from '../components/ProgressBar';
 import { useNavigate } from 'react-router-dom';
 import PortalDropdown from '../components/portaldropdown';
+import { decodeJWT, validateJWT } from '../utils/jwtValidation';
 
 // added this
 import { useSearchParams } from 'react-router-dom';
@@ -16,23 +17,22 @@ function Portal() {
 
     axios.defaults.withCredentials = true;
 
-
     const [searchParams] = useSearchParams();
     var [recordId, setRecordId] = useState(searchParams.get('recordId') || '');
     var [jwt, setJwt] = useState(searchParams.get('jwt') || '');
 
-    
-
-    
-  //  var [recordId, setRecordId] = useState('');
     const [championId, setChampionId] = useState('');
-    var [module, setModule] = useState('Contacts'); // Default to "Contacts" for Applicants
+    var [module, setModule] = useState('Contacts'); // Default to Contacts for Applicants
     const [data, setData] = useState(null);
     const [error, setError] = useState('');
-    const [inventoryData, setInventoryData] = useState([]); // State for computer inventory data
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0); // For image slider if applicable
+    const [inventoryData, setInventoryData] = useState([]); 
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0); 
+    const [selectedDonation, setSelectedDonation] = useState("")
+    var [isloading, setIsloading] = useState(true);
+    
 
     const [type, setType] = useState(null);
+   
     var newModule = null;
     var reqName = null;
 
@@ -55,59 +55,82 @@ function Portal() {
     // added this
     useEffect(() => {
         (async () => {
-        try {
-        const urlRecordId = searchParams.get('recordId');
-        const urlJwt = searchParams.get('jwt');
+            try {
+             
+                const urlRecordId = searchParams.get('recordId');
+                const urlAuthCode = searchParams.get('jwt') || null;
+                
+                // Get the session token and ensure it's a string
+                const storedToken = sessionStorage.getItem('session');
+                const cookieValue = typeof storedToken === 'string' ? storedToken : null;
+                
+                // If we have a valid session token, we don't need to validate
+                if (cookieValue) {
+                    console.log('Using existing session');
+                    setRecordId(urlRecordId);
+                    
+                    const validation = validateJWT(cookieValue, urlRecordId);
+                    
+                    if (!validation.isValid) {
+                        console.log(validation.message);
+                        sessionStorage.removeItem('session');
+                        setError('Session expired. Please log in again.');
+                        return;
+                    }
+ 
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
+                    
+                    console.log('Calling fetchData');
+                    await fetchData();
+                    
+                    return;
+                }
+    
+                // Only do auth code validation if we don't have a session
+                if (!cookieValue) {
+                    
+                    const timestamp = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                        params: { key: urlRecordId, typeOfData: 'time' },
+                    });
+                    
+                    const validate = await axios.get(`${API_BASE_URL}/api/validateAuthCode`, {
+                        params: { authCode: urlAuthCode, timestamp: 
+                            timestamp.data.data, userId: urlRecordId },
+                    });
+                    
+    
+                    if (validate.data.valid) {
+                       
+                        await axios.delete(`${API_BASE_URL}/api/redis-cache`, {
+                            params: { key: urlRecordId, typeOfData: 'time' },
+                        });
+    
+                        setRecordId(urlRecordId);
+                        
+                        const authToken = await getJWT(urlRecordId);
+                        sessionStorage.setItem('session', authToken);
+            
+                        axios.defaults.headers.common['Authorization'] = 
+                        `Bearer ${authToken}`;
+                        
+                        await fetchData();
+                       
+                    } else {
+                     
+                        setError('Invalid or expired authentication code');
+                    }
+                }
+            } catch (error) {
+                console.error('Error in useEffect:', error);
+                setError('Error fetching data. Please try again.');
+            }
+        })();
+    }, [searchParams]);
 
-        if (!urlJwt) {
-            setError('Authentication required. Please use the link from your email.');
-            return;
-        }
 
-        if (!urlRecordId) {
-            setError('Invalid access. Record ID is missing.');
-            return;
-        }
-
-        // Validate JWT token
-        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
-        console.log('apiValidation:', apiValidation.data);
-
-        if (!apiValidation.data.valid) {
-            setError('Invalid or expired authentication token. Please request a new login link.');
-            return;
-        }
-
-        // Verify that the recordId in the JWT matches the URL recordId for security
-        if (apiValidation.data.user.recordID !== urlRecordId) {
-            setError('Access denied. Authentication token does not match the requested record.');
-            return;
-        }
-
-        // If all validations pass, proceed
-        setRecordId(urlRecordId);
-        setJwt(urlJwt);
-
-        setTimeout(() => {
-            fetchData();
-        }, 0);
-
-    } catch (error) {
-        console.error('Error during authentication:', error);
-        if (error.response?.status === 401) {
-            setError('Invalid or expired authentication token. Please request a new login link.');
-        } else {
-            setError('Authentication error. Please try again or request a new login link.');
-        }
-    }
-    })();
-    }, [searchParams]); 
-
-
-    const getJWT = async(email, recordID) => {
+    const getJWT = async(recordID) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/api/jwt`, {
-                email,
                 recordID
             }, {
                 withCredentials: true,
@@ -116,7 +139,17 @@ function Portal() {
                 }
             });
     
-            return response.data;
+            // Ensure we're getting a token string
+            const token = response.data.token;
+            if (!token || typeof token !== 'string') {
+                console.error('Invalid token received:', token);
+                throw new Error('Invalid token format received');
+            }
+            
+            // Store the token as a string
+            sessionStorage.setItem('session', token);
+           
+            return token;
             
         } catch (error) {
             console.error('Error in getting JWT:', error);
@@ -124,7 +157,7 @@ function Portal() {
         }
     }
 
-    
+    // -----------------------------------------------------------------------------
 
     // Auto-slide functionality (if using image slider)
     useEffect(() => {
@@ -154,9 +187,18 @@ function Portal() {
 
 
 
-    
+    // -----------------------------------------------------------------------------
 
     const fetchData = async () => {
+      
+        if (sessionStorage.getItem('module')){
+           
+            if (await cachedFetch()) {
+                console.log('conditional hit');
+                return;
+            }
+        }
+       
         setError('');
         setData(null);
         setInventoryData([]);
@@ -166,23 +208,19 @@ function Portal() {
             return;
         }
 
-        // recordId here is the champion recordId
         const reqChampion = `${API_BASE_URL}/api/Champions/${recordId}`;
         const championResp = await axios.get(reqChampion);
-        console.log('successfully retrieved champion information', championResp.data);
 
-        // cache the championResp data in sessionStorage to use in Champions.jsx
         sessionStorage.setItem('championResp', JSON.stringify(championResp.data));
+        sessionStorage.setItem('recordId', championResp.data.id);
 
         const name = championResp.data?.Name;
         const email = championResp.data?.Email;
         const found = championResp.data?.Champion_Type;
-        console.log("here is the champion's name", name);
-        console.log("here is the Champion's Email", email);
-        console.log("Champion types:", found);
 
-        const type = found.find(t => t === 'Computer Donor' || t === 'Computer Applicant' || t === 'Loser');
-        console.log("type", type);
+        const type = found.find(t => t === 'Computer Donor' 
+            || t === 'Computer Applicant' || t === 'Loser');
+
         if (!type) {
             console.error('Champion type not found:', found);
             setError('Invalid champion type');
@@ -199,84 +237,157 @@ function Portal() {
             sessionStorage.setItem('type', 'Contacts');
         }
         
-        // put this in a helper function
+        // put this in a helper function --
         let dateList = [];
         for (let i = 0; i < reqName.data.length; i++) { 
-            console.log(`${i}&${reqName.data[i].Entry_Date}`, reqName.data[i]);
+
             var d = Date.parse(reqName.data[i].Entry_Date);
             dateList.push(d);
         }
 
         let maximum = dateList.indexOf(Math.max(...dateList));
-
-        console.log('max entry', reqName.data[maximum]);
-        console.log(dateList);
-        console.log(reqName.data[maximum].Entry_Date);
-        console.log('successfully retrieved applicant information', reqName);
-        
+        const newSelectedDonation = reqName.data[maximum].Entry_Date + " Donation";
+        setSelectedDonation(newSelectedDonation);        
+        sessionStorage.setItem('selectedDonationOld', newSelectedDonation);
+  
         const id = reqName.data[maximum].id;
         
-        console.log('recordId before:', recordId);
-        console.log('recordId after:', id);
-
-        //mutates to computer_donor or applicant record id
         recordId = id;
 
-        if (reqName.data[maximum].Status === "Donated" || reqName.data[maximum].Status === "Archived") {
-            console.log('Applicant is not a client');
+        if (reqName.data[maximum].Status === "Donated" || 
+            reqName.data[maximum].Status === "Archived") {
+ 
             newModule = 'Computer_Donors';
         }
 
         else {
-            console.log('Applicant is a client');
             newModule = 'Contacts';
         }
 
-        console.log('newModule', newModule);
-        console.log('module', module);
-        // get recordId from request and put it here
         const requestUrl = `${API_BASE_URL}/api/${newModule}/${recordId}`;
         
-        console.log('Attempting to fetch from:', requestUrl);
-
         try {
             const response = await axios.get(requestUrl);
-            console.log('API Response:', response.data);
+   
             if (response.data.error) {
                 setError(response.data.error);
             } else {
                 setData(response.data);
-                setModule(newModule);
-                console.log(newModule);
-                console.log(module);
-                module = newModule;
 
-                // Fetch inventory data based on Applicant ID or Donor_ID
+                await cacheData(`${searchParams.get('recordId')}`, 'data', response.data);
+                const resp = await getCachedData(`${searchParams.get('recordId')}`, 'data');
+    
+                setModule(newModule);
+  
+                module = newModule;
+                sessionStorage.setItem('module', newModule);
+
                 if (module === 'Contacts') {
                     if (response.data.Status === 'Client') {
-                        fetchInventoryByRecipientId(recordId);
+                        fetchInventoryByRecipientId(recordId, 
+                            `${searchParams.get('recordId')}`);
                     }
                 } else if (module === 'Computer_Donors') {
                     
                     const donorId = response.data.Donor_ID;
-                    console.log('donorId', donorId);
+   
                     if (donorId) {
-                        fetchInventoryByDonorId(donorId);
+                        fetchInventoryByDonorId(donorId,
+                            `${searchParams.get('recordId')}`);
                     }
                 }
+                setIsloading(false);
             }
         } catch (error) {
-            console.log(module);
-            console.log(recordId);
-            console.log(API_BASE_URL);
+     
             console.error('Error fetching data:', error);
-            if (error.response && error.response.data && error.response.data.error) {
+            if (error.response && error.response.data 
+                && error.response.data.error) {
                 setError(error.response.data.error);
             } else {
                 setError('Network Error: Unable to retrieve data.');
             }
         }
+    
     };
+
+
+    const cacheData = async (key, typeOfData, value) => {
+        try {
+            await axios.post(`${API_BASE_URL}/api/redis-cache`, {
+                key: key,
+                typeOfData: typeOfData,
+                value: value
+            });
+        } catch (error) {
+            console.error('Error in cacheData:', error);
+        }
+    }
+
+    const getCachedData = async (key, typeOfData) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: key, typeOfData: typeOfData },
+            });
+            
+            if (response?.data?.data) {
+                return response.data.data;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error in getCachedData:', error);
+            return null;
+        }
+    }
+
+
+
+    const cachedFetch = async () => {
+        try {
+            let cachedInventory = null;  // Initialize as null instead
+
+            if (sessionStorage.getItem('module') !== 'Contacts') {
+                cachedInventory = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                    params: { key: `${recordId}`, typeOfData: 'inventory' },
+                });
+         
+            }
+
+            const cachedData = await axios.get(`${API_BASE_URL}/api/redis-cache`, {
+                params: { key: `${recordId}`, typeOfData: 'data' },
+            });
+        
+            if (cachedData?.data?.data) {
+                const module = sessionStorage.getItem('module');
+                const selectedDonation = sessionStorage.getItem('selectedDonationOld');
+                
+                const stateUpdates = [
+                    setSelectedDonation(selectedDonation),
+                    setModule(module),
+                    setData(cachedData.data.data)
+                ];
+
+                console.log('cachedInventory', cachedInventory);
+        
+                if (cachedInventory?.data?.data) {
+         
+                    stateUpdates.push(setInventoryData(cachedInventory.data.data));
+                }
+
+                await Promise.all(stateUpdates).then(() => {
+
+                    setIsloading(false);
+                });
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Error fetching from Redis cache:', error);
+            return false;
+        }
+    }
 
 
     /**
@@ -289,13 +400,11 @@ function Portal() {
     // fetch donor or applicant data with champion name
     const fetchWithChampion = async (Name, moduleName, param) => {
         try {
-            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}&moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
-
-            console.log('url:', requestUrl);
+            const requestUrl = `${API_BASE_URL}/api/championid?Name=${encodeURIComponent(Name)}
+            &moduleName=${encodeURIComponent(moduleName)}&param=${encodeURIComponent(param)}`;
 
             const response = await axios.get(requestUrl);
-            console.log('response:', response.data);
-
+   
             return response.data;
         }
         catch(e) {
@@ -304,15 +413,20 @@ function Portal() {
         }
     }
 
-    const fetchInventoryByRecipientId = async (recipientId) => {
+    const fetchInventoryByRecipientId = async (recipientId, recordId) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Recipient', searchValue: recipientId },
             });
-            console.log('Inventory Data Response:', response.data);
+    
             if (response.data && response.data.length > 0) {
+
+
                 setInventoryData(response.data);
-                console.log('Inventory Data:', response.data);
+               await cacheData(recordId, 'inventory', response.data);
+
+               const cachedInventory = await getCachedData(recordId, 'inventory');
+   
             } else {
                 console.log('No inventory data found for this recipient.');
             }
@@ -321,20 +435,22 @@ function Portal() {
         }
     };
 
-    const fetchInventoryByDonorId = async (donorId) => {
+    const fetchInventoryByDonorId = async (donorId, recordId) => {
         try {
             const req = `${API_BASE_URL}/api/computer-inventory`;
             const params = { searchField: 'Donor_ID', searchValue: donorId };
-            console.log('here');
-            console.log(req, params);
+   
             const response = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                 params: { searchField: 'Donor_ID', searchValue: donorId },
             });
-            console.log('Inventory Data Response:', response.data);
+    
             if (response.data && response.data.length > 0) {
+
                 setInventoryData(response.data);
-                console.log('Inventory Data:', response.data);
-                console.log(inventoryData);
+                await cacheData(recordId, 'inventory', response.data);
+
+                const cachedInventory = await getCachedData(recordId, 'inventory');
+
             } else {
                 console.log('No inventory data found for this donor.');
             }
@@ -342,6 +458,9 @@ function Portal() {
             console.error('Error fetching inventory data:', error);
         }
     };
+
+
+        
 
     const renderStatusMessage = () => {
         if (module !== 'Contacts' || !data) return null;
@@ -470,542 +589,209 @@ function Portal() {
         document.body.removeChild(link);
     };
 
-//     return (
-//         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-//             <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl my-10 sm:my-16">
-//                 {!data ? (
-//                     <>
-//                         {/* <h2 className="text-2xl font-bold text-center mb-6">The Digital Portal</h2> */}
-//                         {/* <select
-//                             className="border border-gray-300 rounded p-2 mb-4 w-full sm:w-1/2 mx-auto block"
-//                             value={module}
-//                             onChange={(e) => setModule(e.target.value)}
-//                         >
-//                             <option value="Contacts">Applicants</option>
-//                             <option value="Computer_Donors">Computer Donors</option>
-//                         </select> */}
-//                         {/* <input
-//                             type="text"
-//                             placeholder="Enter ID"
-//                             value={recordId}
-//                             onChange={(e) => setRecordId(e.target.value)}
-//                             className="border border-gray-300 rounded p-3 w-full mb-4"
-//                         /> */}
-//                         {/* <button
-//                             onClick={fetchData}
-//                             className="w-full sm:w-1/2 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-//                             style={{ backgroundColor: '#17de43' }}
-//                         >
-//                             Fetch Details
-//                         </button> */}
-//                         {/* {error && <p className="text-red-500 mt-4 text-center">{error}</p>} */}
-//                     </>
-//                 ) : module === 'Contacts' ? (
-//                     <div className="applicant-info">
-//                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
-//                             Applicant Tracker
-//                         </h2>
-//                         <ProgressBar status={data.Status} />
-
-//                         <div className="bg-gray-100 p-4 rounded mb-4">
-//                             {renderStatusMessage()}
-//                         </div>
-//                         <div className="p-4 bg-white rounded shadow w-full">
-//                             <h2 className="text-2xl font-bold text-center mb-6 text-c4p">
-//                                 Applicant Information
-//                             </h2>
-//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-//                                 <p>
-//                                     <strong>Name:</strong> {data.Full_Name || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Email:</strong> {data.Email || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Phone:</strong> {data.Phone || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Nominating Organization:</strong>{' '}
-//                                     {data.Nominating_Organization || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Recommender Name:</strong>{' '}
-//                                     {`${data.Recommenders_Name || ''} ${
-//                                         data.Recommenders_Last_Name || ''
-//                                     }`.trim() || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Recommender Email:</strong>{' '}
-//                                     {data.Recommenders_Email || 'N/A'}
-//                                 </p>
-//                             </div>
-//                         </div>
-//                         <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
-//                             <h3 className="text-xl font-semibold text-c4p mb-2">
-//                                 Computer Request Details
-//                             </h3>
-//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-//                                 {data.Laptop_Quantity && (
-//                                     <p>
-//                                         <strong>Laptop Quantity:</strong> {data.Laptop_Quantity}
-//                                     </p>
-//                                 )}
-//                                 {data.Desktop_Quantity && (
-//                                     <p>
-//                                         <strong>Desktop Quantity:</strong> {data.Desktop_Quantity}
-//                                     </p>
-//                                 )}
-//                                 {data.Tablet_Quantity && (
-//                                     <p>
-//                                         <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
-//                                     </p>
-//                                 )}
-//                                 {/* Add more quantities if needed */}
-//                             </div>
-//                         </div>
-
-//                         {/* Display Assigned Computer Section if Applicant is a Client */}
-//                         {data.Status === 'Client' && inventoryData.length > 0 && (
-//                             <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
-//                                 <h3 className="text-xl font-semibold text-c4p mb-2">
-//                                     Assigned Computer(s)
-//                                 </h3>
-//                                 <div className="space-y-4">
-//                                     {inventoryData.map((item) => (
-//                                         <div key={item.ID} className="bg-white p-4 rounded shadow">
-//                                             <p>
-//                                                 <strong>Model:</strong> {item.Model || 'N/A'}
-//                                             </p>
-//                                             <p>
-//                                                 <strong>Status:</strong> {item.Status || 'N/A'}
-//                                             </p>
-//                                             <p>
-//                                                 <strong>Computer Type:</strong>{' '}
-//                                                 {item.Computer_Type || 'N/A'}
-//                                             </p>
-//                                             <p>
-//                                                 <strong>Location:</strong> {item.Location || 'N/A'}
-//                                             </p>
-//                                             {/* Add more fields as needed */}
-//                                         </div>
-//                                     ))}
-//                                 </div>
-//                             </div>
-//                         )}
-
-//                         <button
-//                             onClick={() => {
-//                                 setData(null);
-//                                 setInventoryData([]);
-//                             }}
-//                             className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-//                             style={{ backgroundColor: '#17de43' }}
-//                         >
-//                             Back to Search
-//                         </button>
-//                     </div>
-//                 ) : (
-//                     // Donor details section
-//                     <div className="donor-info">
-//                         <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
-//                             Donor Details
-//                         </h2>
-//                         <div className="p-4 bg-green-50 rounded shadow w-full">
-//                             <h2 className="text-2xl font-bold mb-4 text-c4p">
-//                                 Computer Donor Information
-//                             </h2>
-//                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-//                                 <p>
-//                                     <strong>Company:</strong> {data.Company || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Contact Person:</strong> {data.Name || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Email:</strong> {data.Email || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Phone:</strong> {data.Phone || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Location:</strong> {data.Location || 'N/A'}
-//                                 </p>
-//                                 <p>
-//                                     <strong>Mailing Address:</strong>{' '}
-//                                     {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${
-//                                         data.Mailing_State || ''
-//                                     } ${data.Mailing_Zip || ''}`.trim() || 'N/A'}
-//                                 </p>
-//                             </div>
-//                         </div>
-
-//                         {/* Display Donated Computers Section */}
-//                         {inventoryData.length > 0 && (
-//                             <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
-//                                 {/* Display Total Computers Donated and Total Weight */}
-//                                 <div className="flex flex-col sm:flex-row justify-around mb-6">
-//                                     <div className="text-center mb-4 sm:mb-0">
-//                                         <p className="text-4xl font-bold text-c4p">
-//                                             {inventoryData.length}
-//                                         </p>
-//                                         <p className="text-lg">Total Computers Donated</p>
-//                                     </div>
-//                                     <div className="text-center">
-//                                         <p className="text-4xl font-bold text-c4p">
-//                                             {calculateTotalWeight()} lbs
-//                                         </p>
-//                                         <p className="text-lg">Total Weight</p>
-//                                     </div>
-//                                 </div>
-
-//                                 {/* Download CSV Button */}
-//                                 <div className="flex justify-end mb-4">
-//                                     <button
-//                                         onClick={downloadCSV}
-//                                         className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700 transition-colors duration-300"
-//                                     >
-//                                         Download CSV
-//                                     </button>
-//                                 </div>
-
-//                                 <h3 className="text-xl font-semibold text-c4p mb-4">
-//                                     Donated Computers
-//                                 </h3>
-//                                 <div className="overflow-x-auto">
-//                                     <table className="min-w-full bg-white">
-//                                         <thead>
-//                                             <tr>
-//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-//                                                     Model
-//                                                 </th>
-//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-//                                                     Computer Type
-//                                                 </th>
-//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-//                                                     Date Added
-//                                                 </th>
-//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-//                                                     Date Donated
-//                                                 </th>
-//                                                 <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-//                                                     Date Recycled
-//                                                 </th>
-//                                             </tr>
-//                                         </thead>
-//                                         <tbody>
-//                                             {inventoryData.map((item, index) => (
-//                                                 <tr
-//                                                     key={item.ID}
-//                                                     className={index % 2 === 0 ? 'bg-gray-100' : ''}
-//                                                 >
-//                                                     <td className="py-2 px-4 border-b border-gray-200">
-//                                                         {item.Model || 'N/A'}
-//                                                     </td>
-//                                                     <td className="py-2 px-4 border-b border-gray-200">
-//                                                         {item.Computer_Type || 'N/A'}
-//                                                     </td>
-//                                                     <td className="py-2 px-4 border-b border-gray-200">
-//                                                         {item.Date_Added || 'N/A'}
-//                                                     </td>
-//                                                     <td className="py-2 px-4 border-b border-gray-200">
-//                                                         {item.Date_Donated || 'N/A'}
-//                                                     </td>
-//                                                     <td className="py-2 px-4 border-b border-gray-200">
-//                                                         {item.Date_Recycled || 'N/A'}
-//                                                     </td>
-//                                                 </tr>
-//                                             ))}
-//                                         </tbody>
-//                                     </table>
-//                                 </div>
-//                             </div>
-//                         )}
-
-//                         <button
-//                             onClick={() => {
-//                                 setData(null);
-//                                 setInventoryData([]);
-//                             }}
-//                             className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-//                             style={{ backgroundColor: '#17de43' }}
-//                         >
-//                             Back to Search
-//                         </button>
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     );
-// }
-
-return (
 
 
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-
-        {data && 
-        <div className="flex justify-center items-start gap-x-4 mt-10 sm:mt-16">
-        <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')}/>
-        </div>
-        }
-
-
-        {data && (
+    return (
+    
+    <div className="flex flex-col min-h-screen">
+        {/* Main Content */}
+        <main className="flex-grow p-6 max-w-7xl mx-auto w-full mt-20">
+            {/* Welcome Header */}
             
+            <div className="mb-6">
+                <h1 className="text-4xl font-bold text-black">Welcome back,  </h1>
+                <p className="text-gray-700">We created this portal specifically for you.</p>
+
+            </div>
             
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-5xl my-10 sm:my-16">
+
+            {/* Main Content Grid */}
+            <div className="flex flex-col md:flex-row gap-6">
                 
-                {module === 'Contacts' ? (
-                    <div className="applicant-info">
-                        <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
-                            Applicant Tracker
-                        </h2>
-                        <ProgressBar status={data.Status} />
+                {/* Left Sidebar Navigation */}
+                <div className="w-full md:w-64 space-y-2">
+                    
+                        <div>
+                            <PortalDropdown className="flex-shrink-0" type={sessionStorage.getItem('type')} applicantType={sessionStorage.getItem('type')}/>
+                        </div>
+                    
+                </div>
+                
 
-                        <div className="bg-gray-100 p-4 rounded mb-4">
-                            {renderStatusMessage()}
-                        </div>
-                        <div className="p-4 bg-white rounded shadow w-full">
-                            <h2 className="text-2xl font-bold text-center mb-6 text-c4p">
-                                Applicant Information
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <p>
-                                    <strong>Name:</strong> {data.Full_Name || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Email:</strong> {data.Email || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Phone:</strong> {data.Phone || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Nominating Organization:</strong>{' '}
-                                    {data.Nominating_Organization || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Recommender Name:</strong>{' '}
-                                    {`${data.Recommenders_Name || ''} ${
-                                        data.Recommenders_Last_Name || ''
-                                    }`.trim() || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Recommender Email:</strong>{' '}
-                                    {data.Recommenders_Email || 'N/A'}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
-                            <h3 className="text-xl font-semibold text-c4p mb-2">
-                                Computer Request Details
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {data.Laptop_Quantity && (
-                                    <p>
-                                        <strong>Laptop Quantity:</strong> {data.Laptop_Quantity}
-                                    </p>
-                                )}
-                                {data.Desktop_Quantity && (
-                                    <p>
-                                        <strong>Desktop Quantity:</strong> {data.Desktop_Quantity}
-                                    </p>
-                                )}
-                                {data.Tablet_Quantity && (
-                                    <p>
-                                        <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
+                {/* Center Content Section */}
+                <div className="flex-grow">
+                    {data && (
+                        <div className="bg-green-50 p-6 rounded-lg">
+                            {module === 'Contacts' ? (
+                                <div className="applicant-info">
+                                    <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
+                                        Applicant Tracker
+                                    </h2>
+                                    <ProgressBar status={data.Status} />
 
-                        {data.Status === 'Client' && inventoryData.length > 0 && (
-                            <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
-                                <h3 className="text-xl font-semibold text-c4p mb-2">
-                                    Assigned Computer(s)
-                                </h3>
-                                <div className="space-y-4">
-                                    {inventoryData.map((item) => (
-                                        <div key={item.ID} className="bg-white p-4 rounded shadow">
+                                    <div className="bg-gray-100 p-4 rounded mb-4">
+                                        {renderStatusMessage()}
+                                    </div>
+                                    <div className="p-4 bg-white rounded shadow w-full">
+                                        <h2 className="text-2xl font-bold text-center mb-6 text-c4p">
+                                            Applicant Information
+                                        </h2>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <p>
-                                                <strong>Model:</strong> {item.Model || 'N/A'}
+                                                <strong>Name:</strong> {data.Full_Name || 'N/A'}
                                             </p>
                                             <p>
-                                                <strong>Status:</strong> {item.Status || 'N/A'}
+                                                <strong>Email:</strong> {data.Email || 'N/A'}
                                             </p>
                                             <p>
-                                                <strong>Computer Type:</strong>{' '}
-                                                {item.Computer_Type || 'N/A'}
+                                                <strong>Phone:</strong> {data.Phone || 'N/A'}
                                             </p>
                                             <p>
-                                                <strong>Location:</strong> {item.Location || 'N/A'}
+                                                <strong>Nominating Organization:</strong>{' '}
+                                                {data.Nominating_Organization || 'N/A'}
+                                            </p>
+                                            <p>
+                                                <strong>Recommender Name:</strong>{' '}
+                                                {`${data.Recommenders_Name || ''} ${
+                                                    data.Recommenders_Last_Name || ''
+                                                }`.trim() || 'N/A'}
+                                            </p>
+                                            <p>
+                                                <strong>Recommender Email:</strong>{' '}
+                                                {data.Recommenders_Email || 'N/A'}
                                             </p>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* <button
-                            onClick={() => {
-                                setData(null);
-                                setInventoryData([]);
-                            }}
-                            className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-                            style={{ backgroundColor: '#17de43' }}
-                        >
-                            Back to Search
-                        </button> */}
-                        <div className="flex left-50 items-center">
-                        <button
-                            onClick={handleClick}
-                            className=" bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded shadow-lg"
-                        >
-                            Champions
-                        </button>
-                        </div>
-                    </div>
-                ) : (
-                    
-                    <div className="donor-info">
-                        <h2 className="text-center text-3xl font-bold mb-4 text-c4p">
-                            Donor Details
-                        </h2>
-                        <div className="p-4 bg-green-50 rounded shadow w-full">
-                            <h2 className="text-2xl font-bold mb-4 text-c4p">
-                                Computer Donor Information
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <p>
-                                    <strong>Company:</strong> {data.Company || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Contact Person:</strong> {data.Name || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Email:</strong> {data.Email || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Phone:</strong> {data.Phone || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Location:</strong> {data.Location || 'N/A'}
-                                </p>
-                                <p>
-                                    <strong>Mailing Address:</strong>{' '}
-                                    {`${data.Mailing_Street || ''}, ${data.Mailing_City || ''}, ${
-                                        data.Mailing_State || ''
-                                    } ${data.Mailing_Zip || ''}`.trim() || 'N/A'}
-                                </p>
-                            </div>
-                        </div>
-
-                        {inventoryData.length > 0 && (
-                            <div className="p-4 bg-green-100 rounded shadow w-full mt-4">
-                                <div className="flex flex-col sm:flex-row justify-around mb-6">
-                                    <div className="text-center mb-4 sm:mb-0">
-                                        <p className="text-4xl font-bold text-c4p">
-                                            {inventoryData.length}
-                                        </p>
-                                        <p className="text-lg">Total Computers Donated</p>
                                     </div>
-                                    <div className="text-center">
-                                        <p className="text-4xl font-bold text-c4p">
-                                            {calculateTotalWeight()} lbs
-                                        </p>
-                                        <p className="text-lg">Total Weight</p>
+                                    <div className="p-4 bg-gray-100 rounded shadow w-full mt-4">
+                                        <h3 className="text-xl font-semibold text-c4p mb-2">
+                                            Computer Request Details
+                                        </h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {data.Laptop_Quantity && (
+                                                <p>
+                                                    <strong>Laptop Quantity:</strong> {data.Laptop_Quantity}
+                                                </p>
+                                            )}
+                                            {data.Desktop_Quantity && (
+                                                <p>
+                                                    <strong>Desktop Quantity:</strong> {data.Desktop_Quantity}
+                                                </p>
+                                            )}
+                                            {data.Tablet_Quantity && (
+                                                <p>
+                                                    <strong>Tablet Quantity:</strong> {data.Tablet_Quantity}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="flex justify-end mb-4">
-                                    <button
-                                        onClick={downloadCSV}
-                                        className="px-4 py-2 bg-c4p text-white rounded hover:bg-green-700 transition-colors duration-300"
-                                    >
-                                        Download CSV
-                                    </button>
-                                </div>
+                                    {data.Status === 'Client' && inventoryData.length > 0 && (
+                                        <div className="p-4 bg-gray-200 rounded shadow w-full mt-4">
+                                            <h3 className="text-xl font-semibold text-c4p mb-2">
+                                                Assigned Computer(s)
+                                            </h3>
+                                            <div className="space-y-4">
+                                                {inventoryData.map((item) => (
+                                                    <div key={item.ID} className="bg-white p-4 rounded shadow">
+                                                        <p>
+                                                            <strong>Model:</strong> {item.Model || 'N/A'}
+                                                        </p>
+                                                        <p>
+                                                            <strong>Status:</strong> {item.Status || 'N/A'}
+                                                        </p>
+                                                        <p>
+                                                            <strong>Computer Type:</strong>{' '}
+                                                            {item.Computer_Type || 'N/A'}
+                                                        </p>
+                                                        <p>
+                                                            <strong>Location:</strong> {item.Location || 'N/A'}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
 
-                                <h3 className="text-xl font-semibold text-c4p mb-4">
-                                    Donated Computers
-                                </h3>
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full bg-white">
-                                        <thead>
-                                            <tr>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Model
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Computer Type
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Added
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Donated
-                                                </th>
-                                                <th className="py-2 px-4 border-b border-gray-200 text-left text-sm text-c4p">
-                                                    Date Recycled
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {inventoryData.map((item, index) => (
-                                                <tr
-                                                    key={item.ID}
-                                                    className={index % 2 === 0 ? 'bg-gray-100' : ''}
-                                                >
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Model || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Computer_Type || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Added || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Donated || 'N/A'}
-                                                    </td>
-                                                    <td className="py-2 px-4 border-b border-gray-200">
-                                                        {item.Date_Recycled || 'N/A'}
-                                                    </td>
+                                    
+                                </div>
+                            ) : (
+                                <div className="donor-details">
+                                    <div className="flex justify-between items-center mb-6">
+                                        <div className="ml-auto flex items-center space-x-4">
+                                            <a
+                                                href="#"
+                                                onClick={downloadCSV}
+                                                className="text-green-500 hover:text-green-700 font-medium underline"
+                                            >
+                                                Download Spreadsheet
+                                            </a>
+
+                                            <div className="relative">
+                                                <button className="flex items-center justify-between w-64 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                                                    <span>{selectedDonation}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full bg-green-100 border-collapse">
+                                            <thead>
+                                                <tr className="border border-gray-300">
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Model</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Serial #</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Added</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Donated</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Date Recycled</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">Erasure Date</th>
+                                                    <th className="py-2 px-4 text-left border border-gray-300 font-medium">View Data Certificate</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {inventoryData.length > 0
+                                                    ? inventoryData.map((item, index) => (
+                                                        <tr key={item.ID} className="border border-gray-300">
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Model || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Barcode_Save || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Date_Added || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Date_Donated || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Date_Recycled || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">{item.Erasure_Date || "N/A"}</td>
+                                                            <td className="py-2 px-4 border border-gray-300">
+                                                                {item.Data_Certificate ? (
+                                                                    <a href={item.Data_Certificate} className="text-blue-600 hover:underline">
+                                                                        View
+                                                                    </a>
+                                                                ) : (
+                                                                    "N/A"
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                    : 
+                                                    Array.from({ length: 15 }).map((_, index) => (
+                                                        <tr key={index} className="border border-gray-300">
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                            <td className="py-2 px-4 border border-gray-300"></td>
+                                                        </tr>
+                                                    ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-
-                        {/* <button
-                            onClick={() => {
-                                setData(null);
-                                setInventoryData([]);
-                            }}
-                            className="w-full sm:w-1/2 mt-6 p-3 font-semibold text-white rounded hover:bg-green-700 transition-colors duration-300 mx-auto block"
-                            style={{ backgroundColor: '#17de43' }}
-                        >
-                            Back to Search
-
-
-                        </button> */}
-                        {/* <button
-                            onClick={handleClick}
-                            className="fixed right-4 top-20 bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center"
-                        >
-                            Champions
-                        </button> */}
-
-                        
-                    </div>
-                )}
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-
-            
-        )}
+        </main>
     </div>
 );
 }
+
 
 export default Portal;

@@ -5,9 +5,19 @@ import PortalDropdown from '../components/portaldropdown';
 
 function Champions() {
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
-    
+    const applicantType = sessionStorage.getItem('type');
+    const fontSize = "text-4xl";
     console.log(championResp);
+    console.log(applicantType);
 
+    // Add custom styles for hiding scrollbars
+    const scrollbarStyles = {
+      scrollbarWidth: 'none',  /* Firefox */
+      msOverflowStyle: 'none',  /* IE and Edge */
+      '&::-webkit-scrollbar': {  /* Chrome, Safari and Opera */
+        display: 'none'
+      }
+    };
 
     const [userData, setUserData] = useState({
         firstName: '' || championResp.First_Name,    
@@ -36,7 +46,7 @@ function Champions() {
       
 
       {/* Main Content */}
-      <main className="flex-grow p-6 max-w-7xl mx-auto w-full">
+      <main className="flex-grow p-6 max-w-7xl mx-auto w-full mt-20">
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
@@ -48,7 +58,7 @@ function Champions() {
           {/* Left Sidebar Navigation */}
           <div className="w-full md:w-64 space-y-2">
           <div>
-          <PortalDropdown className="flex-shrink-0" type={"Champions"} />
+          <PortalDropdown className="flex-shrink-0" type={"Champions"} applicantType={applicantType}/>
           </div>
           </div>
 
@@ -79,7 +89,7 @@ function Champions() {
                       <path d="M100 130C120 130 140 140 140 160H60C60 140 80 130 100 130Z" fill="#5F3DC4" />
                       <path
                         d="M100 120C90 120 80 110 80 95C80 80 90 70 100 70C110 70 120 80 120 95C120 110 110 120 100 120Z"
-                        fill="#DEE2E6"
+                        fill="5F3DC4"
                       />
                     </svg>
                   </div>
@@ -99,7 +109,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">First Name:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.firstName}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.firstName}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -109,7 +119,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Address:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.address || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap overflow-x-auto scrollbar-hide select-text">{userData.address || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -119,7 +129,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Last Name:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.lastName}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.lastName}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -129,7 +139,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Apt/Suite/Unit:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">
                     {userData.aptSuiteUnit || ""}
                   </div>
                   <button className="text-gray-600">
@@ -141,7 +151,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Title:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.title || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{applicantType || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -161,7 +171,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Email:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-[9px]">{userData.email || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{userData.email || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>
@@ -183,7 +193,7 @@ function Champions() {
               <div className="flex justify-between items-center">
                 <span className="font-semibold">Phone:</span>
                 <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center text-xs">{userData.phone || ""}</div>
+                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.phone || ""}</div>
                   <button className="text-gray-600">
                     
                   </button>

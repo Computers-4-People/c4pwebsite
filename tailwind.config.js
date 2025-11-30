@@ -27,5 +27,20 @@ module.exports = {
   },
   plugins: [
     require("tailwindcss-animated"),
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.scrollbar-hide': {
+          /* Firefox */
+          'scrollbar-width': 'none',
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          /* IE and Edge */
+          '-ms-overflow-style': 'none'
+        }
+      }
+      addUtilities(newUtilities)
+    }
   ],
 };
