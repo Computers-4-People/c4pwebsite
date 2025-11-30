@@ -4,10 +4,10 @@ const dotenv = require('dotenv');
 dotenv.config({
   path: './.env.local'
 });
-const { getZohoAccessToken } = require('./_utils');
+const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 
 /**
- * 
+ *
  * @param {*} req --> query params: Name, moduleName, param
  * @param {*} res --> response data from zoho api as a json object
  * @returns response data from the zoho api search endpoint
@@ -19,13 +19,14 @@ export default async function handler(req, res) {
 
 
     const { Name, moduleName, param } = req.query;
-    console.log(`Received request for module: ${Name}`);
+    console.log(`Received request for module: ${moduleName}, searching by ${param}: ${Name}`);
 
     // decode parameter --> email, phone, etc
     const paramType = decodeURIComponent(param);
 
     try {
-        const accessToken = await getZohoAccessToken();
+        // Use CRM token for CRM API requests
+        const accessToken = await getZohoCRMAccessToken();
         console.log(accessToken);
 
         if (!accessToken) {
