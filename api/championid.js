@@ -25,8 +25,15 @@ export default async function handler(req, res) {
     const paramType = decodeURIComponent(param);
 
     try {
-        // Use CRM token for CRM API requests
-        const accessToken = await getZohoCRMAccessToken();
+        // Use CRM token for CRM modules, Creator token for Creator modules
+        // CRM modules: Computer_Donors, Computer_Check_in_Forms, Contacts
+        // Creator modules: Champions, and others
+        const crmModules = ['Computer_Donors', 'Computer_Check_in_Forms', 'Contacts'];
+        const useCRM = crmModules.includes(moduleName);
+
+        const accessToken = useCRM
+            ? await getZohoCRMAccessToken()
+            : await getZohoAccessToken();
         console.log(accessToken);
 
         if (!accessToken) {
