@@ -121,6 +121,16 @@ function Champions() {
                     console.log(`Fetching inventory for Donor_ID: ${donorId}`);
 
                     try {
+                        // Fetch Computer_Donors from CRM to get Date_Picked_Up
+                        let datePickedUp = 'N/A';
+                        try {
+                            const crmDonorResp = await axios.get(`${API_BASE_URL}/api/crm-donor?donorId=${donorId}`);
+                            datePickedUp = crmDonorResp.data.Date_Picked_Up || 'N/A';
+                            console.log(`Got Date_Picked_Up from CRM: ${datePickedUp}`);
+                        } catch (crmErr) {
+                            console.log(`Could not fetch Date_Picked_Up from CRM: ${crmErr.message}`);
+                        }
+
                         const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
                             params: { searchField: 'Donor_ID', searchValue: donorId }
                         });
@@ -131,7 +141,7 @@ function Champions() {
                         // Add donation date and donor ID from the Computer_Donors record to each inventory item
                         const computersWithDonationInfo = computers.map(computer => ({
                             ...computer,
-                            Donation_Date: donor.Date_Picked_Up || 'N/A',
+                            Donation_Date: datePickedUp,
                             Donation_ID: donor.Donor_ID
                         }));
 

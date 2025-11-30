@@ -46,6 +46,11 @@ export default async function handler(req, res) {
         const checkInForms = response.data.data || [];
         console.log(`Found ${checkInForms.length} check-in forms`);
 
+        if (checkInForms.length === 0) {
+            console.log('No testimonials found matching criteria');
+            return res.json([]);
+        }
+
         // Fetch applicant details for each check-in form from CRM
         const testimonialsWithDetails = await Promise.all(
             checkInForms.map(async (form) => {
