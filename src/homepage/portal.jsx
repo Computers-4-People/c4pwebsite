@@ -296,8 +296,10 @@ function Portal() {
                             `${searchParams.get('recordId')}`);
                     }
 
-                    // Auto-redirect donors to champions page
-                    navigate(`/champions?recordId=${searchParams.get('recordId')}`);
+                    // Auto-redirect donors to champions page after a short delay to ensure sessionStorage is set
+                    setTimeout(() => {
+                        navigate(`/champions?recordId=${searchParams.get('recordId')}`);
+                    }, 100);
                 }
                 setIsloading(false);
             }
