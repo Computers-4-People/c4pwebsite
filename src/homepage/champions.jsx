@@ -56,11 +56,9 @@ function Champions() {
             }
 
             // Fetch testimonials for these recipients
-            const response = await axios.get(`${API_BASE_URL}/api/check-in-forms`, {
-                params: {
-                    recipientIds: recipientIds.join(','),
-                    limit: 3
-                }
+            const response = await axios.post(`${API_BASE_URL}/api/check-in-forms`, {
+                recipientIds: recipientIds,
+                limit: 3
             });
 
             setTestimonials(response.data || []);
