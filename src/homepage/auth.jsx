@@ -14,12 +14,8 @@ const API_BASE_URL =
 
 const sendEmail = async (email, recordId, jwt) => {
     try {
-        
         const response = await axios.post(`${API_BASE_URL}/api/email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`);
-        if (!response.ok) {
-            throw new Error('Failed to send email');
-        }
-        return response.json();
+        return response.data;
     }
     catch (error) {
         console.error('Error sending email:', error);
