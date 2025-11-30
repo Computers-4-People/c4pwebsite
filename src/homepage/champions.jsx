@@ -336,6 +336,47 @@ function Champions() {
                     </div>
                 )}
 
+                {/* Testimonials Debug Panel - Show what we're looking for */}
+                {allInventoryData.length > 0 && (
+                    <div className="mb-8 bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-blue-100 p-3 rounded-full">
+                                <FiCheck className="text-2xl text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-lg font-bold text-blue-900 mb-2">Testimonials Status</h3>
+                                <div className="space-y-2 text-blue-800">
+                                    <p className="font-semibold">
+                                        📊 Looking for testimonials from {[...new Set(allInventoryData.map(item => {
+                                            if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                return item.Recipient.ID || item.Recipient.id;
+                                            }
+                                            return item.Recipient;
+                                        }).filter(id => id && id !== 'N/A'))].length} recipients
+                                    </p>
+                                    <p>
+                                        ✅ Recipients who received your donated computers
+                                    </p>
+                                    <p>
+                                        🔍 Searching for their check-in survey responses in CRM
+                                    </p>
+                                    {testimonials.length === 0 && (
+                                        <div className="mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded">
+                                            <p className="font-semibold text-yellow-900">⚠️ No testimonials found yet</p>
+                                            <p className="text-sm text-yellow-800 mt-1">
+                                                This could mean recipients haven't submitted check-in surveys yet, or there may be an API access issue.
+                                            </p>
+                                            <p className="text-xs text-yellow-700 mt-2">
+                                                Test API access: <a href="/api/test-check-in" target="_blank" className="underline font-mono">/api/test-check-in</a>
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Impact Message */}
                 <div className="bg-gradient-to-r from-c4p-dark to-c4p-darker rounded-xl shadow-lg p-8 mb-8 text-white">
                     <div className="flex items-start gap-4">
