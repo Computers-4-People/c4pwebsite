@@ -83,7 +83,7 @@ function Champions() {
                         // Add donation date and donor ID from the Computer_Donors record to each inventory item
                         const computersWithDonationInfo = computers.map(computer => ({
                             ...computer,
-                            Donation_Date: donor.Date_Picked_Up || donor.Pickup_Date || donor.Entry_Date || donor.Date_Donated || 'N/A',
+                            Donation_Date: donor.Date_Picked_Up || 'N/A',
                             Donation_ID: donor.Donor_ID
                         }));
 
