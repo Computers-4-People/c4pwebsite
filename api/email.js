@@ -55,8 +55,8 @@ export default async function handler(req, res) {
     
 
     
-    await mg.messages.create('www.computers4people.org', {
-      from: "C4P Authentication <postmaster@www.computers4people.org>",
+    await mg.messages.create(domain, {
+      from: `C4P Authentication <postmaster@${domain}>`,
       to: [decodedEmail],
       subject: 'Welcome to Computers4People Portal!',
       text: `Access your portal at: www.computers4people.org/portal?recordId=${recordId}&jwt=${jwt}`,
