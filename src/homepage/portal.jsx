@@ -619,13 +619,26 @@ function Portal() {
 
 
 
+    // Show loading screen while checking authentication and champion type
+    if (isloading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-green-600 mx-auto mb-6"></div>
+                    <h2 className="text-2xl font-semibold text-gray-700">Loading your portal...</h2>
+                    <p className="text-gray-500 mt-2">Please wait while we verify your access</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-    
+
     <div className="flex flex-col min-h-screen">
         {/* Main Content */}
         <main className="flex-grow p-6 max-w-7xl mx-auto w-full mt-20">
             {/* Welcome Header */}
-            
+
             <div className="mb-6">
                 <h1 className="text-4xl font-bold text-black">Welcome back,  </h1>
                 <p className="text-gray-700">We created this portal specifically for you.</p>
