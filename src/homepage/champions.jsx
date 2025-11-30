@@ -9,6 +9,7 @@ function Champions() {
     const [donations, setDonations] = useState([]);
     const [selectedDonation, setSelectedDonation] = useState('all');
     const [loading, setLoading] = useState(true);
+    const [testimonials, setTestimonials] = useState([]);
     const [stats, setStats] = useState({
         totalComputers: 0,
         totalWeight: 0,
@@ -25,6 +26,48 @@ function Champions() {
     useEffect(() => {
         fetchDonorData();
     }, []);
+
+    useEffect(() => {
+        // Fetch testimonials after inventory data is loaded
+        if (allInventoryData.length > 0) {
+            fetchTestimonials();
+        }
+    }, [allInventoryData]);
+
+    const fetchTestimonials = async () => {
+        try {
+            // Wait for inventory data to be loaded first
+            if (allInventoryData.length === 0) {
+                return;
+            }
+
+            // Get unique recipient IDs from this champion's donated computers
+            const recipientIds = [...new Set(
+                allInventoryData
+                    .map(item => item.Recipient)
+                    .filter(id => id && id !== 'N/A')
+            )];
+
+            console.log('Recipient IDs for testimonials:', recipientIds);
+
+            if (recipientIds.length === 0) {
+                console.log('No recipients found for testimonials');
+                return;
+            }
+
+            // Fetch testimonials for these recipients
+            const response = await axios.get(`${API_BASE_URL}/api/check-in-forms`, {
+                params: {
+                    recipientIds: recipientIds.join(','),
+                    limit: 3
+                }
+            });
+
+            setTestimonials(response.data || []);
+        } catch (error) {
+            console.error('Error fetching testimonials:', error);
+        }
+    };
 
     useEffect(() => {
         filterByDonation();
@@ -234,6 +277,43 @@ function Champions() {
                         </div>
                     </div>
                 </div>
+
+                {/* Testimonials Section */}
+                {testimonials.length > 0 && (
+                    <div className="mb-8">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">What Our Recipients Are Saying</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {testimonials.map((testimonial, index) => (
+                                <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                                    <div className="flex items-start gap-3 mb-4">
+                                        <div className="bg-green-100 p-2 rounded-full">
+                                            <FiCheck className="text-xl text-green-600" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-semibold text-gray-900">
+                                                {testimonial.applicant?.First_Name} {testimonial.applicant?.Last_Name}
+                                            </p>
+                                            <p className="text-sm text-gray-500">
+                                                {testimonial.applicant?.Address_1_City || 'N/A'}
+                                                {testimonial.applicant?.Age && ` • Age ${testimonial.applicant.Age}`}
+                                            </p>
+                                            <p className="text-xs text-gray-400 mt-1">
+                                                {new Date(testimonial.Date).toLocaleDateString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-700 italic mb-4">
+                                        "{testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
+                                    </p>
+                                    <div className="flex items-center gap-2 text-green-600">
+                                        <FiCheck className="text-lg" />
+                                        <span className="text-sm font-medium">Computer working well</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Impact Message */}
                 <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg p-8 mb-8 text-white">
