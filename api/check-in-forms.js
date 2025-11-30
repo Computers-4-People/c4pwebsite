@@ -29,15 +29,14 @@ export default async function handler(req, res) {
         const recipientIdArray = recipientIds.slice(0, 20);
 
         // Build CRM API criteria for searching check-in forms
-        // Just search by Application ID - remove sharing/working filters for now
         const criteriaArray = recipientIdArray.map(id => `(Application:equals:${id})`);
-        const criteria = `(or(${criteriaArray.join(',')}))`;
+        const criteria = `((Can_we_share_this_response_publicly:equals:Yes (you can include my name))and(Is_the_computer_working_well:equals:Yes)and(or(${criteriaArray.join(',')})))`;
 
         // Fetch check-in forms from Zoho CRM
         const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`;
 
         console.log("Requesting testimonials from CRM:", url);
-        console.log("Searching for recipient IDs:", recipientIdArray);
+        console.log("Searching for these recipient Application IDs:", recipientIdArray);
 
         const response = await axios.get(url, {
             headers: {
@@ -47,6 +46,10 @@ export default async function handler(req, res) {
 
         const checkInForms = response.data.data || [];
         console.log(`Found ${checkInForms.length} check-in forms`);
+
+        if (checkInForms.length > 0) {
+            console.log("Application IDs found in check-in forms:", checkInForms.map(f => f.Application?.id || f.Application));
+        }
 
         if (checkInForms.length === 0) {
             console.log('No testimonials found matching criteria');
