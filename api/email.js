@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         {
           from: {
             user_name: "Computers 4 People",
-            email: "noreply@computers4people.org"
+            email: "info@computers4people.org"
           },
           to: [
             {
