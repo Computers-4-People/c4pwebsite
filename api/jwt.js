@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   try {
     const payload = {
       email,
-    
+      recordID,
       role: 'user'
     };
 

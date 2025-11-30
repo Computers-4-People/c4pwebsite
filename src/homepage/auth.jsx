@@ -13,12 +13,13 @@ const API_BASE_URL =
 
 const sendEmail = async (email, recordId, jwt) => {
     try {
-        
         const response = await axios.post(`${API_BASE_URL}/api/email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`);
-        if (!response.ok) {
+
+        // axios uses response.data and response.status, not response.ok
+        if (response.status !== 200) {
             throw new Error('Failed to send email');
         }
-        return response.json();
+        return response.data;
     }
     catch (error) {
         console.error('Error sending email:', error);
@@ -75,28 +76,45 @@ function Auth() {
         try {
             setLoading(true);
             setError('');
+            setSuccess(false);
             console.log(email);
-       //     await sendEmail(email, 0);
 
+            // Fetch champion data by email
             const championResponse = await fetchWithChampion(email, 'Champions', 'Email');
 
-            const id = championResponse.data[0].id;
-           
-            setSuccess(true);
+            if (!championResponse.data || championResponse.data.length === 0) {
+                throw new Error('No account found with this email. Please check your email or contact support.');
+            }
 
+            const id = championResponse.data[0].id;
+
+            // Generate JWT token
             const tokenResp = await getJWT(email, id);
+
+            if (!tokenResp.token) {
+                throw new Error('Failed to generate authentication token.');
+            }
 
             const jwt = tokenResp.token;
 
             console.log('jwt:', jwt);
 
-
+            // Send email with portal link
             await sendEmail(email, id, jwt);
 
+            // Only set success after email is sent successfully
+            setSuccess(true);
 
         } catch (error) {
-            
             console.error('Error:', error);
+            // Display user-friendly error message
+            if (error.response?.status === 404) {
+                setError('No account found with this email. Please check your email or contact support.');
+            } else if (error.message) {
+                setError(error.message);
+            } else {
+                setError('An error occurred during authentication. Please try again.');
+            }
         } finally {
             setLoading(false);
         }

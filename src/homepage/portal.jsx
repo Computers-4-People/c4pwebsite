@@ -57,22 +57,48 @@ function Portal() {
         (async () => {
         try {
         const urlRecordId = searchParams.get('recordId');
-      //  const urlJwt = searchParams.get('jwt') || jwt;
-     //   const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
-      //  console.log('apiValidation:', apiValidation.data);
+        const urlJwt = searchParams.get('jwt');
 
-        // make sure to add back in urlJWt and apiValidation.data.valid after testing
-        if (urlRecordId) {
-            setRecordId(urlRecordId);
-        
-      
-            setTimeout(() => {
-                fetchData();
-            }, 0);
+        if (!urlJwt) {
+            setError('Authentication required. Please use the link from your email.');
+            return;
         }
+
+        if (!urlRecordId) {
+            setError('Invalid access. Record ID is missing.');
+            return;
+        }
+
+        // Validate JWT token
+        const apiValidation = await axios.get(`${API_BASE_URL}/api/verify-jwt?urlJwt=${urlJwt}`);
+        console.log('apiValidation:', apiValidation.data);
+
+        if (!apiValidation.data.valid) {
+            setError('Invalid or expired authentication token. Please request a new login link.');
+            return;
+        }
+
+        // Verify that the recordId in the JWT matches the URL recordId for security
+        if (apiValidation.data.user.recordID !== urlRecordId) {
+            setError('Access denied. Authentication token does not match the requested record.');
+            return;
+        }
+
+        // If all validations pass, proceed
+        setRecordId(urlRecordId);
+        setJwt(urlJwt);
+
+        setTimeout(() => {
+            fetchData();
+        }, 0);
+
     } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data. Please try again.');
+        console.error('Error during authentication:', error);
+        if (error.response?.status === 401) {
+            setError('Invalid or expired authentication token. Please request a new login link.');
+        } else {
+            setError('Authentication error. Please try again or request a new login link.');
+        }
     }
     })();
     }, [searchParams]); 
