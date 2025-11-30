@@ -138,12 +138,21 @@ function Champions() {
                             console.log(`Could not fetch Date_Picked_Up from CRM: ${crmErr.message}`);
                         }
 
-                        const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
-                            params: { searchField: 'Donor_ID', searchValue: donorId }
-                        });
-
-                        const computers = inventoryResp.data || [];
-                        console.log(`Found ${computers.length} computers for donor ${donorId}`);
+                        let computers = [];
+                        try {
+                            const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
+                                params: { searchField: 'Donor_ID', searchValue: donorId }
+                            });
+                            computers = inventoryResp.data || [];
+                            console.log(`Found ${computers.length} computers for donor ${donorId}`);
+                        } catch (inventoryErr) {
+                            if (inventoryErr.response?.status === 404) {
+                                console.log(`No inventory found for Donor_ID ${donorId} (404) - items may not be entered yet`);
+                                computers = [];
+                            } else {
+                                throw inventoryErr; // Re-throw other errors
+                            }
+                        }
 
                         // Add donation date and donor ID from the Computer_Donors record to each inventory item
                         const computersWithDonationInfo = computers.map(computer => ({
@@ -154,7 +163,7 @@ function Champions() {
 
                         allComputers.push(...computersWithDonationInfo);
                     } catch (err) {
-                        console.error(`Error fetching inventory for donor ${donorId}:`, err);
+                        console.error(`Error fetching data for donor ${donorId}:`, err);
                     }
                 }
 

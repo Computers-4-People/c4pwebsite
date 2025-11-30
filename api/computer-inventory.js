@@ -26,8 +26,8 @@ export default async function handler(req, res) {
         let criteria;
         // Adjust the criteria based on the field and data type
         if (searchField === 'Donor_ID') {
-            // Donor_ID - try as string in case it's a lookup or text field
-            criteria = `(${searchField} == "${searchValue}")`;
+            // Donor_ID is a numeric field
+            criteria = `(${searchField} == ${searchValue})`;
         } else if (searchField === 'Recipient') {
             // Recipient is a text field
             criteria = `(${searchField} == "${searchValue}")`;
