@@ -1,231 +1,245 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import PortalDropdown from '../components/portaldropdown';
+import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2 } from 'react-icons/fi';
 
 function Champions() {
-    const championResp = JSON.parse(sessionStorage.getItem('championResp')) || [];
-    const applicantType = sessionStorage.getItem('type');
-    const fontSize = "text-4xl";
-    console.log(championResp);
-    console.log(applicantType);
-
-    // Add custom styles for hiding scrollbars
-    const scrollbarStyles = {
-      scrollbarWidth: 'none',  /* Firefox */
-      msOverflowStyle: 'none',  /* IE and Edge */
-      '&::-webkit-scrollbar': {  /* Chrome, Safari and Opera */
-        display: 'none'
-      }
-    };
-
-    const [userData, setUserData] = useState({
-        firstName: '' || championResp.First_Name,    
-        lastName: '' || championResp.Last_Name,
-        title: '' || championResp.title,
-        email: '' || championResp.Email,
-        phone: '' || championResp.Phone_1,
-        address: '' || championResp.Address,
-        aptSuiteUnit: '' || championResp.aptSuiteUnit,
-        city: '' || championResp.City,
-        stateRegion: '' || championResp.State,
-        country: '' || championResp.Country,
-        roles: [] 
+    const [inventoryData, setInventoryData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState({
+        totalComputers: 0,
+        totalWeight: 0,
+        thisMonth: 0
     });
 
-    const navigate = useNavigate();
-    const handleClick = () => {
-        navigate(`/portal?recordId=${championResp.id}`);
+    const championResp = JSON.parse(sessionStorage.getItem('championResp')) || {};
+    const companyName = championResp.Company || `${championResp.First_Name} ${championResp.Last_Name}`;
+    const firstName = championResp.First_Name || 'Valued';
+
+    const API_BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '';
+
+    useEffect(() => {
+        fetchDonorData();
+    }, []);
+
+    const fetchDonorData = async () => {
+        try {
+            setLoading(true);
+
+            // Get donor record
+            const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${encodeURIComponent(championResp.Email)}&moduleName=Computer_Donors&param=Email`);
+
+            if (donorResp.data?.data?.[0]) {
+                const donorId = donorResp.data.data[0].Donor_ID;
+
+                // Get inventory data
+                const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
+                    params: { searchField: 'Donor_ID', searchValue: donorId }
+                });
+
+                const computers = inventoryResp.data || [];
+                setInventoryData(computers);
+
+                // Calculate stats
+                const totalWeight = computers.reduce((sum, item) => sum + (parseFloat(item.Weight) || 0), 0);
+                const thisMonth = computers.filter(item => {
+                    const donateDate = new Date(item.Date_Donated);
+                    const now = new Date();
+                    return donateDate.getMonth() === now.getMonth() &&
+                           donateDate.getFullYear() === now.getFullYear();
+                }).length;
+
+                setStats({
+                    totalComputers: computers.length,
+                    totalWeight: totalWeight.toFixed(2),
+                    thisMonth
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching donor data:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    console.log(userData);
+    const downloadCSV = () => {
+        if (inventoryData.length === 0) {
+            alert('No data available to download');
+            return;
+        }
+
+        const headers = ['Model', 'Serial #', 'Computer Type', 'Date Added', 'Date Donated', 'Date Recycled', 'Erasure Date', 'Weight'];
+        const rows = inventoryData.map(item => [
+            item.Model || '',
+            item.Barcode_Save || '',
+            item.Computer_Type || '',
+            item.Date_Added || '',
+            item.Date_Donated || '',
+            item.Date_Recycled || '',
+            item.Erasure_Date || '',
+            item.Weight || ''
+        ]);
+
+        const csvContent = [headers, ...rows].map(e => e.join(',')).join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${companyName.replace(/\s+/g, '_')}_Donations.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+    };
 
     return (
-        
-      <div className="flex flex-col min-h-screen">
-      
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+            {/* Header */}
+            <div className="bg-white shadow-sm border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-6 py-8">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h1 className="text-4xl font-bold text-gray-900">Welcome back, {firstName}!</h1>
+                            <p className="text-lg text-gray-600 mt-2">{companyName}</p>
+                        </div>
+                        <button
+                            onClick={downloadCSV}
+                            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg"
+                        >
+                            <FiDownload className="text-xl" />
+                            Download Report
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-      {/* Main Content */}
-      <main className="flex-grow p-6 max-w-7xl mx-auto w-full mt-20">
-        {/* Welcome Header */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold text-black">Welcome back, {userData.firstName}</h1>
-          <p className="text-gray-700">We created this portal specifically for you.</p>
+            <div className="max-w-7xl mx-auto px-6 py-8">
+                {/* Stats Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Computers</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalComputers}</p>
+                            </div>
+                            <div className="bg-green-100 p-4 rounded-full">
+                                <FiPackage className="text-3xl text-green-600" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Weight</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalWeight} <span className="text-2xl text-gray-600">lbs</span></p>
+                            </div>
+                            <div className="bg-blue-100 p-4 rounded-full">
+                                <FiBarChart2 className="text-3xl text-blue-600" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">This Month</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.thisMonth}</p>
+                            </div>
+                            <div className="bg-purple-100 p-4 rounded-full">
+                                <FiCalendar className="text-3xl text-purple-600" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Impact Message */}
+                <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-lg p-8 mb-8 text-white">
+                    <div className="flex items-start gap-4">
+                        <div className="bg-white bg-opacity-20 p-3 rounded-full">
+                            <FiCheck className="text-3xl" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold mb-2">Thank You for Your Impact!</h2>
+                            <p className="text-green-50 text-lg">
+                                Your generous donation of <span className="font-bold">{stats.totalComputers} computers</span> has helped bridge the digital divide.
+                                Together, we're empowering communities with technology and promoting environmental sustainability.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Computer Inventory Table */}
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 py-4">
+                        <h2 className="text-2xl font-bold text-white">Your Donated Computers</h2>
+                        <p className="text-gray-300 mt-1">Complete inventory with data erasure certificates</p>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        {loading ? (
+                            <div className="flex items-center justify-center py-20">
+                                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-600"></div>
+                            </div>
+                        ) : inventoryData.length === 0 ? (
+                            <div className="text-center py-20">
+                                <FiPackage className="text-6xl text-gray-300 mx-auto mb-4" />
+                                <p className="text-gray-500 text-lg">No computers found in inventory</p>
+                            </div>
+                        ) : (
+                            <table className="min-w-full">
+                                <thead className="bg-gray-50 border-b-2 border-gray-200">
+                                    <tr>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Model</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Added</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Erasure Date</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Certificate</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {inventoryData.map((item, index) => (
+                                        <tr key={item.ID || index} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Model || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Added || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Erasure_Date || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm">
+                                                {item.Data_Certificate ? (
+                                                    <a
+                                                        href={item.Data_Certificate}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                                    >
+                                                        <FiDownload className="text-sm" />
+                                                        View
+                                                    </a>
+                                                ) : (
+                                                    <span className="text-gray-400">Pending</span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                </div>
+
+                {/* Footer Info */}
+                <div className="mt-8 bg-white rounded-xl shadow-md p-6 border-l-4 border-gray-300">
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-semibold">Data Security:</span> All donated computers undergo secure data erasure following NIST 800-88 standards.
+                        Certificates of data destruction are available for each device above.
+                    </p>
+                </div>
+            </div>
         </div>
-
-        {/* Main Content Grid */}
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Left Sidebar Navigation */}
-          <div className="w-full md:w-64 space-y-2">
-          <div>
-          <PortalDropdown className="flex-shrink-0" type={"Champions"} applicantType={applicantType}/>
-          </div>
-          </div>
-
-          
-
-
-
-          {/* Center Profile Section */}
-          <div className="flex-grow bg-green-50 p-6 rounded-lg relative">
-            <div className="flex flex-col items-center mb-8">
-              {/* Profile image with notification dot */}
-              <div className="relative mb-4">
-                <div className="w-36 h-36 bg-green-400 rounded-lg flex items-center justify-center overflow-hidden">
-                  {/* Simple avatar illustration */}
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg
-                      width="100%"
-                      height="100%"
-                      viewBox="0 0 200 200"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect width="200" height="200" fill="#8CE99A" />
-                      <path
-                        d="M100 120C83 120 70 100 70 80C70 60 83 50 100 50C117 50 130 60 130 80C130 100 117 120 100 120Z"
-                        fill="#5F3DC4"
-                      />
-                      <path d="M100 130C120 130 140 140 140 160H60C60 140 80 130 100 130Z" fill="#5F3DC4" />
-                      <path
-                        d="M100 120C90 120 80 110 80 95C80 80 90 70 100 70C110 70 120 80 120 95C120 110 110 120 100 120Z"
-                        fill="5F3DC4"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <h2 className="text-3xl font-bold mb-1">
-                {userData.firstName} {userData.lastName}
-              </h2>
-              <p className="text-gray-600">{userData.roles.join(", ")}</p>
-
-              {/* Notification dots */}
-            </div>
-
-            {/* Profile Information Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">First Name:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.firstName}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Address:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap overflow-x-auto scrollbar-hide select-text">{userData.address || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Last Name:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">{userData.lastName}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Apt/Suite/Unit:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap">
-                    {userData.aptSuiteUnit || ""}
-                  </div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Title:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{applicantType || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">City:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.city || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Email:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center whitespace-nowrap scrollbar-hide overflow-x-auto select-text">{userData.email || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">State/Region:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">
-                    {userData.stateRegion || ""}
-                  </div>
-                  <button className="text-gray-600">
-                   
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Phone:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.phone || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <span className="font-semibold">Country:</span>
-                <div className="flex items-center">
-                  <div className="bg-green-300 px-4 py-1 rounded mr-2 w-40 text-center">{userData.country || ""}</div>
-                  <button className="text-gray-600">
-                    
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="w-full md:w-64 space-y-4">
-            <div className="bg-white p-4 rounded-lg">
-              <h3 className="font-medium mb-2">We thought you may be interested...</h3>
-              <div className="bg-gray-100 h-32 rounded-lg mb-4"></div>
-              <div className="bg-gray-100 h-32 rounded-lg"></div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      
-
-    </div>
     );
 }
 
