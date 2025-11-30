@@ -118,15 +118,15 @@ function Champions() {
             return;
         }
 
-        const headers = ['Model', 'Serial #', 'Computer Type', 'Date Added', 'Date Donated', 'Date Recycled', 'Erasure Date', 'Weight'];
+        const headers = ['Model', 'Serial #', 'Computer Type', 'Date Added', 'Date Donated', 'Date Recycled', 'Date Destroyed', 'Weight'];
         const rows = inventoryData.map(item => [
             item.Model || '',
-            item.Barcode_Save || '',
+            item.System_Serial_Number || '',
             item.Computer_Type || '',
             item.Date_Added || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
-            item.Erasure_Date || '',
+            item.Date_Destroyed || '',
             item.Weight || ''
         ]);
 
@@ -301,7 +301,7 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Added</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Erasure Date</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Destroyed</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Certificate</th>
                                     </tr>
@@ -310,11 +310,11 @@ function Champions() {
                                     {inventoryData.map((item, index) => (
                                         <tr key={item.ID || index} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Model || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Added || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Erasure_Date || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Destroyed || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 {item.Data_Certificate ? (
