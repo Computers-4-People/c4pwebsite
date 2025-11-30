@@ -43,22 +43,45 @@ export default async function handler(req, res) {
         const encodedCriteria = encodeURIComponent(criteria);
 
         // Use the correct report name from your Zoho Creator app
-        const url = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${encodedCriteria}`;
+        const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
 
         console.log("Constructed criteria:", criteria);
-        console.log("Requesting Search URL:", url);
 
-        const response = await axios.get(url, {
-            headers: {
-                Authorization: `Zoho-oauthtoken ${accessToken}`,
-            },
-        });
+        // Fetch all records with pagination
+        let allRecords = [];
+        let from = 1;
+        let hasMoreRecords = true;
 
-        console.log("Zoho Creator API response:", response.data);
+        while (hasMoreRecords) {
+            const url = `${baseUrl}?criteria=${encodedCriteria}&from=${from}&limit=200`;
+            console.log("Requesting Search URL:", url);
 
-        if (response.data.data && response.data.data.length > 0) {
-            console.log("Inventory items found.");
-            res.json(response.data.data);
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                },
+            });
+
+            const records = response.data.data || [];
+            console.log(`Fetched ${records.length} records (from index ${from})`);
+
+            if (records.length > 0) {
+                allRecords = allRecords.concat(records);
+                from += records.length;
+
+                // If we got less than 200 records, we've reached the end
+                if (records.length < 200) {
+                    hasMoreRecords = false;
+                }
+            } else {
+                hasMoreRecords = false;
+            }
+        }
+
+        console.log(`Total inventory items found: ${allRecords.length}`);
+
+        if (allRecords.length > 0) {
+            res.json(allRecords);
         } else {
             console.log(`No items found with the given ${searchField}`);
             res.status(404).json({ error: `No items found with the given ${searchField}` });
