@@ -51,8 +51,8 @@ export default async function handler(req, res) {
         const testimonialsWithDetails = await Promise.all(
             checkInForms.map(async (form) => {
                 try {
-                    // Fetch the applicant details
-                    const applicantUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Computer_Applications/${form.Application}`;
+                    // Fetch the applicant details (Computer Applications module is called Contacts)
+                    const applicantUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Contacts/${form.Application}`;
 
                     const applicantResponse = await axios.get(applicantUrl, {
                         headers: {
