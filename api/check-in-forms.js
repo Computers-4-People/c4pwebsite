@@ -102,6 +102,25 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error("Error fetching testimonials:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: error.response ? error.response.data : 'An error occurred while fetching testimonials.' });
+        console.error("Full error details:", {
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            url: error.config?.url
+        });
+
+        // Check if it's a module access error
+        if (error.response?.data?.code === 'INVALID_MODULE' || error.response?.data?.message?.includes('module')) {
+            console.error("MODULE ACCESS ERROR: Computer_Check_in_Forms module may not be accessible via API");
+            console.error("Possible solutions:");
+            console.error("1. Enable API access for Computer_Check_in_Forms in CRM settings");
+            console.error("2. Add the module to your OAuth scope");
+            console.error("3. Verify the exact module name in CRM");
+        }
+
+        res.status(500).json({
+            error: error.response ? error.response.data : 'An error occurred while fetching testimonials.',
+            details: error.response?.data
+        });
     }
 }
