@@ -43,18 +43,31 @@ function Champions() {
         try {
             setLoading(true);
 
+            console.log('Champion data:', championResp);
+            console.log('Fetching donations for email:', championResp.Email);
+
+            if (!championResp.Email) {
+                console.error('No email found in championResp');
+                setLoading(false);
+                return;
+            }
+
             // Get ALL donor records for this champion's email
             const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${encodeURIComponent(championResp.Email)}&moduleName=Computer_Donors&param=Email`);
+
+            console.log('Donor response:', donorResp.data);
 
             if (donorResp.data?.data && donorResp.data.data.length > 0) {
                 const donorRecords = donorResp.data.data;
                 setDonations(donorRecords);
+                console.log(`Found ${donorRecords.length} donation records`);
 
                 // Get inventory data from ALL donation records
                 const allComputers = [];
 
                 for (const donor of donorRecords) {
                     const donorId = donor.Donor_ID;
+                    console.log(`Fetching inventory for Donor_ID: ${donorId}`);
 
                     try {
                         const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
@@ -62,12 +75,14 @@ function Champions() {
                         });
 
                         const computers = inventoryResp.data || [];
+                        console.log(`Found ${computers.length} computers for donor ${donorId}`);
                         allComputers.push(...computers);
                     } catch (err) {
                         console.error(`Error fetching inventory for donor ${donorId}:`, err);
                     }
                 }
 
+                console.log(`Total computers across all donations: ${allComputers.length}`);
                 setAllInventoryData(allComputers);
                 setInventoryData(allComputers);
 
@@ -86,9 +101,12 @@ function Champions() {
                     thisMonth,
                     totalDonations: donorRecords.length
                 });
+            } else {
+                console.log('No donation records found for this email');
             }
         } catch (error) {
             console.error('Error fetching donor data:', error);
+            console.error('Error details:', error.response?.data);
         } finally {
             setLoading(false);
         }
@@ -210,6 +228,27 @@ function Champions() {
                         </div>
                     </div>
                 </div>
+
+                {/* Debug: Show Donation Records */}
+                {donations.length > 0 && (
+                    <div className="bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6 mb-8">
+                        <h3 className="text-xl font-bold text-yellow-900 mb-4">📋 Debug: Donation Records Found</h3>
+                        <div className="space-y-2">
+                            {donations.map((donation, index) => (
+                                <div key={index} className="bg-white p-4 rounded border border-yellow-200">
+                                    <p><strong>Donation {index + 1}:</strong></p>
+                                    <p><strong>Date:</strong> {donation.Entry_Date || donation.Date_Donated || 'N/A'}</p>
+                                    <p><strong>Donor ID:</strong> {donation.Donor_ID || 'N/A'}</p>
+                                    <p><strong>Status:</strong> {donation.Status || 'N/A'}</p>
+                                    <p><strong>Laptops:</strong> {donation.Laptop_Quantity || 0}</p>
+                                    <p className="text-sm text-gray-600 mt-2">
+                                        Computers found in inventory with this Donor ID: {allInventoryData.filter(item => item.Donor_ID === donation.Donor_ID).length}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Computer Inventory Table */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
