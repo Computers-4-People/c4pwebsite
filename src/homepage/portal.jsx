@@ -68,21 +68,32 @@ function Portal() {
                 if (cookieValue) {
                     console.log('Using existing session');
                     setRecordId(urlRecordId);
-                    
+
                     const validation = validateJWT(cookieValue, urlRecordId);
-                    
+
                     if (!validation.isValid) {
                         console.log(validation.message);
                         sessionStorage.removeItem('session');
                         setError('Session expired. Please log in again.');
                         return;
                     }
- 
+
                     axios.defaults.headers.common['Authorization'] = `Bearer ${cookieValue}`;
-                    
+
+                    // Check champion type and redirect donors immediately
+                    const championCheck = await axios.get(`${API_BASE_URL}/api/Champions/${urlRecordId}`);
+                    const championType = championCheck.data?.Champion_Type;
+                    const isDonor = championType?.find(t => t === 'Computer Donor' || t === 'Loser');
+
+                    if (isDonor) {
+                        sessionStorage.setItem('championResp', JSON.stringify(championCheck.data));
+                        navigate(`/champions?recordId=${urlRecordId}`);
+                        return;
+                    }
+
                     console.log('Calling fetchData');
                     await fetchData();
-                    
+
                     return;
                 }
     
@@ -106,13 +117,25 @@ function Portal() {
                         });
     
                         setRecordId(urlRecordId);
-                        
+
                         const authToken = await getJWT(urlRecordId);
                         sessionStorage.setItem('session', authToken);
-            
-                        axios.defaults.headers.common['Authorization'] = 
+
+                        axios.defaults.headers.common['Authorization'] =
                         `Bearer ${authToken}`;
-                        
+
+                        // Check champion type and redirect donors BEFORE loading all data
+                        const championCheck = await axios.get(`${API_BASE_URL}/api/Champions/${urlRecordId}`);
+                        const championType = championCheck.data?.Champion_Type;
+                        const isDonor = championType?.find(t => t === 'Computer Donor' || t === 'Loser');
+
+                        if (isDonor) {
+                            // Store champion data and redirect immediately for donors
+                            sessionStorage.setItem('championResp', JSON.stringify(championCheck.data));
+                            navigate(`/champions?recordId=${urlRecordId}`);
+                            return;
+                        }
+
                         await fetchData();
                        
                     } else {

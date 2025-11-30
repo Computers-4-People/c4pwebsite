@@ -83,19 +83,28 @@ function Auth() {
         try {
             setLoading(true);
             setError('');
+            setSuccess(false);
             console.log(email);
-       //     await sendEmail(email, 0);
 
+            // Fetch champion data by email
             const championResponse = await fetchWithChampion(email, 'Champions', 'Email');
 
-            const id = championResponse.data[0].id;
-           
-            setSuccess(true);
+            if (!championResponse.data || championResponse.data.length === 0) {
+                throw new Error('No account found with this email. Please check your email or contact support.');
+            }
 
-         //   const tokenResp = await getJWT(email, id);
+            const championData = championResponse.data[0];
+            const id = championData.id;
+
+            // ONLY allow Computer Donors to use the portal
+            const championType = championData.Champion_Type;
+            const isDonor = championType?.find(t => t === 'Computer Donor' || t === 'Loser');
+
+            if (!isDonor) {
+                throw new Error('This donor portal is currently only available for Computer Donors. Please contact us for assistance.');
+            }
 
             const time = Date.now();
-
             const jwt = await getAuthCode(id, time);
 
             await axios.post(`${API_BASE_URL}/api/redis-cache`, {
@@ -104,18 +113,24 @@ function Auth() {
                 typeOfData: 'time'
             });
 
+            console.log('Auth code generated:', jwt);
 
-         
-
-            console.log('code', jwt);
-
-
+            // Send email with portal link
             await sendEmail(email, id, jwt);
 
+            // Only set success after email is sent
+            setSuccess(true);
 
         } catch (error) {
-            
             console.error('Error:', error);
+            // Display user-friendly error message
+            if (error.response?.status === 404) {
+                setError('No account found with this email. Please check your email or contact support.');
+            } else if (error.message) {
+                setError(error.message);
+            } else {
+                setError('An error occurred during authentication. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
