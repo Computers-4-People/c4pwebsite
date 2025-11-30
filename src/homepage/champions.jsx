@@ -259,9 +259,8 @@ function Champions() {
                             <div>
                                 <h3 className="text-lg font-bold text-blue-900 mb-2">About Your Donation Records</h3>
                                 <p className="text-blue-800">
-                                    We have records of your generous donations, but the individual computer inventory details may not be available.
-                                    This could be because these items were part of our old tracking system before we implemented detailed inventory tracking,
-                                    or they were donated anonymously. Thank you for your continued support!
+                                    We have records of your donation, but inventory details are not yet available.
+                                    This may be because items have not been picked up or entered into inventory yet, or were donated anonymously.
                                 </p>
                             </div>
                         </div>
