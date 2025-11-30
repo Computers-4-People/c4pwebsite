@@ -30,9 +30,16 @@ function Champions() {
     useEffect(() => {
         // Fetch testimonials after inventory data is loaded
         if (allInventoryData.length > 0) {
-            fetchTestimonials();
+            fetchTestimonials().finally(() => {
+                // Turn off loading after testimonials are fetched
+                setLoading(false);
+            });
+        } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
+            // If we have donations but no inventory, turn off loading
+            console.log('No inventory found, turning off loading');
+            setLoading(false);
         }
-    }, [allInventoryData]);
+    }, [allInventoryData, donations]);
 
     const fetchTestimonials = async () => {
         try {
@@ -172,13 +179,15 @@ function Champions() {
                 });
             } else {
                 console.log('No donation records found for this email');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error fetching donor data:', error);
             console.error('Error details:', error.response?.data);
-        } finally {
             setLoading(false);
         }
+        // Note: Don't set loading to false in success case if we have data
+        // Let the testimonials useEffect handle it after testimonials load
     };
 
     const downloadCSV = () => {
