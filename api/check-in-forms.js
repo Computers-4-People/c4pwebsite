@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         const encodedCriteria = encodeURIComponent(criteria);
 
         // Fetch check-in forms
-        const url = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/All_Computer_Check_in_Forms?criteria=${encodedCriteria}`;
+        const url = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Computer_Check_in_Forms?criteria=${encodedCriteria}`;
 
         console.log("Requesting testimonials URL:", url);
 
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
             checkInForms.map(async (form) => {
                 try {
                     // Fetch the applicant details
-                    const applicantUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/All_Computer_Applications/${form.Application}`;
+                    const applicantUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Computer_Applications/${form.Application}`;
 
                     const applicantResponse = await axios.get(applicantUrl, {
                         headers: {

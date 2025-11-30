@@ -42,9 +42,16 @@ function Champions() {
             }
 
             // Get unique recipient IDs from this champion's donated computers
+            // Recipient is a lookup field, so it returns an object with ID property
             const recipientIds = [...new Set(
                 allInventoryData
-                    .map(item => item.Recipient)
+                    .map(item => {
+                        // Handle both object format {ID: "123"} and direct ID
+                        if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                            return item.Recipient.ID || item.Recipient.id;
+                        }
+                        return item.Recipient;
+                    })
                     .filter(id => id && id !== 'N/A')
             )];
 
