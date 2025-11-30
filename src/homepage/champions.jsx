@@ -70,12 +70,37 @@ function Champions() {
             }
 
             // Fetch testimonials for these recipients
+            console.log('Fetching testimonials for recipient IDs:', recipientIds.slice(0, 20));
+
             const response = await axios.post(`${API_BASE_URL}/api/check-in-forms`, {
                 recipientIds: recipientIds,
                 limit: 3
             });
 
-            setTestimonials(response.data || []);
+            const testimonials = response.data || [];
+            console.log(`Received ${testimonials.length} testimonials from API`);
+
+            // Match testimonials to donor IDs from inventory
+            const testimonialsWithDonorId = testimonials.map(testimonial => {
+                // Find the inventory item that matches this testimonial's Application ID
+                const applicationId = testimonial.Application?.id || testimonial.Application;
+                const inventoryItem = allInventoryData.find(item => {
+                    const recipientId = typeof item.Recipient === 'object' ? (item.Recipient.ID || item.Recipient.id) : item.Recipient;
+                    return recipientId === applicationId;
+                });
+
+                return {
+                    ...testimonial,
+                    donorId: inventoryItem?.Donation_ID || 'Unknown'
+                };
+            });
+
+            console.log('Testimonials with Donor IDs:', testimonialsWithDonorId.map(t => ({
+                name: t.applicant?.First_Name + ' ' + t.applicant?.Last_Name,
+                donorId: t.donorId
+            })));
+
+            setTestimonials(testimonialsWithDonorId);
         } catch (error) {
             console.error('Error fetching testimonials:', error);
         }
@@ -319,12 +344,13 @@ function Champions() {
                                                 {testimonial.applicant?.Age && ` • Age ${testimonial.applicant.Age}`}
                                             </p>
                                             <p className="text-xs text-gray-400 mt-1">
-                                                {new Date(testimonial.Date).toLocaleDateString()}
+                                                {testimonial.Date && new Date(testimonial.Date).toLocaleDateString()}
+                                                {testimonial.donorId && ` • Donation ID: ${testimonial.donorId}`}
                                             </p>
                                         </div>
                                     </div>
                                     <p className="text-gray-700 italic mb-4">
-                                        "{testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
+                                        "{testimonial.Testimonial1 || testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
                                     </p>
                                     <div className="flex items-center gap-2 text-c4p-dark">
                                         <FiCheck className="text-lg" />
