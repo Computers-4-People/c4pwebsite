@@ -5,11 +5,15 @@ import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2 } from 'react-i
 
 function Champions() {
     const [inventoryData, setInventoryData] = useState([]);
+    const [allInventoryData, setAllInventoryData] = useState([]);
+    const [donations, setDonations] = useState([]);
+    const [selectedDonation, setSelectedDonation] = useState('all');
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState({
         totalComputers: 0,
         totalWeight: 0,
-        thisMonth: 0
+        thisMonth: 0,
+        totalDonations: 0
     });
 
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || {};
@@ -22,27 +26,54 @@ function Champions() {
         fetchDonorData();
     }, []);
 
+    useEffect(() => {
+        filterByDonation();
+    }, [selectedDonation, allInventoryData]);
+
+    const filterByDonation = () => {
+        if (selectedDonation === 'all') {
+            setInventoryData(allInventoryData);
+        } else {
+            const filtered = allInventoryData.filter(item => item.Donor_ID === selectedDonation);
+            setInventoryData(filtered);
+        }
+    };
+
     const fetchDonorData = async () => {
         try {
             setLoading(true);
 
-            // Get donor record
+            // Get ALL donor records for this champion's email
             const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${encodeURIComponent(championResp.Email)}&moduleName=Computer_Donors&param=Email`);
 
-            if (donorResp.data?.data?.[0]) {
-                const donorId = donorResp.data.data[0].Donor_ID;
+            if (donorResp.data?.data && donorResp.data.data.length > 0) {
+                const donorRecords = donorResp.data.data;
+                setDonations(donorRecords);
 
-                // Get inventory data
-                const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
-                    params: { searchField: 'Donor_ID', searchValue: donorId }
-                });
+                // Get inventory data from ALL donation records
+                const allComputers = [];
 
-                const computers = inventoryResp.data || [];
-                setInventoryData(computers);
+                for (const donor of donorRecords) {
+                    const donorId = donor.Donor_ID;
 
-                // Calculate stats
-                const totalWeight = computers.reduce((sum, item) => sum + (parseFloat(item.Weight) || 0), 0);
-                const thisMonth = computers.filter(item => {
+                    try {
+                        const inventoryResp = await axios.get(`${API_BASE_URL}/api/computer-inventory`, {
+                            params: { searchField: 'Donor_ID', searchValue: donorId }
+                        });
+
+                        const computers = inventoryResp.data || [];
+                        allComputers.push(...computers);
+                    } catch (err) {
+                        console.error(`Error fetching inventory for donor ${donorId}:`, err);
+                    }
+                }
+
+                setAllInventoryData(allComputers);
+                setInventoryData(allComputers);
+
+                // Calculate stats across ALL donations
+                const totalWeight = allComputers.reduce((sum, item) => sum + (parseFloat(item.Weight) || 0), 0);
+                const thisMonth = allComputers.filter(item => {
                     const donateDate = new Date(item.Date_Donated);
                     const now = new Date();
                     return donateDate.getMonth() === now.getMonth() &&
@@ -50,9 +81,10 @@ function Champions() {
                 }).length;
 
                 setStats({
-                    totalComputers: computers.length,
+                    totalComputers: allComputers.length,
                     totalWeight: totalWeight.toFixed(2),
-                    thisMonth
+                    thisMonth,
+                    totalDonations: donorRecords.length
                 });
             }
         } catch (error) {
@@ -91,10 +123,10 @@ function Champions() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 pt-20">
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-6 py-8">
+                <div className="max-w-7xl mx-auto px-6 py-10">
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-4xl font-bold text-gray-900">Welcome back, {firstName}!</h1>
@@ -113,7 +145,7 @@ function Champions() {
 
             <div className="max-w-7xl mx-auto px-6 py-8">
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
                         <div className="flex items-center justify-between">
                             <div>
@@ -149,6 +181,18 @@ function Champions() {
                             </div>
                         </div>
                     </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Donations</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalDonations}</p>
+                            </div>
+                            <div className="bg-orange-100 p-4 rounded-full">
+                                <FiCheck className="text-3xl text-orange-600" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Impact Message */}
@@ -170,8 +214,33 @@ function Champions() {
                 {/* Computer Inventory Table */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                     <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 py-4">
-                        <h2 className="text-2xl font-bold text-white">Your Donated Computers</h2>
-                        <p className="text-gray-300 mt-1">Complete inventory with data erasure certificates</p>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">Your Donated Computers</h2>
+                                <p className="text-gray-300 mt-1">Complete inventory with data erasure certificates</p>
+                            </div>
+                            {donations.length > 1 && (
+                                <div>
+                                    <label className="text-white text-sm font-medium mr-3">Filter by Donation:</label>
+                                    <select
+                                        value={selectedDonation}
+                                        onChange={(e) => setSelectedDonation(e.target.value)}
+                                        className="bg-white text-gray-900 px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-green-500 focus:ring-2 focus:ring-green-200 outline-none"
+                                    >
+                                        <option value="all">All Donations ({stats.totalComputers} computers)</option>
+                                        {donations.map((donation, index) => {
+                                            const donationComputers = allInventoryData.filter(item => item.Donor_ID === donation.Donor_ID);
+                                            const donationDate = donation.Entry_Date || donation.Date_Donated || 'N/A';
+                                            return (
+                                                <option key={donation.Donor_ID} value={donation.Donor_ID}>
+                                                    Donation {index + 1} - {donationDate} ({donationComputers.length} computers)
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="overflow-x-auto">

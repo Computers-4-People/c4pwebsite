@@ -288,13 +288,16 @@ function Portal() {
                             `${searchParams.get('recordId')}`);
                     }
                 } else if (module === 'Computer_Donors') {
-                    
+
                     const donorId = response.data.Donor_ID;
-   
+
                     if (donorId) {
                         fetchInventoryByDonorId(donorId,
                             `${searchParams.get('recordId')}`);
                     }
+
+                    // Auto-redirect donors to champions page
+                    navigate(`/champions?recordId=${searchParams.get('recordId')}`);
                 }
                 setIsloading(false);
             }
