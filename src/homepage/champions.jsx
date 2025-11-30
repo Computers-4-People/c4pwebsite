@@ -12,7 +12,7 @@ function Champions() {
     const [stats, setStats] = useState({
         totalComputers: 0,
         totalWeight: 0,
-        thisMonth: 0,
+        donatedPercentage: 0,
         totalDonations: 0
     });
 
@@ -80,13 +80,14 @@ function Champions() {
                         const computers = inventoryResp.data || [];
                         console.log(`Found ${computers.length} computers for donor ${donorId}`);
 
-                        // Add Date_Picked_Up from the donation record to each inventory item
-                        const computersWithPickupDate = computers.map(computer => ({
+                        // Add donation date and donor ID from the Computer_Donors record to each inventory item
+                        const computersWithDonationInfo = computers.map(computer => ({
                             ...computer,
-                            Date_Picked_Up: donor.Date_Picked_Up || donor.Pickup_Date || 'N/A'
+                            Donation_Date: donor.Date_Picked_Up || donor.Pickup_Date || donor.Entry_Date || donor.Date_Donated || 'N/A',
+                            Donation_ID: donor.Donor_ID
                         }));
 
-                        allComputers.push(...computersWithPickupDate);
+                        allComputers.push(...computersWithDonationInfo);
                     } catch (err) {
                         console.error(`Error fetching inventory for donor ${donorId}:`, err);
                     }
@@ -98,17 +99,17 @@ function Champions() {
 
                 // Calculate stats across ALL donations
                 const totalWeight = allComputers.reduce((sum, item) => sum + (parseFloat(item.Weight) || 0), 0);
-                const thisMonth = allComputers.filter(item => {
-                    const donateDate = new Date(item.Date_Donated);
-                    const now = new Date();
-                    return donateDate.getMonth() === now.getMonth() &&
-                           donateDate.getFullYear() === now.getFullYear();
-                }).length;
+
+                // Calculate percentage donated (computers with Date_Donated vs Date_Recycled)
+                const donatedCount = allComputers.filter(item => item.Date_Donated && item.Date_Donated !== 'N/A').length;
+                const donatedPercentage = allComputers.length > 0
+                    ? Math.round((donatedCount / allComputers.length) * 100)
+                    : 0;
 
                 setStats({
                     totalComputers: allComputers.length,
                     totalWeight: totalWeight.toFixed(2),
-                    thisMonth,
+                    donatedPercentage,
                     totalDonations: donorRecords.length
                 });
             } else {
@@ -138,13 +139,14 @@ function Champions() {
             filename = `${companyName.replace(/\s+/g, '_')}_Donation_${donationDate}.csv`;
         }
 
-        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Date Picked Up', 'Date Donated', 'Date Recycled', 'Weight'];
+        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Donation Date', 'Date Donated', 'Date Recycled', 'Weight'];
         const rows = inventoryData.map(item => [
             item.Model || '',
             item.System_Serial_Number || '',
             item.Barcode_Save || '',
             item.Computer_Type || '',
-            item.Date_Picked_Up || '',
+            item.Donation_ID || '',
+            item.Donation_Date || '',
             item.Date_Donated || '',
             item.Date_Recycled || '',
             item.Weight || ''
@@ -211,11 +213,11 @@ function Champions() {
                     <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">This Month</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.thisMonth}</p>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.donatedPercentage}<span className="text-2xl text-gray-600">%</span></p>
                             </div>
                             <div className="bg-purple-100 p-4 rounded-full">
-                                <FiCalendar className="text-3xl text-purple-600" />
+                                <FiCheck className="text-3xl text-purple-600" />
                             </div>
                         </div>
                     </div>
@@ -259,9 +261,8 @@ function Champions() {
                             <div>
                                 <h3 className="text-lg font-bold text-blue-900 mb-2">About Your Donation Records</h3>
                                 <p className="text-blue-800">
-                                    We have records of your generous donations, but the individual computer inventory details may not be available.
-                                    This could be because these items were part of our old tracking system before we implemented detailed inventory tracking,
-                                    or they were donated anonymously. Thank you for your continued support!
+                                    We have records of your donation, but inventory details are not yet available.
+                                    This may be because items have not been picked up or entered into inventory yet, or were donated anonymously.
                                 </p>
                             </div>
                         </div>
@@ -318,7 +319,8 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Picked Up</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation ID</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation Date</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
@@ -332,7 +334,8 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Picked_Up || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Donation_ID || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Donation_Date || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Recycled || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
