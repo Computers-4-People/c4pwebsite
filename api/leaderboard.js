@@ -22,8 +22,14 @@ export default async function handler(req, res) {
         const creatorToken = await getZohoAccessToken();
         const crmToken = await getZohoCRMAccessToken();
 
-        if (!creatorToken || !crmToken) {
-            return res.status(500).json({ error: 'Failed to obtain access tokens' });
+        if (!creatorToken) {
+            console.error("Failed to get Creator token");
+            return res.status(500).json({ error: 'Failed to obtain Creator access token' });
+        }
+
+        if (!crmToken) {
+            console.error("Failed to get CRM token");
+            return res.status(500).json({ error: 'Failed to obtain CRM access token' });
         }
 
         console.log("Fetching Champions data for leaderboard...");
@@ -32,30 +38,36 @@ export default async function handler(req, res) {
         let allChampions = [];
         let page = 1;
         let hasMoreRecords = true;
+        const maxPages = 50; // Safety limit
 
-        while (hasMoreRecords) {
-            const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
+        while (hasMoreRecords && page <= maxPages) {
+            try {
+                const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
 
-            const championsResp = await axios.get(championsUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${crmToken}`,
-                },
-            });
+                const championsResp = await axios.get(championsUrl, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${crmToken}`,
+                    },
+                });
 
-            const records = championsResp.data.data || [];
-            console.log(`Fetched ${records.length} champions (page ${page})`);
+                const records = championsResp.data.data || [];
+                console.log(`Fetched ${records.length} champions (page ${page})`);
 
-            if (records.length > 0) {
-                allChampions = allChampions.concat(records);
-                page++;
+                if (records.length > 0) {
+                    allChampions = allChampions.concat(records);
+                    page++;
 
-                // Check if there's more data
-                const info = championsResp.data.info;
-                if (!info || !info.more_records) {
+                    // Check if there's more data
+                    const info = championsResp.data.info;
+                    if (!info || !info.more_records) {
+                        hasMoreRecords = false;
+                    }
+                } else {
                     hasMoreRecords = false;
                 }
-            } else {
-                hasMoreRecords = false;
+            } catch (error) {
+                console.error(`Error fetching Champions page ${page}:`, error.response?.data || error.message);
+                throw new Error(`Failed to fetch Champions: ${error.message}`);
             }
         }
 
