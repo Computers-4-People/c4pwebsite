@@ -58,12 +58,12 @@ export default function About() {
         {
             titlePart1: "Reaching New",
             titlePart2: "Communities",
-            description: "In 2024, a second office opened in Waltham, MA, extending Computers 4 People’s impact to underserved communities across Massachusetts while strengthening its presence in the Northeast.",
+            description: "In 2024, Computers 4 People began scaling to new states and picking up nationwide, extending its impact to underserved communities across the country while strengthening its mission to bridge the digital divide.",
             image: "/about/maoffice.jpg",
         },
         {
-            titlePart1: "Driving Digital Equity",
-            titlePart2: "and Sustainability",
+            titlePart1: "Today's",
+            titlePart2: "Impact",
             description: "Today, Computers 4 People is a leader in the Northeast, providing access to technology, reducing e-waste, and championing digital access for thousands of individuals and families.",
             image: "/about/sustainability.jpg ",
         },
@@ -127,7 +127,7 @@ export default function About() {
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'Unlock Access to the Digital World. By refurbishing donated devices, teaching essential digital skills, and improving connectivity, we aim to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
+                desc2: 'We unlock access to the digital world by refurbishing donated devices, teaching essential digital skills, and improving connectivity to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
                 image: '../about/missionstatement.png',
                 side: 'right'
             }}/> 
