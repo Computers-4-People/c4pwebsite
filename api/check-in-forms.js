@@ -123,7 +123,7 @@ export default async function handler(req, res) {
                         applicant: {
                             First_Name: applicant.First_Name,
                             Last_Name: applicant.Last_Name,
-                            Address_1_City: applicant.Mailing_City || applicant.Address_1_City,
+                            Mailing_City: applicant.Mailing_City,
                             Age: applicant.Age
                         }
                     };
