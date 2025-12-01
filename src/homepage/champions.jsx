@@ -361,7 +361,7 @@ function Champions() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {testimonials.map((testimonial, index) => {
                                 const firstName = testimonial.applicant?.First_Name;
-                                const city = testimonial.applicant?.Address_1_City;
+                                const city = testimonial.applicant?.Mailing_City || testimonial.applicant?.Address_1_City;
 
                                 // Skip only if no first name at all
                                 if (!firstName) {
