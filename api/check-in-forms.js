@@ -107,8 +107,21 @@ export default async function handler(req, res) {
         const testimonialsWithDetails = await Promise.all(
             checkInForms.map(async (form) => {
                 try {
+                    // Extract Application ID - handle both object {id: "123"} and string "123"
+                    let applicationId;
+                    if (typeof form.Application === 'object' && form.Application !== null) {
+                        applicationId = form.Application.id || form.Application.ID;
+                    } else {
+                        applicationId = form.Application;
+                    }
+
+                    if (!applicationId) {
+                        console.error('No Application ID found in form:', form);
+                        return form;
+                    }
+
                     // Fetch the contact (applicant) details from CRM
-                    const applicantUrl = `https://www.zohoapis.com/crm/v2/Contacts/${form.Application}`;
+                    const applicantUrl = `https://www.zohoapis.com/crm/v2/Contacts/${applicationId}`;
 
                     const applicantResponse = await axios.get(applicantUrl, {
                         headers: {
@@ -128,7 +141,7 @@ export default async function handler(req, res) {
                         }
                     };
                 } catch (error) {
-                    console.error(`Error fetching applicant ${form.Application}:`, error);
+                    console.error(`Error fetching applicant for form:`, error.message);
                     return form;
                 }
             })
