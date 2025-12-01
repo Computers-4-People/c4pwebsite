@@ -10,12 +10,7 @@ function Champions() {
     const [selectedDonation, setSelectedDonation] = useState('all');
     const [loading, setLoading] = useState(true);
     const [testimonials, setTestimonials] = useState([]);
-    const [stats, setStats] = useState({
-        totalComputers: 0,
-        totalWeight: 0,
-        donatedPercentage: 0,
-        totalDonations: 0
-    });
+    const [stats, setStats] = useState(null);
 
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || {};
     const companyName = championResp.Company || `${championResp.First_Name} ${championResp.Last_Name}`;
@@ -313,7 +308,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Computers</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalComputers}</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalComputers || 0}</p>
                             </div>
                             <div className="bg-neutral-100 p-4 rounded-full">
                                 <FiPackage className="text-3xl text-c4p-dark" />
@@ -325,7 +320,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Weight</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalWeight} <span className="text-2xl text-gray-600">lbs</span></p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalWeight || 0} <span className="text-2xl text-gray-600">lbs</span></p>
                             </div>
                             <div className="bg-blue-100 p-4 rounded-full">
                                 <FiBarChart2 className="text-3xl text-blue-600" />
@@ -337,7 +332,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.donatedPercentage}<span className="text-2xl text-gray-600">%</span></p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.donatedPercentage || 0}<span className="text-2xl text-gray-600">%</span></p>
                             </div>
                             <div className="bg-purple-100 p-4 rounded-full">
                                 <FiCheck className="text-3xl text-purple-600" />
@@ -349,7 +344,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Donations</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats.totalDonations}</p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalDonations || 0}</p>
                             </div>
                             <div className="bg-orange-100 p-4 rounded-full">
                                 <FiCheck className="text-3xl text-orange-600" />
@@ -361,37 +356,36 @@ function Champions() {
                 {/* Testimonials Section */}
                 {testimonials.length > 0 && (
                     <div className="mb-8">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">What Our Recipients Are Saying</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">What Recipients of Your Computers Are Saying</h2>
+                        <p className="text-sm text-gray-600 mb-6 italic">These individuals have agreed to share their name and testimonial publicly.</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {testimonials.map((testimonial, index) => (
-                                <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
-                                    <div className="flex items-start gap-3 mb-4">
-                                        <div className="bg-neutral-100 p-2 rounded-full">
-                                            <FiCheck className="text-xl text-c4p-dark" />
+                            {testimonials.map((testimonial, index) => {
+                                const firstName = testimonial.applicant?.First_Name;
+                                const city = testimonial.applicant?.Address_1_City;
+                                const displayName = firstName && city ? `${firstName} from ${city}` : (firstName || '');
+
+                                // Skip testimonials without proper name/city
+                                if (!displayName) return null;
+
+                                return (
+                                    <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
+                                        <div className="flex items-start gap-3 mb-4">
+                                            <div className="text-3xl">💬</div>
+                                            <div className="flex-1">
+                                                <p className="font-semibold text-gray-900">
+                                                    {displayName}
+                                                </p>
+                                                <p className="text-xs text-gray-400 mt-1">
+                                                    {testimonial.Date && new Date(testimonial.Date).toLocaleDateString()}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="flex-1">
-                                            <p className="font-semibold text-gray-900">
-                                                {testimonial.applicant?.First_Name} {testimonial.applicant?.Last_Name}
-                                            </p>
-                                            <p className="text-sm text-gray-500">
-                                                {testimonial.applicant?.Address_1_City || 'N/A'}
-                                                {testimonial.applicant?.Age && ` • Age ${testimonial.applicant.Age}`}
-                                            </p>
-                                            <p className="text-xs text-gray-400 mt-1">
-                                                {testimonial.Date && new Date(testimonial.Date).toLocaleDateString()}
-                                                {testimonial.donorId && ` • Donation ID: ${testimonial.donorId}`}
-                                            </p>
-                                        </div>
+                                        <p className="text-gray-700 italic">
+                                            "{testimonial.Testimonial1 || testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
+                                        </p>
                                     </div>
-                                    <p className="text-gray-700 italic mb-4">
-                                        "{testimonial.Testimonial1 || testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
-                                    </p>
-                                    <div className="flex items-center gap-2 text-c4p-dark">
-                                        <FiCheck className="text-lg" />
-                                        <span className="text-sm font-medium">Computer working well</span>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 )}
@@ -481,7 +475,7 @@ function Champions() {
                         <div>
                             <h2 className="text-2xl font-bold mb-2">Thank You for Your Impact!</h2>
                             <p className="text-green-50 text-lg">
-                                Your generous donation of <span className="font-bold">{stats.totalComputers} computers</span> has helped bridge the digital divide.
+                                Your generous donation of <span className="font-bold">{stats?.totalComputers || 0} computers</span> has helped bridge the digital divide.
                                 Together, we're empowering communities with technology and promoting environmental sustainability.
                             </p>
                         </div>
@@ -522,7 +516,7 @@ function Champions() {
                                         onChange={(e) => setSelectedDonation(e.target.value)}
                                         className="bg-white text-gray-900 px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-c4p focus:ring-2 focus:ring-green-200 outline-none"
                                     >
-                                        <option value="all">All Donations ({stats.totalComputers} computers)</option>
+                                        <option value="all">All Donations ({stats?.totalComputers || 0} computers)</option>
                                         {donations.map((donation, index) => {
                                             const donationComputers = allInventoryData.filter(item => item.Donor_ID === donation.Donor_ID);
                                             const donationDate = donation.Entry_Date || donation.Date_Donated || 'N/A';
