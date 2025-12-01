@@ -6,7 +6,17 @@ dotenv.config({
 });
 const { getZohoAccessToken } = require('./_utils');
 
+// Cache stats for 1 hour to avoid timeout
+let cachedStats = null;
+let cacheExpiration = null;
+
 export default async function handler(req, res) {
+    // Return cached stats if still valid
+    const currentTime = Date.now();
+    if (cachedStats && cacheExpiration && currentTime < cacheExpiration) {
+        console.log("Returning cached stats");
+        return res.json(cachedStats);
+    }
     try {
         const accessToken = await getZohoAccessToken();
         if (!accessToken) {
@@ -83,6 +93,11 @@ export default async function handler(req, res) {
         };
 
         console.log('Stats calculated:', stats);
+
+        // Cache the results for 1 hour
+        cachedStats = stats;
+        cacheExpiration = Date.now() + (60 * 60 * 1000); // 1 hour
+        console.log('Stats cached until:', new Date(cacheExpiration));
 
         res.json(stats);
 
