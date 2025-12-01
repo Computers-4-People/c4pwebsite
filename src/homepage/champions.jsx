@@ -85,19 +85,19 @@ function Champions() {
             console.log(`Received ${allTestimonials.length} testimonials from API`);
 
             // Get set of recipient IDs from this donor's inventory
-            const recipientIds = new Set(allInventoryData.map(item => {
+            const recipientIdsSet = new Set(allInventoryData.map(item => {
                 if (typeof item.Recipient === 'object' && item.Recipient !== null) {
                     return item.Recipient.ID || item.Recipient.id;
                 }
                 return item.Recipient;
             }).filter(id => id && id !== 'N/A'));
 
-            console.log(`Filtering ${allTestimonials.length} testimonials for ${recipientIds.size} recipients`);
+            console.log(`Filtering ${allTestimonials.length} testimonials for ${recipientIdsSet.size} recipients`);
 
             // Filter to only testimonials from THIS donor's recipients
             const matchingTestimonials = allTestimonials.filter(testimonial => {
                 const applicationId = testimonial.Application?.id || testimonial.Application;
-                return recipientIds.has(applicationId);
+                return recipientIdsSet.has(applicationId);
             });
 
             console.log(`Found ${matchingTestimonials.length} matching testimonials`);
