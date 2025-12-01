@@ -58,12 +58,12 @@ export default function About() {
         {
             titlePart1: "Reaching New",
             titlePart2: "Communities",
-            description: "In 2024, Computers 4 People began scaling to new states and picking up nationwide, extending its impact to underserved communities across the country while strengthening its mission to bridge the digital divide.",
+            description: "In 2024, a second office opened in Waltham, MA, extending Computers 4 People’s impact to underserved communities across Massachusetts while strengthening its presence in the Northeast.",
             image: "/about/maoffice.jpg",
         },
         {
-            titlePart1: "Today's",
-            titlePart2: "Impact",
+            titlePart1: "Driving Digital Equity",
+            titlePart2: "and Sustainability",
             description: "Today, Computers 4 People is a leader in the Northeast, providing access to technology, reducing e-waste, and championing digital access for thousands of individuals and families.",
             image: "/about/sustainability.jpg ",
         },
@@ -100,29 +100,16 @@ export default function About() {
                 links: [{}]
                 }} /> 
 <div className='bg-cover bg-black p-16 text-white'>
-  <p className='text-center text-sm text-gray-400 mb-4'>Stats are live</p>
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
     <li className='my-4 md:my-0 mx-5'>
       <div className='text-6xl mb-3'>
-        {loading ? (
-          <div className="inline-flex gap-2">
-            <span className="animate-bounce" style={{ animationDelay: '0ms' }}>•</span>
-            <span className="animate-bounce" style={{ animationDelay: '150ms' }}>•</span>
-            <span className="animate-bounce" style={{ animationDelay: '300ms' }}>•</span>
-          </div>
-        ) : stats.computersDonated.toLocaleString()}
+        {loading ? '...' : stats.computersDonated.toLocaleString()}
       </div>
       <p className='text-3xl'>Computers Donated</p>
     </li>
     <li className='my-4 md:my-0 mx-5'>
       <div className='text-6xl mb-3'>
-        {loading ? (
-          <div className="inline-flex gap-2">
-            <span className="animate-bounce" style={{ animationDelay: '0ms' }}>•</span>
-            <span className="animate-bounce" style={{ animationDelay: '150ms' }}>•</span>
-            <span className="animate-bounce" style={{ animationDelay: '300ms' }}>•</span>
-          </div>
-        ) : stats.poundsRecycled.toLocaleString()}
+        {loading ? '...' : stats.poundsRecycled.toLocaleString()}
       </div>
       <p className='text-3xl'>Pounds of e-waste Recycled</p>
     </li>
@@ -140,7 +127,7 @@ export default function About() {
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'We unlock access to the digital world by refurbishing donated devices, teaching essential digital skills, and improving connectivity to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
+                desc2: 'Unlock Access to the Digital World. By refurbishing donated devices, teaching essential digital skills, and improving connectivity, we aim to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
                 image: '../about/missionstatement.png',
                 side: 'right'
             }}/> 
