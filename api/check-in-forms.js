@@ -60,21 +60,34 @@ export default async function handler(req, res) {
         // Try without any criteria - just get all check-in forms
         const criteria = null;
 
-        // Fetch check-in forms from Zoho CRM
-        // Fetch many records so we can filter client-side for matches
-        const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms?per_page=200`;
+        // Fetch ALL check-in forms from Zoho CRM with pagination
+        let allCheckInForms = [];
+        let page = 1;
+        let hasMore = true;
 
-        console.log("Requesting testimonials from CRM:", url);
-        console.log("Searching for these recipient Application IDs:", recipientIdArray);
+        console.log("Fetching all check-in forms with pagination...");
 
-        const response = await axios.get(url, {
-            headers: {
-                Authorization: `Zoho-oauthtoken ${accessToken}`,
-            },
-        });
+        while (hasMore && page <= 20) {
+            const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms?per_page=200&page=${page}`;
+            console.log(`Fetching page ${page}...`);
 
-        const checkInForms = response.data.data || [];
-        console.log(`Found ${checkInForms.length} check-in forms`);
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                },
+            });
+
+            const pageForms = response.data.data || [];
+            allCheckInForms = allCheckInForms.concat(pageForms);
+            console.log(`  Page ${page}: ${pageForms.length} forms (total so far: ${allCheckInForms.length})`);
+
+            // Check if there are more records
+            hasMore = response.data.info?.more_records || false;
+            page++;
+        }
+
+        const checkInForms = allCheckInForms;
+        console.log(`Fetched ${checkInForms.length} total check-in forms from ${page - 1} pages`);
 
         if (checkInForms.length > 0) {
             console.log("Application IDs found in check-in forms:", checkInForms.map(f => f.Application?.id || f.Application));
