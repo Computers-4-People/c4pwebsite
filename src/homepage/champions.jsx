@@ -362,10 +362,15 @@ function Champions() {
                             {testimonials.map((testimonial, index) => {
                                 const firstName = testimonial.applicant?.First_Name;
                                 const city = testimonial.applicant?.Address_1_City;
-                                const displayName = firstName && city ? `${firstName} from ${city}` : (firstName || '');
 
-                                // Skip testimonials without proper name/city
-                                if (!displayName) return null;
+                                // Skip only if no first name at all
+                                if (!firstName) {
+                                    console.log('Skipping testimonial - no first name:', testimonial);
+                                    return null;
+                                }
+
+                                // Show "FirstName from City" or just "FirstName" if no city
+                                const displayName = city ? `${firstName} from ${city}` : firstName;
 
                                 return (
                                     <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
