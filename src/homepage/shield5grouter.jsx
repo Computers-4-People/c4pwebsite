@@ -50,7 +50,7 @@ const faqs = [
   {
     question: "When will my order arrive?",
     answer:
-      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Router (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",
+      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. The Shield 5G Home Router is currently in stock and will ship in 1-2 weeks.",
   },
   {
     question: "What does the internet plan include?",
@@ -173,7 +173,7 @@ export default function Shield5grouter() {
           {/* Title & Description */}
           <div className="pt-8 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              Shield 5G Home Hotspot + Unlimited Internet – Preorder Now
+              Shield 5G Home Hotspot + Unlimited Internet
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
               First batch SOLD OUT! Secure your spot in the next shipment today. Supplies are limited, and delivery may take a couple of months - don’t miss your chance to lock in Shield 5G.<br/><br/>
