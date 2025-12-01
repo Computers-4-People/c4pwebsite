@@ -31,12 +31,16 @@ function Champions() {
         // Fetch testimonials after inventory data is loaded
         if (allInventoryData.length > 0) {
             fetchTestimonials().finally(() => {
-                // Turn off loading after testimonials are fetched
-                setLoading(false);
+                // Add minimum loading time of 2 seconds to ensure stats are visible
+                setTimeout(() => {
+                    setLoading(false);
+                }, 2000);
             });
         } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
-            // If we have donations but no inventory, turn off loading
-            setLoading(false);
+            // If we have donations but no inventory, add minimum loading time
+            setTimeout(() => {
+                setLoading(false);
+            }, 2000);
         }
     }, [allInventoryData, donations]);
 

@@ -108,7 +108,9 @@ export default async function handler(req, res) {
             checkInForms.map(async (form) => {
                 try {
                     // Fetch the contact (applicant) details from CRM
-                    const applicantUrl = `https://www.zohoapis.com/crm/v2/Contacts/${form.Application}`;
+                    // Handle Application being either an object with id property or a direct ID
+                    const applicationId = form.Application?.id || form.Application;
+                    const applicantUrl = `https://www.zohoapis.com/crm/v2/Contacts/${applicationId}`;
 
                     const applicantResponse = await axios.get(applicantUrl, {
                         headers: {
@@ -128,7 +130,7 @@ export default async function handler(req, res) {
                         }
                     };
                 } catch (error) {
-                    console.error(`Error fetching applicant ${form.Application}:`, error);
+                    console.error(`Error fetching applicant ${applicationId || form.Application}:`, error);
                     return form;
                 }
             })
