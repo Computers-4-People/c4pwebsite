@@ -47,22 +47,22 @@ export default async function handler(req, res) {
 
         console.log(`Total records fetched: ${allRecords.length}`);
 
-        // Filter for donated computers (exclude Other, Monitor, etc.)
-        const excludedTypes = ['Other', 'Monitor', 'Monitors', 'Printer', 'Printers', 'Accessories', 'Accessory'];
+        // Filter for donated computers (exclude Monitor, Phone, Misc)
+        const excludedTypes = ['Monitor', 'Phone', 'Misc'];
         const donatedComputers = allRecords.filter(record => {
             const status = record.Status;
-            const type = record.Computer_Type || record.Type || '';
+            const type = record.Computer_Type || '';
 
             // Must have Status = "Donated"
             if (status !== 'Donated') return false;
 
-            // Must NOT be excluded types
-            const isExcluded = excludedTypes.some(excludedType =>
-                type.toLowerCase().includes(excludedType.toLowerCase())
-            );
+            // Must NOT be excluded types (exact match)
+            const isExcluded = excludedTypes.includes(type);
 
             return !isExcluded;
         });
+
+        console.log(`Donated computers (excluding ${excludedTypes.join(', ')}): ${donatedComputers.length}`);
 
         // Calculate total weight (donated or recycled)
         const totalWeight = allRecords.reduce((sum, record) => {
