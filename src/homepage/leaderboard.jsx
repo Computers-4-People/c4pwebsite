@@ -65,10 +65,10 @@ function Leaderboard() {
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">
                     <h2 className="text-4xl font-title text-gray-900 mb-4">
-                        Progress Toward 1 Million Computers
+                        Progress Toward 1 Million Computers Donated to C4P
                     </h2>
                     <p className="text-xl text-gray-600 font-paragraph">
-                        Together, we're bridging the digital divide one computer at a time
+                        Together, we're collecting computers to bridge the digital divide
                     </p>
                 </div>
 
@@ -102,7 +102,7 @@ function Leaderboard() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                    Computers Donated
+                                    Computers Donated to C4P
                                 </p>
                                 <p className="text-3xl font-bold text-c4p-dark mt-2">
                                     {loading ? <AnimatedDots /> : stats.totalComputersDonated.toLocaleString()}
