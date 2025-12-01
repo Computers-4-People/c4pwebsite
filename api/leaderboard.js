@@ -51,40 +51,25 @@ export default async function handler(req, res) {
 
         console.log("Fetching Champions data for leaderboard...");
 
-        // Step 1: Fetch Champions from CRM (limit to first 3 pages to avoid timeout)
+        // Step 1: Fetch only FIRST PAGE of Champions (200 max)
         let allChampions = [];
-        const maxPages = 3; // Limit to avoid timeout (600 champions max)
 
-        for (let page = 1; page <= maxPages; page++) {
-            try {
-                const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
+        try {
+            console.log("Fetching first page of Champions...");
+            const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=1&per_page=200`;
 
-                const championsResp = await axios.get(championsUrl, {
-                    headers: {
-                        Authorization: `Zoho-oauthtoken ${crmToken}`,
-                    },
-                    timeout: 5000 // 5 second timeout per request
-                });
+            const championsResp = await axios.get(championsUrl, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${crmToken}`,
+                },
+                timeout: 3000
+            });
 
-                const records = championsResp.data.data || [];
-                console.log(`Fetched ${records.length} champions (page ${page})`);
-
-                if (records.length > 0) {
-                    allChampions = allChampions.concat(records);
-
-                    // Check if there's more data
-                    const info = championsResp.data.info;
-                    if (!info || !info.more_records) {
-                        break; // No more pages
-                    }
-                } else {
-                    break; // No records, stop
-                }
-            } catch (error) {
-                console.error(`Error fetching Champions page ${page}:`, error.message);
-                // Continue with what we have instead of failing
-                break;
-            }
+            allChampions = championsResp.data.data || [];
+            console.log(`Fetched ${allChampions.length} champions (LIMITED TO FIRST PAGE)`);
+        } catch (error) {
+            console.error(`Error fetching Champions:`, error.message);
+            return res.json(getEmptyLeaderboard());
         }
 
         console.log(`Total champions fetched: ${allChampions.length}`);
@@ -97,76 +82,48 @@ export default async function handler(req, res) {
 
         console.log(`Computer donors: ${computerDonors.length}`);
 
-        // Step 2: Fetch Computer_Donors records from CRM (limit to avoid timeout)
+        // Step 2: Fetch only FIRST PAGE of Computer_Donors (200 max)
         let allDonorRecords = [];
-        const maxDonorPages = 5; // Limit to 1000 donor records
 
-        for (let page = 1; page <= maxDonorPages; page++) {
-            try {
-                const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=${page}&per_page=200`;
+        try {
+            console.log("Fetching first page of Computer_Donors...");
+            const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=1&per_page=200`;
 
-                const donorsResp = await axios.get(donorsUrl, {
-                    headers: {
-                        Authorization: `Zoho-oauthtoken ${crmToken}`,
-                    },
-                    timeout: 5000
-                });
+            const donorsResp = await axios.get(donorsUrl, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${crmToken}`,
+                },
+                timeout: 3000
+            });
 
-                const records = donorsResp.data.data || [];
-                console.log(`Fetched ${records.length} donor records (page ${page})`);
-
-                if (records.length > 0) {
-                    allDonorRecords = allDonorRecords.concat(records);
-
-                    const info = donorsResp.data.info;
-                    if (!info || !info.more_records) {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            } catch (error) {
-                console.error(`Error fetching donors page ${page}:`, error.message);
-                break;
-            }
+            allDonorRecords = donorsResp.data.data || [];
+            console.log(`Fetched ${allDonorRecords.length} donor records (LIMITED TO FIRST PAGE)`);
+        } catch (error) {
+            console.error(`Error fetching donors:`, error.message);
+            return res.json(getEmptyLeaderboard());
         }
 
         console.log(`Total donor records fetched: ${allDonorRecords.length}`);
 
-        // Step 3: Fetch Inventory records from Creator (limit to avoid timeout)
+        // Step 3: Fetch only FIRST PAGE of Inventory (200 max)
         let allInventory = [];
-        const maxInventoryPages = 10; // Limit to 2000 inventory records
 
-        console.log("Fetching inventory records...");
+        try {
+            console.log("Fetching first page of inventory...");
+            const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=1&limit=200`;
 
-        for (let pageNum = 0; pageNum < maxInventoryPages; pageNum++) {
-            try {
-                const from = (pageNum * 200) + 1;
-                const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=${from}&limit=200`;
+            const inventoryResp = await axios.get(inventoryUrl, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${creatorToken}`,
+                },
+                timeout: 3000
+            });
 
-                const inventoryResp = await axios.get(inventoryUrl, {
-                    headers: {
-                        Authorization: `Zoho-oauthtoken ${creatorToken}`,
-                    },
-                    timeout: 5000
-                });
-
-                const records = inventoryResp.data.data || [];
-                console.log(`Fetched ${records.length} inventory records (from index ${from})`);
-
-                if (records.length > 0) {
-                    allInventory = allInventory.concat(records);
-
-                    if (records.length < 200) {
-                        break; // No more records
-                    }
-                } else {
-                    break;
-                }
-            } catch (error) {
-                console.error(`Error fetching inventory:`, error.message);
-                break;
-            }
+            allInventory = inventoryResp.data.data || [];
+            console.log(`Fetched ${allInventory.length} inventory records (LIMITED TO FIRST PAGE)`);
+        } catch (error) {
+            console.error(`Error fetching inventory:`, error.message);
+            return res.json(getEmptyLeaderboard());
         }
 
         console.log(`Total inventory records fetched: ${allInventory.length}`);
