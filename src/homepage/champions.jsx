@@ -81,12 +81,29 @@ function Champions() {
                 }
             });
 
-            const testimonials = response.data || [];
-            console.log(`Received ${testimonials.length} testimonials from API`);
+            const allTestimonials = response.data || [];
+            console.log(`Received ${allTestimonials.length} testimonials from API`);
 
-            // Match testimonials to donor IDs from inventory
-            const testimonialsWithDonorId = testimonials.map(testimonial => {
-                // Find the inventory item that matches this testimonial's Application ID
+            // Get set of recipient IDs from this donor's inventory
+            const recipientIds = new Set(allInventoryData.map(item => {
+                if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                    return item.Recipient.ID || item.Recipient.id;
+                }
+                return item.Recipient;
+            }).filter(id => id && id !== 'N/A'));
+
+            console.log(`Filtering ${allTestimonials.length} testimonials for ${recipientIds.size} recipients`);
+
+            // Filter to only testimonials from THIS donor's recipients
+            const matchingTestimonials = allTestimonials.filter(testimonial => {
+                const applicationId = testimonial.Application?.id || testimonial.Application;
+                return recipientIds.has(applicationId);
+            });
+
+            console.log(`Found ${matchingTestimonials.length} matching testimonials`);
+
+            // Add donor IDs to matched testimonials
+            const testimonialsWithDonorId = matchingTestimonials.map(testimonial => {
                 const applicationId = testimonial.Application?.id || testimonial.Application;
                 const inventoryItem = allInventoryData.find(item => {
                     const recipientId = typeof item.Recipient === 'object' ? (item.Recipient.ID || item.Recipient.id) : item.Recipient;
@@ -99,12 +116,15 @@ function Champions() {
                 };
             });
 
-            console.log('Testimonials with Donor IDs:', testimonialsWithDonorId.map(t => ({
-                name: t.applicant?.First_Name + ' ' + t.applicant?.Last_Name,
+            // Take top 3
+            const topThree = testimonialsWithDonorId.slice(0, 3);
+
+            console.log('Showing top 3 matching testimonials:', topThree.map(t => ({
+                applicationId: t.Application?.id,
                 donorId: t.donorId
             })));
 
-            setTestimonials(testimonialsWithDonorId);
+            setTestimonials(topThree);
         } catch (error) {
             console.error('Error fetching testimonials:', error);
         }
