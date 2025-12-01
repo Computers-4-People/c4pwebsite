@@ -10,6 +10,22 @@ const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 let cachedLeaderboard = null;
 let cacheExpiration = null;
 
+// Helper function to return empty leaderboard data
+function getEmptyLeaderboard() {
+    return {
+        leaderboard: [],
+        stats: {
+            totalComputersDonated: 0,
+            totalWeight: 0,
+            totalCompanies: 0,
+            goal: 1000000,
+            percentageComplete: "0.00"
+        },
+        byIndustry: [],
+        byState: []
+    };
+}
+
 export default async function handler(req, res) {
     // Return cached data if still valid
     const currentTime = Date.now();
@@ -19,17 +35,18 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log("Getting access tokens...");
         const creatorToken = await getZohoAccessToken();
         const crmToken = await getZohoCRMAccessToken();
 
         if (!creatorToken) {
-            console.error("Failed to get Creator token");
-            return res.status(500).json({ error: 'Failed to obtain Creator access token' });
+            console.error("Failed to get Creator token - returning empty leaderboard");
+            return res.json(getEmptyLeaderboard());
         }
 
         if (!crmToken) {
-            console.error("Failed to get CRM token");
-            return res.status(500).json({ error: 'Failed to obtain CRM access token' });
+            console.error("Failed to get CRM token - returning empty leaderboard");
+            return res.json(getEmptyLeaderboard());
         }
 
         console.log("Fetching Champions data for leaderboard...");
@@ -288,6 +305,8 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error("Error fetching leaderboard:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Failed to fetch leaderboard data' });
+        console.error("Returning empty leaderboard due to error");
+        // Return empty data instead of error to not break the frontend
+        res.json(getEmptyLeaderboard());
     }
 }
