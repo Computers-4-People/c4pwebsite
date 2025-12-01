@@ -51,13 +51,11 @@ export default async function handler(req, res) {
 
         console.log("Fetching Champions data for leaderboard...");
 
-        // Step 1: Fetch ALL Champions from CRM
+        // Step 1: Fetch Champions from CRM (limit to first 3 pages to avoid timeout)
         let allChampions = [];
-        let page = 1;
-        let hasMoreRecords = true;
-        const maxPages = 50; // Safety limit
+        const maxPages = 3; // Limit to avoid timeout (600 champions max)
 
-        while (hasMoreRecords && page <= maxPages) {
+        for (let page = 1; page <= maxPages; page++) {
             try {
                 const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
 
@@ -65,6 +63,7 @@ export default async function handler(req, res) {
                     headers: {
                         Authorization: `Zoho-oauthtoken ${crmToken}`,
                     },
+                    timeout: 5000 // 5 second timeout per request
                 });
 
                 const records = championsResp.data.data || [];
@@ -72,19 +71,19 @@ export default async function handler(req, res) {
 
                 if (records.length > 0) {
                     allChampions = allChampions.concat(records);
-                    page++;
 
                     // Check if there's more data
                     const info = championsResp.data.info;
                     if (!info || !info.more_records) {
-                        hasMoreRecords = false;
+                        break; // No more pages
                     }
                 } else {
-                    hasMoreRecords = false;
+                    break; // No records, stop
                 }
             } catch (error) {
-                console.error(`Error fetching Champions page ${page}:`, error.response?.data || error.message);
-                throw new Error(`Failed to fetch Champions: ${error.message}`);
+                console.error(`Error fetching Champions page ${page}:`, error.message);
+                // Continue with what we have instead of failing
+                break;
             }
         }
 
@@ -98,67 +97,75 @@ export default async function handler(req, res) {
 
         console.log(`Computer donors: ${computerDonors.length}`);
 
-        // Step 2: Fetch ALL Computer_Donors records from CRM
+        // Step 2: Fetch Computer_Donors records from CRM (limit to avoid timeout)
         let allDonorRecords = [];
-        page = 1;
-        hasMoreRecords = true;
+        const maxDonorPages = 5; // Limit to 1000 donor records
 
-        while (hasMoreRecords) {
-            const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=${page}&per_page=200`;
+        for (let page = 1; page <= maxDonorPages; page++) {
+            try {
+                const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=${page}&per_page=200`;
 
-            const donorsResp = await axios.get(donorsUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${crmToken}`,
-                },
-            });
+                const donorsResp = await axios.get(donorsUrl, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${crmToken}`,
+                    },
+                    timeout: 5000
+                });
 
-            const records = donorsResp.data.data || [];
-            console.log(`Fetched ${records.length} donor records (page ${page})`);
+                const records = donorsResp.data.data || [];
+                console.log(`Fetched ${records.length} donor records (page ${page})`);
 
-            if (records.length > 0) {
-                allDonorRecords = allDonorRecords.concat(records);
-                page++;
+                if (records.length > 0) {
+                    allDonorRecords = allDonorRecords.concat(records);
 
-                // Check if there's more data
-                const info = donorsResp.data.info;
-                if (!info || !info.more_records) {
-                    hasMoreRecords = false;
+                    const info = donorsResp.data.info;
+                    if (!info || !info.more_records) {
+                        break;
+                    }
+                } else {
+                    break;
                 }
-            } else {
-                hasMoreRecords = false;
+            } catch (error) {
+                console.error(`Error fetching donors page ${page}:`, error.message);
+                break;
             }
         }
 
         console.log(`Total donor records fetched: ${allDonorRecords.length}`);
 
-        // Step 3: Fetch ALL Inventory records from Creator
+        // Step 3: Fetch Inventory records from Creator (limit to avoid timeout)
         let allInventory = [];
-        let from = 1;
-        hasMoreRecords = true;
+        const maxInventoryPages = 10; // Limit to 2000 inventory records
 
         console.log("Fetching inventory records...");
 
-        while (hasMoreRecords) {
-            const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=${from}&limit=200`;
+        for (let pageNum = 0; pageNum < maxInventoryPages; pageNum++) {
+            try {
+                const from = (pageNum * 200) + 1;
+                const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=${from}&limit=200`;
 
-            const inventoryResp = await axios.get(inventoryUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${creatorToken}`,
-                },
-            });
+                const inventoryResp = await axios.get(inventoryUrl, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${creatorToken}`,
+                    },
+                    timeout: 5000
+                });
 
-            const records = inventoryResp.data.data || [];
-            console.log(`Fetched ${records.length} inventory records (from index ${from})`);
+                const records = inventoryResp.data.data || [];
+                console.log(`Fetched ${records.length} inventory records (from index ${from})`);
 
-            if (records.length > 0) {
-                allInventory = allInventory.concat(records);
-                from += records.length;
+                if (records.length > 0) {
+                    allInventory = allInventory.concat(records);
 
-                if (records.length < 200) {
-                    hasMoreRecords = false;
+                    if (records.length < 200) {
+                        break; // No more records
+                    }
+                } else {
+                    break;
                 }
-            } else {
-                hasMoreRecords = false;
+            } catch (error) {
+                console.error(`Error fetching inventory:`, error.message);
+                break;
             }
         }
 
