@@ -61,10 +61,8 @@ export default async function handler(req, res) {
         const criteria = null;
 
         // Fetch check-in forms from Zoho CRM
-        // If no criteria, just get all records (for testing)
-        const url = criteria
-            ? `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`
-            : `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms?per_page=3`;
+        // Fetch many records so we can filter client-side for matches
+        const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms?per_page=200`;
 
         console.log("Requesting testimonials from CRM:", url);
         console.log("Searching for these recipient Application IDs:", recipientIdArray);
