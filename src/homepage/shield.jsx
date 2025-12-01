@@ -500,7 +500,7 @@ export default function ShieldHeader() {
                   </p>
                   <p className="text-gray-600 text-sm">
                     Stronger signal and great for shared spaces. Up to 32
-                    devices! (Pre-order today. Estimated shipping: November)
+                    devices!
                   </p>
                 </div>
               </div>
