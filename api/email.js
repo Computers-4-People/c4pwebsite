@@ -42,11 +42,11 @@ export default async function handler(req, res) {
     const mailOptions = {
       from: '"Computers 4 People" <info@computers4people.org>',
       to: decodedEmail,
-      subject: 'Welcome to Computers4People Portal!',
+      subject: 'Welcome to Computers 4 People Portal!',
       html: `
         <html>
           <body style="font-family: Arial, sans-serif; padding: 20px;">
-            <h1 style="color: #17de43;">Welcome to Computers4People!</h1>
+            <h1 style="color: #17de43;">Welcome to Computers 4 People!</h1>
             <p>Click the button below to access your portal:</p>
             <p style="margin: 30px 0;">
               <a href="${portalLink}"
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
           </body>
         </html>
       `,
-      text: `Welcome to Computers4People! Access your portal at: ${portalLink}`
+      text: `Welcome to Computers 4 People! Access your portal at: ${portalLink}`
     };
 
     // Send email
