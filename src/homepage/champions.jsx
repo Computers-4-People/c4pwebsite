@@ -298,6 +298,15 @@ function Champions() {
             </div>
 
             <div className="max-w-7xl mx-auto px-6 py-8">
+                {loading ? (
+                    <div className="flex items-center justify-center py-40">
+                        <div className="text-center">
+                            <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-c4p mx-auto mb-4"></div>
+                            <p className="text-gray-600 text-lg">Loading your dashboard...</p>
+                        </div>
+                    </div>
+                ) : (
+                    <>
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
@@ -530,11 +539,7 @@ function Champions() {
                     </div>
 
                     <div className="overflow-x-auto">
-                        {loading ? (
-                            <div className="flex items-center justify-center py-20">
-                                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-600"></div>
-                            </div>
-                        ) : inventoryData.length === 0 ? (
+                        {inventoryData.length === 0 ? (
                             <div className="text-center py-20">
                                 <FiPackage className="text-6xl text-gray-300 mx-auto mb-4" />
                                 <p className="text-gray-500 text-lg">No computers found in inventory</p>
@@ -595,6 +600,8 @@ function Champions() {
                         Certificates of data destruction are available for each device above.
                     </p>
                 </div>
+                </>
+                )}
             </div>
         </div>
     );
