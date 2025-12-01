@@ -366,7 +366,7 @@ function Champions() {
                     </div>
                 )}
 
-                {/* Testimonials Debug Panel - Show what we're looking for */}
+                {/* Testimonials Debug Panel - Show Application IDs */}
                 {allInventoryData.length > 0 && (
                     <div className="mb-8 bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
                         <div className="flex items-start gap-4">
@@ -374,33 +374,68 @@ function Champions() {
                                 <FiCheck className="text-2xl text-blue-600" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-lg font-bold text-blue-900 mb-2">Testimonials Status</h3>
-                                <div className="space-y-2 text-blue-800">
-                                    <p className="font-semibold">
-                                        📊 Looking for testimonials from {[...new Set(allInventoryData.map(item => {
+                                <h3 className="text-lg font-bold text-blue-900 mb-2">Testimonials Matching Debug</h3>
+                                <div className="space-y-3 text-blue-800">
+                                    <div className="bg-white p-4 rounded border border-blue-200">
+                                        <p className="font-semibold mb-2">📋 Your Recipients (from inventory):</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-gray-100 p-2 rounded">
+                                            {[...new Set(allInventoryData.map(item => {
+                                                if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                    return item.Recipient.ID || item.Recipient.id;
+                                                }
+                                                return item.Recipient;
+                                            }).filter(id => id && id !== 'N/A'))].map((id, index) => (
+                                                <div key={index}>{id}</div>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm mt-2">Total: {[...new Set(allInventoryData.map(item => {
                                             if (typeof item.Recipient === 'object' && item.Recipient !== null) {
                                                 return item.Recipient.ID || item.Recipient.id;
                                             }
                                             return item.Recipient;
-                                        }).filter(id => id && id !== 'N/A'))].length} recipients
-                                    </p>
-                                    <p>
-                                        ✅ Recipients who received your donated computers
-                                    </p>
-                                    <p>
-                                        🔍 Searching for their check-in survey responses in CRM
-                                    </p>
-                                    {testimonials.length === 0 && (
-                                        <div className="mt-3 p-3 bg-yellow-100 border border-yellow-300 rounded">
-                                            <p className="font-semibold text-yellow-900">⚠️ No testimonials found yet</p>
-                                            <p className="text-sm text-yellow-800 mt-1">
-                                                This could mean recipients haven't submitted check-in surveys yet, or there may be an API access issue.
-                                            </p>
-                                            <p className="text-xs text-yellow-700 mt-2">
-                                                Test API access: <a href="/api/test-check-in" target="_blank" className="underline font-mono">/api/test-check-in</a>
-                                            </p>
+                                        }).filter(id => id && id !== 'N/A'))].length} unique recipients</p>
+                                    </div>
+
+                                    <div className="bg-white p-4 rounded border border-blue-200">
+                                        <p className="font-semibold mb-2">💬 Check-in Forms Application IDs:</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-gray-100 p-2 rounded">
+                                            {testimonials.map((t, index) => (
+                                                <div key={index}>
+                                                    {t.Application?.id || t.Application || 'No Application ID'}
+                                                </div>
+                                            ))}
                                         </div>
-                                    )}
+                                        <p className="text-sm mt-2">Total: {testimonials.length} testimonials fetched</p>
+                                    </div>
+
+                                    <div className="bg-green-100 p-4 rounded border border-green-300">
+                                        <p className="font-semibold text-green-900 mb-2">✅ Matches:</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-white p-2 rounded">
+                                            {(() => {
+                                                const recipientIds = new Set(allInventoryData.map(item => {
+                                                    if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                        return item.Recipient.ID || item.Recipient.id;
+                                                    }
+                                                    return item.Recipient;
+                                                }).filter(id => id && id !== 'N/A'));
+
+                                                const matches = testimonials.filter(t => {
+                                                    const appId = t.Application?.id || t.Application;
+                                                    return recipientIds.has(appId);
+                                                });
+
+                                                return matches.length > 0 ? (
+                                                    matches.map((t, index) => (
+                                                        <div key={index} className="text-green-700">
+                                                            {t.Application?.id || t.Application} - Match found!
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="text-red-600">No matches found in current 3 testimonials</div>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
