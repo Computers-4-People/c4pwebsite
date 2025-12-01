@@ -20,12 +20,20 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    if (req.method !== 'POST') {
+    // Accept both GET and POST
+    let recipientIds, limit;
+
+    if (req.method === 'POST') {
+        ({ recipientIds, limit = 3 } = req.body);
+    } else if (req.method === 'GET') {
+        // For GET, expect recipientIds as comma-separated string
+        const idsParam = req.query.recipientIds;
+        recipientIds = idsParam ? idsParam.split(',') : [];
+        limit = parseInt(req.query.limit) || 3;
+    } else {
         console.log('Method not allowed:', req.method);
         return res.status(405).json({ error: `Method not allowed: ${req.method}` });
     }
-
-    const { recipientIds, limit = 3 } = req.body;
 
     if (!recipientIds || !Array.isArray(recipientIds) || recipientIds.length === 0) {
         return res.status(400).json({ error: 'recipientIds array is required in request body' });
