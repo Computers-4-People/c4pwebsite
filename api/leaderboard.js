@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config({
     path: './.env.local'
 });
-const { getZohoAccessToken } = require('./_utils');
+const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 
 // Cache leaderboard data for 1 hour to avoid timeout and reduce API calls
 let cachedLeaderboard = null;
@@ -19,35 +19,39 @@ export default async function handler(req, res) {
     }
 
     try {
-        const accessToken = await getZohoAccessToken();
-        if (!accessToken) {
-            return res.status(500).json({ error: 'Failed to obtain access token' });
+        const creatorToken = await getZohoAccessToken();
+        const crmToken = await getZohoCRMAccessToken();
+
+        if (!creatorToken || !crmToken) {
+            return res.status(500).json({ error: 'Failed to obtain access tokens' });
         }
 
         console.log("Fetching Champions data for leaderboard...");
 
-        // Step 1: Fetch ALL Champions
+        // Step 1: Fetch ALL Champions from CRM
         let allChampions = [];
-        let from = 1;
+        let page = 1;
         let hasMoreRecords = true;
 
         while (hasMoreRecords) {
-            const championsUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/All_Champions?from=${from}&limit=200`;
+            const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
 
             const championsResp = await axios.get(championsUrl, {
                 headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    Authorization: `Zoho-oauthtoken ${crmToken}`,
                 },
             });
 
             const records = championsResp.data.data || [];
-            console.log(`Fetched ${records.length} champions (from index ${from})`);
+            console.log(`Fetched ${records.length} champions (page ${page})`);
 
             if (records.length > 0) {
                 allChampions = allChampions.concat(records);
-                from += records.length;
+                page++;
 
-                if (records.length < 200) {
+                // Check if there's more data
+                const info = championsResp.data.info;
+                if (!info || !info.more_records) {
                     hasMoreRecords = false;
                 }
             } else {
@@ -65,28 +69,30 @@ export default async function handler(req, res) {
 
         console.log(`Computer donors: ${computerDonors.length}`);
 
-        // Step 2: Fetch ALL Computer_Donors records
+        // Step 2: Fetch ALL Computer_Donors records from CRM
         let allDonorRecords = [];
-        from = 1;
+        page = 1;
         hasMoreRecords = true;
 
         while (hasMoreRecords) {
-            const donorsUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/All_Computer_Donors?from=${from}&limit=200`;
+            const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=${page}&per_page=200`;
 
             const donorsResp = await axios.get(donorsUrl, {
                 headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    Authorization: `Zoho-oauthtoken ${crmToken}`,
                 },
             });
 
             const records = donorsResp.data.data || [];
-            console.log(`Fetched ${records.length} donor records (from index ${from})`);
+            console.log(`Fetched ${records.length} donor records (page ${page})`);
 
             if (records.length > 0) {
                 allDonorRecords = allDonorRecords.concat(records);
-                from += records.length;
+                page++;
 
-                if (records.length < 200) {
+                // Check if there's more data
+                const info = donorsResp.data.info;
+                if (!info || !info.more_records) {
                     hasMoreRecords = false;
                 }
             } else {
@@ -96,9 +102,9 @@ export default async function handler(req, res) {
 
         console.log(`Total donor records fetched: ${allDonorRecords.length}`);
 
-        // Step 3: Fetch ALL Inventory records (Status = "Donated")
+        // Step 3: Fetch ALL Inventory records from Creator
         let allInventory = [];
-        from = 1;
+        let from = 1;
         hasMoreRecords = true;
 
         console.log("Fetching inventory records...");
@@ -108,7 +114,7 @@ export default async function handler(req, res) {
 
             const inventoryResp = await axios.get(inventoryUrl, {
                 headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    Authorization: `Zoho-oauthtoken ${creatorToken}`,
                 },
             });
 
