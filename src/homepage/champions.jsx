@@ -73,11 +73,12 @@ function Champions() {
             console.log('Fetching testimonials for recipient IDs:', recipientIds.slice(0, 20));
 
             // Use GET with query params (POST wasn't working)
+            // Request high limit to get ALL check-in forms for client-side filtering
             const recipientIdsParam = recipientIds.join(',');
             const response = await axios.get(`${API_BASE_URL}/api/check-in-forms`, {
                 params: {
                     recipientIds: recipientIdsParam,
-                    limit: 3
+                    limit: 10000  // High limit to get all forms, we'll filter client-side
                 }
             });
 
