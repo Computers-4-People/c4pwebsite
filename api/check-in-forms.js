@@ -51,8 +51,9 @@ export default async function handler(req, res) {
         const recipientIdArray = recipientIds.slice(0, 20);
 
         // Build CRM API criteria for searching check-in forms
+        // Just search by Application IDs - filters were breaking the query
         const criteriaArray = recipientIdArray.map(id => `(Application:equals:${id})`);
-        const criteria = `((Can_we_share_this_response_publicly:equals:Yes (you can include my name))and(Is_the_computer_working_well:equals:Yes)and(or(${criteriaArray.join(',')})))`;
+        const criteria = `(or(${criteriaArray.join(',')}))`;
 
         // Fetch check-in forms from Zoho CRM
         const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`;
