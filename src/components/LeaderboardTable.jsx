@@ -123,7 +123,7 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                                 Industry
                             </th>
                             <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
-                                Computers Donated
+                                Computers Donated to C4P
                             </th>
                             <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
                                 Total Weight (lbs)

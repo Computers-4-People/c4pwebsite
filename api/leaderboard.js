@@ -135,19 +135,19 @@ export default async function handler(req, res) {
 
         console.log(`Total inventory records fetched: ${allInventory.length}`);
 
-        // Filter for donated computers only (exclude Monitor, Phone, Misc)
+        // Filter to count ALL computers donated to C4P (exclude Monitor, Phone, Misc)
+        // We count all statuses: In Stock, Donated, Recycled, etc.
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
-        const donatedComputers = allInventory.filter(record => {
-            const status = record.Status;
+        const allComputersDonatedToC4P = allInventory.filter(record => {
             const type = record.Computer_Type || '';
 
-            if (status !== 'Donated') return false;
+            // Only exclude specific non-computer types
             if (excludedTypes.includes(type)) return false;
 
             return true;
         });
 
-        console.log(`Donated computers (excluding ${excludedTypes.join(', ')}): ${donatedComputers.length}`);
+        console.log(`Total computers donated to C4P (excluding ${excludedTypes.join(', ')}): ${allComputersDonatedToC4P.length}`);
 
         // Step 4: Build leaderboard by aggregating data
         const leaderboardMap = new Map();
@@ -165,8 +165,8 @@ export default async function handler(req, res) {
             // Get all donor IDs for this champion
             const donorIds = championDonorRecords.map(donor => donor.Donor_ID);
 
-            // Count computers from inventory linked to these donor IDs
-            const championComputers = donatedComputers.filter(computer => {
+            // Count ALL computers from inventory linked to these donor IDs
+            const championComputers = allComputersDonatedToC4P.filter(computer => {
                 return donorIds.includes(computer.Donor_ID);
             });
 
