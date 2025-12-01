@@ -193,6 +193,12 @@ function Champions() {
                             }
                         }
 
+                        // Debug: Log first computer to see all available fields
+                        if (computers.length > 0 && allComputers.length === 0) {
+                            console.log('Sample computer record fields:', Object.keys(computers[0]));
+                            console.log('Certificate field value:', computers[0].Data_Certificate);
+                        }
+
                         // Add donor ID to each inventory item
                         const computersWithDonationInfo = computers.map(computer => ({
                             ...computer,
@@ -550,7 +556,7 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Certificate</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Destruction Certificates</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
