@@ -10,6 +10,22 @@ const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 let cachedLeaderboard = null;
 let cacheExpiration = null;
 
+// Helper function to return empty leaderboard data
+function getEmptyLeaderboard() {
+    return {
+        leaderboard: [],
+        stats: {
+            totalComputersDonated: 0,
+            totalWeight: 0,
+            totalCompanies: 0,
+            goal: 1000000,
+            percentageComplete: "0.00"
+        },
+        byIndustry: [],
+        byState: []
+    };
+}
+
 export default async function handler(req, res) {
     // Return cached data if still valid
     const currentTime = Date.now();
@@ -19,11 +35,18 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log("Getting access tokens...");
         const creatorToken = await getZohoAccessToken();
         const crmToken = await getZohoCRMAccessToken();
 
-        if (!creatorToken || !crmToken) {
-            return res.status(500).json({ error: 'Failed to obtain access tokens' });
+        if (!creatorToken) {
+            console.error("Failed to get Creator token - returning empty leaderboard");
+            return res.json(getEmptyLeaderboard());
+        }
+
+        if (!crmToken) {
+            console.error("Failed to get CRM token - returning empty leaderboard");
+            return res.json(getEmptyLeaderboard());
         }
 
         console.log("Fetching Champions data for leaderboard...");
@@ -32,30 +55,36 @@ export default async function handler(req, res) {
         let allChampions = [];
         let page = 1;
         let hasMoreRecords = true;
+        const maxPages = 50; // Safety limit
 
-        while (hasMoreRecords) {
-            const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
+        while (hasMoreRecords && page <= maxPages) {
+            try {
+                const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=${page}&per_page=200`;
 
-            const championsResp = await axios.get(championsUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${crmToken}`,
-                },
-            });
+                const championsResp = await axios.get(championsUrl, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${crmToken}`,
+                    },
+                });
 
-            const records = championsResp.data.data || [];
-            console.log(`Fetched ${records.length} champions (page ${page})`);
+                const records = championsResp.data.data || [];
+                console.log(`Fetched ${records.length} champions (page ${page})`);
 
-            if (records.length > 0) {
-                allChampions = allChampions.concat(records);
-                page++;
+                if (records.length > 0) {
+                    allChampions = allChampions.concat(records);
+                    page++;
 
-                // Check if there's more data
-                const info = championsResp.data.info;
-                if (!info || !info.more_records) {
+                    // Check if there's more data
+                    const info = championsResp.data.info;
+                    if (!info || !info.more_records) {
+                        hasMoreRecords = false;
+                    }
+                } else {
                     hasMoreRecords = false;
                 }
-            } else {
-                hasMoreRecords = false;
+            } catch (error) {
+                console.error(`Error fetching Champions page ${page}:`, error.response?.data || error.message);
+                throw new Error(`Failed to fetch Champions: ${error.message}`);
             }
         }
 
@@ -276,6 +305,8 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error("Error fetching leaderboard:", error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Failed to fetch leaderboard data' });
+        console.error("Returning empty leaderboard due to error");
+        // Return empty data instead of error to not break the frontend
+        res.json(getEmptyLeaderboard());
     }
 }
