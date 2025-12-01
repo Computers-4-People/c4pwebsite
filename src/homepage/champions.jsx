@@ -358,14 +358,20 @@ function Champions() {
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">What Recipients of Your Computers Are Saying</h2>
                         <p className="text-sm text-gray-600 mb-6 italic">These individuals have agreed to share their name and testimonial publicly.</p>
+                        <p className="text-xs text-gray-500 mb-4">Debug: {testimonials.length} testimonials available</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {testimonials.map((testimonial, index) => {
+                                console.log(`Testimonial ${index}:`, testimonial);
+                                console.log(`Applicant data:`, testimonial.applicant);
+
                                 const firstName = testimonial.applicant?.First_Name;
                                 const city = testimonial.applicant?.Mailing_City;
 
+                                console.log(`First Name: ${firstName}, City: ${city}`);
+
                                 // Skip only if no first name at all
                                 if (!firstName) {
-                                    console.log('Skipping testimonial - no first name:', testimonial);
+                                    console.log('⚠️ Skipping testimonial - no first name');
                                     return null;
                                 }
 
