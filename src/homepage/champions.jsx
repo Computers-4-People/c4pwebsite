@@ -31,7 +31,6 @@ function Champions() {
             });
         } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
             // If we have donations but no inventory, turn off loading
-            console.log('No inventory found, turning off loading');
             setLoading(false);
         }
     }, [allInventoryData, donations]);
@@ -57,15 +56,9 @@ function Champions() {
                     .filter(id => id && id !== 'N/A')
             )];
 
-            console.log('Recipient IDs for testimonials:', recipientIds);
-
             if (recipientIds.length === 0) {
-                console.log('No recipients found for testimonials');
                 return;
             }
-
-            // Fetch testimonials for these recipients
-            console.log('Fetching testimonials for recipient IDs:', recipientIds.slice(0, 20));
 
             // Use GET with query params (POST wasn't working)
             // Request high limit to get ALL check-in forms for client-side filtering
@@ -78,7 +71,6 @@ function Champions() {
             });
 
             const allTestimonials = response.data || [];
-            console.log(`Received ${allTestimonials.length} testimonials from API`);
 
             // Get set of recipient IDs from this donor's inventory
             const recipientIdsSet = new Set(allInventoryData.map(item => {
@@ -88,18 +80,21 @@ function Champions() {
                 return item.Recipient;
             }).filter(id => id && id !== 'N/A'));
 
-            console.log(`Filtering ${allTestimonials.length} testimonials for ${recipientIdsSet.size} recipients`);
-
             // Filter to only testimonials from THIS donor's recipients
             const matchingTestimonials = allTestimonials.filter(testimonial => {
                 const applicationId = testimonial.Application?.id || testimonial.Application;
                 return recipientIdsSet.has(applicationId);
             });
 
-            console.log(`Found ${matchingTestimonials.length} matching testimonials`);
+            // Filter to only testimonials that can be shared with name AND have applicant data
+            const shareableTestimonials = matchingTestimonials.filter(testimonial => {
+                const canShareWithName = testimonial.Can_we_share_this_response_publicly === "Yes (you can include my name)";
+                const hasApplicantData = testimonial.applicant?.First_Name;
+                return canShareWithName && hasApplicantData;
+            });
 
             // Add donor IDs to matched testimonials
-            const testimonialsWithDonorId = matchingTestimonials.map(testimonial => {
+            const testimonialsWithDonorId = shareableTestimonials.map(testimonial => {
                 const applicationId = testimonial.Application?.id || testimonial.Application;
                 const inventoryItem = allInventoryData.find(item => {
                     const recipientId = typeof item.Recipient === 'object' ? (item.Recipient.ID || item.Recipient.id) : item.Recipient;
@@ -114,11 +109,6 @@ function Champions() {
 
             // Take top 3
             const topThree = testimonialsWithDonorId.slice(0, 3);
-
-            console.log('Showing top 3 matching testimonials:', topThree.map(t => ({
-                applicationId: t.Application?.id,
-                donorId: t.donorId
-            })));
 
             setTestimonials(topThree);
         } catch (error) {
@@ -358,24 +348,11 @@ function Champions() {
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">What Recipients of Your Computers Are Saying</h2>
                         <p className="text-sm text-gray-600 mb-6 italic">These individuals have agreed to share their name and testimonial publicly.</p>
-                        <p className="text-xs text-gray-500 mb-4">Debug: {testimonials.length} testimonials available</p>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {testimonials.map((testimonial, index) => {
-                                console.log(`Testimonial ${index}:`, testimonial);
-                                console.log(`Applicant data:`, testimonial.applicant);
-
+                                // Get name and city from Computer Application (Contact record)
                                 const firstName = testimonial.applicant?.First_Name;
                                 const city = testimonial.applicant?.Mailing_City;
-
-                                console.log(`First Name: ${firstName}, City: ${city}`);
-
-                                // Skip only if no first name at all
-                                if (!firstName) {
-                                    console.log('⚠️ Skipping testimonial - no first name');
-                                    return null;
-                                }
-
-                                // Show "FirstName from City" or just "FirstName" if no city
                                 const displayName = city ? `${firstName} from ${city}` : firstName;
 
                                 return (
