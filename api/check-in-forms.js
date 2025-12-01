@@ -51,12 +51,20 @@ export default async function handler(req, res) {
         const recipientIdArray = recipientIds.slice(0, 20);
 
         // Build CRM API criteria for searching check-in forms
-        // Test with just ONE ID first to verify syntax
+        // Application is a lookup field - might need .id suffix
         const firstId = recipientIdArray[0];
-        const criteria = `(Application:equals:${firstId})`;
+
+        // Try different syntax options for lookup field
+        console.log('Testing search for Application ID:', firstId);
+
+        // Try without any criteria - just get all check-in forms
+        const criteria = null;
 
         // Fetch check-in forms from Zoho CRM
-        const url = `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`;
+        // If no criteria, just get all records (for testing)
+        const url = criteria
+            ? `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms/search?criteria=${encodeURIComponent(criteria)}`
+            : `https://www.zohoapis.com/crm/v2/Computer_Check_in_Forms?per_page=3`;
 
         console.log("Requesting testimonials from CRM:", url);
         console.log("Searching for these recipient Application IDs:", recipientIdArray);
