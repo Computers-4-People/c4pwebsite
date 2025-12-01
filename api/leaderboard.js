@@ -6,7 +6,7 @@ dotenv.config({
 });
 const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 
-// Cache leaderboard data for 1 hour to avoid timeout and reduce API calls
+// Cache leaderboard data for 5 minutes (reduced from 1 hour for faster updates)
 let cachedLeaderboard = null;
 let cacheExpiration = null;
 
@@ -27,9 +27,16 @@ function getEmptyLeaderboard() {
 }
 
 export default async function handler(req, res) {
-    // Return cached data if still valid
+    // Allow cache bypass with ?refresh=true
+    const skipCache = req.query.refresh === 'true';
+
+    if (skipCache) {
+        console.log("Cache bypass requested");
+    }
+
+    // Return cached data if still valid (unless refresh requested)
     const currentTime = Date.now();
-    if (cachedLeaderboard && cacheExpiration && currentTime < cacheExpiration) {
+    if (!skipCache && cachedLeaderboard && cacheExpiration && currentTime < cacheExpiration) {
         console.log("Returning cached leaderboard");
         return res.json(cachedLeaderboard);
     }
@@ -260,10 +267,11 @@ export default async function handler(req, res) {
             states: result.byState.length
         });
 
-        // Cache the results for 1 hour
+        // Cache the results for 5 minutes
         cachedLeaderboard = result;
-        cacheExpiration = Date.now() + (60 * 60 * 1000); // 1 hour
+        cacheExpiration = Date.now() + (5 * 60 * 1000); // 5 minutes
         console.log('Leaderboard cached until:', new Date(cacheExpiration));
+        console.log('Use ?refresh=true to bypass cache');
 
         res.json(result);
 
