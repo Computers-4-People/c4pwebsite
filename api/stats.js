@@ -23,35 +23,40 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        // Fetch ALL inventory records with pagination
+        // Fetch inventory records with pagination (limit to prevent timeout)
         let allRecords = [];
-        let from = 1;
-        let hasMoreRecords = true;
+        const maxPages = 10; // Limit to 2000 records to prevent timeout
 
-        console.log("Fetching all inventory records for stats...");
+        console.log("Fetching inventory records for stats (limited to prevent timeout)...");
 
-        while (hasMoreRecords) {
+        for (let pageNum = 0; pageNum < maxPages; pageNum++) {
+            const from = (pageNum * 200) + 1;
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
             const url = `${baseUrl}?from=${from}&limit=200`;
 
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-            });
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    },
+                    timeout: 3000 // 3 second timeout per request
+                });
 
-            const records = response.data.data || [];
-            console.log(`Fetched ${records.length} records (from index ${from})`);
+                const records = response.data.data || [];
+                console.log(`Fetched ${records.length} records (from index ${from})`);
 
-            if (records.length > 0) {
-                allRecords = allRecords.concat(records);
-                from += records.length;
+                if (records.length > 0) {
+                    allRecords = allRecords.concat(records);
 
-                if (records.length < 200) {
-                    hasMoreRecords = false;
+                    if (records.length < 200) {
+                        break; // No more records
+                    }
+                } else {
+                    break;
                 }
-            } else {
-                hasMoreRecords = false;
+            } catch (error) {
+                console.error(`Error fetching inventory page ${pageNum}:`, error.message);
+                break; // Continue with what we have
             }
         }
 
