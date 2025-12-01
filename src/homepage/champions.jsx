@@ -72,9 +72,13 @@ function Champions() {
             // Fetch testimonials for these recipients
             console.log('Fetching testimonials for recipient IDs:', recipientIds.slice(0, 20));
 
-            const response = await axios.post(`${API_BASE_URL}/api/check-in-forms`, {
-                recipientIds: recipientIds,
-                limit: 3
+            // Use GET with query params (POST wasn't working)
+            const recipientIdsParam = recipientIds.join(',');
+            const response = await axios.get(`${API_BASE_URL}/api/check-in-forms`, {
+                params: {
+                    recipientIds: recipientIdsParam,
+                    limit: 3
+                }
             });
 
             const testimonials = response.data || [];
