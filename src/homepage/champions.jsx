@@ -31,16 +31,13 @@ function Champions() {
         // Fetch testimonials after inventory data is loaded
         if (allInventoryData.length > 0) {
             fetchTestimonials().finally(() => {
-                // Add minimum loading time of 2 seconds to ensure stats are visible
-                setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
+                // Turn off loading after testimonials are fetched
+                setLoading(false);
             });
         } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
-            // If we have donations but no inventory, add minimum loading time
-            setTimeout(() => {
-                setLoading(false);
-            }, 2000);
+            // If we have donations but no inventory, turn off loading
+            console.log('No inventory found, turning off loading');
+            setLoading(false);
         }
     }, [allInventoryData, donations]);
 
@@ -65,9 +62,15 @@ function Champions() {
                     .filter(id => id && id !== 'N/A')
             )];
 
+            console.log('Recipient IDs for testimonials:', recipientIds);
+
             if (recipientIds.length === 0) {
+                console.log('No recipients found for testimonials');
                 return;
             }
+
+            // Fetch testimonials for these recipients
+            console.log('Fetching testimonials for recipient IDs:', recipientIds.slice(0, 20));
 
             // Use GET with query params (POST wasn't working)
             // Request high limit to get ALL check-in forms for client-side filtering
@@ -80,6 +83,7 @@ function Champions() {
             });
 
             const allTestimonials = response.data || [];
+            console.log(`Received ${allTestimonials.length} testimonials from API`);
 
             // Get set of recipient IDs from this donor's inventory
             const recipientIdsSet = new Set(allInventoryData.map(item => {
@@ -89,11 +93,15 @@ function Champions() {
                 return item.Recipient;
             }).filter(id => id && id !== 'N/A'));
 
+            console.log(`Filtering ${allTestimonials.length} testimonials for ${recipientIdsSet.size} recipients`);
+
             // Filter to only testimonials from THIS donor's recipients
             const matchingTestimonials = allTestimonials.filter(testimonial => {
                 const applicationId = testimonial.Application?.id || testimonial.Application;
                 return recipientIdsSet.has(applicationId);
             });
+
+            console.log(`Found ${matchingTestimonials.length} matching testimonials`);
 
             // Add donor IDs to matched testimonials
             const testimonialsWithDonorId = matchingTestimonials.map(testimonial => {
@@ -111,6 +119,11 @@ function Champions() {
 
             // Take top 3
             const topThree = testimonialsWithDonorId.slice(0, 3);
+
+            console.log('Showing top 3 matching testimonials:', topThree.map(t => ({
+                applicationId: t.Application?.id,
+                donorId: t.donorId
+            })));
 
             setTestimonials(topThree);
         } catch (error) {
@@ -135,8 +148,11 @@ function Champions() {
         try {
             setLoading(true);
 
+            console.log('Champion data:', championResp);
+
             // Get the Champion's record ID
             const championId = championResp.id || championResp.ID;
+            console.log('Fetching donations for Champion ID:', championId);
 
             if (!championId) {
                 console.error('No Champion ID found in championResp');
@@ -147,15 +163,19 @@ function Champions() {
             // Get ALL Computer_Donors records for this champion using the Champion lookup field
             const donorResp = await axios.get(`${API_BASE_URL}/api/championid?Name=${championId}&moduleName=Computer_Donors&param=Champion`);
 
+            console.log('Donor response:', donorResp.data);
+
             if (donorResp.data?.data && donorResp.data.data.length > 0) {
                 const donorRecords = donorResp.data.data;
                 setDonations(donorRecords);
+                console.log(`Found ${donorRecords.length} donation records`);
 
                 // Get inventory data from ALL donation records
                 const allComputers = [];
 
                 for (const donor of donorRecords) {
                     const donorId = donor.Donor_ID;
+                    console.log(`Fetching inventory for Donor_ID: ${donorId}`);
 
                     try {
                         let computers = [];
@@ -164,8 +184,10 @@ function Champions() {
                                 params: { searchField: 'Donor_ID', searchValue: donorId }
                             });
                             computers = inventoryResp.data || [];
+                            console.log(`Found ${computers.length} computers for donor ${donorId}`);
                         } catch (inventoryErr) {
                             if (inventoryErr.response?.status === 404) {
+                                console.log(`No inventory found for Donor_ID ${donorId} (404) - items may not be entered yet`);
                                 computers = [];
                             } else {
                                 throw inventoryErr; // Re-throw other errors
@@ -184,6 +206,7 @@ function Champions() {
                     }
                 }
 
+                console.log(`Total computers across all donations: ${allComputers.length}`);
                 setAllInventoryData(allComputers);
                 setInventoryData(allComputers);
 
@@ -203,6 +226,7 @@ function Champions() {
                     totalDonations: donorRecords.length
                 });
             } else {
+                console.log('No donation records found for this email');
                 setLoading(false);
             }
         } catch (error) {
@@ -328,33 +352,113 @@ function Champions() {
                 {/* Testimonials Section */}
                 {testimonials.length > 0 && (
                     <div className="mb-8">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">What Recipients of Your Computers Are Saying</h2>
-                        <p className="text-sm text-gray-600 mb-6 italic">These individuals have agreed to share their name and testimonial publicly.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">What Our Recipients Are Saying</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {testimonials.map((testimonial, index) => {
-                                const firstName = testimonial.applicant?.First_Name;
-                                const city = testimonial.applicant?.Address_1_City;
-                                const displayName = firstName && city ? `${firstName} from ${city}` : (firstName || '');
-
-                                return displayName ? (
-                                    <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
-                                        <div className="flex items-start gap-3 mb-4">
-                                            <div className="text-3xl">💬</div>
-                                            <div className="flex-1">
-                                                <p className="font-semibold text-gray-900">
-                                                    {displayName}
-                                                </p>
-                                                <p className="text-xs text-gray-400 mt-1">
-                                                    {testimonial.Date && new Date(testimonial.Date).toLocaleDateString()}
-                                                </p>
-                                            </div>
+                            {testimonials.map((testimonial, index) => (
+                                <div key={index} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
+                                    <div className="flex items-start gap-3 mb-4">
+                                        <div className="bg-neutral-100 p-2 rounded-full">
+                                            <FiCheck className="text-xl text-c4p-dark" />
                                         </div>
-                                        <p className="text-gray-700 italic">
-                                            "{testimonial.Testimonial1 || testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
-                                        </p>
+                                        <div className="flex-1">
+                                            <p className="font-semibold text-gray-900">
+                                                {testimonial.applicant?.First_Name} {testimonial.applicant?.Last_Name}
+                                            </p>
+                                            <p className="text-sm text-gray-500">
+                                                {testimonial.applicant?.Address_1_City || 'N/A'}
+                                                {testimonial.applicant?.Age && ` • Age ${testimonial.applicant.Age}`}
+                                            </p>
+                                            <p className="text-xs text-gray-400 mt-1">
+                                                {testimonial.Date && new Date(testimonial.Date).toLocaleDateString()}
+                                                {testimonial.donorId && ` • Donation ID: ${testimonial.donorId}`}
+                                            </p>
+                                        </div>
                                     </div>
-                                ) : null;
-                            })}
+                                    <p className="text-gray-700 italic mb-4">
+                                        "{testimonial.Testimonial1 || testimonial.Testimonial || testimonial.Feedback || testimonial.Comments || 'Thank you for helping me get connected!'}"
+                                    </p>
+                                    <div className="flex items-center gap-2 text-c4p-dark">
+                                        <FiCheck className="text-lg" />
+                                        <span className="text-sm font-medium">Computer working well</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Testimonials Debug Panel - Show Application IDs */}
+                {allInventoryData.length > 0 && (
+                    <div className="mb-8 bg-blue-50 border-2 border-blue-300 rounded-xl p-6">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-blue-100 p-3 rounded-full">
+                                <FiCheck className="text-2xl text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-lg font-bold text-blue-900 mb-2">Testimonials Matching Debug</h3>
+                                <div className="space-y-3 text-blue-800">
+                                    <div className="bg-white p-4 rounded border border-blue-200">
+                                        <p className="font-semibold mb-2">📋 Your Recipients (from inventory):</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-gray-100 p-2 rounded">
+                                            {[...new Set(allInventoryData.map(item => {
+                                                if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                    return item.Recipient.ID || item.Recipient.id;
+                                                }
+                                                return item.Recipient;
+                                            }).filter(id => id && id !== 'N/A'))].map((id, index) => (
+                                                <div key={index}>{id}</div>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm mt-2">Total: {[...new Set(allInventoryData.map(item => {
+                                            if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                return item.Recipient.ID || item.Recipient.id;
+                                            }
+                                            return item.Recipient;
+                                        }).filter(id => id && id !== 'N/A'))].length} unique recipients</p>
+                                    </div>
+
+                                    <div className="bg-white p-4 rounded border border-blue-200">
+                                        <p className="font-semibold mb-2">💬 Check-in Forms Application IDs:</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-gray-100 p-2 rounded">
+                                            {testimonials.map((t, index) => (
+                                                <div key={index}>
+                                                    {t.Application?.id || t.Application || 'No Application ID'}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm mt-2">Total: {testimonials.length} testimonials fetched</p>
+                                    </div>
+
+                                    <div className="bg-green-100 p-4 rounded border border-green-300">
+                                        <p className="font-semibold text-green-900 mb-2">✅ Matches:</p>
+                                        <div className="text-xs font-mono max-h-40 overflow-y-auto bg-white p-2 rounded">
+                                            {(() => {
+                                                const recipientIds = new Set(allInventoryData.map(item => {
+                                                    if (typeof item.Recipient === 'object' && item.Recipient !== null) {
+                                                        return item.Recipient.ID || item.Recipient.id;
+                                                    }
+                                                    return item.Recipient;
+                                                }).filter(id => id && id !== 'N/A'));
+
+                                                const matches = testimonials.filter(t => {
+                                                    const appId = t.Application?.id || t.Application;
+                                                    return recipientIds.has(appId);
+                                                });
+
+                                                return matches.length > 0 ? (
+                                                    matches.map((t, index) => (
+                                                        <div key={index} className="text-green-700">
+                                                            {t.Application?.id || t.Application} - Match found!
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="text-red-600">No matches found in current 3 testimonials</div>
+                                                );
+                                            })()}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}
