@@ -23,65 +23,74 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Using Zoho Creator aggregate queries for efficient stats...");
+        console.log("Fetching ALL inventory records for accurate stats...");
 
-        // Get count of donated computers using criteria
-        // Criteria: Status = "Donated" AND Computer_Type NOT IN (Monitor, Phone, Misc)
-        const donatedCriteria = encodeURIComponent(
-            '(Status == "Donated") && (Computer_Type != "Monitor") && (Computer_Type != "Phone") && (Computer_Type != "Misc")'
-        );
+        // Fetch ALL records to get accurate count and weight
+        let allRecords = [];
+        let from = 1;
+        let hasMoreRecords = true;
 
-        const donatedCountUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${donatedCriteria}&max_records=1`;
+        while (hasMoreRecords) {
+            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+            const url = `${baseUrl}?from=${from}&limit=200`;
 
-        let computersDonated = 0;
-        try {
-            const countResp = await axios.get(donatedCountUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-                timeout: 5000
-            });
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    },
+                    timeout: 5000
+                });
 
-            // Zoho Creator doesn't have a direct count endpoint, but we can get the count from response metadata
-            computersDonated = countResp.data.info?.total_count || 0;
-            console.log(`Computers donated count: ${computersDonated}`);
-        } catch (error) {
-            console.error("Error getting donated computer count:", error.message);
-        }
+                const records = response.data.data || [];
+                console.log(`Fetched ${records.length} records (from index ${from})`);
 
-        // For weight, we need to fetch records to sum the Weight field
-        // Fetch only records with Status = Donated or Recycled to calculate weight
-        const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
-        const weightUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${weightCriteria}&from=1&limit=200`;
+                if (records.length > 0) {
+                    allRecords = allRecords.concat(records);
+                    from += records.length;
 
-        let totalWeight = 0;
-        try {
-            // Fetch first 200 records to calculate weight (sample)
-            const weightResp = await axios.get(weightUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-                timeout: 5000
-            });
-
-            const records = weightResp.data.data || [];
-            console.log(`Fetched ${records.length} records for weight calculation`);
-
-            totalWeight = records.reduce((sum, record) => {
-                const weight = parseFloat(record.Weight) || 0;
-                return sum + weight;
-            }, 0);
-
-            // Estimate total weight based on sample if we have partial data
-            const totalRecords = weightResp.data.info?.total_count || records.length;
-            if (records.length < totalRecords && records.length > 0) {
-                const avgWeight = totalWeight / records.length;
-                totalWeight = avgWeight * totalRecords;
-                console.log(`Estimated total weight from ${records.length} samples: ${Math.round(totalWeight)} lbs`);
+                    if (records.length < 200) {
+                        hasMoreRecords = false;
+                    }
+                } else {
+                    hasMoreRecords = false;
+                }
+            } catch (error) {
+                console.error(`Error fetching records from ${from}:`, error.message);
+                // Continue with what we have if we get an error
+                hasMoreRecords = false;
             }
-        } catch (error) {
-            console.error("Error calculating weight:", error.message);
         }
+
+        console.log(`Total records fetched: ${allRecords.length}`);
+
+        // Filter for donated computers (exclude Monitor, Phone, Misc)
+        const excludedTypes = ['Monitor', 'Phone', 'Misc'];
+        const donatedComputers = allRecords.filter(record => {
+            const status = record.Status;
+            const type = record.Computer_Type || '';
+
+            if (status !== 'Donated') return false;
+            if (excludedTypes.includes(type)) return false;
+
+            return true;
+        });
+
+        console.log(`Donated computers (excluding ${excludedTypes.join(', ')}): ${donatedComputers.length}`);
+
+        // Calculate total weight (donated or recycled)
+        const totalWeight = allRecords.reduce((sum, record) => {
+            const status = record.Status;
+            const weight = parseFloat(record.Weight) || 0;
+
+            if (status === 'Donated' || status === 'Recycled') {
+                return sum + weight;
+            }
+
+            return sum;
+        }, 0);
+
+        const computersDonated = donatedComputers.length;
 
         const stats = {
             computersDonated: computersDonated,
