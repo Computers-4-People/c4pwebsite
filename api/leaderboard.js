@@ -42,171 +42,99 @@ export default async function handler(req, res) {
     }
 
     try {
-        console.log("Getting access tokens...");
+        console.log("Getting Creator access token...");
         const creatorToken = await getZohoAccessToken();
-        const crmToken = await getZohoCRMAccessToken();
 
         if (!creatorToken) {
             console.error("Failed to get Creator token - returning empty leaderboard");
             return res.json(getEmptyLeaderboard());
         }
 
-        if (!crmToken) {
-            console.error("Failed to get CRM token - returning empty leaderboard");
-            return res.json(getEmptyLeaderboard());
-        }
+        console.log("Building leaderboard from inventory data only (simplified approach)...");
 
-        console.log("Fetching Champions data for leaderboard...");
-
-        // Step 1: Fetch only FIRST PAGE of Champions (200 max)
-        let allChampions = [];
-
-        try {
-            console.log("Fetching first page of Champions...");
-            const championsUrl = `https://www.zohoapis.com/crm/v2/Champions?page=1&per_page=200`;
-
-            const championsResp = await axios.get(championsUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${crmToken}`,
-                },
-                timeout: 3000
-            });
-
-            allChampions = championsResp.data.data || [];
-            console.log(`Fetched ${allChampions.length} champions (LIMITED TO FIRST PAGE)`);
-        } catch (error) {
-            console.error(`Error fetching Champions:`, error.message);
-            return res.json(getEmptyLeaderboard());
-        }
-
-        console.log(`Total champions fetched: ${allChampions.length}`);
-
-        // Filter to only Computer Donors
-        const computerDonors = allChampions.filter(champion => {
-            const championType = champion.Champion_Type || [];
-            return championType.some(t => t === 'Computer Donor');
-        });
-
-        console.log(`Computer donors: ${computerDonors.length}`);
-
-        // Step 2: Fetch only FIRST PAGE of Computer_Donors (200 max)
-        let allDonorRecords = [];
-
-        try {
-            console.log("Fetching first page of Computer_Donors...");
-            const donorsUrl = `https://www.zohoapis.com/crm/v2/Computer_Donors?page=1&per_page=200`;
-
-            const donorsResp = await axios.get(donorsUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${crmToken}`,
-                },
-                timeout: 3000
-            });
-
-            allDonorRecords = donorsResp.data.data || [];
-            console.log(`Fetched ${allDonorRecords.length} donor records (LIMITED TO FIRST PAGE)`);
-        } catch (error) {
-            console.error(`Error fetching donors:`, error.message);
-            return res.json(getEmptyLeaderboard());
-        }
-
-        console.log(`Total donor records fetched: ${allDonorRecords.length}`);
-
-        // Step 3: Fetch only FIRST PAGE of Inventory (200 max)
+        // Fetch first 5 pages of inventory (1000 records) - enough for a good leaderboard
         let allInventory = [];
+        const maxPages = 5;
 
-        try {
-            console.log("Fetching first page of inventory...");
-            const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=1&limit=200`;
+        for (let pageNum = 0; pageNum < maxPages; pageNum++) {
+            try {
+                const from = (pageNum * 200) + 1;
+                const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=${from}&limit=200`;
 
-            const inventoryResp = await axios.get(inventoryUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${creatorToken}`,
-                },
-                timeout: 3000
-            });
+                const inventoryResp = await axios.get(inventoryUrl, {
+                    headers: {
+                        Authorization: `Zoho-oauthtoken ${creatorToken}`,
+                    },
+                    timeout: 5000
+                });
 
-            allInventory = inventoryResp.data.data || [];
-            console.log(`Fetched ${allInventory.length} inventory records (LIMITED TO FIRST PAGE)`);
-        } catch (error) {
-            console.error(`Error fetching inventory:`, error.message);
-            return res.json(getEmptyLeaderboard());
+                const records = inventoryResp.data.data || [];
+                console.log(`Fetched ${records.length} inventory records (from ${from})`);
+
+                if (records.length > 0) {
+                    allInventory = allInventory.concat(records);
+                    if (records.length < 200) break;
+                } else {
+                    break;
+                }
+            } catch (error) {
+                console.error(`Error fetching inventory page ${pageNum}:`, error.message);
+                break;
+            }
         }
 
         console.log(`Total inventory records fetched: ${allInventory.length}`);
 
-        // Filter to count ALL computers donated to C4P (exclude Monitor, Phone, Misc)
-        // We count all statuses: In Stock, Donated, Recycled, etc.
+        // Filter to count computers (exclude Monitor, Phone, Misc)
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
-        const allComputersDonatedToC4P = allInventory.filter(record => {
+        const computers = allInventory.filter(record => {
             const type = record.Computer_Type || '';
-
-            // Only exclude specific non-computer types
-            if (excludedTypes.includes(type)) return false;
-
-            return true;
+            return !excludedTypes.includes(type);
         });
 
-        console.log(`Total computers donated to C4P (excluding ${excludedTypes.join(', ')}): ${allComputersDonatedToC4P.length}`);
+        console.log(`Total computers (excluding ${excludedTypes.join(', ')}): ${computers.length}`);
 
-        // Step 4: Build leaderboard by aggregating data
-        const leaderboardMap = new Map();
+        // Build leaderboard by grouping inventory by Donor_ID
+        const donorMap = new Map();
 
-        for (const champion of computerDonors) {
-            const championId = champion.ID || champion.id;
-            const companyName = champion.Company || `${champion.First_Name || ''} ${champion.Last_Name || ''}`.trim();
+        computers.forEach(computer => {
+            const donorId = computer.Donor_ID;
+            if (!donorId) return;
 
-            // Get all donor records for this champion
-            const championDonorRecords = allDonorRecords.filter(donor => {
-                const donorChampionId = donor.Champion?.ID || donor.Champion;
-                return donorChampionId === championId;
-            });
+            if (!donorMap.has(donorId)) {
+                donorMap.set(donorId, {
+                    id: `donor_${donorId}`,
+                    company: `Donor ${donorId}`, // Will show donor ID as company name
+                    computersDonated: 0,
+                    totalWeight: 0,
+                    latestDonation: null,
+                    state: null,
+                    industry: 'Uncategorized'
+                });
+            }
 
-            // Get all donor IDs for this champion
-            const donorIds = championDonorRecords.map(donor => donor.Donor_ID);
+            const donor = donorMap.get(donorId);
+            donor.computersDonated++;
+            donor.totalWeight += parseFloat(computer.Weight) || 0;
 
-            // Count ALL computers from inventory linked to these donor IDs
-            const championComputers = allComputersDonatedToC4P.filter(computer => {
-                return donorIds.includes(computer.Donor_ID);
-            });
-
-            // Calculate total weight
-            const totalWeight = championComputers.reduce((sum, computer) => {
-                return sum + (parseFloat(computer.Weight) || 0);
-            }, 0);
-
-            // Get most recent donation date
-            const donationDates = championComputers
-                .map(c => c.Date_Donated)
-                .filter(d => d && d !== 'N/A')
-                .sort()
-                .reverse();
-            const latestDonation = donationDates[0] || null;
-
-            // Extract state from champion data if available
-            const state = champion.State || champion.Mailing_State || null;
-
-            // Extract industry from champion data if available
-            const industry = champion.Industry || null;
-
-            leaderboardMap.set(championId, {
-                id: championId,
-                company: companyName,
-                firstName: champion.First_Name || '',
-                lastName: champion.Last_Name || '',
-                computersDonated: championComputers.length,
-                totalWeight: Math.round(totalWeight),
-                latestDonation: latestDonation,
-                state: state,
-                industry: industry,
-                donorCount: donorIds.length
-            });
-        }
+            // Track latest donation
+            if (computer.Date_Donated && computer.Date_Donated !== 'N/A') {
+                if (!donor.latestDonation || computer.Date_Donated > donor.latestDonation) {
+                    donor.latestDonation = computer.Date_Donated;
+                }
+            }
+        });
 
         // Convert map to array and sort by computers donated
-        const leaderboard = Array.from(leaderboardMap.values())
-            .filter(entry => entry.computersDonated > 0) // Only include champions with donations
-            .sort((a, b) => b.computersDonated - a.computersDonated);
+        const leaderboard = Array.from(donorMap.values())
+            .filter(entry => entry.computersDonated > 0)
+            .sort((a, b) => b.computersDonated - a.computersDonated)
+            .map((entry, index) => ({
+                ...entry,
+                totalWeight: Math.round(entry.totalWeight)
+            }));
+
+        console.log(`Leaderboard entries: ${leaderboard.length}`);
 
         // Calculate overall stats
         const totalComputersDonated = leaderboard.reduce((sum, entry) => sum + entry.computersDonated, 0);
