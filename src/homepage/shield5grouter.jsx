@@ -176,7 +176,6 @@ export default function Shield5grouter() {
               Shield 5G Home Hotspot + Unlimited Internet
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-              First batch SOLD OUT! Secure your spot in the next shipment today. Supplies are limited, and delivery may take a couple of months - don’t miss your chance to lock in Shield 5G.<br/><br/>
               Need stronger Wi-Fi for your whole home? This is it.
               The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
 
