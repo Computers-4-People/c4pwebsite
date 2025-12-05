@@ -34,64 +34,69 @@ export default async function handler(req, res) {
         let totalWeight = 0;
 
         try {
-            // Fetch count and weight in parallel batches
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
             const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            // COUNT: Fetch all computers in batches of 200
-            console.log("Counting donated computers...");
-            let countFrom = 1;
-            let countHasMore = true;
+            console.log("Fetching stats with parallel requests...");
 
-            while (countHasMore) {
-                try {
-                    const resp = await axios.get(
-                        `${baseUrl}?criteria=${donatedCriteria}&from=${countFrom}&limit=200`,
-                        { headers, timeout: 5000 }
-                    );
-                    const batchCount = resp.data.data?.length || 0;
-                    computersDonated += batchCount;
+            // Fetch multiple pages in parallel for speed
+            const countPages = 30; // Fetch 30 pages = 6000 records max
+            const weightPages = 40; // Fetch 40 pages = 8000 records max
 
-                    if (batchCount < 200) {
-                        countHasMore = false;
-                    } else {
-                        countFrom += 200;
-                    }
-                } catch (err) {
-                    console.error(`Count batch error at ${countFrom}:`, err.message);
-                    countHasMore = false;
-                }
+            // COUNT: Parallel fetch
+            const countPromises = [];
+            for (let page = 0; page < countPages; page++) {
+                const from = (page * 200) + 1;
+                countPromises.push(
+                    axios.get(
+                        `${baseUrl}?criteria=${donatedCriteria}&from=${from}&limit=200`,
+                        { headers, timeout: 8000 }
+                    ).catch(err => {
+                        console.error(`Count page ${page} error:`, err.message);
+                        return null;
+                    })
+                );
             }
 
-            console.log(`Total computers counted: ${computersDonated}`);
+            // WEIGHT: Parallel fetch
+            const weightPromises = [];
+            for (let page = 0; page < weightPages; page++) {
+                const from = (page * 200) + 1;
+                weightPromises.push(
+                    axios.get(
+                        `${baseUrl}?criteria=${weightCriteria}&from=${from}&limit=200`,
+                        { headers, timeout: 8000 }
+                    ).catch(err => {
+                        console.error(`Weight page ${page} error:`, err.message);
+                        return null;
+                    })
+                );
+            }
 
-            // WEIGHT: Fetch all weight records in batches of 200
-            console.log("Calculating total weight...");
-            let weightFrom = 1;
-            let weightHasMore = true;
+            // Wait for all requests to complete
+            console.log("Waiting for parallel requests...");
+            const [countResults, weightResults] = await Promise.all([
+                Promise.all(countPromises),
+                Promise.all(weightPromises)
+            ]);
 
-            while (weightHasMore) {
-                try {
-                    const resp = await axios.get(
-                        `${baseUrl}?criteria=${weightCriteria}&from=${weightFrom}&limit=200`,
-                        { headers, timeout: 5000 }
-                    );
-                    const records = resp.data.data || [];
+            // Process count results
+            countResults.forEach((resp, index) => {
+                if (resp && resp.data && resp.data.data) {
+                    computersDonated += resp.data.data.length;
+                }
+            });
+
+            // Process weight results
+            weightResults.forEach((resp, index) => {
+                if (resp && resp.data && resp.data.data) {
+                    const records = resp.data.data;
                     const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
                     totalWeight += batchWeight;
-
-                    if (records.length < 200) {
-                        weightHasMore = false;
-                    } else {
-                        weightFrom += 200;
-                    }
-                } catch (err) {
-                    console.error(`Weight batch error at ${weightFrom}:`, err.message);
-                    weightHasMore = false;
                 }
-            }
+            });
 
-            console.log(`Total weight calculated: ${Math.round(totalWeight)} lbs`);
+            console.log(`Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
 
         } catch (error) {
             console.error("Error fetching stats:", error.message);
