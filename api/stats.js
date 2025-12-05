@@ -23,84 +23,81 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Using efficient count queries for fast stats...");
+        console.log("Fetching stats with optimized batching...");
 
-        // Step 1: Get COUNT of donated computers using aggregate query
-        // We fetch 1 record but get total_count from the response info
         const donatedCriteria = encodeURIComponent(
             '(Status == "Donated") && (Computer_Type != "Monitor") && (Computer_Type != "Phone") && (Computer_Type != "Misc")'
         );
-
-        const countUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${donatedCriteria}&from=1&limit=1`;
+        const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
 
         let computersDonated = 0;
-        try {
-            const countResponse = await axios.get(countUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-                timeout: 5000
-            });
-
-            // Get actual count by fetching without limit to see total
-            const fullCountUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${donatedCriteria}&from=1&limit=200`;
-
-            const fullResponse = await axios.get(fullCountUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-                timeout: 5000
-            });
-
-            // Count all pages
-            let count = fullResponse.data.data?.length || 0;
-            let from = 201;
-
-            // Quick pagination to get accurate count (limit to 50 pages = 10,000 records)
-            while (fullResponse.data.data?.length === 200 && from < 10000) {
-                const pageUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${donatedCriteria}&from=${from}&limit=200`;
-                const pageResp = await axios.get(pageUrl, {
-                    headers: { Authorization: `Zoho-oauthtoken ${accessToken}` },
-                    timeout: 5000
-                });
-                const pageCount = pageResp.data.data?.length || 0;
-                count += pageCount;
-                if (pageCount < 200) break;
-                from += 200;
-            }
-
-            computersDonated = count;
-            console.log(`Donated computers count: ${computersDonated}`);
-        } catch (error) {
-            console.error("Error getting computer count:", error.message);
-            computersDonated = 5542; // Fallback to last known value
-        }
-
-        // Step 2: Estimate weight from sample (fetch 200 records)
-        const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
-        const sampleUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?criteria=${weightCriteria}&from=1&limit=200`;
-
         let totalWeight = 0;
+
         try {
-            const sampleResponse = await axios.get(sampleUrl, {
-                headers: {
-                    Authorization: `Zoho-oauthtoken ${accessToken}`,
-                },
-                timeout: 5000
-            });
+            // Fetch count and weight in parallel batches
+            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+            const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            const sample = sampleResponse.data.data || [];
-            const sampleWeight = sample.reduce((sum, record) => sum + (parseFloat(record.Weight) || 0), 0);
+            // COUNT: Fetch all computers in batches of 200
+            console.log("Counting donated computers...");
+            let countFrom = 1;
+            let countHasMore = true;
 
-            // Estimate total weight (average * computer count)
-            if (sample.length > 0) {
-                const avgWeight = sampleWeight / sample.length;
-                totalWeight = avgWeight * computersDonated;
-                console.log(`Estimated weight from ${sample.length} samples: ${Math.round(totalWeight)} lbs`);
+            while (countHasMore) {
+                try {
+                    const resp = await axios.get(
+                        `${baseUrl}?criteria=${donatedCriteria}&from=${countFrom}&limit=200`,
+                        { headers, timeout: 5000 }
+                    );
+                    const batchCount = resp.data.data?.length || 0;
+                    computersDonated += batchCount;
+
+                    if (batchCount < 200) {
+                        countHasMore = false;
+                    } else {
+                        countFrom += 200;
+                    }
+                } catch (err) {
+                    console.error(`Count batch error at ${countFrom}:`, err.message);
+                    countHasMore = false;
+                }
             }
+
+            console.log(`Total computers counted: ${computersDonated}`);
+
+            // WEIGHT: Fetch all weight records in batches of 200
+            console.log("Calculating total weight...");
+            let weightFrom = 1;
+            let weightHasMore = true;
+
+            while (weightHasMore) {
+                try {
+                    const resp = await axios.get(
+                        `${baseUrl}?criteria=${weightCriteria}&from=${weightFrom}&limit=200`,
+                        { headers, timeout: 5000 }
+                    );
+                    const records = resp.data.data || [];
+                    const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
+                    totalWeight += batchWeight;
+
+                    if (records.length < 200) {
+                        weightHasMore = false;
+                    } else {
+                        weightFrom += 200;
+                    }
+                } catch (err) {
+                    console.error(`Weight batch error at ${weightFrom}:`, err.message);
+                    weightHasMore = false;
+                }
+            }
+
+            console.log(`Total weight calculated: ${Math.round(totalWeight)} lbs`);
+
         } catch (error) {
-            console.error("Error estimating weight:", error.message);
-            totalWeight = 69748; // Fallback to last known value
+            console.error("Error fetching stats:", error.message);
+            // Use fallback values
+            computersDonated = 5542;
+            totalWeight = 69748;
         }
 
         const stats = {
