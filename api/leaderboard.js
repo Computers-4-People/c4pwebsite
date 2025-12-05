@@ -189,8 +189,7 @@ export default async function handler(req, res) {
                     championDetails.set(ch.id, {
                         company: ch.Company || ch.Name,
                         state: ch.State_Text || ch.State,
-                        // Try multiple possible field names for industry
-                        industry: ch.Industry_Category || ch.Industry || ch.Company_Type || ch.Business_Individual
+                        industry: ch.Industry
                     });
                 });
 
