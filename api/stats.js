@@ -81,20 +81,30 @@ export default async function handler(req, res) {
             ]);
 
             // Process count results
+            let countSuccessful = 0;
+            let countRecords = 0;
             countResults.forEach((resp, index) => {
                 if (resp && resp.data && resp.data.data) {
+                    countSuccessful++;
+                    countRecords += resp.data.data.length;
                     computersDonated += resp.data.data.length;
                 }
             });
+            console.log(`Count: ${countSuccessful}/${countPages} pages successful, ${countRecords} records`);
 
             // Process weight results
+            let weightSuccessful = 0;
+            let weightRecords = 0;
             weightResults.forEach((resp, index) => {
                 if (resp && resp.data && resp.data.data) {
+                    weightSuccessful++;
                     const records = resp.data.data;
+                    weightRecords += records.length;
                     const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
                     totalWeight += batchWeight;
                 }
             });
+            console.log(`Weight: ${weightSuccessful}/${weightPages} pages successful, ${weightRecords} records`);
 
             console.log(`Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
 
