@@ -178,19 +178,22 @@ export default async function handler(req, res) {
                 // Build lookup maps
                 const donorToChampion = new Map();
                 computerDonors.forEach(cd => {
-                    if (cd.Name && cd.Champion) {
-                        donorToChampion.set(cd.Name, cd.Champion.id);
+                    // Match using Donor_ID (e.g., "3313") to link with inventory records
+                    if (cd.Donor_ID && cd.Champion) {
+                        donorToChampion.set(cd.Donor_ID, cd.Champion.id);
                     }
                 });
 
                 const championDetails = new Map();
                 champions.forEach(ch => {
                     championDetails.set(ch.id, {
-                        company: ch.Company_Name || ch.Name,
-                        state: ch.State,
-                        industry: ch.Industry_Category
+                        company: ch.Company || ch.Name,
+                        state: ch.State_Text || ch.State,
+                        industry: ch.Industry
                     });
                 });
+
+                console.log(`Built lookup: ${donorToChampion.size} donor->champion mappings, ${championDetails.size} champion details`);
 
                 // Enrich donor data with Champion information
                 let enrichedCount = 0;
