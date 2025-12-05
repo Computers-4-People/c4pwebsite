@@ -50,36 +50,45 @@ export default async function handler(req, res) {
             return res.json(getEmptyLeaderboard());
         }
 
-        console.log("Building leaderboard from inventory data only (simplified approach)...");
+        console.log("Building leaderboard with full inventory and CRM data...");
 
-        // Fetch first 5 pages of inventory (1000 records) - enough for a good leaderboard
+        // Fetch ALL inventory records using batched parallel requests (like stats API)
+        const batchSize = 10;
+        const maxPages = 100;
+        const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+
         let allInventory = [];
-        const maxPages = 5;
+        let page = 0;
+        let hasMore = true;
 
-        for (let pageNum = 0; pageNum < maxPages; pageNum++) {
-            try {
-                const from = (pageNum * 200) + 1;
-                const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal?from=${from}&limit=200`;
+        while (hasMore && page < maxPages) {
+            const batchPromises = [];
+            for (let i = 0; i < batchSize && page < maxPages; i++, page++) {
+                const from = (page * 200) + 1;
+                batchPromises.push(
+                    axios.get(`${inventoryUrl}?from=${from}&limit=200`, {
+                        headers: { Authorization: `Zoho-oauthtoken ${creatorToken}` },
+                        timeout: 8000
+                    }).catch(err => {
+                        if (err.response?.status !== 404) {
+                            console.error(`Inventory page ${page} error:`, err.message);
+                        }
+                        return null;
+                    })
+                );
+            }
 
-                const inventoryResp = await axios.get(inventoryUrl, {
-                    headers: {
-                        Authorization: `Zoho-oauthtoken ${creatorToken}`,
-                    },
-                    timeout: 5000
+            const batchResults = await Promise.all(batchPromises);
+            const validResults = batchResults.filter(r => r && r.data && r.data.data);
+
+            if (validResults.length === 0) {
+                hasMore = false;
+            } else {
+                validResults.forEach(r => {
+                    allInventory = allInventory.concat(r.data.data);
                 });
-
-                const records = inventoryResp.data.data || [];
-                console.log(`Fetched ${records.length} inventory records (from ${from})`);
-
-                if (records.length > 0) {
-                    allInventory = allInventory.concat(records);
-                    if (records.length < 200) break;
-                } else {
-                    break;
-                }
-            } catch (error) {
-                console.error(`Error fetching inventory page ${pageNum}:`, error.message);
-                break;
+                const hasPartialPage = validResults.some(r => r.data.data.length < 200);
+                if (hasPartialPage) hasMore = false;
             }
         }
 
@@ -104,12 +113,13 @@ export default async function handler(req, res) {
             if (!donorMap.has(donorId)) {
                 donorMap.set(donorId, {
                     id: `donor_${donorId}`,
-                    company: `Donor ${donorId}`, // Will show donor ID as company name
+                    donorId: donorId,
+                    company: `Donor ${donorId}`,
                     computersDonated: 0,
                     totalWeight: 0,
                     latestDonation: null,
                     state: null,
-                    industry: 'Uncategorized'
+                    industry: null
                 });
             }
 
@@ -124,6 +134,77 @@ export default async function handler(req, res) {
                 }
             }
         });
+
+        // Now fetch CRM data to enrich donor information
+        console.log("Getting CRM access token...");
+        const crmToken = await getZohoCRMAccessToken();
+
+        if (crmToken) {
+            try {
+                console.log("Fetching Computer_Donors from CRM...");
+                // Fetch Computer_Donors to map Donor_ID -> Champion_ID
+                const donorsResp = await axios.get(
+                    'https://www.zohoapis.com/crm/v2/Computer_Donors',
+                    {
+                        headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                        params: { per_page: 200 },
+                        timeout: 10000
+                    }
+                );
+
+                const computerDonors = donorsResp.data.data || [];
+                console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+
+                // Fetch Champions to get company details
+                console.log("Fetching Champions from CRM...");
+                const championsResp = await axios.get(
+                    'https://www.zohoapis.com/crm/v2/Champions',
+                    {
+                        headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                        params: { per_page: 200 },
+                        timeout: 10000
+                    }
+                );
+
+                const champions = championsResp.data.data || [];
+                console.log(`Fetched ${champions.length} Champions records`);
+
+                // Build lookup maps
+                const donorToChampion = new Map();
+                computerDonors.forEach(cd => {
+                    if (cd.Name && cd.Champion) {
+                        donorToChampion.set(cd.Name, cd.Champion.id);
+                    }
+                });
+
+                const championDetails = new Map();
+                champions.forEach(ch => {
+                    championDetails.set(ch.id, {
+                        company: ch.Company_Name || ch.Name,
+                        state: ch.State,
+                        industry: ch.Industry_Category
+                    });
+                });
+
+                // Enrich donor data with Champion information
+                donorMap.forEach((donor, donorId) => {
+                    const championId = donorToChampion.get(donorId);
+                    if (championId) {
+                        const details = championDetails.get(championId);
+                        if (details) {
+                            donor.company = details.company || `Donor ${donorId}`;
+                            donor.state = details.state;
+                            donor.industry = details.industry;
+                        }
+                    }
+                });
+
+                console.log("Enriched donor data with CRM information");
+            } catch (error) {
+                console.error("Error fetching CRM data:", error.message);
+                console.log("Continuing with basic donor information...");
+            }
+        }
 
         // Convert map to array and sort by computers donated
         const leaderboard = Array.from(donorMap.values())
@@ -141,10 +222,13 @@ export default async function handler(req, res) {
         const totalWeight = leaderboard.reduce((sum, entry) => sum + entry.totalWeight, 0);
         const totalCompanies = leaderboard.length;
 
-        // Group by industry
+        // Group by industry (skip null/undefined industries)
         const byIndustry = {};
         leaderboard.forEach(entry => {
-            const ind = entry.industry || 'Uncategorized';
+            const ind = entry.industry;
+            // Skip entries without industry data
+            if (!ind || ind === 'Uncategorized' || ind === 'Unknown') return;
+
             if (!byIndustry[ind]) {
                 byIndustry[ind] = {
                     industry: ind,
@@ -158,10 +242,13 @@ export default async function handler(req, res) {
             byIndustry[ind].totalWeight += entry.totalWeight;
         });
 
-        // Group by state
+        // Group by state (skip null/undefined states)
         const byState = {};
         leaderboard.forEach(entry => {
-            const st = entry.state || 'Unknown';
+            const st = entry.state;
+            // Skip entries without state data
+            if (!st || st === 'Unknown') return;
+
             if (!byState[st]) {
                 byState[st] = {
                     state: st,
