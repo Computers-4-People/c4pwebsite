@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
             // Fetch multiple pages in parallel for speed
             const countPages = 70; // Fetch 70 pages = 14,000 records max
-            const weightPages = 70; // Fetch 70 pages = 14,000 records max
+            const weightPages = 100; // Fetch 100 pages = 20,000 records max (includes Donated + Recycled)
 
             // COUNT: Parallel fetch
             const countPromises = [];
