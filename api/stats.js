@@ -103,7 +103,7 @@ export default async function handler(req, res) {
                     computersDonated += resp.data.data.length;
                 }
             });
-            console.log(`Count: ${countSuccessful}/${countPages} pages successful, ${countRecords} records`);
+            console.log(`Count: ${countSuccessful} pages successful, ${countRecords} records`);
 
             // Process weight results
             let weightSuccessful = 0;
@@ -117,7 +117,7 @@ export default async function handler(req, res) {
                     totalWeight += batchWeight;
                 }
             });
-            console.log(`Weight: ${weightSuccessful}/${weightPages} pages successful, ${weightRecords} records`);
+            console.log(`Weight: ${weightSuccessful} pages successful, ${weightRecords} records`);
 
             console.log(`Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
 
