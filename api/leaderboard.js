@@ -154,6 +154,9 @@ export default async function handler(req, res) {
 
                 const computerDonors = donorsResp.data.data || [];
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+                if (computerDonors.length > 0) {
+                    console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
+                }
 
                 // Fetch Champions to get company details
                 console.log("Fetching Champions from CRM...");
@@ -168,6 +171,9 @@ export default async function handler(req, res) {
 
                 const champions = championsResp.data.data || [];
                 console.log(`Fetched ${champions.length} Champions records`);
+                if (champions.length > 0) {
+                    console.log("Sample Champions record:", JSON.stringify(champions[0], null, 2));
+                }
 
                 // Build lookup maps
                 const donorToChampion = new Map();
@@ -187,6 +193,7 @@ export default async function handler(req, res) {
                 });
 
                 // Enrich donor data with Champion information
+                let enrichedCount = 0;
                 donorMap.forEach((donor, donorId) => {
                     const championId = donorToChampion.get(donorId);
                     if (championId) {
@@ -195,11 +202,12 @@ export default async function handler(req, res) {
                             donor.company = details.company || `Donor ${donorId}`;
                             donor.state = details.state;
                             donor.industry = details.industry;
+                            enrichedCount++;
                         }
                     }
                 });
 
-                console.log("Enriched donor data with CRM information");
+                console.log(`Enriched ${enrichedCount} out of ${donorMap.size} donors with CRM information`);
             } catch (error) {
                 console.error("Error fetching CRM data:", error.message);
                 console.log("Continuing with basic donor information...");

@@ -1,32 +1,20 @@
 import React, { useState, useMemo } from 'react';
-import { FiFilter, FiX } from 'react-icons/fi';
+import { FiFilter } from 'react-icons/fi';
 
 const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
     const [selectedIndustry, setSelectedIndustry] = useState('all');
-    const [searchQuery, setSearchQuery] = useState('');
 
-    // Filter leaderboard based on selected industry and search
+    // Filter leaderboard based on selected industry
     const filteredLeaderboard = useMemo(() => {
-        let filtered = leaderboard;
-
-        // Filter by industry
-        if (selectedIndustry !== 'all') {
-            filtered = filtered.filter(entry => {
-                const industry = entry.industry || 'Uncategorized';
-                return industry === selectedIndustry;
-            });
+        if (selectedIndustry === 'all') {
+            return leaderboard;
         }
 
-        // Filter by search query (company name)
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(entry =>
-                entry.company.toLowerCase().includes(query)
-            );
-        }
-
-        return filtered;
-    }, [leaderboard, selectedIndustry, searchQuery]);
+        return leaderboard.filter(entry => {
+            const industry = entry.industry || 'Uncategorized';
+            return industry === selectedIndustry;
+        });
+    }, [leaderboard, selectedIndustry]);
 
     // Get rank medal icon
     const getRankIcon = (rank) => {
@@ -52,26 +40,7 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
     return (
         <div className="w-full">
             {/* Filters Section */}
-            <div className="mb-6 flex flex-col md:flex-row gap-4 items-start md:items-center">
-                {/* Search Input */}
-                <div className="relative flex-1 min-w-[200px]">
-                    <input
-                        type="text"
-                        placeholder="Search companies..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p focus:border-transparent"
-                    />
-                    {searchQuery && (
-                        <button
-                            onClick={() => setSearchQuery('')}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                        >
-                            <FiX />
-                        </button>
-                    )}
-                </div>
-
+            <div className="mb-6 flex items-center gap-4">
                 {/* Industry Filter Dropdown */}
                 <div className="flex items-center gap-2">
                     <FiFilter className="text-gray-600" />
@@ -89,16 +58,13 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                     </select>
                 </div>
 
-                {/* Clear Filters */}
-                {(selectedIndustry !== 'all' || searchQuery) && (
+                {/* Clear Filter */}
+                {selectedIndustry !== 'all' && (
                     <button
-                        onClick={() => {
-                            setSelectedIndustry('all');
-                            setSearchQuery('');
-                        }}
+                        onClick={() => setSelectedIndustry('all')}
                         className="text-sm text-c4p hover:text-c4p-hover font-medium transition-colors"
                     >
-                        Clear Filters
+                        Clear Filter
                     </button>
                 )}
             </div>
@@ -137,8 +103,8 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                         {filteredLeaderboard.length === 0 ? (
                             <tr>
                                 <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
-                                    {searchQuery || selectedIndustry !== 'all'
-                                        ? 'No companies match your filters.'
+                                    {selectedIndustry !== 'all'
+                                        ? 'No companies in this industry.'
                                         : 'No donation data available yet.'}
                                 </td>
                             </tr>
