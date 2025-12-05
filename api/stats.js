@@ -37,47 +37,60 @@ export default async function handler(req, res) {
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
             const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            console.log("Fetching stats with parallel requests...");
+            console.log("Fetching stats with batched parallel requests...");
 
-            // Fetch multiple pages in parallel for speed
-            const countPages = 70; // Fetch 70 pages = 14,000 records max
-            const weightPages = 100; // Fetch 100 pages = 20,000 records max (includes Donated + Recycled)
+            const batchSize = 10; // Fetch 10 pages at a time to avoid overwhelming API
+            const maxPages = 100; // Max pages to attempt
 
-            // COUNT: Parallel fetch
-            const countPromises = [];
-            for (let page = 0; page < countPages; page++) {
-                const from = (page * 200) + 1;
-                countPromises.push(
-                    axios.get(
-                        `${baseUrl}?criteria=${donatedCriteria}&from=${from}&limit=200`,
-                        { headers, timeout: 8000 }
-                    ).catch(err => {
-                        console.error(`Count page ${page} error:`, err.message);
-                        return null;
-                    })
-                );
+            // Helper function to fetch pages in batches
+            async function fetchInBatches(criteria, maxPagesToFetch) {
+                const allResults = [];
+                let page = 0;
+                let hasMore = true;
+
+                while (hasMore && page < maxPagesToFetch) {
+                    // Create batch of promises
+                    const batchPromises = [];
+                    for (let i = 0; i < batchSize && page < maxPagesToFetch; i++, page++) {
+                        const from = (page * 200) + 1;
+                        batchPromises.push(
+                            axios.get(
+                                `${baseUrl}?criteria=${criteria}&from=${from}&limit=200`,
+                                { headers, timeout: 8000 }
+                            ).catch(err => {
+                                // Don't log 404s (expected when we reach end)
+                                if (err.response?.status !== 404) {
+                                    console.error(`Page ${page} error:`, err.message);
+                                }
+                                return null;
+                            })
+                        );
+                    }
+
+                    // Wait for this batch to complete
+                    const batchResults = await Promise.all(batchPromises);
+
+                    // Check if we got any valid results in this batch
+                    const validResults = batchResults.filter(r => r && r.data && r.data.data);
+                    if (validResults.length === 0) {
+                        hasMore = false; // No valid results, stop fetching
+                    } else {
+                        allResults.push(...batchResults);
+                        // If any result has < 200 records, we've reached the end
+                        const hasPartialPage = validResults.some(r => r.data.data.length < 200);
+                        if (hasPartialPage) {
+                            hasMore = false;
+                        }
+                    }
+                }
+
+                return allResults;
             }
 
-            // WEIGHT: Parallel fetch
-            const weightPromises = [];
-            for (let page = 0; page < weightPages; page++) {
-                const from = (page * 200) + 1;
-                weightPromises.push(
-                    axios.get(
-                        `${baseUrl}?criteria=${weightCriteria}&from=${from}&limit=200`,
-                        { headers, timeout: 8000 }
-                    ).catch(err => {
-                        console.error(`Weight page ${page} error:`, err.message);
-                        return null;
-                    })
-                );
-            }
-
-            // Wait for all requests to complete
-            console.log("Waiting for parallel requests...");
+            // Fetch count and weight data
             const [countResults, weightResults] = await Promise.all([
-                Promise.all(countPromises),
-                Promise.all(weightPromises)
+                fetchInBatches(donatedCriteria, maxPages),
+                fetchInBatches(weightCriteria, maxPages)
             ]);
 
             // Process count results
