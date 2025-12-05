@@ -40,8 +40,8 @@ export default async function handler(req, res) {
             console.log("Fetching stats with parallel requests...");
 
             // Fetch multiple pages in parallel for speed
-            const countPages = 50; // Fetch 50 pages = 10,000 records max
-            const weightPages = 50; // Fetch 50 pages = 10,000 records max
+            const countPages = 70; // Fetch 70 pages = 14,000 records max
+            const weightPages = 70; // Fetch 70 pages = 14,000 records max
 
             // COUNT: Parallel fetch
             const countPromises = [];
