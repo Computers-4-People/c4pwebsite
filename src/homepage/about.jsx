@@ -8,6 +8,17 @@
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
 import Carosel from "../components/carosel/carosel";
+
+const AnimatedDots = () => {
+    return (
+        <span className="inline-flex gap-1">
+            <span className="animate-bounce" style={{ animationDelay: '0ms' }}>.</span>
+            <span className="animate-bounce" style={{ animationDelay: '150ms' }}>.</span>
+            <span className="animate-bounce" style={{ animationDelay: '300ms' }}>.</span>
+        </span>
+    );
+};
+
 export default function About() {
     const [stats, setStats] = useState({
         computersDonated: 5542,
@@ -103,13 +114,13 @@ export default function About() {
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
     <li className='my-4 md:my-0 mx-5'>
       <div className='text-6xl mb-3'>
-        {loading ? '...' : stats.computersDonated.toLocaleString()}
+        {loading ? <AnimatedDots /> : stats.computersDonated.toLocaleString()}
       </div>
       <p className='text-3xl'>Computers Donated</p>
     </li>
     <li className='my-4 md:my-0 mx-5'>
       <div className='text-6xl mb-3'>
-        {loading ? '...' : stats.poundsRecycled.toLocaleString()}
+        {loading ? <AnimatedDots /> : stats.poundsRecycled.toLocaleString()}
       </div>
       <p className='text-3xl'>Pounds of e-waste Recycled</p>
     </li>
