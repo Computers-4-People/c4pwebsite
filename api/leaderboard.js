@@ -152,6 +152,17 @@ export default async function handler(req, res) {
         console.log(`Excluded ${excludedZeroCount} computers with Donor_ID='0' from leaderboard (kept in total stats)`);
         console.log(`Leaderboard building from ${donorMap.size} unique donors`);
 
+        // Debug: Show the range of Donor_IDs in inventory
+        const allInventoryDonorIds = Array.from(donorMap.keys());
+        const donorIdSample = allInventoryDonorIds.slice(0, 20);
+        console.log(`Sample of ${donorIdSample.length} inventory Donor_IDs:`, donorIdSample);
+
+        // Show min/max Donor_IDs
+        const numericDonorIds = allInventoryDonorIds.map(id => parseInt(id)).filter(n => !isNaN(n));
+        if (numericDonorIds.length > 0) {
+            console.log(`Donor_ID range in inventory: ${Math.min(...numericDonorIds)} to ${Math.max(...numericDonorIds)}`);
+        }
+
         // Now fetch CRM data to enrich donor information
         console.log("Getting CRM access token...");
         const crmToken = await getZohoCRMAccessToken();
@@ -258,9 +269,25 @@ export default async function handler(req, res) {
                 console.log(`Found ${companyDonationCount} non-individual donations out of ${computerDonors.length} total Computer_Donors`);
                 console.log(`Donor->Champion mappings created: ${donorToChampion.size}`);
 
+                // Debug: Show CRM Donor_ID range
+                const crmDonorIds = Array.from(donorToChampion.keys());
+                const crmDonorIdSample = crmDonorIds.slice(0, 20);
+                console.log(`Sample of ${crmDonorIdSample.length} CRM Donor_IDs:`, crmDonorIdSample);
+
+                const numericCrmDonorIds = crmDonorIds.map(id => parseInt(id)).filter(n => !isNaN(n));
+                if (numericCrmDonorIds.length > 0) {
+                    console.log(`Donor_ID range in CRM: ${Math.min(...numericCrmDonorIds)} to ${Math.max(...numericCrmDonorIds)}`);
+                }
+
                 // Debug: Show some mappings
                 const sampleMappings = Array.from(donorToChampion.entries()).slice(0, 3);
                 console.log("Sample Donor_ID -> Champion_ID mappings:", sampleMappings);
+
+                // Debug: Check for overlap
+                const inventoryDonorSet = new Set(allInventoryDonorIds);
+                const crmDonorSet = new Set(crmDonorIds);
+                const overlap = crmDonorIds.filter(id => inventoryDonorSet.has(id));
+                console.log(`Donor_ID overlap: ${overlap.length} CRM Donor_IDs exist in inventory out of ${crmDonorIds.length} total CRM donors`);
 
                 const championDetails = new Map();
                 let championsWithIndustry = 0;
