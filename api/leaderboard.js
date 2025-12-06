@@ -175,14 +175,20 @@ export default async function handler(req, res) {
                     console.log("Sample Champions record:", JSON.stringify(champions[0], null, 2));
                 }
 
-                // Build lookup maps
+                // Build lookup maps - only include company donations
                 const donorToChampion = new Map();
+                let companyDonationCount = 0;
                 computerDonors.forEach(cd => {
+                    // Only include company donations (exclude individual donations)
+                    const isCompany = cd.Personal_Company === "Company Donation";
+                    if (isCompany) companyDonationCount++;
+
                     // Match using Donor_ID (e.g., "3313") to link with inventory records
-                    if (cd.Donor_ID && cd.Champion) {
+                    if (isCompany && cd.Donor_ID && cd.Champion) {
                         donorToChampion.set(cd.Donor_ID, cd.Champion.id);
                     }
                 });
+                console.log(`Found ${companyDonationCount} company donations out of ${computerDonors.length} total Computer_Donors`);
 
                 const championDetails = new Map();
                 champions.forEach(ch => {
