@@ -142,35 +142,71 @@ export default async function handler(req, res) {
         if (crmToken) {
             try {
                 console.log("Fetching Computer_Donors from CRM...");
-                // Fetch Computer_Donors to map Donor_ID -> Champion_ID
-                const donorsResp = await axios.get(
-                    'https://www.zohoapis.com/crm/v2/Computer_Donors',
-                    {
-                        headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                        params: { per_page: 200 },
-                        timeout: 10000
-                    }
-                );
+                // Fetch ALL Computer_Donors records with pagination
+                let computerDonors = [];
+                let page = 1;
+                let hasMoreDonors = true;
 
-                const computerDonors = donorsResp.data.data || [];
-                console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+                while (hasMoreDonors) {
+                    const donorsResp = await axios.get(
+                        'https://www.zohoapis.com/crm/v2/Computer_Donors',
+                        {
+                            headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                            params: { per_page: 200, page },
+                            timeout: 10000
+                        }
+                    );
+
+                    const pageData = donorsResp.data.data || [];
+                    computerDonors = computerDonors.concat(pageData);
+
+                    // Check if there are more pages
+                    hasMoreDonors = donorsResp.data.info?.more_records || false;
+                    page++;
+
+                    // Safety limit to prevent infinite loops
+                    if (page > 50) {
+                        console.warn("Reached page limit (50) for Computer_Donors");
+                        break;
+                    }
+                }
+
+                console.log(`Fetched ${computerDonors.length} Computer_Donors records across ${page - 1} pages`);
                 if (computerDonors.length > 0) {
                     console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
                 }
 
-                // Fetch Champions to get company details
+                // Fetch ALL Champions records with pagination
                 console.log("Fetching Champions from CRM...");
-                const championsResp = await axios.get(
-                    'https://www.zohoapis.com/crm/v2/Champions',
-                    {
-                        headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                        params: { per_page: 200 },
-                        timeout: 10000
-                    }
-                );
+                let champions = [];
+                page = 1;
+                let hasMoreChampions = true;
 
-                const champions = championsResp.data.data || [];
-                console.log(`Fetched ${champions.length} Champions records`);
+                while (hasMoreChampions) {
+                    const championsResp = await axios.get(
+                        'https://www.zohoapis.com/crm/v2/Champions',
+                        {
+                            headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                            params: { per_page: 200, page },
+                            timeout: 10000
+                        }
+                    );
+
+                    const pageData = championsResp.data.data || [];
+                    champions = champions.concat(pageData);
+
+                    // Check if there are more pages
+                    hasMoreChampions = championsResp.data.info?.more_records || false;
+                    page++;
+
+                    // Safety limit to prevent infinite loops
+                    if (page > 50) {
+                        console.warn("Reached page limit (50) for Champions");
+                        break;
+                    }
+                }
+
+                console.log(`Fetched ${champions.length} Champions records across ${page - 1} pages`);
                 if (champions.length > 0) {
                     console.log("Sample Champions record:", JSON.stringify(champions[0], null, 2));
                 }
