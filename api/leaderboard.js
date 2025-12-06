@@ -247,10 +247,23 @@ export default async function handler(req, res) {
                     fetchAllPages('Champions')
                 ]);
 
-                // Filter Champions client-side to only include Champion_Type = "Computer Donor"
+                // Debug: Check what Champion_Type values exist
+                const championTypes = new Set();
+                allChampions.forEach(ch => {
+                    if (ch.Champion_Type && Array.isArray(ch.Champion_Type)) {
+                        ch.Champion_Type.forEach(type => championTypes.add(type));
+                    }
+                    if (ch.Champion_Type_Text) {
+                        championTypes.add(ch.Champion_Type_Text);
+                    }
+                });
+                console.log(`Unique Champion_Type values found:`, Array.from(championTypes));
+
+                // Filter Champions client-side to only include Champion_Type contains "Computer Donor"
                 const champions = allChampions.filter(ch => {
-                    const championType = ch.Champion_Type_Text || '';
-                    return championType === 'Computer Donor';
+                    const typeArray = ch.Champion_Type || [];
+                    const typeText = ch.Champion_Type_Text || '';
+                    return typeArray.includes('Computer Donor') || typeText === 'Computer Donor';
                 });
 
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
