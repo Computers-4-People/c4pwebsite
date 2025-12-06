@@ -263,7 +263,11 @@ export default async function handler(req, res) {
                 const champions = allChampions.filter(ch => {
                     const typeArray = ch.Champion_Type || [];
                     const typeText = ch.Champion_Type_Text || '';
-                    return typeArray.includes('Computer Donor') || typeText === 'Computer Donor';
+                    // Check if any type contains "Computer" and "Donor"
+                    const hasComputerDonor = typeArray.some(type =>
+                        type && type.toLowerCase().includes('computer') && type.toLowerCase().includes('donor')
+                    ) || (typeText && typeText.toLowerCase().includes('computer') && typeText.toLowerCase().includes('donor'));
+                    return hasComputerDonor;
                 });
 
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
