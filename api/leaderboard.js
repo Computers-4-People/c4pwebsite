@@ -99,15 +99,15 @@ export default async function handler(req, res) {
             console.log("Sample inventory record:", JSON.stringify(allInventory[0], null, 2));
         }
 
-        // Filter to count computers (exclude Monitor, Phone, Misc) and include Status = "Donated" or "Recycled"
+        // Filter to count computers (exclude Monitor, Phone, Misc) and only Status = "Donated"
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
         const computers = allInventory.filter(record => {
             const type = record.Computer_Type || '';
             const status = record.Status || '';
-            return !excludedTypes.includes(type) && (status === 'Donated' || status === 'Recycled');
+            return !excludedTypes.includes(type) && status === 'Donated';
         });
 
-        console.log(`Total computers (Status=Donated or Recycled, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
+        console.log(`Total donated computers (Status=Donated, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
 
         // Calculate total stats from ALL donated computers (including Donor_ID = "0")
         const totalComputersForStats = computers.length;
@@ -316,6 +316,9 @@ export default async function handler(req, res) {
                 const overlap = crmDonorIds.filter(id => inventoryDonorSet.has(id));
                 console.log(`Donor_ID overlap: ${overlap.length} CRM Donor_IDs exist in inventory out of ${crmDonorIds.length} total CRM donors`);
 
+                // Debug: Show sample overlapping IDs
+                console.log(`Sample overlapping Donor_IDs:`, overlap.slice(0, 10));
+
                 const championDetails = new Map();
                 let championsWithIndustry = 0;
                 champions.forEach(ch => {
@@ -341,6 +344,8 @@ export default async function handler(req, res) {
                 const championMap = new Map();
                 let enrichedCount = 0;
                 let unmatchedCount = 0;
+                let noChampionIdCount = 0;
+                let noDetailsCount = 0;
 
                 donorMap.forEach((donor, donorId) => {
                     const championId = donorToChampion.get(donorId);
@@ -376,21 +381,24 @@ export default async function handler(req, res) {
                         } else {
                             // No champion details found, keep donor as-is
                             finalMap.set(donorId, donor);
-                            unmatchedCount++;
+                            noDetailsCount++;
                         }
                     } else {
                         // No champion mapping found, keep donor as-is
                         finalMap.set(donorId, donor);
-                        unmatchedCount++;
+                        noChampionIdCount++;
                     }
                 });
+
+                unmatchedCount = noChampionIdCount + noDetailsCount;
 
                 // Add all champions to final map
                 championMap.forEach((value, key) => {
                     finalMap.set(key, value);
                 });
 
-                console.log(`Enriched ${enrichedCount} donors into ${championMap.size} companies, kept ${unmatchedCount} unmatched donors`);
+                console.log(`Enriched ${enrichedCount} donors into ${championMap.size} companies`);
+                console.log(`Unmatched breakdown: ${noChampionIdCount} no CRM mapping, ${noDetailsCount} no Champion details`);
                 console.log(`Final leaderboard: ${finalMap.size} entries (${championMap.size} companies + ${unmatchedCount} unmatched)`);
 
                 // Replace donorMap with finalMap
