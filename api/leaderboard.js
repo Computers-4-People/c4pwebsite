@@ -141,72 +141,66 @@ export default async function handler(req, res) {
 
         if (crmToken) {
             try {
-                console.log("Fetching Computer_Donors from CRM...");
-                // Fetch ALL Computer_Donors records with pagination
-                let computerDonors = [];
-                let page = 1;
-                let hasMoreDonors = true;
+                console.log("Fetching Computer_Donors and Champions from CRM in parallel...");
 
-                while (hasMoreDonors) {
-                    const donorsResp = await axios.get(
-                        'https://www.zohoapis.com/crm/v2/Computer_Donors',
-                        {
-                            headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                            params: { per_page: 200, page },
-                            timeout: 10000
+                // Fetch both Computer_Donors and Champions in parallel for speed
+                const [computerDonors, champions] = await Promise.all([
+                    // Fetch Computer_Donors with pagination
+                    (async () => {
+                        let allDonors = [];
+                        let page = 1;
+                        let hasMore = true;
+
+                        while (hasMore && page <= 50) {
+                            const resp = await axios.get(
+                                'https://www.zohoapis.com/crm/v2/Computer_Donors',
+                                {
+                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                                    params: { per_page: 200, page },
+                                    timeout: 8000
+                                }
+                            );
+
+                            const pageData = resp.data.data || [];
+                            allDonors = allDonors.concat(pageData);
+                            hasMore = resp.data.info?.more_records || false;
+                            page++;
                         }
-                    );
 
-                    const pageData = donorsResp.data.data || [];
-                    computerDonors = computerDonors.concat(pageData);
+                        console.log(`Fetched ${allDonors.length} Computer_Donors records`);
+                        return allDonors;
+                    })(),
 
-                    // Check if there are more pages
-                    hasMoreDonors = donorsResp.data.info?.more_records || false;
-                    page++;
+                    // Fetch Champions with pagination
+                    (async () => {
+                        let allChampions = [];
+                        let page = 1;
+                        let hasMore = true;
 
-                    // Safety limit to prevent infinite loops
-                    if (page > 50) {
-                        console.warn("Reached page limit (50) for Computer_Donors");
-                        break;
-                    }
-                }
+                        while (hasMore && page <= 50) {
+                            const resp = await axios.get(
+                                'https://www.zohoapis.com/crm/v2/Champions',
+                                {
+                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                                    params: { per_page: 200, page },
+                                    timeout: 8000
+                                }
+                            );
 
-                console.log(`Fetched ${computerDonors.length} Computer_Donors records across ${page - 1} pages`);
+                            const pageData = resp.data.data || [];
+                            allChampions = allChampions.concat(pageData);
+                            hasMore = resp.data.info?.more_records || false;
+                            page++;
+                        }
+
+                        console.log(`Fetched ${allChampions.length} Champions records`);
+                        return allChampions;
+                    })()
+                ]);
+
                 if (computerDonors.length > 0) {
                     console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
                 }
-
-                // Fetch ALL Champions records with pagination
-                console.log("Fetching Champions from CRM...");
-                let champions = [];
-                page = 1;
-                let hasMoreChampions = true;
-
-                while (hasMoreChampions) {
-                    const championsResp = await axios.get(
-                        'https://www.zohoapis.com/crm/v2/Champions',
-                        {
-                            headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                            params: { per_page: 200, page },
-                            timeout: 10000
-                        }
-                    );
-
-                    const pageData = championsResp.data.data || [];
-                    champions = champions.concat(pageData);
-
-                    // Check if there are more pages
-                    hasMoreChampions = championsResp.data.info?.more_records || false;
-                    page++;
-
-                    // Safety limit to prevent infinite loops
-                    if (page > 50) {
-                        console.warn("Reached page limit (50) for Champions");
-                        break;
-                    }
-                }
-
-                console.log(`Fetched ${champions.length} Champions records across ${page - 1} pages`);
                 if (champions.length > 0) {
                     console.log("Sample Champions record:", JSON.stringify(champions[0], null, 2));
                 }
