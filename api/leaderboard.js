@@ -195,6 +195,12 @@ export default async function handler(req, res) {
 
                 console.log(`Built lookup: ${donorToChampion.size} donor->champion mappings, ${championDetails.size} champion details`);
 
+                // Debug: Log sample IDs from both maps
+                const sampleInventoryIds = Array.from(donorMap.keys()).slice(0, 5);
+                const sampleCRMIds = Array.from(donorToChampion.keys()).slice(0, 5);
+                console.log("Sample inventory Donor_IDs:", sampleInventoryIds, "Types:", sampleInventoryIds.map(id => typeof id));
+                console.log("Sample CRM Donor_IDs:", sampleCRMIds, "Types:", sampleCRMIds.map(id => typeof id));
+
                 // Enrich donor data with Champion information
                 let enrichedCount = 0;
                 donorMap.forEach((donor, donorId) => {
