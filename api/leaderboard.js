@@ -171,6 +171,7 @@ export default async function handler(req, res) {
                     const params = { per_page: 200, page: 1 };
                     if (criteria) {
                         params.criteria = criteria;
+                        console.log(`Applying filter to ${module}: ${criteria}`);
                     }
 
                     const firstResp = await axios.get(
@@ -241,11 +242,10 @@ export default async function handler(req, res) {
                 };
 
                 // Fetch both in parallel
-                // Filter Champions to only include Champion_Type contains "Computer Donor"
-                // Champion_Type is an array field, so we check if it contains the value
+                // Filter Champions to only include Champion_Type = "Computer Donor"
                 const [computerDonors, champions] = await Promise.all([
                     fetchAllPages('Computer_Donors'),
-                    fetchAllPages('Champions', 5, "((Champion_Type_Text:equals:Computer Donor))")
+                    fetchAllPages('Champions', 5, "(Champion_Type_Text:equals:Computer Donor)")
                 ]);
 
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
