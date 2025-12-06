@@ -257,22 +257,52 @@ export default async function handler(req, res) {
                 console.log("Sample inventory Donor_IDs:", sampleInventoryIds, "Types:", sampleInventoryIds.map(id => typeof id));
                 console.log("Sample CRM Donor_IDs:", sampleCRMIds, "Types:", sampleCRMIds.map(id => typeof id));
 
-                // Enrich donor data with Champion information
+                // Regroup by Champion instead of Donor_ID to consolidate companies
+                const championMap = new Map();
                 let enrichedCount = 0;
+
                 donorMap.forEach((donor, donorId) => {
                     const championId = donorToChampion.get(donorId);
+
                     if (championId) {
                         const details = championDetails.get(championId);
                         if (details) {
-                            donor.company = details.company || `Donor ${donorId}`;
-                            donor.state = details.state;
-                            donor.industry = details.industry;
                             enrichedCount++;
+
+                            // Group by Champion ID
+                            if (!championMap.has(championId)) {
+                                championMap.set(championId, {
+                                    id: championId,
+                                    company: details.company || `Champion ${championId}`,
+                                    state: details.state,
+                                    industry: details.industry,
+                                    computersDonated: 0,
+                                    totalWeight: 0,
+                                    latestDonation: null
+                                });
+                            }
+
+                            const champion = championMap.get(championId);
+                            champion.computersDonated += donor.computersDonated;
+                            champion.totalWeight += donor.totalWeight;
+
+                            // Update latest donation
+                            if (donor.latestDonation) {
+                                if (!champion.latestDonation || donor.latestDonation > champion.latestDonation) {
+                                    champion.latestDonation = donor.latestDonation;
+                                }
+                            }
                         }
                     }
                 });
 
-                console.log(`Enriched ${enrichedCount} out of ${donorMap.size} donors with CRM information`);
+                console.log(`Enriched ${enrichedCount} donors and consolidated into ${championMap.size} companies`);
+
+                // Use champion map instead of donor map for the leaderboard
+                donorMap.clear();
+                championMap.forEach((value, key) => {
+                    donorMap.set(key, value);
+                });
             } catch (error) {
                 console.error("Error fetching CRM data:", error.message);
                 console.log("Continuing with basic donor information...");
