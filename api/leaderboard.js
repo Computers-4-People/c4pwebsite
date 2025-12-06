@@ -210,9 +210,32 @@ export default async function handler(req, res) {
         console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
         console.log(`Fetched ${allChampions.length} Champions records`);
 
-        // Filter to only Donated status
+        // Debug: Check all Status values
+        const statusCounts = {};
+        computerDonors.forEach(donor => {
+            const status = donor.Status || 'NULL';
+            statusCounts[status] = (statusCounts[status] || 0) + 1;
+        });
+        console.log('Status distribution:', statusCounts);
+
+        // Filter to only Donated status (exclude Archived, Pending, etc.)
         const donatedRecords = computerDonors.filter(donor => donor.Status === "Donated");
-        console.log(`Filtered to ${donatedRecords.length} donated records`);
+        console.log(`Filtered to ${donatedRecords.length} donated records (excluded ${computerDonors.length - donatedRecords.length})`);
+
+        // Debug: Show large donations to identify the 300k issue
+        const largeDonations = computerDonors
+            .map(d => ({
+                id: d.id,
+                status: d.Status,
+                laptops: parseInt(d.Laptop_Quantity) || 0,
+                desktops: parseInt(d.Desktop_Quantity) || 0,
+                allInOne: parseInt(d.All_In_One_Quantity) || 0,
+                total: (parseInt(d.Laptop_Quantity) || 0) + (parseInt(d.Desktop_Quantity) || 0) + (parseInt(d.All_In_One_Quantity) || 0),
+                state: d.Mailing_State
+            }))
+            .filter(d => d.total > 1000)
+            .sort((a, b) => b.total - a.total);
+        console.log('Large donations (>1000 computers):', largeDonations);
 
         // Build Champion lookup map
         const championDetails = new Map();
