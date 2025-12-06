@@ -94,14 +94,15 @@ export default async function handler(req, res) {
 
         console.log(`Total inventory records fetched: ${allInventory.length}`);
 
-        // Filter to count computers (exclude Monitor, Phone, Misc)
+        // Filter to count computers (exclude Monitor, Phone, Misc) and only include Status = "Donated"
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
         const computers = allInventory.filter(record => {
             const type = record.Computer_Type || '';
-            return !excludedTypes.includes(type);
+            const status = record.Status || '';
+            return !excludedTypes.includes(type) && status === 'Donated';
         });
 
-        console.log(`Total computers (excluding ${excludedTypes.join(', ')}): ${computers.length}`);
+        console.log(`Total donated computers (Status=Donated, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
 
         // Build leaderboard by grouping inventory by Donor_ID
         const donorMap = new Map();
@@ -257,9 +258,11 @@ export default async function handler(req, res) {
                 console.log("Sample inventory Donor_IDs:", sampleInventoryIds, "Types:", sampleInventoryIds.map(id => typeof id));
                 console.log("Sample CRM Donor_IDs:", sampleCRMIds, "Types:", sampleCRMIds.map(id => typeof id));
 
-                // Regroup by Champion instead of Donor_ID to consolidate companies
+                // Build final leaderboard: consolidate by Champion for matched donors, keep unmatched as-is
+                const finalMap = new Map();
                 const championMap = new Map();
                 let enrichedCount = 0;
+                let unmatchedCount = 0;
 
                 donorMap.forEach((donor, donorId) => {
                     const championId = donorToChampion.get(donorId);
@@ -292,15 +295,29 @@ export default async function handler(req, res) {
                                     champion.latestDonation = donor.latestDonation;
                                 }
                             }
+                        } else {
+                            // No champion details found, keep donor as-is
+                            finalMap.set(donorId, donor);
+                            unmatchedCount++;
                         }
+                    } else {
+                        // No champion mapping found, keep donor as-is
+                        finalMap.set(donorId, donor);
+                        unmatchedCount++;
                     }
                 });
 
-                console.log(`Enriched ${enrichedCount} donors and consolidated into ${championMap.size} companies`);
-
-                // Use champion map instead of donor map for the leaderboard
-                donorMap.clear();
+                // Add all champions to final map
                 championMap.forEach((value, key) => {
+                    finalMap.set(key, value);
+                });
+
+                console.log(`Enriched ${enrichedCount} donors into ${championMap.size} companies, kept ${unmatchedCount} unmatched donors`);
+                console.log(`Final leaderboard: ${finalMap.size} entries (${championMap.size} companies + ${unmatchedCount} unmatched)`);
+
+                // Replace donorMap with finalMap
+                donorMap.clear();
+                finalMap.forEach((value, key) => {
                     donorMap.set(key, value);
                 });
             } catch (error) {
