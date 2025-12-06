@@ -113,16 +113,11 @@ export default async function handler(req, res) {
         const totalComputersForStats = computers.length;
         const totalWeightForStats = computers.reduce((sum, c) => sum + (parseFloat(c.Weight) || 0), 0);
 
-        // Build leaderboard by grouping inventory by Donor_ID (exclude Donor_ID = "0")
+        // Build leaderboard by grouping inventory by Donor_ID (include all, even Donor_ID = "0")
         const donorMap = new Map();
-        let excludedZeroCount = 0;
 
         computers.forEach(computer => {
-            const donorId = computer.Donor_ID;
-            if (!donorId || donorId === '0') {
-                if (donorId === '0') excludedZeroCount++;
-                return;
-            }
+            const donorId = computer.Donor_ID || '0';
 
             if (!donorMap.has(donorId)) {
                 donorMap.set(donorId, {
@@ -149,8 +144,7 @@ export default async function handler(req, res) {
             }
         });
 
-        console.log(`Excluded ${excludedZeroCount} computers with Donor_ID='0' from leaderboard (kept in total stats)`);
-        console.log(`Leaderboard building from ${donorMap.size} unique donors`);
+        console.log(`Leaderboard building from ${donorMap.size} unique donors (including Donor_ID='0')`);
 
         // Debug: Show the range of Donor_IDs in inventory
         const allInventoryDonorIds = Array.from(donorMap.keys());
@@ -172,13 +166,18 @@ export default async function handler(req, res) {
                 console.log("Fetching Computer_Donors and Champions from CRM in parallel...");
 
                 // Helper function to fetch all pages in parallel batches
-                const fetchAllPages = async (module, batchSize = 5) => {
+                const fetchAllPages = async (module, batchSize = 5, criteria = null) => {
                     // First, fetch page 1 to check if there are more records
+                    const params = { per_page: 200, page: 1 };
+                    if (criteria) {
+                        params.criteria = criteria;
+                    }
+
                     const firstResp = await axios.get(
                         `https://www.zohoapis.com/crm/v2/${module}`,
                         {
                             headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                            params: { per_page: 200, page: 1 },
+                            params,
                             timeout: 5000
                         }
                     );
@@ -200,12 +199,16 @@ export default async function handler(req, res) {
                     // Fetch in batches
                     for (let i = 0; i < pagesToFetch.length; i += batchSize) {
                         const batch = pagesToFetch.slice(i, i + batchSize);
-                        const batchPromises = batch.map(page =>
-                            axios.get(
+                        const batchPromises = batch.map(page => {
+                            const batchParams = { per_page: 200, page };
+                            if (criteria) {
+                                batchParams.criteria = criteria;
+                            }
+                            return axios.get(
                                 `https://www.zohoapis.com/crm/v2/${module}`,
                                 {
                                     headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                                    params: { per_page: 200, page },
+                                    params: batchParams,
                                     timeout: 5000
                                 }
                             ).catch(err => {
@@ -213,8 +216,8 @@ export default async function handler(req, res) {
                                     return null; // No more data
                                 }
                                 throw err;
-                            })
-                        );
+                            });
+                        });
 
                         const batchResults = await Promise.all(batchPromises);
                         let foundEmpty = false;
@@ -238,9 +241,11 @@ export default async function handler(req, res) {
                 };
 
                 // Fetch both in parallel
+                // Filter Champions to only include Champion_Type contains "Computer Donor"
+                // Champion_Type is an array field, so we check if it contains the value
                 const [computerDonors, champions] = await Promise.all([
                     fetchAllPages('Computer_Donors'),
-                    fetchAllPages('Champions')
+                    fetchAllPages('Champions', 5, "((Champion_Type_Text:equals:Computer Donor))")
                 ]);
 
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
