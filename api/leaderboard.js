@@ -109,12 +109,20 @@ export default async function handler(req, res) {
 
         console.log(`Total donated computers (Status=Donated, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
 
-        // Build leaderboard by grouping inventory by Donor_ID
+        // Calculate total stats from ALL donated computers (including Donor_ID = "0")
+        const totalComputersForStats = computers.length;
+        const totalWeightForStats = computers.reduce((sum, c) => sum + (parseFloat(c.Weight) || 0), 0);
+
+        // Build leaderboard by grouping inventory by Donor_ID (exclude Donor_ID = "0")
         const donorMap = new Map();
+        let excludedZeroCount = 0;
 
         computers.forEach(computer => {
             const donorId = computer.Donor_ID;
-            if (!donorId) return;
+            if (!donorId || donorId === '0') {
+                if (donorId === '0') excludedZeroCount++;
+                return;
+            }
 
             if (!donorMap.has(donorId)) {
                 donorMap.set(donorId, {
@@ -140,6 +148,9 @@ export default async function handler(req, res) {
                 }
             }
         });
+
+        console.log(`Excluded ${excludedZeroCount} computers with Donor_ID='0' from leaderboard (kept in total stats)`);
+        console.log(`Leaderboard building from ${donorMap.size} unique donors`);
 
         // Now fetch CRM data to enrich donor information
         console.log("Getting CRM access token...");
@@ -350,9 +361,9 @@ export default async function handler(req, res) {
 
         console.log(`Leaderboard entries: ${leaderboard.length}`);
 
-        // Calculate overall stats
-        const totalComputersDonated = leaderboard.reduce((sum, entry) => sum + entry.computersDonated, 0);
-        const totalWeight = leaderboard.reduce((sum, entry) => sum + entry.totalWeight, 0);
+        // Calculate overall stats using ALL donated computers (including Donor_ID='0')
+        const totalComputersDonated = totalComputersForStats;
+        const totalWeight = Math.round(totalWeightForStats);
         const totalCompanies = leaderboard.length;
 
         // Group by industry (skip null/undefined industries)
