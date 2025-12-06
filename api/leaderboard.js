@@ -143,60 +143,80 @@ export default async function handler(req, res) {
             try {
                 console.log("Fetching Computer_Donors and Champions from CRM in parallel...");
 
-                // Fetch both Computer_Donors and Champions in parallel for speed
+                // Helper function to fetch all pages in parallel batches
+                const fetchAllPages = async (module, batchSize = 5) => {
+                    // First, fetch page 1 to check if there are more records
+                    const firstResp = await axios.get(
+                        `https://www.zohoapis.com/crm/v2/${module}`,
+                        {
+                            headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                            params: { per_page: 200, page: 1 },
+                            timeout: 5000
+                        }
+                    );
+
+                    let allData = firstResp.data.data || [];
+                    const hasMore = firstResp.data.info?.more_records || false;
+
+                    if (!hasMore) {
+                        return allData;
+                    }
+
+                    // Estimate total pages (assume ~15 pages max based on previous runs)
+                    // Fetch remaining pages in parallel batches
+                    const pagesToFetch = [];
+                    for (let page = 2; page <= 20; page++) {
+                        pagesToFetch.push(page);
+                    }
+
+                    // Fetch in batches
+                    for (let i = 0; i < pagesToFetch.length; i += batchSize) {
+                        const batch = pagesToFetch.slice(i, i + batchSize);
+                        const batchPromises = batch.map(page =>
+                            axios.get(
+                                `https://www.zohoapis.com/crm/v2/${module}`,
+                                {
+                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                                    params: { per_page: 200, page },
+                                    timeout: 5000
+                                }
+                            ).catch(err => {
+                                if (err.response?.status === 404 || err.response?.status === 204) {
+                                    return null; // No more data
+                                }
+                                throw err;
+                            })
+                        );
+
+                        const batchResults = await Promise.all(batchPromises);
+                        let foundEmpty = false;
+
+                        batchResults.forEach(resp => {
+                            if (resp && resp.data && resp.data.data) {
+                                allData = allData.concat(resp.data.data);
+                                if (resp.data.data.length < 200) {
+                                    foundEmpty = true;
+                                }
+                            } else {
+                                foundEmpty = true;
+                            }
+                        });
+
+                        // Stop if we found a partial or empty page
+                        if (foundEmpty) break;
+                    }
+
+                    return allData;
+                };
+
+                // Fetch both in parallel
                 const [computerDonors, champions] = await Promise.all([
-                    // Fetch Computer_Donors with pagination
-                    (async () => {
-                        let allDonors = [];
-                        let page = 1;
-                        let hasMore = true;
-
-                        while (hasMore && page <= 50) {
-                            const resp = await axios.get(
-                                'https://www.zohoapis.com/crm/v2/Computer_Donors',
-                                {
-                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                                    params: { per_page: 200, page },
-                                    timeout: 8000
-                                }
-                            );
-
-                            const pageData = resp.data.data || [];
-                            allDonors = allDonors.concat(pageData);
-                            hasMore = resp.data.info?.more_records || false;
-                            page++;
-                        }
-
-                        console.log(`Fetched ${allDonors.length} Computer_Donors records`);
-                        return allDonors;
-                    })(),
-
-                    // Fetch Champions with pagination
-                    (async () => {
-                        let allChampions = [];
-                        let page = 1;
-                        let hasMore = true;
-
-                        while (hasMore && page <= 50) {
-                            const resp = await axios.get(
-                                'https://www.zohoapis.com/crm/v2/Champions',
-                                {
-                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                                    params: { per_page: 200, page },
-                                    timeout: 8000
-                                }
-                            );
-
-                            const pageData = resp.data.data || [];
-                            allChampions = allChampions.concat(pageData);
-                            hasMore = resp.data.info?.more_records || false;
-                            page++;
-                        }
-
-                        console.log(`Fetched ${allChampions.length} Champions records`);
-                        return allChampions;
-                    })()
+                    fetchAllPages('Computer_Donors'),
+                    fetchAllPages('Champions')
                 ]);
+
+                console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+                console.log(`Fetched ${champions.length} Champions records`);
 
                 if (computerDonors.length > 0) {
                     console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
