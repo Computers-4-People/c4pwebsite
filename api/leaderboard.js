@@ -210,6 +210,10 @@ export default async function handler(req, res) {
         console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
         console.log(`Fetched ${allChampions.length} Champions records`);
 
+        // Filter to only Donated status
+        const donatedRecords = computerDonors.filter(donor => donor.Status === "Donated");
+        console.log(`Filtered to ${donatedRecords.length} donated records`);
+
         // Build Champion lookup map
         const championDetails = new Map();
         allChampions.forEach(ch => {
@@ -221,6 +225,10 @@ export default async function handler(req, res) {
             });
         });
 
+        // Debug: Check sample champion industry data
+        const sampleChampions = Array.from(championDetails.entries()).slice(0, 5);
+        console.log('Sample champion data:', sampleChampions.map(([id, details]) => ({ id, ...details })));
+
         // Calculate computers from quantity fields
         function getComputerCount(donor) {
             const laptops = parseInt(donor.Laptop_Quantity) || 0;
@@ -229,10 +237,10 @@ export default async function handler(req, res) {
             return laptops + desktops + allInOne;
         }
 
-        // Build state map (for all donations)
+        // Build state map (only donated records)
         const byState = {};
 
-        computerDonors.forEach(donor => {
+        donatedRecords.forEach(donor => {
             const computers = getComputerCount(donor);
 
             const state = donor.Mailing_State;
@@ -240,7 +248,6 @@ export default async function handler(req, res) {
                 if (!byState[state]) {
                     byState[state] = {
                         state,
-                        companies: 0,
                         computersDonated: 0,
                         totalWeight: 0
                     };
@@ -250,10 +257,10 @@ export default async function handler(req, res) {
         });
 
 
-        // Build leaderboard (consolidate by Champion, exclude personal donations)
+        // Build leaderboard (consolidate by Champion, exclude personal donations, only donated)
         const championMap = new Map();
 
-        computerDonors.forEach(donor => {
+        donatedRecords.forEach(donor => {
             // Exclude personal/individual donations
             const isNotIndividual = donor.Personal_Company !== "Personal Donation" && donor.Personal_Company !== "Individual";
             if (!isNotIndividual) return;
@@ -268,6 +275,7 @@ export default async function handler(req, res) {
                 const details = championDetails.get(championId);
                 championMap.set(championId, {
                     id: championId,
+                    donorId: donor.id, // Add donor ID for debugging
                     company: details?.company || 'Unknown Company',
                     state: details?.state || null,
                     industry: details?.industry || null,
@@ -306,21 +314,7 @@ export default async function handler(req, res) {
             byIndustry[ind].computersDonated += entry.computersDonated;
         });
 
-        // Count unique companies per state for byState
-        const stateCompanies = {};
-        leaderboard.forEach(entry => {
-            const st = entry.state;
-            if (st) {
-                if (!stateCompanies[st]) {
-                    stateCompanies[st] = new Set();
-                }
-                stateCompanies[st].add(entry.id);
-            }
-        });
-
-        Object.keys(byState).forEach(state => {
-            byState[state].companies = stateCompanies[state]?.size || 0;
-        });
+        // (Removed company count from byState map)
 
         const result = {
             leaderboard,
@@ -341,6 +335,27 @@ export default async function handler(req, res) {
             industries: result.byIndustry.length,
             states: result.byState.length
         });
+
+        // Debug: Log entries without company names
+        const noNameEntries = result.leaderboard.filter(e => e.company === 'Unknown Company');
+        console.log(`Entries without names: ${noNameEntries.length}`);
+        if (noNameEntries.length > 0) {
+            console.log('Sample entries without names:', noNameEntries.slice(0, 5).map(e => ({
+                championId: e.id,
+                donorId: e.donorId,
+                computers: e.computersDonated,
+                state: e.state,
+                industry: e.industry
+            })));
+        }
+
+        // Debug: Log industry distribution
+        const industryDist = {};
+        result.leaderboard.forEach(e => {
+            const ind = e.industry || 'NULL';
+            industryDist[ind] = (industryDist[ind] || 0) + 1;
+        });
+        console.log('Industry distribution:', industryDist);
 
         cachedLeaderboard = result;
         cacheExpiration = Date.now() + (5 * 60 * 1000);
