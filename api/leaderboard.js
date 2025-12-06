@@ -94,6 +94,11 @@ export default async function handler(req, res) {
 
         console.log(`Total inventory records fetched: ${allInventory.length}`);
 
+        // Debug: Log a sample inventory record to see available fields
+        if (allInventory.length > 0) {
+            console.log("Sample inventory record:", JSON.stringify(allInventory[0], null, 2));
+        }
+
         // Filter to count computers (exclude Monitor, Phone, Misc) and only include Status = "Donated"
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
         const computers = allInventory.filter(record => {
@@ -240,17 +245,25 @@ export default async function handler(req, res) {
                     }
                 });
                 console.log(`Found ${companyDonationCount} non-individual donations out of ${computerDonors.length} total Computer_Donors`);
+                console.log(`Donor->Champion mappings created: ${donorToChampion.size}`);
+
+                // Debug: Show some mappings
+                const sampleMappings = Array.from(donorToChampion.entries()).slice(0, 3);
+                console.log("Sample Donor_ID -> Champion_ID mappings:", sampleMappings);
 
                 const championDetails = new Map();
+                let championsWithIndustry = 0;
                 champions.forEach(ch => {
                     championDetails.set(ch.id, {
                         company: ch.Company || ch.Name,
                         state: ch.State_Text || ch.State,
                         industry: ch.Industry
                     });
+                    if (ch.Industry) championsWithIndustry++;
                 });
 
                 console.log(`Built lookup: ${donorToChampion.size} donor->champion mappings, ${championDetails.size} champion details`);
+                console.log(`Champions with Industry data: ${championsWithIndustry} out of ${champions.length}`);
 
                 // Debug: Log sample IDs from both maps
                 const sampleInventoryIds = Array.from(donorMap.keys()).slice(0, 5);
