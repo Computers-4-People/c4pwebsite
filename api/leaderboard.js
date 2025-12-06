@@ -99,15 +99,15 @@ export default async function handler(req, res) {
             console.log("Sample inventory record:", JSON.stringify(allInventory[0], null, 2));
         }
 
-        // Filter to count computers (exclude Monitor, Phone, Misc) and only include Status = "Donated"
+        // Filter to count computers (exclude Monitor, Phone, Misc) and include Status = "Donated" or "Recycled"
         const excludedTypes = ['Monitor', 'Phone', 'Misc'];
         const computers = allInventory.filter(record => {
             const type = record.Computer_Type || '';
             const status = record.Status || '';
-            return !excludedTypes.includes(type) && status === 'Donated';
+            return !excludedTypes.includes(type) && (status === 'Donated' || status === 'Recycled');
         });
 
-        console.log(`Total donated computers (Status=Donated, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
+        console.log(`Total computers (Status=Donated or Recycled, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
 
         // Calculate total stats from ALL donated computers (including Donor_ID = "0")
         const totalComputersForStats = computers.length;
@@ -242,14 +242,19 @@ export default async function handler(req, res) {
                 };
 
                 // Fetch both in parallel
-                // Filter Champions to only include Champion_Type = "Computer Donor"
-                const [computerDonors, champions] = await Promise.all([
+                const [computerDonors, allChampions] = await Promise.all([
                     fetchAllPages('Computer_Donors'),
-                    fetchAllPages('Champions', 5, "(Champion_Type_Text:equals:Computer Donor)")
+                    fetchAllPages('Champions')
                 ]);
 
+                // Filter Champions client-side to only include Champion_Type = "Computer Donor"
+                const champions = allChampions.filter(ch => {
+                    const championType = ch.Champion_Type_Text || '';
+                    return championType === 'Computer Donor';
+                });
+
                 console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
-                console.log(`Fetched ${champions.length} Champions records`);
+                console.log(`Fetched ${allChampions.length} total Champions, filtered to ${champions.length} Computer Donors`);
 
                 if (computerDonors.length > 0) {
                     console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
