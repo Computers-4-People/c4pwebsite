@@ -6,11 +6,10 @@ dotenv.config({
 });
 const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 
-// Cache leaderboard data for 5 minutes (reduced from 1 hour for faster updates)
+// Cache leaderboard data for 5 minutes
 let cachedLeaderboard = null;
 let cacheExpiration = null;
 
-// Helper function to return empty leaderboard data
 function getEmptyLeaderboard() {
     return {
         leaderboard: [],
@@ -27,14 +26,12 @@ function getEmptyLeaderboard() {
 }
 
 export default async function handler(req, res) {
-    // Allow cache bypass with ?refresh=true
     const skipCache = req.query.refresh === 'true';
 
     if (skipCache) {
         console.log("Cache bypass requested");
     }
 
-    // Return cached data if still valid (unless refresh requested)
     const currentTime = Date.now();
     if (!skipCache && cachedLeaderboard && cacheExpiration && currentTime < cacheExpiration) {
         console.log("Returning cached leaderboard");
@@ -42,397 +39,259 @@ export default async function handler(req, res) {
     }
 
     try {
-        console.log("Getting Creator access token...");
-        const creatorToken = await getZohoAccessToken();
+        // Fetch inventory stats (same as about page) in parallel with CRM data
+        console.log("Getting access tokens...");
+        const [creatorToken, crmToken] = await Promise.all([
+            getZohoAccessToken(),
+            getZohoCRMAccessToken()
+        ]);
 
-        if (!creatorToken) {
-            console.error("Failed to get Creator token - returning empty leaderboard");
+        if (!crmToken) {
+            console.error("Failed to get CRM token - returning empty leaderboard");
             return res.json(getEmptyLeaderboard());
         }
 
-        console.log("Building leaderboard with full inventory and CRM data...");
+        console.log("Building leaderboard from Computer_Donors CRM data...");
 
-        // Fetch ALL inventory records using batched parallel requests (like stats API)
-        const batchSize = 10;
-        const maxPages = 100;
-        const inventoryUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+        // Fetch inventory stats for top stats (same as stats.js)
+        let totalComputersForStats = 0;
+        let totalWeightForStats = 0;
 
-        let allInventory = [];
-        let page = 0;
-        let hasMore = true;
-
-        while (hasMore && page < maxPages) {
-            const batchPromises = [];
-            for (let i = 0; i < batchSize && page < maxPages; i++, page++) {
-                const from = (page * 200) + 1;
-                batchPromises.push(
-                    axios.get(`${inventoryUrl}?from=${from}&limit=200`, {
-                        headers: { Authorization: `Zoho-oauthtoken ${creatorToken}` },
-                        timeout: 8000
-                    }).catch(err => {
-                        if (err.response?.status !== 404) {
-                            console.error(`Inventory page ${page} error:`, err.message);
-                        }
-                        return null;
-                    })
-                );
-            }
-
-            const batchResults = await Promise.all(batchPromises);
-            const validResults = batchResults.filter(r => r && r.data && r.data.data);
-
-            if (validResults.length === 0) {
-                hasMore = false;
-            } else {
-                validResults.forEach(r => {
-                    allInventory = allInventory.concat(r.data.data);
-                });
-                const hasPartialPage = validResults.some(r => r.data.data.length < 200);
-                if (hasPartialPage) hasMore = false;
-            }
-        }
-
-        console.log(`Total inventory records fetched: ${allInventory.length}`);
-
-        // Debug: Log a sample inventory record to see available fields
-        if (allInventory.length > 0) {
-            console.log("Sample inventory record:", JSON.stringify(allInventory[0], null, 2));
-        }
-
-        // Filter to count computers (exclude Monitor, Phone, Misc) and only Status = "Donated"
-        const excludedTypes = ['Monitor', 'Phone', 'Misc'];
-        const computers = allInventory.filter(record => {
-            const type = record.Computer_Type || '';
-            const status = record.Status || '';
-            return !excludedTypes.includes(type) && status === 'Donated';
-        });
-
-        console.log(`Total donated computers (Status=Donated, excluding ${excludedTypes.join(', ')}): ${computers.length}`);
-
-        // Calculate total stats from ALL donated computers (including Donor_ID = "0")
-        const totalComputersForStats = computers.length;
-        const totalWeightForStats = computers.reduce((sum, c) => sum + (parseFloat(c.Weight) || 0), 0);
-
-        // Build leaderboard by grouping inventory by Donor_ID (include all, even Donor_ID = "0")
-        const donorMap = new Map();
-
-        computers.forEach(computer => {
-            const donorId = computer.Donor_ID || '0';
-
-            if (!donorMap.has(donorId)) {
-                donorMap.set(donorId, {
-                    id: `donor_${donorId}`,
-                    donorId: donorId,
-                    company: `Donor ${donorId}`,
-                    computersDonated: 0,
-                    totalWeight: 0,
-                    latestDonation: null,
-                    state: null,
-                    industry: null
-                });
-            }
-
-            const donor = donorMap.get(donorId);
-            donor.computersDonated++;
-            donor.totalWeight += parseFloat(computer.Weight) || 0;
-
-            // Track latest donation
-            if (computer.Date_Donated && computer.Date_Donated !== 'N/A') {
-                if (!donor.latestDonation || computer.Date_Donated > donor.latestDonation) {
-                    donor.latestDonation = computer.Date_Donated;
-                }
-            }
-        });
-
-        console.log(`Leaderboard building from ${donorMap.size} unique donors (including Donor_ID='0')`);
-
-        // Debug: Show the range of Donor_IDs in inventory
-        const allInventoryDonorIds = Array.from(donorMap.keys());
-        const donorIdSample = allInventoryDonorIds.slice(0, 20);
-        console.log(`Sample of ${donorIdSample.length} inventory Donor_IDs:`, donorIdSample);
-
-        // Show min/max Donor_IDs
-        const numericDonorIds = allInventoryDonorIds.map(id => parseInt(id)).filter(n => !isNaN(n));
-        if (numericDonorIds.length > 0) {
-            console.log(`Donor_ID range in inventory: ${Math.min(...numericDonorIds)} to ${Math.max(...numericDonorIds)}`);
-        }
-
-        // Now fetch CRM data to enrich donor information
-        console.log("Getting CRM access token...");
-        const crmToken = await getZohoCRMAccessToken();
-
-        if (crmToken) {
+        if (creatorToken) {
             try {
-                console.log("Fetching Computer_Donors and Champions from CRM in parallel...");
+                const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+                const headers = { Authorization: `Zoho-oauthtoken ${creatorToken}` };
 
-                // Helper function to fetch all pages in parallel batches
-                const fetchAllPages = async (module, batchSize = 5, criteria = null) => {
-                    // First, fetch page 1 to check if there are more records
-                    const params = { per_page: 200, page: 1 };
-                    if (criteria) {
-                        params.criteria = criteria;
-                        console.log(`Applying filter to ${module}: ${criteria}`);
+                const donatedCriteria = encodeURIComponent(
+                    '(Status == "Donated") && (Computer_Type != "Monitor") && (Computer_Type != "Phone") && (Computer_Type != "Misc")'
+                );
+                const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
+
+                const batchSize = 10;
+                const maxPages = 100;
+
+                async function fetchInventoryInBatches(criteria, maxPagesToFetch) {
+                    const allResults = [];
+                    let page = 0;
+                    let hasMore = true;
+
+                    while (hasMore && page < maxPagesToFetch) {
+                        const batchPromises = [];
+                        for (let i = 0; i < batchSize && page < maxPagesToFetch; i++, page++) {
+                            const from = (page * 200) + 1;
+                            batchPromises.push(
+                                axios.get(
+                                    `${baseUrl}?criteria=${criteria}&from=${from}&limit=200`,
+                                    { headers, timeout: 8000 }
+                                ).catch(err => {
+                                    if (err.response?.status !== 404) {
+                                        console.error(`Inventory page ${page} error:`, err.message);
+                                    }
+                                    return null;
+                                })
+                            );
+                        }
+
+                        const batchResults = await Promise.all(batchPromises);
+                        const validResults = batchResults.filter(r => r && r.data && r.data.data);
+
+                        if (validResults.length === 0) {
+                            hasMore = false;
+                        } else {
+                            allResults.push(...batchResults);
+                            const hasPartialPage = validResults.some(r => r.data.data.length < 200);
+                            if (hasPartialPage) {
+                                hasMore = false;
+                            }
+                        }
                     }
 
-                    const firstResp = await axios.get(
+                    return allResults;
+                }
+
+                const [countResults, weightResults] = await Promise.all([
+                    fetchInventoryInBatches(donatedCriteria, maxPages),
+                    fetchInventoryInBatches(weightCriteria, maxPages)
+                ]);
+
+                // Process count
+                countResults.forEach(resp => {
+                    if (resp && resp.data && resp.data.data) {
+                        totalComputersForStats += resp.data.data.length;
+                    }
+                });
+
+                // Process weight
+                weightResults.forEach(resp => {
+                    if (resp && resp.data && resp.data.data) {
+                        const records = resp.data.data;
+                        const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
+                        totalWeightForStats += batchWeight;
+                    }
+                });
+
+                console.log(`Inventory stats: ${totalComputersForStats} computers, ${Math.round(totalWeightForStats)} lbs`);
+            } catch (error) {
+                console.error("Error fetching inventory stats:", error.message);
+                // Use fallback
+                totalComputersForStats = 5542;
+                totalWeightForStats = 69748;
+            }
+        }
+
+        // Helper function to fetch all pages in parallel batches
+        const fetchAllPages = async (module, batchSize = 5) => {
+            const firstResp = await axios.get(
+                `https://www.zohoapis.com/crm/v2/${module}`,
+                {
+                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
+                    params: { per_page: 200, page: 1 },
+                    timeout: 5000
+                }
+            );
+
+            let allData = firstResp.data.data || [];
+            const hasMore = firstResp.data.info?.more_records || false;
+
+            if (!hasMore) {
+                return allData;
+            }
+
+            // Fetch remaining pages in parallel batches
+            const pagesToFetch = [];
+            for (let page = 2; page <= 20; page++) {
+                pagesToFetch.push(page);
+            }
+
+            for (let i = 0; i < pagesToFetch.length; i += batchSize) {
+                const batch = pagesToFetch.slice(i, i + batchSize);
+                const batchPromises = batch.map(page => {
+                    return axios.get(
                         `https://www.zohoapis.com/crm/v2/${module}`,
                         {
                             headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                            params,
+                            params: { per_page: 200, page },
                             timeout: 5000
                         }
-                    );
-
-                    let allData = firstResp.data.data || [];
-                    const hasMore = firstResp.data.info?.more_records || false;
-
-                    if (!hasMore) {
-                        return allData;
-                    }
-
-                    // Estimate total pages (assume ~15 pages max based on previous runs)
-                    // Fetch remaining pages in parallel batches
-                    const pagesToFetch = [];
-                    for (let page = 2; page <= 20; page++) {
-                        pagesToFetch.push(page);
-                    }
-
-                    // Fetch in batches
-                    for (let i = 0; i < pagesToFetch.length; i += batchSize) {
-                        const batch = pagesToFetch.slice(i, i + batchSize);
-                        const batchPromises = batch.map(page => {
-                            const batchParams = { per_page: 200, page };
-                            if (criteria) {
-                                batchParams.criteria = criteria;
-                            }
-                            return axios.get(
-                                `https://www.zohoapis.com/crm/v2/${module}`,
-                                {
-                                    headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                                    params: batchParams,
-                                    timeout: 5000
-                                }
-                            ).catch(err => {
-                                if (err.response?.status === 404 || err.response?.status === 204) {
-                                    return null; // No more data
-                                }
-                                throw err;
-                            });
-                        });
-
-                        const batchResults = await Promise.all(batchPromises);
-                        let foundEmpty = false;
-
-                        batchResults.forEach(resp => {
-                            if (resp && resp.data && resp.data.data) {
-                                allData = allData.concat(resp.data.data);
-                                if (resp.data.data.length < 200) {
-                                    foundEmpty = true;
-                                }
-                            } else {
-                                foundEmpty = true;
-                            }
-                        });
-
-                        // Stop if we found a partial or empty page
-                        if (foundEmpty) break;
-                    }
-
-                    return allData;
-                };
-
-                // Fetch both in parallel
-                const [computerDonors, allChampions] = await Promise.all([
-                    fetchAllPages('Computer_Donors'),
-                    fetchAllPages('Champions')
-                ]);
-
-                // Debug: Check what Champion_Type values exist
-                const championTypes = new Set();
-                allChampions.forEach(ch => {
-                    if (ch.Champion_Type && Array.isArray(ch.Champion_Type)) {
-                        ch.Champion_Type.forEach(type => championTypes.add(type));
-                    }
-                    if (ch.Champion_Type_Text) {
-                        championTypes.add(ch.Champion_Type_Text);
-                    }
-                });
-                console.log(`Unique Champion_Type values found:`, Array.from(championTypes));
-
-                // Filter Champions client-side to only include Champion_Type contains "Computer Donor"
-                const champions = allChampions.filter(ch => {
-                    const typeArray = ch.Champion_Type || [];
-                    const typeText = ch.Champion_Type_Text || '';
-                    // Check if any type contains "Computer" and "Donor"
-                    const hasComputerDonor = typeArray.some(type =>
-                        type && type.toLowerCase().includes('computer') && type.toLowerCase().includes('donor')
-                    ) || (typeText && typeText.toLowerCase().includes('computer') && typeText.toLowerCase().includes('donor'));
-                    return hasComputerDonor;
-                });
-
-                console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
-                console.log(`Fetched ${allChampions.length} total Champions, filtered to ${champions.length} Computer Donors`);
-
-                if (computerDonors.length > 0) {
-                    console.log("Sample Computer_Donors record:", JSON.stringify(computerDonors[0], null, 2));
-                }
-                if (champions.length > 0) {
-                    console.log("Sample Champions record:", JSON.stringify(champions[0], null, 2));
-                }
-
-                // Build lookup maps - exclude individual donations only
-                const donorToChampion = new Map();
-                let companyDonationCount = 0;
-                computerDonors.forEach(cd => {
-                    // Exclude individual/personal donations (include everything else)
-                    const isNotIndividual = cd.Personal_Company !== "Personal Donation" && cd.Personal_Company !== "Individual";
-                    if (isNotIndividual) companyDonationCount++;
-
-                    // Match using Donor_ID (e.g., "3313") to link with inventory records
-                    if (isNotIndividual && cd.Donor_ID && cd.Champion) {
-                        donorToChampion.set(cd.Donor_ID, cd.Champion.id);
-                    }
-                });
-                console.log(`Found ${companyDonationCount} non-individual donations out of ${computerDonors.length} total Computer_Donors`);
-                console.log(`Donor->Champion mappings created: ${donorToChampion.size}`);
-
-                // Debug: Show CRM Donor_ID range
-                const crmDonorIds = Array.from(donorToChampion.keys());
-                const crmDonorIdSample = crmDonorIds.slice(0, 20);
-                console.log(`Sample of ${crmDonorIdSample.length} CRM Donor_IDs:`, crmDonorIdSample);
-
-                const numericCrmDonorIds = crmDonorIds.map(id => parseInt(id)).filter(n => !isNaN(n));
-                if (numericCrmDonorIds.length > 0) {
-                    console.log(`Donor_ID range in CRM: ${Math.min(...numericCrmDonorIds)} to ${Math.max(...numericCrmDonorIds)}`);
-                }
-
-                // Debug: Show some mappings
-                const sampleMappings = Array.from(donorToChampion.entries()).slice(0, 3);
-                console.log("Sample Donor_ID -> Champion_ID mappings:", sampleMappings);
-
-                // Debug: Check for overlap
-                const inventoryDonorSet = new Set(allInventoryDonorIds);
-                const crmDonorSet = new Set(crmDonorIds);
-                const overlap = crmDonorIds.filter(id => inventoryDonorSet.has(id));
-                console.log(`Donor_ID overlap: ${overlap.length} CRM Donor_IDs exist in inventory out of ${crmDonorIds.length} total CRM donors`);
-
-                // Debug: Show sample overlapping IDs
-                console.log(`Sample overlapping Donor_IDs:`, overlap.slice(0, 10));
-
-                const championDetails = new Map();
-                let championsWithIndustry = 0;
-                champions.forEach(ch => {
-                    championDetails.set(ch.id, {
-                        company: ch.Company || ch.Name,
-                        state: ch.State_Text || ch.State,
-                        industry: ch.Industry
+                    ).catch(err => {
+                        if (err.response?.status === 404 || err.response?.status === 204) {
+                            return null;
+                        }
+                        throw err;
                     });
-                    if (ch.Industry) championsWithIndustry++;
                 });
 
-                console.log(`Built lookup: ${donorToChampion.size} donor->champion mappings, ${championDetails.size} champion details`);
-                console.log(`Champions with Industry data: ${championsWithIndustry} out of ${champions.length}`);
+                const batchResults = await Promise.all(batchPromises);
+                let foundEmpty = false;
 
-                // Debug: Log sample IDs from both maps
-                const sampleInventoryIds = Array.from(donorMap.keys()).slice(0, 5);
-                const sampleCRMIds = Array.from(donorToChampion.keys()).slice(0, 5);
-                console.log("Sample inventory Donor_IDs:", sampleInventoryIds, "Types:", sampleInventoryIds.map(id => typeof id));
-                console.log("Sample CRM Donor_IDs:", sampleCRMIds, "Types:", sampleCRMIds.map(id => typeof id));
-
-                // Build final leaderboard: consolidate by Champion for matched donors, keep unmatched as-is
-                const finalMap = new Map();
-                const championMap = new Map();
-                let enrichedCount = 0;
-                let unmatchedCount = 0;
-                let noChampionIdCount = 0;
-                let noDetailsCount = 0;
-
-                donorMap.forEach((donor, donorId) => {
-                    const championId = donorToChampion.get(donorId);
-
-                    if (championId) {
-                        const details = championDetails.get(championId);
-                        if (details) {
-                            enrichedCount++;
-
-                            // Group by Champion ID
-                            if (!championMap.has(championId)) {
-                                championMap.set(championId, {
-                                    id: championId,
-                                    company: details.company || `Champion ${championId}`,
-                                    state: details.state,
-                                    industry: details.industry,
-                                    computersDonated: 0,
-                                    totalWeight: 0,
-                                    latestDonation: null
-                                });
-                            }
-
-                            const champion = championMap.get(championId);
-                            champion.computersDonated += donor.computersDonated;
-                            champion.totalWeight += donor.totalWeight;
-
-                            // Update latest donation
-                            if (donor.latestDonation) {
-                                if (!champion.latestDonation || donor.latestDonation > champion.latestDonation) {
-                                    champion.latestDonation = donor.latestDonation;
-                                }
-                            }
-                        } else {
-                            // No champion details found, keep donor as-is
-                            finalMap.set(donorId, donor);
-                            noDetailsCount++;
+                batchResults.forEach(resp => {
+                    if (resp && resp.data && resp.data.data) {
+                        allData = allData.concat(resp.data.data);
+                        if (resp.data.data.length < 200) {
+                            foundEmpty = true;
                         }
                     } else {
-                        // No champion mapping found, keep donor as-is
-                        finalMap.set(donorId, donor);
-                        noChampionIdCount++;
+                        foundEmpty = true;
                     }
                 });
 
-                unmatchedCount = noChampionIdCount + noDetailsCount;
-
-                // Add all champions to final map
-                championMap.forEach((value, key) => {
-                    finalMap.set(key, value);
-                });
-
-                console.log(`Enriched ${enrichedCount} donors into ${championMap.size} companies`);
-                console.log(`Unmatched breakdown: ${noChampionIdCount} no CRM mapping, ${noDetailsCount} no Champion details`);
-                console.log(`Final leaderboard: ${finalMap.size} entries (${championMap.size} companies + ${unmatchedCount} unmatched)`);
-
-                // Replace donorMap with finalMap
-                donorMap.clear();
-                finalMap.forEach((value, key) => {
-                    donorMap.set(key, value);
-                });
-            } catch (error) {
-                console.error("Error fetching CRM data:", error.message);
-                console.log("Continuing with basic donor information...");
+                if (foundEmpty) break;
             }
+
+            return allData;
+        };
+
+        // Fetch Computer_Donors and Champions in parallel
+        const [computerDonors, allChampions] = await Promise.all([
+            fetchAllPages('Computer_Donors'),
+            fetchAllPages('Champions')
+        ]);
+
+        console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+        console.log(`Fetched ${allChampions.length} Champions records`);
+
+        // Build Champion lookup map
+        const championDetails = new Map();
+        allChampions.forEach(ch => {
+            championDetails.set(ch.id, {
+                company: ch.Company || ch.Name,
+                state: ch.State_Text || ch.State,
+                industry: ch.Industry,
+                lastDonation: ch.Last_Time_Donated
+            });
+        });
+
+        // Calculate computers from quantity fields
+        function getComputerCount(donor) {
+            const laptops = parseInt(donor.Laptop_Quantity) || 0;
+            const desktops = parseInt(donor.Desktop_Quantity) || 0;
+            const allInOne = parseInt(donor.All_In_One_Quantity) || 0;
+            return laptops + desktops + allInOne;
         }
 
-        // Convert map to array and sort by computers donated
-        const leaderboard = Array.from(donorMap.values())
+        // Build state map (for all donations)
+        const byState = {};
+
+        computerDonors.forEach(donor => {
+            const computers = getComputerCount(donor);
+
+            const state = donor.Mailing_State;
+            if (state) {
+                if (!byState[state]) {
+                    byState[state] = {
+                        state,
+                        companies: 0,
+                        computersDonated: 0,
+                        totalWeight: 0
+                    };
+                }
+                byState[state].computersDonated += computers;
+            }
+        });
+
+
+        // Build leaderboard (consolidate by Champion, exclude personal donations)
+        const championMap = new Map();
+
+        computerDonors.forEach(donor => {
+            // Exclude personal/individual donations
+            const isNotIndividual = donor.Personal_Company !== "Personal Donation" && donor.Personal_Company !== "Individual";
+            if (!isNotIndividual) return;
+
+            const computers = getComputerCount(donor);
+            if (computers === 0) return;
+
+            const championId = donor.Champion?.id;
+            if (!championId) return;
+
+            if (!championMap.has(championId)) {
+                const details = championDetails.get(championId);
+                championMap.set(championId, {
+                    id: championId,
+                    company: details?.company || 'Unknown Company',
+                    state: details?.state || null,
+                    industry: details?.industry || null,
+                    computersDonated: 0,
+                    totalWeight: 0,
+                    latestDonation: details?.lastDonation || null
+                });
+            }
+
+            const champion = championMap.get(championId);
+            champion.computersDonated += computers;
+        });
+
+        console.log(`Built leaderboard with ${championMap.size} companies`);
+
+        // Convert to array and sort
+        const leaderboard = Array.from(championMap.values())
             .filter(entry => entry.computersDonated > 0)
-            .sort((a, b) => b.computersDonated - a.computersDonated)
-            .map((entry, index) => ({
-                ...entry,
-                totalWeight: Math.round(entry.totalWeight)
-            }));
+            .sort((a, b) => b.computersDonated - a.computersDonated);
 
-        console.log(`Leaderboard entries: ${leaderboard.length}`);
-
-        // Calculate overall stats using ALL donated computers (including Donor_ID='0')
-        const totalComputersDonated = totalComputersForStats;
-        const totalWeight = Math.round(totalWeightForStats);
-        const totalCompanies = leaderboard.length;
-
-        // Group by industry (skip null/undefined industries)
+        // Group by industry
         const byIndustry = {};
         leaderboard.forEach(entry => {
             const ind = entry.industry;
-            // Skip entries without industry data
             if (!ind || ind === 'Uncategorized' || ind === 'Unknown') return;
 
             if (!byIndustry[ind]) {
@@ -445,37 +304,32 @@ export default async function handler(req, res) {
             }
             byIndustry[ind].companies++;
             byIndustry[ind].computersDonated += entry.computersDonated;
-            byIndustry[ind].totalWeight += entry.totalWeight;
         });
 
-        // Group by state (skip null/undefined states)
-        const byState = {};
+        // Count unique companies per state for byState
+        const stateCompanies = {};
         leaderboard.forEach(entry => {
             const st = entry.state;
-            // Skip entries without state data
-            if (!st || st === 'Unknown') return;
-
-            if (!byState[st]) {
-                byState[st] = {
-                    state: st,
-                    companies: 0,
-                    computersDonated: 0,
-                    totalWeight: 0
-                };
+            if (st) {
+                if (!stateCompanies[st]) {
+                    stateCompanies[st] = new Set();
+                }
+                stateCompanies[st].add(entry.id);
             }
-            byState[st].companies++;
-            byState[st].computersDonated += entry.computersDonated;
-            byState[st].totalWeight += entry.totalWeight;
+        });
+
+        Object.keys(byState).forEach(state => {
+            byState[state].companies = stateCompanies[state]?.size || 0;
         });
 
         const result = {
             leaderboard,
             stats: {
-                totalComputersDonated,
-                totalWeight,
-                totalCompanies,
-                goal: 1000000, // 1 million computer goal
-                percentageComplete: ((totalComputersDonated / 1000000) * 100).toFixed(2)
+                totalComputersDonated: totalComputersForStats,
+                totalWeight: Math.round(totalWeightForStats),
+                totalCompanies: leaderboard.length,
+                goal: 1000000,
+                percentageComplete: ((totalComputersForStats / 1000000) * 100).toFixed(2)
             },
             byIndustry: Object.values(byIndustry).sort((a, b) => b.computersDonated - a.computersDonated),
             byState: Object.values(byState).sort((a, b) => b.computersDonated - a.computersDonated)
@@ -488,18 +342,15 @@ export default async function handler(req, res) {
             states: result.byState.length
         });
 
-        // Cache the results for 5 minutes
         cachedLeaderboard = result;
-        cacheExpiration = Date.now() + (5 * 60 * 1000); // 5 minutes
+        cacheExpiration = Date.now() + (5 * 60 * 1000);
         console.log('Leaderboard cached until:', new Date(cacheExpiration));
-        console.log('Use ?refresh=true to bypass cache');
 
         res.json(result);
 
     } catch (error) {
         console.error("Error fetching leaderboard:", error.response ? error.response.data : error.message);
         console.error("Returning empty leaderboard due to error");
-        // Return empty data instead of error to not break the frontend
         res.json(getEmptyLeaderboard());
     }
 }
