@@ -277,17 +277,19 @@ export default async function handler(req, res) {
             console.log('Possible industry field names on Computer Donor without Industry:', possibleIndustryFields);
         }
 
-        // Debug: Look up the specific Champion for Dove Cay, LLC
+        // Debug: Look up the specific Champion for Dove Cay, LLC and see ALL field names
         const doveCayChampion = allChampions.find(ch => ch.id === "4064166000111838001");
         if (doveCayChampion) {
-            console.log('Dove Cay Champion record:', JSON.stringify({
-                id: doveCayChampion.id,
-                name: doveCayChampion.Name,
-                company: doveCayChampion.Company,
-                industry: doveCayChampion.Industry,
-                championType: doveCayChampion.Champion_Type,
-                championTypeText: doveCayChampion.Champion_Type_Text
-            }, null, 2));
+            console.log('Dove Cay Champion ALL fields:', JSON.stringify(doveCayChampion, null, 2));
+
+            // Look for Industry-like field names
+            const fieldNames = Object.keys(doveCayChampion);
+            const industryFields = fieldNames.filter(key =>
+                key.toLowerCase().includes('industry') ||
+                key.toLowerCase().includes('sector') ||
+                key.toLowerCase().includes('category')
+            );
+            console.log('Possible industry field names:', industryFields);
         }
 
         // Build Champion lookup map
