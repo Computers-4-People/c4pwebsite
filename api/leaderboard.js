@@ -222,6 +222,12 @@ export default async function handler(req, res) {
         const donatedRecords = computerDonors.filter(donor => donor.Status === "Donated");
         console.log(`Filtered to ${donatedRecords.length} donated records (excluded ${computerDonors.length - donatedRecords.length})`);
 
+        // Debug: Check sample donated record
+        const sampleDonor = donatedRecords.find(d => d.Champion);
+        if (sampleDonor) {
+            console.log('Sample Computer_Donors record:', JSON.stringify(sampleDonor, null, 2));
+        }
+
         // Debug: Show large donations to identify the 300k issue
         const largeDonations = computerDonors
             .map(d => ({
@@ -236,6 +242,10 @@ export default async function handler(req, res) {
             .filter(d => d.total > 1000)
             .sort((a, b) => b.total - a.total);
         console.log('Large donations (>1000 computers):', largeDonations);
+
+        // Debug: Check what fields are actually on Champion records
+        const sampleChampionRecords = allChampions.slice(0, 3);
+        console.log('Sample raw champion records:', JSON.stringify(sampleChampionRecords, null, 2));
 
         // Build Champion lookup map
         const championDetails = new Map();
