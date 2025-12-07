@@ -182,20 +182,18 @@ export default async function handler(req, res) {
                 });
 
                 const batchResults = await Promise.all(batchPromises);
-                let foundEmpty = false;
+                let allEmpty = true; // Only stop if ALL pages in batch are empty
 
                 batchResults.forEach(resp => {
                     if (resp && resp.data && resp.data.data) {
                         allData = allData.concat(resp.data.data);
-                        if (resp.data.data.length < 200) {
-                            foundEmpty = true;
+                        if (resp.data.data.length > 0) {
+                            allEmpty = false; // At least one page has data
                         }
-                    } else {
-                        foundEmpty = true;
                     }
                 });
 
-                if (foundEmpty) break;
+                if (allEmpty) break; // Only stop if entire batch is empty
             }
 
             return allData;
