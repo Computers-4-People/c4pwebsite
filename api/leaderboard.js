@@ -243,9 +243,32 @@ export default async function handler(req, res) {
             .sort((a, b) => b.total - a.total);
         console.log('Large donations (>1000 computers):', largeDonations);
 
-        // Debug: Check what fields are actually on Champion records
-        const sampleChampionRecords = allChampions.slice(0, 3);
-        console.log('Sample raw champion records:', JSON.stringify(sampleChampionRecords, null, 2));
+        // Debug: Find Champions with Industry populated
+        const championsWithIndustry = allChampions.filter(ch => ch.Industry != null);
+        console.log(`Champions with Industry: ${championsWithIndustry.length} out of ${allChampions.length}`);
+        if (championsWithIndustry.length > 0) {
+            const sampleWithIndustry = championsWithIndustry.slice(0, 3).map(ch => ({
+                id: ch.id,
+                name: ch.Name || ch.Company,
+                industry: ch.Industry,
+                championType: ch.Champion_Type,
+                championTypeText: ch.Champion_Type_Text
+            }));
+            console.log('Sample Champions WITH Industry:', JSON.stringify(sampleWithIndustry, null, 2));
+        }
+
+        // Debug: Look up the specific Champion for Dove Cay, LLC
+        const doveCayChampion = allChampions.find(ch => ch.id === "4064166000111838001");
+        if (doveCayChampion) {
+            console.log('Dove Cay Champion record:', JSON.stringify({
+                id: doveCayChampion.id,
+                name: doveCayChampion.Name,
+                company: doveCayChampion.Company,
+                industry: doveCayChampion.Industry,
+                championType: doveCayChampion.Champion_Type,
+                championTypeText: doveCayChampion.Champion_Type_Text
+            }, null, 2));
+        }
 
         // Build Champion lookup map
         const championDetails = new Map();
@@ -258,9 +281,6 @@ export default async function handler(req, res) {
             });
         });
 
-        // Debug: Check sample champion industry data
-        const sampleChampions = Array.from(championDetails.entries()).slice(0, 5);
-        console.log('Sample champion data:', sampleChampions.map(([id, details]) => ({ id, ...details })));
 
         // Calculate computers from quantity fields
         function getComputerCount(donor) {
