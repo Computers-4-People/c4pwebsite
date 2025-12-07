@@ -145,7 +145,7 @@ export default async function handler(req, res) {
                 `https://www.zohoapis.com/crm/v2/${module}`,
                 {
                     headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                    params: { per_page: 200, page: 1, fields: 'all' },
+                    params: { per_page: 200, page: 1 },
                     timeout: 5000
                 }
             );
@@ -170,7 +170,7 @@ export default async function handler(req, res) {
                         `https://www.zohoapis.com/crm/v2/${module}`,
                         {
                             headers: { Authorization: `Zoho-oauthtoken ${crmToken}` },
-                            params: { per_page: 200, page, fields: 'all' },
+                            params: { per_page: 200, page },
                             timeout: 5000
                         }
                     ).catch(err => {
