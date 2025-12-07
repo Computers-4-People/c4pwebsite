@@ -309,12 +309,12 @@ export default async function handler(req, res) {
                 championMap.set(championId, {
                     id: championId,
                     donorId: donor.id, // Add donor ID for debugging
-                    company: details?.company || 'Unknown Company',
-                    state: details?.state || null,
-                    industry: details?.industry || null,
+                    company: donor.Company || donor.Champion?.name || 'Unknown Company', // Use Computer_Donors Company field
+                    state: donor.Mailing_State || null, // Use Computer_Donors Mailing_State
+                    industry: details?.industry || null, // Get Industry from Champion if available
                     computersDonated: 0,
                     totalWeight: 0,
-                    latestDonation: details?.lastDonation || null
+                    latestDonation: donor.Date_Picked_up || donor.Entry_Date || null // Use donation date from Computer_Donors
                 });
             }
 
