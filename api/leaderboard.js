@@ -296,7 +296,7 @@ export default async function handler(req, res) {
         const championDetails = new Map();
         allChampions.forEach(ch => {
             championDetails.set(ch.id, {
-                company: ch.Company || ch.Name,
+                name: ch.Name,
                 state: ch.State_Text || ch.State,
                 industry: ch.Industry,
                 lastDonation: ch.Last_Time_Donated
@@ -351,7 +351,7 @@ export default async function handler(req, res) {
                 championMap.set(championId, {
                     id: championId,
                     donorId: donor.id, // Add donor ID for debugging
-                    company: details?.company || donor.Champion?.name || 'Unknown Company', // Use Champion Name
+                    company: details?.name || donor.Champion?.name || 'Unknown Company', // Use Champion Name field
                     state: donor.Mailing_State || null, // Use Computer_Donors Mailing_State
                     industry: details?.industry || null, // Get Industry from Champion if available
                     computersDonated: 0,
