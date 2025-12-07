@@ -159,7 +159,7 @@ export default async function handler(req, res) {
 
             // Fetch remaining pages in parallel batches
             const pagesToFetch = [];
-            for (let page = 2; page <= 20; page++) {
+            for (let page = 2; page <= 50; page++) { // Increased from 20 to 50 pages (10,000 records max)
                 pagesToFetch.push(page);
             }
 
