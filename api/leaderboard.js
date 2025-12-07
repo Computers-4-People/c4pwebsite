@@ -159,7 +159,7 @@ export default async function handler(req, res) {
 
             // Fetch remaining pages in parallel batches
             const pagesToFetch = [];
-            for (let page = 2; page <= 50; page++) { // Increased from 20 to 50 pages (10,000 records max)
+            for (let page = 2; page <= 150; page++) { // 150 pages = 30,000 records max (25k Champions)
                 pagesToFetch.push(page);
             }
 
