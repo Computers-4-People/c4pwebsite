@@ -257,6 +257,26 @@ export default async function handler(req, res) {
             console.log('Sample Champions WITH Industry:', JSON.stringify(sampleWithIndustry, null, 2));
         }
 
+        // Debug: Count "Computer Donor" Champions
+        const computerDonorChampions = allChampions.filter(ch =>
+            ch.Champion_Type && ch.Champion_Type.includes("Computer Donor")
+        );
+        console.log(`Computer Donor Champions: ${computerDonorChampions.length} out of ${allChampions.length}`);
+
+        const computerDonorsWithIndustry = computerDonorChampions.filter(ch => ch.Industry != null);
+        const computerDonorsWithoutIndustry = computerDonorChampions.filter(ch => ch.Industry == null);
+        console.log(`  - WITH Industry: ${computerDonorsWithIndustry.length}`);
+        console.log(`  - WITHOUT Industry: ${computerDonorsWithoutIndustry.length}`);
+
+        // Check if there's an alternate field name for Industry
+        if (computerDonorsWithoutIndustry.length > 0) {
+            const sampleWithoutIndustry = computerDonorsWithoutIndustry[0];
+            const possibleIndustryFields = Object.keys(sampleWithoutIndustry).filter(key =>
+                key.toLowerCase().includes('industry') || key.toLowerCase().includes('sector') || key.toLowerCase().includes('category')
+            );
+            console.log('Possible industry field names on Computer Donor without Industry:', possibleIndustryFields);
+        }
+
         // Debug: Look up the specific Champion for Dove Cay, LLC
         const doveCayChampion = allChampions.find(ch => ch.id === "4064166000111838001");
         if (doveCayChampion) {
