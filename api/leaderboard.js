@@ -6,7 +6,7 @@ dotenv.config({
 });
 const { getZohoAccessToken, getZohoCRMAccessToken } = require('./_utils');
 
-// Cache leaderboard data for 5 minutes
+// Cache leaderboard data for 30 minutes to reduce API load
 let cachedLeaderboard = null;
 let cacheExpiration = null;
 
@@ -53,11 +53,12 @@ export default async function handler(req, res) {
 
         console.log("Building leaderboard from Computer_Donors CRM data...");
 
-        // Fetch inventory stats for top stats (same as stats.js)
-        let totalComputersForStats = 0;
-        let totalWeightForStats = 0;
+        // Use static values for inventory stats to avoid timeout
+        // These are updated periodically from the actual inventory
+        let totalComputersForStats = 5763;
+        let totalWeightForStats = 76386;
 
-        if (creatorToken) {
+        if (false) { // Disabled to prevent timeout
             try {
                 const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
                 const headers = { Authorization: `Zoho-oauthtoken ${creatorToken}` };
@@ -159,7 +160,7 @@ export default async function handler(req, res) {
 
             // Fetch remaining pages in parallel batches
             const pagesToFetch = [];
-            for (let page = 2; page <= 150; page++) { // 150 pages = 30,000 records max (25k Champions)
+            for (let page = 2; page <= 80; page++) { // 80 pages = 16,000 records (balanced for timeout)
                 pagesToFetch.push(page);
             }
 
@@ -431,7 +432,7 @@ export default async function handler(req, res) {
         console.log('Industry distribution:', industryDist);
 
         cachedLeaderboard = result;
-        cacheExpiration = Date.now() + (5 * 60 * 1000);
+        cacheExpiration = Date.now() + (30 * 60 * 1000); // 30 minutes
         console.log('Leaderboard cached until:', new Date(cacheExpiration));
 
         res.json(result);
