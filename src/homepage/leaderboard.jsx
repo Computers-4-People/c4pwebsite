@@ -87,23 +87,12 @@ function Leaderboard() {
                                 )}%`
                             }}
                         />
-                        <div
-                            className="absolute top-1/2 -translate-y-1/2 text-white font-bold text-sm"
-                            style={{
-                                left: `${Math.min(
-                                    parseFloat(stats.percentageComplete) < 50
-                                        ? parseFloat(stats.percentageComplete) * 2
-                                        : parseFloat(stats.percentageComplete),
-                                    100
-                                )}%`,
-                                transform: 'translate(-50%, -50%)'
-                            }}
-                        >
-                            {!loading && stats.totalComputersDonated.toLocaleString()}
-                        </div>
                     </div>
-                    <div className="flex justify-end mt-2 text-sm text-gray-600">
-                        <span>{stats.goal.toLocaleString()} Goal</span>
+                    <div className="flex justify-between mt-2 text-sm">
+                        <span className="font-bold text-black">
+                            {!loading && stats.totalComputersDonated.toLocaleString()}
+                        </span>
+                        <span className="text-gray-600">{stats.goal.toLocaleString()} Goal</span>
                     </div>
                 </div>
 

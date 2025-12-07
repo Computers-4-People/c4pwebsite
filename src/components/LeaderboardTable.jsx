@@ -82,15 +82,12 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                             <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
                                 Computers Donated
                             </th>
-                            <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider">
-                                State
-                            </th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {filteredLeaderboard.length === 0 ? (
                             <tr>
-                                <td colSpan="4" className="px-6 py-12 text-center text-gray-500">
+                                <td colSpan="3" className="px-6 py-12 text-center text-gray-500">
                                     No companies in this industry.
                                 </td>
                             </tr>
@@ -123,11 +120,6 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                                             <div className="font-bold text-lg text-c4p-dark">
                                                 {entry.computersDonated.toLocaleString()}
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-center text-sm text-gray-700">
-                                            <span className="inline-flex items-center px-2 py-1 rounded bg-gray-100 text-gray-800 font-medium">
-                                                {entry.state || 'N/A'}
-                                            </span>
                                         </td>
                                     </tr>
                                 );

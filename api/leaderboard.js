@@ -351,7 +351,7 @@ export default async function handler(req, res) {
                 championMap.set(championId, {
                     id: championId,
                     donorId: donor.id, // Add donor ID for debugging
-                    company: donor.Company || donor.Champion?.name || 'Unknown Company', // Use Computer_Donors Company field
+                    company: details?.company || donor.Champion?.name || 'Unknown Company', // Use Champion Name
                     state: donor.Mailing_State || null, // Use Computer_Donors Mailing_State
                     industry: details?.industry || null, // Get Industry from Champion if available
                     computersDonated: 0,
