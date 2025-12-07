@@ -75,23 +75,34 @@ function Leaderboard() {
 
                 {/* Progress Bar */}
                 <div className="mb-12">
-                    <div className="w-full bg-gray-200 rounded-full h-8 overflow-hidden shadow-inner">
+                    <div className="w-full bg-gray-200 rounded-full h-8 overflow-hidden shadow-inner relative">
                         <div
-                            className="bg-gradient-to-r from-c4p to-c4p-hover h-full flex items-center justify-end pr-4 text-white font-bold transition-all duration-1000 ease-out"
-                            style={{ width: `${Math.min(parseFloat(stats.percentageComplete), 100)}%` }}
+                            className="bg-gradient-to-r from-c4p to-c4p-hover h-full transition-all duration-1000 ease-out"
+                            style={{
+                                width: `${Math.min(
+                                    parseFloat(stats.percentageComplete) < 50
+                                        ? parseFloat(stats.percentageComplete) * 2
+                                        : parseFloat(stats.percentageComplete),
+                                    100
+                                )}%`
+                            }}
+                        />
+                        <div
+                            className="absolute top-1/2 -translate-y-1/2 text-white font-bold text-sm"
+                            style={{
+                                left: `${Math.min(
+                                    parseFloat(stats.percentageComplete) < 50
+                                        ? parseFloat(stats.percentageComplete) * 2
+                                        : parseFloat(stats.percentageComplete),
+                                    100
+                                )}%`,
+                                transform: 'translate(-50%, -50%)'
+                            }}
                         >
-                            {loading ? (
-                                <AnimatedDots />
-                            ) : (
-                                <span>{stats.percentageComplete}%</span>
-                            )}
+                            {!loading && stats.totalComputersDonated.toLocaleString()}
                         </div>
                     </div>
-                    <div className="flex justify-between mt-2 text-sm text-gray-600">
-                        <span>0</span>
-                        <span className="font-bold text-c4p-dark">
-                            {loading ? <AnimatedDots /> : stats.totalComputersDonated.toLocaleString()}
-                        </span>
+                    <div className="flex justify-end mt-2 text-sm text-gray-600">
                         <span>{stats.goal.toLocaleString()} Goal</span>
                     </div>
                 </div>
@@ -171,64 +182,10 @@ function Leaderboard() {
                     </div>
                 </div>
 
-                {/* US Map Section */}
+                {/* Company Rankings by Industry Section */}
                 <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
                     <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
-                        Donations by State
-                    </h3>
-                    {loading ? (
-                        <div className="flex justify-center items-center h-96">
-                            <div className="text-2xl text-gray-500">
-                                Loading map<AnimatedDots />
-                            </div>
-                        </div>
-                    ) : error ? (
-                        <div className="text-center text-red-600 py-12">
-                            {error}
-                        </div>
-                    ) : (
-                        <USMapChart byState={data?.byState || []} />
-                    )}
-                </div>
-
-                {/* Industry Breakdown Section */}
-                {!loading && data?.byIndustry && data.byIndustry.length > 0 && (
-                    <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-                        <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
-                            Top Industries
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {data.byIndustry.slice(0, 9).map((industry, index) => (
-                                <div
-                                    key={industry.industry}
-                                    className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                                >
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                            <h4 className="font-semibold text-gray-900 mb-1">
-                                                {industry.industry}
-                                            </h4>
-                                            <p className="text-2xl font-bold text-c4p-dark">
-                                                {industry.computersDonated.toLocaleString()}
-                                            </p>
-                                            <p className="text-sm text-gray-600">
-                                                {industry.companies} {industry.companies === 1 ? 'company' : 'companies'}
-                                            </p>
-                                        </div>
-                                        <div className="text-2xl font-bold text-gray-300">
-                                            #{index + 1}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Leaderboard Table Section */}
-                <div className="bg-white rounded-xl shadow-lg p-8">
-                    <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
-                        Company Rankings
+                        Top Companies by Industry
                     </h3>
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
@@ -254,6 +211,26 @@ function Leaderboard() {
                     )}
                 </div>
 
+                {/* US Map Section */}
+                <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+                    <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
+                        Donations by State
+                    </h3>
+                    {loading ? (
+                        <div className="flex justify-center items-center h-96">
+                            <div className="text-2xl text-gray-500">
+                                Loading map<AnimatedDots />
+                            </div>
+                        </div>
+                    ) : error ? (
+                        <div className="text-center text-red-600 py-12">
+                            {error}
+                        </div>
+                    ) : (
+                        <USMapChart byState={data?.byState || []} />
+                    )}
+                </div>
+
                 {/* Call to Action */}
                 <div className="mt-12 bg-gradient-to-r from-c4p to-c4p-hover rounded-xl shadow-xl p-8 text-center text-white">
                     <h3 className="text-3xl font-title mb-4">
@@ -264,13 +241,13 @@ function Leaderboard() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <a
-                            href="/partner"
+                            href="/support"
                             className="px-8 py-3 bg-white text-c4p font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-md"
                         >
-                            Become a Partner
+                            Fund Access
                         </a>
                         <a
-                            href="/ewastedropoff"
+                            href="/donate"
                             className="px-8 py-3 bg-c4p-darker text-white font-semibold rounded-lg hover:bg-c4p-darkest transition-colors shadow-md"
                         >
                             Donate Computers

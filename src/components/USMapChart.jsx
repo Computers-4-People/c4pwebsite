@@ -69,7 +69,7 @@ const USMapChart = ({ byState = [], recentDonations = [] }) => {
 
         if (stateData) {
             setTooltipContent(
-                `${stateName}: ${stateData.computersDonated.toLocaleString()} computers (${stateData.companies} ${stateData.companies === 1 ? 'company' : 'companies'})`
+                `${stateName}: ${stateData.computersDonated.toLocaleString()} computers`
             );
         } else {
             setTooltipContent(`${stateName}: No donations yet`);

@@ -2,18 +2,26 @@ import React, { useState, useMemo } from 'react';
 import { FiFilter } from 'react-icons/fi';
 
 const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
-    const [selectedIndustry, setSelectedIndustry] = useState('all');
+    // Default to first industry if available
+    const [selectedIndustry, setSelectedIndustry] = useState(
+        byIndustry.length > 0 ? byIndustry[0].industry : ''
+    );
 
-    // Filter leaderboard based on selected industry
-    const filteredLeaderboard = useMemo(() => {
-        if (selectedIndustry === 'all') {
-            return leaderboard;
+    // Update selected industry when byIndustry changes
+    React.useEffect(() => {
+        if (byIndustry.length > 0 && !selectedIndustry) {
+            setSelectedIndustry(byIndustry[0].industry);
         }
+    }, [byIndustry, selectedIndustry]);
 
-        return leaderboard.filter(entry => {
+    // Filter leaderboard based on selected industry and limit to top 5
+    const filteredLeaderboard = useMemo(() => {
+        const filtered = leaderboard.filter(entry => {
             const industry = entry.industry || 'Uncategorized';
             return industry === selectedIndustry;
         });
+
+        return filtered.slice(0, 5); // Only show top 5
     }, [leaderboard, selectedIndustry]);
 
     // Get rank medal icon
@@ -39,17 +47,15 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
 
     return (
         <div className="w-full">
-            {/* Filters Section */}
-            <div className="mb-6 flex items-center gap-4">
-                {/* Industry Filter Dropdown */}
-                <div className="flex items-center gap-2">
+            {/* Industry Filter Section */}
+            <div className="mb-6">
+                <div className="flex items-center gap-2 mb-4">
                     <FiFilter className="text-gray-600" />
                     <select
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
                         className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p focus:border-transparent bg-white cursor-pointer"
                     >
-                        <option value="all">All Industries</option>
                         {byIndustry.map((industry) => (
                             <option key={industry.industry} value={industry.industry}>
                                 {industry.industry} ({industry.computersDonated.toLocaleString()})
@@ -57,21 +63,9 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                         ))}
                     </select>
                 </div>
-
-                {/* Clear Filter */}
-                {selectedIndustry !== 'all' && (
-                    <button
-                        onClick={() => setSelectedIndustry('all')}
-                        className="text-sm text-c4p hover:text-c4p-hover font-medium transition-colors"
-                    >
-                        Clear Filter
-                    </button>
-                )}
-            </div>
-
-            {/* Results Count */}
-            <div className="mb-4 text-sm text-gray-600">
-                Showing {filteredLeaderboard.length} of {leaderboard.length} {filteredLeaderboard.length === 1 ? 'company' : 'companies'}
+                <div className="text-sm text-gray-600">
+                    Showing top 5 companies in {selectedIndustry}
+                </div>
             </div>
 
             {/* Table */}
@@ -103,9 +97,7 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                         {filteredLeaderboard.length === 0 ? (
                             <tr>
                                 <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
-                                    {selectedIndustry !== 'all'
-                                        ? 'No companies in this industry.'
-                                        : 'No donation data available yet.'}
+                                    No companies in this industry.
                                 </td>
                             </tr>
                         ) : (
