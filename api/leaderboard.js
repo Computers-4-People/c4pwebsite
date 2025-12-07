@@ -200,13 +200,53 @@ export default async function handler(req, res) {
             return allData;
         };
 
-        // Fetch Computer_Donors and Champions in parallel
-        const [computerDonors, allChampions] = await Promise.all([
-            fetchAllPages('Computer_Donors'),
-            fetchAllPages('Champions')
-        ]);
+        // Fetch specific Champions by IDs (much faster than fetching all pages!)
+        const fetchChampionsByIds = async (ids, token) => {
+            if (ids.length === 0) return [];
 
+            const allChampions = [];
+            const batchSize = 100; // Zoho CRM allows up to 100 IDs per request
+
+            // Split IDs into batches of 100
+            for (let i = 0; i < ids.length; i += batchSize) {
+                const batch = ids.slice(i, i + batchSize);
+                const idsParam = batch.join(',');
+
+                try {
+                    const response = await axios.get(
+                        `https://www.zohoapis.com/crm/v2/Champions`,
+                        {
+                            headers: { Authorization: `Zoho-oauthtoken ${token}` },
+                            params: { ids: idsParam },
+                            timeout: 10000
+                        }
+                    );
+
+                    if (response.data && response.data.data) {
+                        allChampions.push(...response.data.data);
+                    }
+                } catch (err) {
+                    console.error(`Error fetching Champions batch ${i / batchSize + 1}:`, err.message);
+                }
+            }
+
+            return allChampions;
+        };
+
+        // First, fetch Computer_Donors to see which Champions we actually need
+        const computerDonors = await fetchAllPages('Computer_Donors');
         console.log(`Fetched ${computerDonors.length} Computer_Donors records`);
+
+        // Extract unique Champion IDs from donations
+        const championIds = [...new Set(
+            computerDonors
+                .map(d => d.Champion?.id)
+                .filter(Boolean)
+        )];
+        console.log(`Found ${championIds.length} unique Champion IDs to fetch`);
+
+        // Fetch only the Champions we need using IDs (much faster!)
+        const allChampions = await fetchChampionsByIds(championIds, crmToken);
         console.log(`Fetched ${allChampions.length} Champions records`);
 
         // Debug: Check all Status values
