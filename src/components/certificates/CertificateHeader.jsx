@@ -12,8 +12,10 @@ export default function CertificateHeader({ data }) {
 
     return (
         <div className="certificate-header">
-            <img src="/c4plogo.png" alt="Computers4People" className="certificate-logo" />
-            <h1 className="certificate-title">{getTitleByType()}</h1>
+            <div className="header-top">
+                <img src="/c4plogo.png" alt="Computers4People" className="certificate-logo" />
+                <h1 className="certificate-title">{getTitleByType()}</h1>
+            </div>
 
             <div className="report-info">
                 <div className="report-column">

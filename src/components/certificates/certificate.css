@@ -17,17 +17,23 @@
     margin-bottom: 20px;
 }
 
-.certificate-logo {
-    width: 200px;
-    height: auto;
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 10px;
 }
 
+.certificate-logo {
+    width: 120px;
+    height: auto;
+}
+
 .certificate-title {
-    text-align: center;
     font-size: 18pt;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 0;
+    flex: 1;
 }
 
 /* Report Information */
@@ -418,14 +424,23 @@
         border-bottom: none !important;
     }
 
+    .header-top {
+        display: flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        margin-bottom: 0px !important;
+    }
+
     .certificate-logo {
         height: 10px !important;
+        width: auto !important;
         margin-bottom: 0px !important;
     }
 
     .certificate-title {
         font-size: 8pt !important;
         margin: 0px !important;
+        flex: 1 !important;
     }
 
     .report-info {
