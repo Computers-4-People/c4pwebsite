@@ -23,14 +23,19 @@ function Champions() {
     }, []);
 
     useEffect(() => {
-        // Fetch testimonials after inventory data is loaded
-        if (allInventoryData.length > 0) {
-            fetchTestimonials().finally(() => {
-                // Turn off loading after testimonials are fetched
-                setLoading(false);
-            });
-        } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
-            // If we have donations but no inventory, turn off loading
+        // TEMPORARILY DISABLED - Fetch testimonials after inventory data is loaded
+        // if (allInventoryData.length > 0) {
+        //     fetchTestimonials().finally(() => {
+        //         // Turn off loading after testimonials are fetched
+        //         setLoading(false);
+        //     });
+        // } else if (donations.length > 0 && allInventoryData.length === 0 && loading) {
+        //     // If we have donations but no inventory, turn off loading
+        //     setLoading(false);
+        // }
+
+        // Turn off loading when inventory data is loaded (testimonials disabled)
+        if (allInventoryData.length > 0 || (donations.length > 0 && allInventoryData.length === 0)) {
             setLoading(false);
         }
     }, [allInventoryData, donations]);
@@ -343,8 +348,8 @@ function Champions() {
                     </div>
                 </div>
 
-                {/* Testimonials Section */}
-                {testimonials.length > 0 && (
+                {/* Testimonials Section - TEMPORARILY DISABLED */}
+                {/* {testimonials.length > 0 && (
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">What Recipients of Your Computers Are Saying</h2>
                         <p className="text-sm text-gray-600 mb-6 italic">These individuals have agreed to share their name and testimonial publicly.</p>
@@ -376,7 +381,7 @@ function Champions() {
                             })}
                         </div>
                     </div>
-                )}
+                )} */}
 
                 {/* Impact Message */}
                 <div className="bg-gradient-to-r from-c4p-dark to-c4p-darker rounded-xl shadow-lg p-8 mb-8 text-white">
