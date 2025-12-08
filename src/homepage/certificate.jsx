@@ -46,9 +46,19 @@ export default function CertificatePage() {
         window.print();
     };
 
-    const handleDownload = () => {
-        // Use browser's print dialog with "Save as PDF" option
-        window.print();
+    const handleDownload = async () => {
+        // Set document title for PDF filename suggestion
+        const originalTitle = document.title;
+        document.title = `Certificate-${certificateData?.reportId || inventoryId}`;
+
+        // Trigger print dialog (user can select Save as PDF)
+        setTimeout(() => {
+            window.print();
+            // Restore original title after print dialog
+            setTimeout(() => {
+                document.title = originalTitle;
+            }, 100);
+        }, 100);
     };
 
     if (loading) {
@@ -129,10 +139,57 @@ export default function CertificatePage() {
             </div>
 
             {/* Print-only styles */}
-            <style jsx>{`
+            <style>{`
                 @media print {
+                    /* Hide action bar */
                     .action-bar {
                         display: none !important;
+                        visibility: hidden !important;
+                    }
+
+                    /* Hide navbar and footer from App.js */
+                    body > div > div > nav,
+                    body > div > div > footer,
+                    nav,
+                    footer,
+                    header,
+                    .navbar,
+                    .footer {
+                        display: none !important;
+                        visibility: hidden !important;
+                        position: absolute !important;
+                        left: -9999px !important;
+                        height: 0 !important;
+                        overflow: hidden !important;
+                    }
+
+                    /* Ensure body and html are clean */
+                    @page {
+                        margin: 0.3in;
+                        size: letter;
+                    }
+
+                    html, body {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: visible !important;
+                    }
+
+                    /* Only show certificate */
+                    body * {
+                        visibility: hidden !important;
+                    }
+
+                    .certificate-container,
+                    .certificate-container * {
+                        visibility: visible !important;
+                    }
+
+                    .certificate-container {
+                        position: absolute !important;
+                        left: 0 !important;
+                        top: 0 !important;
+                        width: 100% !important;
                     }
                 }
             `}</style>
