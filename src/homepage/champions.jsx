@@ -306,8 +306,8 @@ function Champions() {
             // Use a promise to wait for render
             await new Promise((resolve) => {
                 root.render(<Certificate data={certData} />);
-                // Wait longer for render and CSS to apply
-                setTimeout(resolve, 1500);
+                // Wait for render and CSS to apply
+                setTimeout(resolve, 300);
             });
 
             // Get the actual certificate container element
