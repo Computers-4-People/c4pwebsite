@@ -68,29 +68,35 @@ export default function ErasureCertificate({ data }) {
             {/* Key Drive/Erasure Information */}
             <div className="section">
                 <h3>Drive Erasure Details</h3>
-                <div className="info-row">
-                    <span className="label">Drive Model:</span>
-                    <span className="value">{data.hddInfo?.model || 'SanDisk Z400s M.2 2280 256GB'}</span>
-                </div>
-                <div className="info-row">
-                    <span className="label">Size:</span>
-                    <span className="value">{data.hddInfo?.size || '238.47 GB'}</span>
-                </div>
-                <div className="info-row">
-                    <span className="label">Serial Number (SN):</span>
-                    <span className="value">{data.hddInfo?.serial || '161326442434'}</span>
-                </div>
-                <div className="info-row">
-                    <span className="label">Erasure Method:</span>
-                    <span className="value">{data.erasureResults?.method || 'NIST 800-88 Purge'}</span>
-                </div>
-                <div className="info-row">
-                    <span className="label">End Time:</span>
-                    <span className="value">{data.erasureResults?.endTime || 'December 19, 2023 17:09:32 IST'}</span>
-                </div>
-                <div className="info-row">
-                    <span className="label">Status:</span>
-                    <span className="value success">{data.erasureResults?.status || 'Completed'}</span>
+                <div className="two-column-grid">
+                    <div>
+                        <div className="info-row">
+                            <span className="label">Drive Model:</span>
+                            <span className="value">{data.hddInfo?.model || 'SanDisk Z400s M.2 2280 256GB'}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="label">Size:</span>
+                            <span className="value">{data.hddInfo?.size || '238.47 GB'}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="label">Serial Number (SN):</span>
+                            <span className="value">{data.hddInfo?.serial || '161326442434'}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="info-row">
+                            <span className="label">Erasure Method:</span>
+                            <span className="value">{data.erasureResults?.method || 'NIST 800-88 Purge'}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="label">End Time:</span>
+                            <span className="value">{data.erasureResults?.endTime || 'December 19, 2023 17:09:32 IST'}</span>
+                        </div>
+                        <div className="info-row">
+                            <span className="label">Status:</span>
+                            <span className="value success">{data.erasureResults?.status || 'Completed'}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 

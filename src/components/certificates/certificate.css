@@ -382,13 +382,13 @@
     /* Compact all sections to fit on one page */
     .section {
         page-break-inside: avoid;
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
         padding: 0 !important;
     }
 
     .section h3 {
-        font-size: 8.5pt !important;
-        margin-bottom: 3px !important;
+        font-size: 8pt !important;
+        margin-bottom: 2px !important;
         padding-bottom: 1px !important;
     }
 
@@ -413,57 +413,58 @@
     }
 
     .certificate-header {
-        padding-bottom: 4px !important;
-        margin-bottom: 4px !important;
+        padding-bottom: 3px !important;
+        margin-bottom: 3px !important;
     }
 
     .certificate-logo {
-        height: 28px !important;
-        margin-bottom: 3px !important;
+        height: 25px !important;
+        margin-bottom: 2px !important;
     }
 
     .certificate-title {
-        font-size: 13pt !important;
-        margin: 3px 0 !important;
+        font-size: 12pt !important;
+        margin: 2px 0 !important;
     }
 
     .report-info {
-        margin-bottom: 8px !important;
-        gap: 10px !important;
+        margin-bottom: 4px !important;
+        gap: 8px !important;
     }
 
     .customer-details {
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
     }
 
     .customer-details h3 {
-        font-size: 8.5pt !important;
-        margin-bottom: 3px !important;
+        font-size: 8pt !important;
+        margin-bottom: 2px !important;
     }
 
     .certificate-footer {
-        padding-top: 4px !important;
-        margin-top: 6px !important;
+        padding-top: 3px !important;
+        margin-top: 4px !important;
     }
 
     .validation-details h3 {
-        font-size: 8.5pt !important;
-        margin-bottom: 3px !important;
+        font-size: 8pt !important;
+        margin-bottom: 2px !important;
     }
 
     .validation-row {
-        gap: 10px !important;
-        margin-bottom: 6px !important;
+        gap: 8px !important;
+        margin-bottom: 3px !important;
     }
 
     .certification-statement {
-        font-size: 7pt !important;
-        margin: 6px 0 !important;
+        font-size: 6.5pt !important;
+        margin: 3px 0 !important;
+        line-height: 1.2 !important;
     }
 
     .signatures {
-        margin: 6px 0 !important;
-        gap: 20px !important;
+        margin: 3px 0 !important;
+        gap: 15px !important;
     }
 
     .signature-block {
@@ -471,26 +472,27 @@
     }
 
     .signature-image {
-        max-height: 45px !important;
-        margin-bottom: 2px !important;
+        max-height: 35px !important;
+        margin-bottom: 1px !important;
     }
 
     .signature-line {
-        min-height: 15px !important;
-        padding-top: 3px !important;
+        min-height: 10px !important;
+        padding-top: 2px !important;
         margin-bottom: 1px !important;
     }
 
     .signature-label,
     .signature-title,
     .signature-org {
-        font-size: 7pt !important;
-        margin-top: 0.5px !important;
+        font-size: 6.5pt !important;
+        margin-top: 0px !important;
+        line-height: 1.2 !important;
     }
 
     .certificate-date {
-        margin-top: 6px !important;
-        font-size: 7pt !important;
+        margin-top: 3px !important;
+        font-size: 6.5pt !important;
     }
 
     /* Compact notice boxes */

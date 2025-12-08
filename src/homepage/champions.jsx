@@ -13,6 +13,7 @@ function Champions() {
     const [loading, setLoading] = useState(true);
     const [testimonials, setTestimonials] = useState([]);
     const [stats, setStats] = useState(null);
+    const [generatingPdf, setGeneratingPdf] = useState(null);
 
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || {};
     const companyName = championResp.Company || `${championResp.First_Name} ${championResp.Last_Name}`;
@@ -271,6 +272,14 @@ function Champions() {
         link.download = filename;
         link.click();
         URL.revokeObjectURL(url);
+    };
+
+    const handleViewCertificate = (itemId) => {
+        setGeneratingPdf(itemId);
+        // Open certificate with auto-generate parameter
+        window.open(`/certificate?id=${itemId}&auto=true`, '_blank');
+        // Reset loading state after a delay
+        setTimeout(() => setGeneratingPdf(null), 2000);
     };
 
     const downloadAllPDFs = async () => {
@@ -538,15 +547,15 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            <div className="flex items-center justify-between">
+                                            <div className="flex flex-col gap-2">
                                                 <span>Data Certificates</span>
                                                 <button
                                                     onClick={downloadAllPDFs}
-                                                    className="ml-2 inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-all"
+                                                    className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all w-full"
                                                     title="Download all certificates as ZIP"
                                                 >
                                                     <FiDownload className="text-xs" />
-                                                    Download All
+                                                    All
                                                 </button>
                                             </div>
                                         </th>
@@ -568,15 +577,26 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
-                                                <a
-                                                    href={`/certificate?id=${item.ID}&auto=true`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                                <button
+                                                    onClick={() => handleViewCertificate(item.ID)}
+                                                    disabled={generatingPdf === item.ID}
+                                                    className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium transition-all"
                                                 >
-                                                    <FiDownload className="text-sm" />
-                                                    View
-                                                </a>
+                                                    {generatingPdf === item.ID ? (
+                                                        <>
+                                                            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                            </svg>
+                                                            Loading...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <FiDownload className="text-sm" />
+                                                            View
+                                                        </>
+                                                    )}
+                                                </button>
                                             </td>
                                         </tr>
                                         );
