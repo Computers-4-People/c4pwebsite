@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Certificate from '../components/certificates/Certificate';
 import '../components/certificates/certificate.css';
+import html2pdf from 'html2pdf.js';
 
 export default function CertificatePage() {
     const [searchParams] = useSearchParams();
@@ -10,6 +11,7 @@ export default function CertificatePage() {
     const [certificateData, setCertificateData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const certificateRef = useRef(null);
 
     useEffect(() => {
         if (!inventoryId) {
@@ -43,22 +45,45 @@ export default function CertificatePage() {
     };
 
     const handlePrint = () => {
+        // Hide navbar and footer before printing
+        const navbar = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        const actionBar = document.querySelector('.action-bar');
+
+        if (navbar) navbar.style.display = 'none';
+        if (footer) footer.style.display = 'none';
+        if (actionBar) actionBar.style.display = 'none';
+
+        // Trigger print
         window.print();
+
+        // Restore navbar and footer after print dialog closes
+        setTimeout(() => {
+            if (navbar) navbar.style.display = '';
+            if (footer) footer.style.display = '';
+            if (actionBar) actionBar.style.display = '';
+        }, 100);
     };
 
     const handleDownload = async () => {
-        // Set document title for PDF filename suggestion
-        const originalTitle = document.title;
-        document.title = `Certificate-${certificateData?.reportId || inventoryId}`;
+        if (!certificateRef.current) return;
 
-        // Trigger print dialog (user can select Save as PDF)
-        setTimeout(() => {
-            window.print();
-            // Restore original title after print dialog
-            setTimeout(() => {
-                document.title = originalTitle;
-            }, 100);
-        }, 100);
+        const filename = `Certificate-${certificateData?.reportId || inventoryId}.pdf`;
+
+        const opt = {
+            margin: 0.3,
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        try {
+            await html2pdf().set(opt).from(certificateRef.current).save();
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        }
     };
 
     if (loading) {
@@ -135,7 +160,9 @@ export default function CertificatePage() {
 
             {/* Certificate Display */}
             <div style={{ padding: '20px', background: '#f0f0f0', minHeight: '100vh' }}>
-                <Certificate data={certificateData} />
+                <div ref={certificateRef}>
+                    <Certificate data={certificateData} />
+                </div>
             </div>
 
             {/* Print-only styles */}
