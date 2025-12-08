@@ -798,13 +798,14 @@ function Portal() {
                                                             <td className="py-2 px-4 border border-gray-300">{item.Date_Recycled || "N/A"}</td>
                                                             <td className="py-2 px-4 border border-gray-300">{item.Erasure_Date || "N/A"}</td>
                                                             <td className="py-2 px-4 border border-gray-300">
-                                                                {item.Data_Certificate ? (
-                                                                    <a href={item.Data_Certificate} className="text-blue-600 hover:underline">
-                                                                        View
-                                                                    </a>
-                                                                ) : (
-                                                                    "N/A"
-                                                                )}
+                                                                <a
+                                                                    href={`/certificate?id=${item.ID}`}
+                                                                    className="text-blue-600 hover:underline"
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                >
+                                                                    View
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     ))
