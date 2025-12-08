@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2 } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
 import JSZip from 'jszip';
+import Certificate from '../components/certificates/Certificate';
+import '../components/certificates/certificate.css';
 
 function Champions() {
     const [inventoryData, setInventoryData] = useState([]);
@@ -274,12 +277,56 @@ function Champions() {
         URL.revokeObjectURL(url);
     };
 
-    const handleViewCertificate = (itemId) => {
+    const handleViewCertificate = async (itemId) => {
         setGeneratingPdf(itemId);
-        // Open certificate with auto-generate parameter
-        window.open(`/certificate?id=${itemId}&auto=true`, '_blank');
-        // Reset loading state after a delay
-        setTimeout(() => setGeneratingPdf(null), 2000);
+
+        try {
+            // Fetch certificate data
+            const response = await fetch(`${API_BASE_URL}/api/certificate/${itemId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch certificate data');
+            }
+
+            const certData = await response.json();
+
+            // Create temporary container
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.width = '8.5in';
+            document.body.appendChild(tempContainer);
+
+            // Render Certificate component
+            const root = ReactDOM.createRoot(tempContainer);
+            root.render(<Certificate data={certData} />);
+
+            // Wait for render to complete
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Generate PDF
+            const opt = {
+                margin: 0.3,
+                filename: `Certificate-${itemId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            const pdfBlob = await html2pdf().set(opt).from(tempContainer).output('bloburl');
+
+            // Open PDF in new tab
+            window.open(pdfBlob, '_blank');
+
+            // Cleanup
+            root.unmount();
+            document.body.removeChild(tempContainer);
+
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        } finally {
+            setGeneratingPdf(null);
+        }
     };
 
     const downloadAllPDFs = async () => {
@@ -547,15 +594,15 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            <div className="flex flex-col gap-2">
+                                            <div className="flex items-center justify-between gap-2">
                                                 <span>Data Certificates</span>
                                                 <button
                                                     onClick={downloadAllPDFs}
-                                                    className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all w-full"
+                                                    className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all whitespace-nowrap"
                                                     title="Download all certificates as ZIP"
                                                 >
                                                     <FiDownload className="text-xs" />
-                                                    All
+                                                    Download All
                                                 </button>
                                             </div>
                                         </th>
