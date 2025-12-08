@@ -19,30 +19,26 @@ export default function CertificateFooter({ data }) {
                         </div>
                     </div>
                 </div>
+                <div className="validation-row">
+                    <div className="validation-column">
+                        <div className="info-row">
+                            <span className="label">Validator Name:</span>
+                            <span className="value">{data.validatorName || "Dylan Zajac"}</span>
+                        </div>
+                    </div>
+                    <div className="validation-column signature-inline">
+                        {data.validatorSignature ? (
+                            <img src={data.validatorSignature} alt="Validator Signature" className="signature-image-inline" />
+                        ) : (
+                            <img src="/dylan-signature.png" alt="Validator Signature" className="signature-image-inline" />
+                        )}
+                    </div>
+                </div>
             </div>
 
             <p className="certification-statement">
                 I hereby state that the data erasure/destruction process has been carried out in accordance with the given specifications.
             </p>
-
-            <div className="signatures">
-                <div className="signature-block">
-                    {data.validatorSignature ? (
-                        <img src={data.validatorSignature} alt="Validator Signature" className="signature-image" />
-                    ) : (
-                        <img src="/dylan-signature.png" alt="Validator Signature" className="signature-image" />
-                    )}
-                    <div className="signature-line"></div>
-                    <div className="signature-label">{data.validatorName || "Dylan Zajac"}</div>
-                    <div className="signature-title">{data.validatorTitle || "Founder & Executive Director"}</div>
-                    <div className="signature-org">Computers 4 People</div>
-                </div>
-            </div>
-
-            <div className="certificate-date">
-                <span className="label">Date:</span>
-                <span className="value">{data.reportDate}</span>
-            </div>
         </div>
     );
 }

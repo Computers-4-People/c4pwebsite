@@ -17,23 +17,17 @@
     margin-bottom: 20px;
 }
 
-.header-top {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.certificate-logo {
+    width: 200px;
+    height: auto;
     margin-bottom: 10px;
 }
 
-.certificate-logo {
-    width: 120px;
-    height: auto;
-}
-
 .certificate-title {
+    text-align: center;
     font-size: 18pt;
     font-weight: bold;
-    margin: 0;
-    flex: 1;
+    margin: 10px 0;
 }
 
 /* Report Information */
@@ -243,55 +237,17 @@
     text-align: center;
 }
 
-/* Signatures */
-.signatures {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin: 30px 0;
-}
-
-.signature-block {
-    text-align: center;
-}
-
-.signature-line {
-    border-top: 2px solid #000;
-    padding-top: 10px;
-    margin-bottom: 5px;
-    min-height: 60px;
+/* Inline Signature */
+.signature-inline {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-.signature-text {
-    font-family: 'Brush Script MT', cursive;
-    font-size: 18pt;
-    color: #4169e1;
-}
-
-.signature-image {
-    max-width: 250px;
-    max-height: 80px;
+.signature-image-inline {
+    max-height: 20px;
     height: auto;
     width: auto;
-}
-
-.signature-label {
-    font-size: 10pt;
-    font-weight: bold;
-}
-
-.signature-title {
-    font-size: 9pt;
-    font-style: italic;
-    margin-top: 2px;
-}
-
-.signature-org {
-    font-size: 9pt;
-    margin-top: 2px;
 }
 
 .certificate-date {
@@ -424,13 +380,6 @@
         border-bottom: none !important;
     }
 
-    .header-top {
-        display: flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        margin-bottom: 0px !important;
-    }
-
     .certificate-logo {
         height: 10px !important;
         width: auto !important;
@@ -440,7 +389,7 @@
     .certificate-title {
         font-size: 8pt !important;
         margin: 0px !important;
-        flex: 1 !important;
+        text-align: center !important;
     }
 
     .report-info {
@@ -475,42 +424,20 @@
 
     .certification-statement {
         font-size: 3.5pt !important;
-        margin: 0px !important;
+        margin: 1px 0 !important;
         line-height: 0.9 !important;
     }
 
-    .signatures {
-        margin: 0px !important;
-        gap: 2px !important;
+    .signature-inline {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
     }
 
-    .signature-block {
-        margin: 0 !important;
-    }
-
-    .signature-image {
-        max-height: 12px !important;
-        margin-bottom: 0px !important;
-    }
-
-    .signature-line {
-        min-height: 2px !important;
-        padding-top: 0px !important;
-        margin-bottom: 0px !important;
-        border-top: 1px solid #000 !important;
-    }
-
-    .signature-label,
-    .signature-title,
-    .signature-org {
-        font-size: 3.5pt !important;
-        margin-top: 0px !important;
-        line-height: 0.9 !important;
-    }
-
-    .certificate-date {
-        margin-top: 0px !important;
-        font-size: 3.5pt !important;
+    .signature-image-inline {
+        max-height: 5pt !important;
+        height: auto !important;
+        width: auto !important;
     }
 
     /* Compact notice boxes */
