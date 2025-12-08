@@ -42,6 +42,7 @@ import PageNotFound from "./homepage/404page";
 import Champions from "./homepage/champions";
 import Leaderboard from "./homepage/leaderboard";
 import CertificateDemo from "./homepage/certificate-demo";
+import CertificatePage from "./homepage/certificate";
 import Contribution       from "./homepage/addacontribution";
 import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
 import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
@@ -198,6 +199,7 @@ function App() {
           <Route path="/champions" element={<Champions />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/certificate-demo" element={<CertificateDemo />} />
+          <Route path="/certificate" element={<CertificatePage />} />
           <Route path="/addacontribution" element={<Contribution />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<Termsofservice />} />
