@@ -3,11 +3,11 @@ import React from 'react';
 export default function NoHDDCertificate({ data }) {
     return (
         <div className="no-hdd-certificate">
-            {/* No HDD Notice */}
+            {/* No Drive Notice */}
             <div className="section no-hdd-notice">
-                <h3>No Hard Disk Drive Present</h3>
+                <h3>No Storage Drive Present</h3>
                 <p className="notice-text">
-                    This device does not contain a hard disk drive or solid-state drive.
+                    This device does not contain a storage drive or solid-state drive.
                     No data storage media is present, therefore no data erasure was necessary.
                 </p>
             </div>
@@ -47,7 +47,7 @@ export default function NoHDDCertificate({ data }) {
             <div className="section verification-statement">
                 <p>
                     This certificate confirms that the above device was inspected and found to contain
-                    no hard disk drive or solid-state drive. The device has been tested and is ready
+                    no storage drive or solid-state drive. The device has been tested and is ready
                     for distribution.
                 </p>
             </div>

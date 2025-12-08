@@ -27,13 +27,12 @@ export default function CertificateFooter({ data }) {
 
             <div className="signatures">
                 <div className="signature-block">
-                    <div className="signature-line">
-                        {data.validatorSignature ? (
-                            <img src={data.validatorSignature} alt="Validator Signature" className="signature-image" />
-                        ) : (
-                            <span className="signature-text">Dylan Zajac</span>
-                        )}
-                    </div>
+                    {data.validatorSignature ? (
+                        <img src={data.validatorSignature} alt="Validator Signature" className="signature-image" />
+                    ) : (
+                        <img src="/dylan-signature.png" alt="Validator Signature" className="signature-image" />
+                    )}
+                    <div className="signature-line"></div>
                     <div className="signature-label">{data.validatorName || "Dylan Zajac"}</div>
                     <div className="signature-title">{data.validatorTitle || "Founder & Executive Director"}</div>
                     <div className="signature-org">Computers 4 People</div>

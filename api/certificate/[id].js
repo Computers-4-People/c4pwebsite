@@ -85,18 +85,27 @@ export default async function handler(req, res) {
 
                     if (donorResponse.data.data && donorResponse.data.data.length > 0) {
                         const donor = donorResponse.data.data[0];
-                        companyName = donor.Account_Name || donor.Name || 'Unknown';
 
-                        // Build address from CRM fields
-                        const street = donor.Mailing_Street || '';
-                        const city = donor.Mailing_City || '';
-                        const state = donor.Mailing_State || '';
-                        const zip = donor.Mailing_Zip || '';
+                        console.log('========================================');
+                        console.log('DONOR CRM RECORD DEBUG');
+                        console.log('========================================');
+                        console.log('Full donor object:', JSON.stringify(donor, null, 2));
+                        console.log('Available donor keys:', Object.keys(donor).sort());
+                        console.log('========================================');
+
+                        // Try different field combinations for company name
+                        companyName = donor.Account_Name?.name || donor.Account_Name || donor.Company_Name || donor.Name || 'Unknown';
+
+                        // Build address from CRM fields - try multiple field name variations
+                        const street = donor.Pickup_Street || donor.Mailing_Street || donor.Street || '';
+                        const city = donor.Pickup_City || donor.Mailing_City || donor.City || '';
+                        const state = donor.Pickup_State || donor.Mailing_State || donor.State || '';
+                        const zip = donor.Pickup_Zip || donor.Mailing_Zip || donor.Zip_Code || '';
 
                         const addressParts = [street, city, state, zip].filter(part => part);
                         address = addressParts.length > 0 ? addressParts.join(', ') : 'Unknown';
 
-                        console.log(`Found donation record - Company: ${companyName}`);
+                        console.log(`Found donation record - Company: ${companyName}, Address: ${address}`);
                     } else {
                         console.log('No CRM donation record found');
                     }
@@ -151,7 +160,7 @@ export default async function handler(req, res) {
             // Validator signature (hardcoded defaults)
             validatorName: 'Dylan Zajac',
             validatorTitle: 'Founder & Executive Director',
-            validatorSignature: '/dylan-signature.png', // Path to signature image
+            validatorSignature: null, // Will use default /dylan-signature.png in component
         };
 
         // Add type-specific fields
@@ -160,6 +169,7 @@ export default async function handler(req, res) {
             const driveCount = (hasDrive1 ? 1 : 0) + (hasDrive2 ? 1 : 0);
             certificateData.disksToErase = driveCount;
             certificateData.selectedMethod = 'NIST 800-88 Purge';
+            certificateData.numberOfPasses = 3; // Default number of passes
             certificateData.successfulDisks = driveCount;
             certificateData.failedDisks = 0;
 

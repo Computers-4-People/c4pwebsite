@@ -300,21 +300,40 @@
 
 /* Print Styles */
 @media print {
-    /* Hide navbar and footer */
+    /* Hide navbar, footer, and all fixed elements */
     nav, footer, .action-bar {
         display: none !important;
     }
 
+    /* Hide all fixed position elements (navbar is fixed) */
+    .fixed, [class*="fixed"] {
+        display: none !important;
+    }
+
+    /* Hide any background elements */
+    body > div:not(.certificate-page):not(.certificate-demo-page) {
+        display: none !important;
+    }
+
+    /* Ensure only certificate content shows */
     body {
         margin: 0;
         padding: 0;
+        background: white !important;
     }
 
+    /* Show certificate container */
     .certificate-container {
+        display: block !important;
         padding: 0.3in;
         margin: 0;
         max-width: 100%;
         font-size: 9pt;
+        background: white !important;
+    }
+
+    .certificate-page, .certificate-demo-page {
+        background: white !important;
     }
 
     .section {

@@ -9,21 +9,25 @@ export default function ErasureCertificate({ data }) {
                 <div className="two-column-grid">
                     <div>
                         <div className="info-row">
-                            <span className="label">Disks to Erase:</span>
+                            <span className="label">Drives to Erase:</span>
                             <span className="value">{data.disksToErase}</span>
                         </div>
                         <div className="info-row">
                             <span className="label">Selected Method:</span>
                             <span className="value">{data.selectedMethod}</span>
                         </div>
+                        <div className="info-row">
+                            <span className="label">Number of Passes:</span>
+                            <span className="value">{data.numberOfPasses || 3}</span>
+                        </div>
                     </div>
                     <div>
                         <div className="info-row">
-                            <span className="label">Successful Disks:</span>
+                            <span className="label">Successful Drives:</span>
                             <span className="value success">{data.successfulDisks}</span>
                         </div>
                         <div className="info-row">
-                            <span className="label">Failed Disks:</span>
+                            <span className="label">Failed Drives:</span>
                             <span className="value">{data.failedDisks}</span>
                         </div>
                     </div>
@@ -61,11 +65,11 @@ export default function ErasureCertificate({ data }) {
                 </div>
             </div>
 
-            {/* Key HDD/Erasure Information */}
+            {/* Key Drive/Erasure Information */}
             <div className="section">
-                <h3>HDD Erasure Details</h3>
+                <h3>Drive Erasure Details</h3>
                 <div className="info-row">
-                    <span className="label">HDD Model:</span>
+                    <span className="label">Drive Model:</span>
                     <span className="value">{data.hddInfo?.model || 'SanDisk Z400s M.2 2280 256GB'}</span>
                 </div>
                 <div className="info-row">
