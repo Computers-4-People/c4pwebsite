@@ -3,9 +3,11 @@ import React from 'react';
 export default function CertificateHeader({ data }) {
     const getTitleByType = () => {
         if (data.certificateType === 'destroyed') {
-            return 'C4P - Certificate of Destruction';
+            return 'Certificate of Destruction';
+        } else if (data.certificateType === 'no_hdd') {
+            return 'Certificate of No Data';
         }
-        return 'C4P - Certificate of Erasure';
+        return 'Certificate of Erasure';
     };
 
     return (
@@ -37,17 +39,21 @@ export default function CertificateHeader({ data }) {
             </div>
 
             <div className="customer-details">
-                <h3>Customer Details</h3>
+                <h3>Donor Information</h3>
+                <div className="info-row">
+                    <span className="label">Donor ID:</span>
+                    <span className="value">{data.donorId}</span>
+                </div>
                 <div className="customer-row">
                     <div className="customer-column">
                         <div className="info-row">
-                            <span className="label">Customer Name:</span>
+                            <span className="label">Company Name:</span>
                             <span className="value">{data.customerName}</span>
                         </div>
                     </div>
                     <div className="customer-column">
                         <div className="info-row">
-                            <span className="label">Customer Address:</span>
+                            <span className="label">Address:</span>
                             <span className="value">{data.customerAddress}</span>
                         </div>
                     </div>

@@ -109,15 +109,6 @@ export default function DestroyedCertificate({ data }) {
                 </p>
             </div>
 
-            {/* Custom Fields */}
-            <div className="section">
-                <h3>Custom Fields</h3>
-                <div className="info-row">
-                    <span className="label">Donor ID:</span>
-                    <span className="value">{data.donorId}</span>
-                </div>
-            </div>
-
             {/* Destruction Certificate Statement */}
             <div className="section destruction-statement">
                 <p className="statement-text">

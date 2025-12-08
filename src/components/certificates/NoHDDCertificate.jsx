@@ -43,15 +43,6 @@ export default function NoHDDCertificate({ data }) {
                 </div>
             </div>
 
-            {/* Custom Fields */}
-            <div className="section">
-                <h3>Custom Fields</h3>
-                <div className="info-row">
-                    <span className="label">Donor ID:</span>
-                    <span className="value">{data.donorId}</span>
-                </div>
-            </div>
-
             {/* Verification Statement */}
             <div className="section verification-statement">
                 <p>

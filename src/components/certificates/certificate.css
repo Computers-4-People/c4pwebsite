@@ -265,9 +265,27 @@
     color: #4169e1;
 }
 
+.signature-image {
+    max-width: 250px;
+    max-height: 80px;
+    height: auto;
+    width: auto;
+}
+
 .signature-label {
     font-size: 10pt;
     font-weight: bold;
+}
+
+.signature-title {
+    font-size: 9pt;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.signature-org {
+    font-size: 9pt;
+    margin-top: 2px;
 }
 
 .certificate-date {
