@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FiTrendingUp, FiUsers, FiPackage, FiTarget } from 'react-icons/fi';
-import Header from '../components/header';
 import USMapChart from '../components/USMapChart';
 import LeaderboardTable from '../components/LeaderboardTable';
 
@@ -53,151 +51,87 @@ function Leaderboard() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-            {/* Header Section */}
-            <Header props={{
-                bgImage: '/donation.jpg',
-                titlePart1: 'Champion',
-                titlePart2: 'Leaderboard',
-                description: 'Celebrating companies making a difference through computer donations',
-                links: []
-            }} />
-
-            {/* Stats Overview Section */}
+            {/* Main Content */}
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl font-title text-gray-900 mb-4">
-                        Progress Toward 1 Million Computers Donated
-                    </h2>
+                    <h1 className="text-5xl font-title text-gray-900 mb-4">
+                        Champion Leaderboard
+                    </h1>
                     <p className="text-xl text-gray-600 font-paragraph">
-                        Together, we're collecting computers to bridge the digital divide
+                        Celebrating companies making a difference through computer donations
                     </p>
                 </div>
 
-                {/* Progress Bar */}
-                <div className="mb-12">
-                    <div className="w-full bg-gray-200 rounded-full h-8 overflow-hidden shadow-inner relative">
-                        <div
-                            className="bg-gradient-to-r from-c4p to-c4p-hover h-full transition-all duration-1000 ease-out"
-                            style={{
-                                width: `${Math.min(
-                                    parseFloat(stats.percentageComplete) < 50
-                                        ? parseFloat(stats.percentageComplete) * 2
-                                        : parseFloat(stats.percentageComplete),
-                                    100
-                                )}%`
-                            }}
-                        />
-                    </div>
-                    <div className="flex justify-between mt-2 text-sm">
-                        <span className="font-bold text-black">
-                            {!loading && stats.totalComputersDonated.toLocaleString()}
-                        </span>
-                        <span className="text-gray-600">{stats.goal.toLocaleString()} Goal</span>
-                    </div>
-                </div>
+                {/* Thermometer and Leaderboard Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                    {/* Vertical Thermometer */}
+                    <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-lg p-8">
+                        <h2 className="text-2xl font-title text-gray-900 mb-6 text-center">
+                            Progress Toward 1 Million Computers
+                        </h2>
 
-                {/* Stat Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                    {/* Total Computers */}
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p hover:shadow-lg transition-shadow">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                    Computers Donated
-                                </p>
-                                <p className="text-3xl font-bold text-c4p-dark mt-2">
+                        <div className="flex flex-col items-center">
+                            {/* Goal at top */}
+                            <div className="text-center mb-4">
+                                <div className="text-5xl font-bold text-gray-900">
+                                    {stats.goal.toLocaleString()}
+                                </div>
+                                <div className="text-lg text-gray-600">Goal</div>
+                            </div>
+
+                            {/* Thermometer */}
+                            <div className="relative w-32 h-96 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                                <div
+                                    className="absolute bottom-0 w-full bg-gradient-to-t from-c4p to-c4p-hover transition-all duration-1000 ease-out"
+                                    style={{
+                                        height: `${Math.min(
+                                            parseFloat(stats.percentageComplete) < 50
+                                                ? parseFloat(stats.percentageComplete) * 2
+                                                : parseFloat(stats.percentageComplete),
+                                            100
+                                        )}%`
+                                    }}
+                                />
+                            </div>
+
+                            {/* Current amount at bottom */}
+                            <div className="text-center mt-4">
+                                <div className="text-5xl font-bold text-c4p-dark">
                                     {loading ? <AnimatedDots /> : stats.totalComputersDonated.toLocaleString()}
-                                </p>
-                            </div>
-                            <div className="bg-c4p bg-opacity-10 p-4 rounded-full">
-                                <FiPackage className="text-3xl text-c4p" />
+                                </div>
+                                <div className="text-lg text-gray-600">Computers Donated</div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Total Weight */}
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                    Total Weight
-                                </p>
-                                <p className="text-3xl font-bold text-blue-700 mt-2">
-                                    {loading ? <AnimatedDots /> : `${stats.totalWeight.toLocaleString()} lbs`}
-                                </p>
+                    {/* Leaderboard Table */}
+                    <div className="bg-white rounded-xl shadow-lg p-8">
+                        <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
+                            Top Companies by Industry
+                        </h3>
+                        {loading ? (
+                            <div className="flex justify-center items-center h-64">
+                                <div className="text-2xl text-gray-500">
+                                    Loading leaderboard<AnimatedDots />
+                                </div>
                             </div>
-                            <div className="bg-blue-100 p-4 rounded-full">
-                                <FiTrendingUp className="text-3xl text-blue-600" />
+                        ) : error ? (
+                            <div className="text-center text-red-600 py-12">
+                                {error}
+                                <button
+                                    onClick={fetchLeaderboardData}
+                                    className="mt-4 px-6 py-2 bg-c4p hover:bg-c4p-hover text-white rounded-lg transition-colors"
+                                >
+                                    Retry
+                                </button>
                             </div>
-                        </div>
+                        ) : (
+                            <LeaderboardTable
+                                leaderboard={data?.leaderboard || []}
+                                byIndustry={data?.byIndustry || []}
+                            />
+                        )}
                     </div>
-
-                    {/* Total Companies */}
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                    Contributing Companies
-                                </p>
-                                <p className="text-3xl font-bold text-purple-700 mt-2">
-                                    {loading ? <AnimatedDots /> : stats.totalCompanies.toLocaleString()}
-                                </p>
-                            </div>
-                            <div className="bg-purple-100 p-4 rounded-full">
-                                <FiUsers className="text-3xl text-purple-600" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Remaining to Goal */}
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition-shadow">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider">
-                                    Remaining to Goal
-                                </p>
-                                <p className="text-3xl font-bold text-orange-700 mt-2">
-                                    {loading ? (
-                                        <AnimatedDots />
-                                    ) : (
-                                        (stats.goal - stats.totalComputersDonated).toLocaleString()
-                                    )}
-                                </p>
-                            </div>
-                            <div className="bg-orange-100 p-4 rounded-full">
-                                <FiTarget className="text-3xl text-orange-600" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Company Rankings by Industry Section */}
-                <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-                    <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
-                        Top Companies by Industry
-                    </h3>
-                    {loading ? (
-                        <div className="flex justify-center items-center h-64">
-                            <div className="text-2xl text-gray-500">
-                                Loading leaderboard<AnimatedDots />
-                            </div>
-                        </div>
-                    ) : error ? (
-                        <div className="text-center text-red-600 py-12">
-                            {error}
-                            <button
-                                onClick={fetchLeaderboardData}
-                                className="mt-4 px-6 py-2 bg-c4p hover:bg-c4p-hover text-white rounded-lg transition-colors"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    ) : (
-                        <LeaderboardTable
-                            leaderboard={data?.leaderboard || []}
-                            byIndustry={data?.byIndustry || []}
-                        />
-                    )}
                 </div>
 
                 {/* US Map Section */}

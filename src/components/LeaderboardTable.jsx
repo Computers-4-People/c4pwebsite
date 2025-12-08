@@ -14,14 +14,14 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
         }
     }, [byIndustry, selectedIndustry]);
 
-    // Filter leaderboard based on selected industry and limit to top 5
+    // Filter leaderboard based on selected industry and limit to top 3
     const filteredLeaderboard = useMemo(() => {
         const filtered = leaderboard.filter(entry => {
             const industry = entry.industry || 'Uncategorized';
             return industry === selectedIndustry;
         });
 
-        return filtered.slice(0, 5); // Only show top 5
+        return filtered.slice(0, 3); // Only show top 3
     }, [leaderboard, selectedIndustry]);
 
     // Get rank medal icon
@@ -45,26 +45,43 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
         return <span className="text-gray-700">{rank}</span>;
     };
 
+    // Get top 3 companies for each industry for the dropdown
+    const getTop3ForIndustry = (industryName) => {
+        const companies = leaderboard
+            .filter(entry => (entry.industry || 'Uncategorized') === industryName)
+            .slice(0, 3)
+            .map(entry => entry.company);
+        return companies;
+    };
+
     return (
         <div className="w-full">
             {/* Industry Filter Section */}
             <div className="mb-6">
-                <div className="flex items-center gap-2 mb-4">
-                    <FiFilter className="text-gray-600" />
+                <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                        <FiFilter className="text-c4p text-xl" />
+                        <span className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                            Select Industry
+                        </span>
+                    </div>
                     <select
                         value={selectedIndustry}
                         onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p focus:border-transparent bg-white cursor-pointer"
+                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-c4p focus:border-c4p bg-white cursor-pointer text-lg font-medium text-gray-800 hover:border-c4p transition-colors shadow-sm"
                     >
-                        {byIndustry.map((industry) => (
-                            <option key={industry.industry} value={industry.industry}>
-                                {industry.industry} ({industry.computersDonated.toLocaleString()})
-                            </option>
-                        ))}
+                        {byIndustry.map((industry) => {
+                            const top3 = getTop3ForIndustry(industry.industry);
+                            const top3Text = top3.length > 0
+                                ? top3.map((company, i) => `#${i + 1} ${company}`).join(' • ')
+                                : 'No companies';
+                            return (
+                                <option key={industry.industry} value={industry.industry}>
+                                    {industry.industry} — {top3Text}
+                                </option>
+                            );
+                        })}
                     </select>
-                </div>
-                <div className="text-sm text-gray-600">
-                    Showing top 5 companies in {selectedIndustry}
                 </div>
             </div>
 
