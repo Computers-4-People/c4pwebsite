@@ -362,11 +362,11 @@
         right: 0 !important;
         bottom: auto !important;
         display: block !important;
-        padding: 0.1in 0.2in !important;
+        padding: 0.05in 0.15in !important;
         margin: 0 !important;
         max-width: 100% !important;
-        font-size: 6pt !important;
-        line-height: 1.05 !important;
+        font-size: 5pt !important;
+        line-height: 1.0 !important;
         background: white !important;
         width: 100% !important;
         visibility: visible !important;
@@ -382,91 +382,91 @@
     /* Compact all sections to fit on one page */
     .section {
         page-break-inside: avoid;
-        margin-bottom: 0.5px !important;
+        margin-bottom: 0px !important;
         padding: 0 !important;
     }
 
     .section h3 {
-        font-size: 6.5pt !important;
+        font-size: 5.5pt !important;
         margin-bottom: 0px !important;
         padding-bottom: 0px !important;
     }
 
     @page {
         size: letter;
-        margin: 0.25in;
+        margin: 0.2in;
     }
 
     /* Very compact spacing for print */
     .info-row {
         margin-bottom: 0px !important;
-        line-height: 1.0 !important;
-        font-size: 5.5pt !important;
+        line-height: 0.95 !important;
+        font-size: 4.5pt !important;
     }
 
     .info-row .label {
-        min-width: 80px !important;
+        min-width: 70px !important;
     }
 
     .two-column-grid {
-        gap: 2px !important;
+        gap: 1px !important;
     }
 
     .certificate-header {
         padding-bottom: 0px !important;
-        margin-bottom: 0.5px !important;
+        margin-bottom: 0px !important;
         border-bottom: none !important;
     }
 
     .certificate-logo {
-        height: 12px !important;
+        height: 10px !important;
         margin-bottom: 0px !important;
     }
 
     .certificate-title {
-        font-size: 9pt !important;
+        font-size: 8pt !important;
         margin: 0px !important;
     }
 
     .report-info {
-        margin-bottom: 0.5px !important;
-        gap: 2px !important;
+        margin-bottom: 0px !important;
+        gap: 1px !important;
     }
 
     .customer-details {
-        margin-bottom: 0.5px !important;
+        margin-bottom: 0px !important;
     }
 
     .customer-details h3 {
-        font-size: 6.5pt !important;
+        font-size: 5.5pt !important;
         margin-bottom: 0px !important;
     }
 
     .certificate-footer {
         padding-top: 0px !important;
-        margin-top: 0.5px !important;
+        margin-top: 0px !important;
         border-top: none !important;
     }
 
     .validation-details h3 {
-        font-size: 6.5pt !important;
+        font-size: 5.5pt !important;
         margin-bottom: 0px !important;
     }
 
     .validation-row {
-        gap: 2px !important;
+        gap: 1px !important;
         margin-bottom: 0px !important;
     }
 
     .certification-statement {
-        font-size: 5pt !important;
-        margin: 0.5px 0 !important;
-        line-height: 1.0 !important;
+        font-size: 4pt !important;
+        margin: 0px !important;
+        line-height: 0.95 !important;
     }
 
     .signatures {
-        margin: 0.5px 0 !important;
-        gap: 6px !important;
+        margin: 0px !important;
+        gap: 4px !important;
     }
 
     .signature-block {
@@ -474,12 +474,12 @@
     }
 
     .signature-image {
-        max-height: 20px !important;
+        max-height: 16px !important;
         margin-bottom: 0px !important;
     }
 
     .signature-line {
-        min-height: 4px !important;
+        min-height: 3px !important;
         padding-top: 0px !important;
         margin-bottom: 0px !important;
         border-top: 1px solid #000 !important;
@@ -488,14 +488,14 @@
     .signature-label,
     .signature-title,
     .signature-org {
-        font-size: 5pt !important;
+        font-size: 4pt !important;
         margin-top: 0px !important;
-        line-height: 1.0 !important;
+        line-height: 0.95 !important;
     }
 
     .certificate-date {
-        margin-top: 0.5px !important;
-        font-size: 5pt !important;
+        margin-top: 0px !important;
+        font-size: 4pt !important;
     }
 
     /* Compact notice boxes */
