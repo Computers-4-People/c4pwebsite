@@ -45,15 +45,6 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
         return <span className="text-gray-700">{rank}</span>;
     };
 
-    // Get top 3 companies for each industry for the dropdown
-    const getTop3ForIndustry = (industryName) => {
-        const companies = leaderboard
-            .filter(entry => (entry.industry || 'Uncategorized') === industryName)
-            .slice(0, 3)
-            .map(entry => entry.company);
-        return companies;
-    };
-
     return (
         <div className="w-full">
             {/* Industry Filter Section */}
@@ -70,17 +61,11 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                         onChange={(e) => setSelectedIndustry(e.target.value)}
                         className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-c4p focus:border-c4p bg-white cursor-pointer text-lg font-medium text-gray-800 hover:border-c4p transition-colors shadow-sm"
                     >
-                        {byIndustry.map((industry) => {
-                            const top3 = getTop3ForIndustry(industry.industry);
-                            const top3Text = top3.length > 0
-                                ? top3.map((company, i) => `#${i + 1} ${company}`).join(' • ')
-                                : 'No companies';
-                            return (
-                                <option key={industry.industry} value={industry.industry}>
-                                    {industry.industry} — {top3Text}
-                                </option>
-                            );
-                        })}
+                        {byIndustry.map((industry, index) => (
+                            <option key={industry.industry} value={industry.industry}>
+                                #{index + 1} {industry.industry}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
