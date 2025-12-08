@@ -320,7 +320,7 @@ function Champions() {
             // Generate PDF with serial number in filename
             const serialNumber = certData.hardware?.systemSerial || itemId;
             const opt = {
-                margin: 0.3,
+                margin: 0.2,
                 filename: `${serialNumber} - Data Certificate.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, logging: false },
