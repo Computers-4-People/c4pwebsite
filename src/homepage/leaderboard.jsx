@@ -80,7 +80,7 @@ function Leaderboard() {
                             </div>
 
                             {/* Thermometer */}
-                            <div className="relative w-32 h-96 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                            <div className="relative w-24 lg:w-20 h-96 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                                 <div
                                     className="absolute bottom-0 w-full bg-gradient-to-t from-c4p to-c4p-hover transition-all duration-1000 ease-out"
                                     style={{
@@ -133,6 +133,89 @@ function Leaderboard() {
                         )}
                     </div>
                 </div>
+
+                {/* Highlights Section */}
+                {!loading && !error && data?.highlights && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        {/* Latest Donation */}
+                        {data.highlights.latestDonation && (
+                            <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                                <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                                    Latest Donation
+                                </div>
+                                <div className="text-xl font-bold text-gray-900">
+                                    {data.highlights.latestDonation.company}
+                                </div>
+                                <div className="text-2xl font-bold text-blue-600 mt-1">
+                                    {data.highlights.latestDonation.computers.toLocaleString()} computers
+                                </div>
+                                {data.highlights.latestDonation.date && (
+                                    <div className="text-sm text-gray-500 mt-1">
+                                        {new Date(data.highlights.latestDonation.date).toLocaleDateString()}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Biggest Donation Ever */}
+                        {data.highlights.biggestDonation && (
+                            <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                                <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                                    Biggest Single Donation
+                                </div>
+                                <div className="text-xl font-bold text-gray-900">
+                                    {data.highlights.biggestDonation.company}
+                                </div>
+                                <div className="text-2xl font-bold text-purple-600 mt-1">
+                                    {data.highlights.biggestDonation.computers.toLocaleString()} computers
+                                </div>
+                                {data.highlights.biggestDonation.date && (
+                                    <div className="text-sm text-gray-500 mt-1">
+                                        {new Date(data.highlights.biggestDonation.date).toLocaleDateString()}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Biggest Donation This Month */}
+                        {data.highlights.biggestDonationThisMonth && (
+                            <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
+                                <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                                    Top Donation This Month
+                                </div>
+                                <div className="text-xl font-bold text-gray-900">
+                                    {data.highlights.biggestDonationThisMonth.company}
+                                </div>
+                                <div className="text-2xl font-bold text-orange-600 mt-1">
+                                    {data.highlights.biggestDonationThisMonth.computers.toLocaleString()} computers
+                                </div>
+                                {data.highlights.biggestDonationThisMonth.date && (
+                                    <div className="text-sm text-gray-500 mt-1">
+                                        {new Date(data.highlights.biggestDonationThisMonth.date).toLocaleDateString()}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Top Industry */}
+                        {data.highlights.topIndustry && (
+                            <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                                <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
+                                    Leading Industry
+                                </div>
+                                <div className="text-xl font-bold text-gray-900">
+                                    {data.highlights.topIndustry.industry}
+                                </div>
+                                <div className="text-2xl font-bold text-green-600 mt-1">
+                                    {data.highlights.topIndustry.computersDonated.toLocaleString()} computers
+                                </div>
+                                <div className="text-sm text-gray-500 mt-1">
+                                    {data.highlights.topIndustry.companies} companies
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {/* US Map Section */}
                 <div className="bg-white rounded-xl shadow-lg p-8 mb-12">

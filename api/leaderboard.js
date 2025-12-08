@@ -430,6 +430,61 @@ export default async function handler(req, res) {
 
         // (Removed company count from byState map)
 
+        // Calculate competitive/highlight stats
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+
+        let latestDonation = null;
+        let biggestDonation = null;
+        let biggestDonationThisMonth = null;
+
+        donatedRecords.forEach(donor => {
+            // Skip personal donations and empty donations
+            const isNotIndividual = donor.Personal_Company !== "Personal Donation" && donor.Personal_Company !== "Individual";
+            if (!isNotIndividual) return;
+
+            const computers = getComputerCount(donor);
+            if (computers === 0) return;
+
+            const championId = donor.Champion?.id;
+            const details = championDetails.get(championId);
+            const companyName = details?.name || donor.Champion?.name || donor.Company || 'Unknown Company';
+            const donationDate = donor.Date_Picked_up || donor.Entry_Date;
+
+            const donationData = {
+                company: companyName,
+                computers: computers,
+                date: donationDate
+            };
+
+            // Latest donation (most recent by date)
+            if (donationDate) {
+                if (!latestDonation || new Date(donationDate) > new Date(latestDonation.date)) {
+                    latestDonation = donationData;
+                }
+            }
+
+            // Biggest donation ever
+            if (!biggestDonation || computers > biggestDonation.computers) {
+                biggestDonation = donationData;
+            }
+
+            // Biggest donation this month
+            if (donationDate) {
+                const donationDateObj = new Date(donationDate);
+                if (donationDateObj.getMonth() === currentMonth && donationDateObj.getFullYear() === currentYear) {
+                    if (!biggestDonationThisMonth || computers > biggestDonationThisMonth.computers) {
+                        biggestDonationThisMonth = donationData;
+                    }
+                }
+            }
+        });
+
+        // Sort industries by total computers donated
+        const sortedIndustries = Object.values(byIndustry).sort((a, b) => b.computersDonated - a.computersDonated);
+        const topIndustry = sortedIndustries.length > 0 ? sortedIndustries[0] : null;
+
         const result = {
             leaderboard,
             stats: {
@@ -439,7 +494,13 @@ export default async function handler(req, res) {
                 goal: 1000000,
                 percentageComplete: ((totalComputersForStats / 1000000) * 100).toFixed(2)
             },
-            byIndustry: Object.values(byIndustry).sort((a, b) => b.computersDonated - a.computersDonated),
+            highlights: {
+                latestDonation,
+                biggestDonation,
+                biggestDonationThisMonth,
+                topIndustry
+            },
+            byIndustry: sortedIndustries,
             byState: Object.values(byState).sort((a, b) => b.computersDonated - a.computersDonated)
         };
 
