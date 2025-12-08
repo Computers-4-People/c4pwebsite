@@ -79,47 +79,63 @@ export default function CertificatePage() {
     }
 
     return (
-        <div>
-            {/* Action bar for print/download - hidden during print */}
+        <div className="certificate-page">
+            {/* Action Bar - Hidden in print */}
             <div className="action-bar" style={{
+                position: 'sticky',
+                top: 0,
+                background: 'white',
                 padding: '20px',
-                textAlign: 'center',
-                background: '#f5f5f5',
-                borderBottom: '1px solid #ddd'
+                borderBottom: '2px solid #ccc',
+                zIndex: 1000,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px',
             }}>
                 <button
                     onClick={handlePrint}
                     style={{
                         padding: '10px 20px',
-                        marginRight: '10px',
-                        fontSize: '16px',
-                        cursor: 'pointer',
-                        background: '#007bff',
+                        background: '#0066cc',
                         color: 'white',
                         border: 'none',
-                        borderRadius: '5px'
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
                     }}
                 >
-                    Print Certificate
+                    🖨️ Print
                 </button>
                 <button
                     onClick={handleDownload}
                     style={{
                         padding: '10px 20px',
-                        fontSize: '16px',
-                        cursor: 'pointer',
-                        background: '#28a745',
+                        background: '#dc3545',
                         color: 'white',
                         border: 'none',
-                        borderRadius: '5px'
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
                     }}
                 >
-                    Download PDF
+                    📄 Download PDF
                 </button>
             </div>
 
-            {/* Certificate display */}
-            <Certificate data={certificateData} />
+            {/* Certificate Display */}
+            <div style={{ padding: '20px', background: '#f0f0f0', minHeight: '100vh' }}>
+                <Certificate data={certificateData} />
+            </div>
+
+            {/* Print-only styles */}
+            <style jsx>{`
+                @media print {
+                    .action-bar {
+                        display: none !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

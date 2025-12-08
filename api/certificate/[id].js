@@ -100,8 +100,10 @@ export default async function handler(req, res) {
 
         // Step 3: Determine certificate type
         const status = inventory.Status;
-        const dataBearingDrives = inventory.Data_Bearing_Drives || [];
-        const hasHDD = dataBearingDrives.length > 0;
+        // Check if drives exist (Drive_Model_1, Drive_Model_2, etc.)
+        const hasDrive1 = inventory.Drive_Model_1 || inventory.Drive_Serial_1;
+        const hasDrive2 = inventory.Drive_Model_2 || inventory.Drive_Serial_2;
+        const hasHDD = hasDrive1 || hasDrive2;
 
         let certificateType = 'erasure'; // default
         if (status === 'Destroyed') {
@@ -126,14 +128,11 @@ export default async function handler(req, res) {
 
             // Hardware information
             hardware: {
-                manufacturer: typeof inventory.Manufacturer === 'string'
-                    ? inventory.Manufacturer
-                    : (inventory.Manufacturer?.display_value || inventory.Manufacturer?.[0] || 'Unknown'),
+                manufacturer: inventory.Manufacturer || 'Unknown',
                 modelName: inventory.Model || 'Unknown',
                 systemSerial: inventory.System_Serial_Number || 'N/A',
-                chassisType: inventory.Chassis_Type || 'N/A',
-                chassisSerial: inventory.Chassis_Serial || 'N/A',
-                memory: inventory.Memory_Size ? `${inventory.Memory_Size} GB` : 'N/A',
+                chassisType: inventory.Computer_Type || 'N/A',
+                memory: inventory.Memory_Size ? (inventory.Memory_Size.includes('GB') ? inventory.Memory_Size : `${inventory.Memory_Size} GB`) : 'N/A',
             },
 
             // Validation details
@@ -149,45 +148,45 @@ export default async function handler(req, res) {
         // Add type-specific fields
         if (certificateType === 'erasure') {
             // Erasure certificate fields
-            certificateData.disksToErase = dataBearingDrives.length;
+            const driveCount = (hasDrive1 ? 1 : 0) + (hasDrive2 ? 1 : 0);
+            certificateData.disksToErase = driveCount;
             certificateData.selectedMethod = 'NIST 800-88 Purge';
-            certificateData.successfulDisks = dataBearingDrives.length;
+            certificateData.successfulDisks = driveCount;
             certificateData.failedDisks = 0;
 
-            // HDD Information (use first drive if multiple)
-            if (dataBearingDrives.length > 0) {
-                const primaryDrive = dataBearingDrives[0];
+            // HDD Information (use first drive)
+            if (hasDrive1) {
                 certificateData.hddInfo = {
-                    model: primaryDrive.Drive_Model || 'N/A',
-                    size: primaryDrive.Drive_Size ? `${primaryDrive.Drive_Size} GB` : 'N/A',
-                    serial: primaryDrive.Drive_Serial_Number || 'N/A',
+                    model: inventory.Drive_Model_1 || 'N/A',
+                    size: inventory.Drive_Size_1 ? (inventory.Drive_Size_1.includes('GB') ? inventory.Drive_Size_1 : `${inventory.Drive_Size_1} GB`) : 'N/A',
+                    serial: inventory.Drive_Serial_1 || 'N/A',
                 };
 
                 certificateData.erasureResults = {
                     method: 'NIST 800-88 Purge',
-                    endTime: inventory.Date_Destroyed || new Date().toLocaleString(),
+                    endTime: inventory.Date_Destroyed || inventory.Date_Donated || new Date().toLocaleString(),
                     status: 'Completed',
                 };
             }
         } else if (certificateType === 'destroyed') {
             // Destroyed certificate fields
+            const driveCount = (hasDrive1 ? 1 : 0) + (hasDrive2 ? 1 : 0);
             certificateData.destructionMethod = inventory.Destruction_Type || 'Physical Destruction';
             certificateData.destructionDate = inventory.Date_Destroyed || 'N/A';
             certificateData.equipmentUsed = 'Industrial Shredder';
-            certificateData.drivesDestroyed = dataBearingDrives.length || 1;
+            certificateData.drivesDestroyed = driveCount || 1;
             certificateData.totalWeight = inventory.Weight || 'N/A';
             certificateData.particleSize = '< 2mm';
             certificateData.destructionStandard = 'NIST 800-88';
             certificateData.certificationBody = 'Computers 4 People';
 
             // Drive info (use first drive if available)
-            if (dataBearingDrives.length > 0) {
-                const primaryDrive = dataBearingDrives[0];
+            if (hasDrive1) {
                 certificateData.driveInfo = {
-                    model: primaryDrive.Drive_Model || 'N/A',
-                    serial: primaryDrive.Drive_Serial_Number || 'N/A',
-                    capacity: primaryDrive.Drive_Size ? `${primaryDrive.Drive_Size} GB` : 'N/A',
-                    type: primaryDrive.Drive_Type || 'HDD',
+                    model: inventory.Drive_Model_1 || 'N/A',
+                    serial: inventory.Drive_Serial_1 || 'N/A',
+                    capacity: inventory.Drive_Size_1 ? (inventory.Drive_Size_1.includes('GB') ? inventory.Drive_Size_1 : `${inventory.Drive_Size_1} GB`) : 'N/A',
+                    type: 'HDD',
                 };
             } else {
                 // If no drive info, use system info
