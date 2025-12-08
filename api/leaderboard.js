@@ -485,12 +485,21 @@ export default async function handler(req, res) {
         const sortedIndustries = Object.values(byIndustry).sort((a, b) => b.computersDonated - a.computersDonated);
         const topIndustry = sortedIndustries.length > 0 ? sortedIndustries[0] : null;
 
+        // Create a limited leaderboard with only top 3 per industry to prevent scraping full dataset
+        const limitedLeaderboard = [];
+        sortedIndustries.forEach(industryData => {
+            const companiesInIndustry = leaderboard
+                .filter(entry => entry.industry === industryData.industry)
+                .slice(0, 3); // Only top 3 per industry
+            limitedLeaderboard.push(...companiesInIndustry);
+        });
+
         const result = {
-            leaderboard,
+            leaderboard: limitedLeaderboard, // Only return top 3 per industry (not full dataset)
             stats: {
                 totalComputersDonated: totalComputersForStats,
                 totalWeight: Math.round(totalWeightForStats),
-                totalCompanies: leaderboard.length,
+                totalCompanies: leaderboard.length, // Still show correct total count
                 goal: 1000000,
                 percentageComplete: ((totalComputersForStats / 1000000) * 100).toFixed(2)
             },
