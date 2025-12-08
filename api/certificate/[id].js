@@ -48,9 +48,18 @@ export default async function handler(req, res) {
         }
 
         const inventory = inventoryRecords[0];
-        console.log('Inventory record found:', inventory.ID);
+        console.log('========================================');
+        console.log('INVENTORY RECORD DEBUG');
+        console.log('========================================');
+        console.log('Full inventory object:', JSON.stringify(inventory, null, 2));
+        console.log('----------------------------------------');
+        console.log('Inventory ID:', inventory.ID);
         console.log('Manufacturer field value:', inventory.Manufacturer);
         console.log('Manufacturer field type:', typeof inventory.Manufacturer);
+        console.log('System_Serial_Number:', inventory.System_Serial_Number);
+        console.log('Model:', inventory.Model);
+        console.log('Available keys:', Object.keys(inventory).sort());
+        console.log('========================================');
 
         // Step 2: Fetch donation record from CRM using Donor_ID
         const donorId = inventory.Donor_ID;
