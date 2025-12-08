@@ -45,60 +45,27 @@ export default function CertificatePage() {
         }
     };
 
-    const handlePrint = () => {
+    const handlePrint = async () => {
         if (!certificateRef.current) return;
 
-        // Get all stylesheets from the current page
-        const styles = Array.from(document.styleSheets)
-            .map(styleSheet => {
-                try {
-                    return Array.from(styleSheet.cssRules)
-                        .map(rule => rule.cssText)
-                        .join('\n');
-                } catch (e) {
-                    // Handle CORS issues with external stylesheets
-                    return '';
-                }
-            })
-            .join('\n');
+        const filename = `Certificate-${certificateData?.reportId || inventoryId}.pdf`;
 
-        // Create a new window with just the certificate content
-        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        const opt = {
+            margin: 0.3,
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
 
-        printWindow.document.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Certificate - ${certificateData?.reportId || inventoryId}</title>
-                <style>
-                    ${styles}
-
-                    @media print {
-                        @page {
-                            margin: 0.3in;
-                            size: letter;
-                        }
-                        body {
-                            margin: 0;
-                            padding: 0;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                ${certificateRef.current.innerHTML}
-            </body>
-            </html>
-        `);
-
-        printWindow.document.close();
-
-        // Wait for content to load, then print
-        setTimeout(() => {
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        }, 500);
+        try {
+            // Generate PDF and open in new tab
+            const pdf = await html2pdf().set(opt).from(certificateRef.current).output('bloburl');
+            window.open(pdf, '_blank');
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        }
     };
 
     const handleDownload = async () => {
