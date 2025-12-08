@@ -23,6 +23,37 @@ export default function CertificatePage() {
         fetchCertificateData();
     }, [inventoryId]);
 
+    // Setup print event listeners to hide navbar/footer
+    useEffect(() => {
+        const handleBeforePrint = () => {
+            const navbar = document.querySelector('nav');
+            const footer = document.querySelector('footer');
+            const actionBar = document.querySelector('.action-bar');
+
+            if (navbar) navbar.style.display = 'none';
+            if (footer) footer.style.display = 'none';
+            if (actionBar) actionBar.style.display = 'none';
+        };
+
+        const handleAfterPrint = () => {
+            const navbar = document.querySelector('nav');
+            const footer = document.querySelector('footer');
+            const actionBar = document.querySelector('.action-bar');
+
+            if (navbar) navbar.style.display = '';
+            if (footer) footer.style.display = '';
+            if (actionBar) actionBar.style.display = '';
+        };
+
+        window.addEventListener('beforeprint', handleBeforePrint);
+        window.addEventListener('afterprint', handleAfterPrint);
+
+        return () => {
+            window.removeEventListener('beforeprint', handleBeforePrint);
+            window.removeEventListener('afterprint', handleAfterPrint);
+        };
+    }, []);
+
     const fetchCertificateData = async () => {
         try {
             setLoading(true);
@@ -45,24 +76,8 @@ export default function CertificatePage() {
     };
 
     const handlePrint = () => {
-        // Hide navbar and footer before printing
-        const navbar = document.querySelector('nav');
-        const footer = document.querySelector('footer');
-        const actionBar = document.querySelector('.action-bar');
-
-        if (navbar) navbar.style.display = 'none';
-        if (footer) footer.style.display = 'none';
-        if (actionBar) actionBar.style.display = 'none';
-
-        // Trigger print
+        // beforeprint event listener will handle hiding navbar/footer
         window.print();
-
-        // Restore navbar and footer after print dialog closes
-        setTimeout(() => {
-            if (navbar) navbar.style.display = '';
-            if (footer) footer.style.display = '';
-            if (actionBar) actionBar.style.display = '';
-        }, 100);
     };
 
     const handleDownload = async () => {
