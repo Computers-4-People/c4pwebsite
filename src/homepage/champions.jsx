@@ -317,10 +317,11 @@ function Champions() {
                 throw new Error('Certificate element not found after rendering');
             }
 
-            // Generate PDF
+            // Generate PDF with serial number in filename
+            const serialNumber = certData.hardware?.systemSerial || itemId;
             const opt = {
                 margin: 0.3,
-                filename: `Certificate-${itemId}.pdf`,
+                filename: `${serialNumber} - Data Certificate.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, logging: false },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -453,38 +454,38 @@ function Champions() {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Weight</p>
                                 <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalWeight || 0} <span className="text-2xl text-gray-600">lbs</span></p>
                             </div>
-                            <div className="bg-blue-100 p-4 rounded-full">
-                                <FiBarChart2 className="text-3xl text-blue-600" />
+                            <div className="bg-green-100 p-4 rounded-full">
+                                <FiBarChart2 className="text-3xl text-green-600" />
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
                                 <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.donatedPercentage || 0}<span className="text-2xl text-gray-600">%</span></p>
                             </div>
-                            <div className="bg-purple-100 p-4 rounded-full">
-                                <FiCheck className="text-3xl text-purple-600" />
+                            <div className="bg-green-100 p-4 rounded-full">
+                                <FiCheck className="text-3xl text-green-600" />
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500">
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Donations</p>
                                 <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalDonations || 0}</p>
                             </div>
-                            <div className="bg-orange-100 p-4 rounded-full">
-                                <FiCheck className="text-3xl text-orange-600" />
+                            <div className="bg-green-100 p-4 rounded-full">
+                                <FiCheck className="text-3xl text-green-600" />
                             </div>
                         </div>
                     </div>
@@ -641,7 +642,7 @@ function Champions() {
                                                 <button
                                                     onClick={() => handleViewCertificate(item.ID)}
                                                     disabled={generatingPdf === item.ID}
-                                                    className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                                    className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-4 py-2 rounded-lg font-medium transition-all"
                                                 >
                                                     {generatingPdf === item.ID ? (
                                                         <>
