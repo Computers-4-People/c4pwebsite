@@ -52,35 +52,35 @@ function Leaderboard() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
             {/* Main Content */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="text-center mb-12">
-                    <h1 className="text-5xl font-title text-gray-900 mb-4">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="text-center mb-8">
+                    <h1 className="text-4xl lg:text-5xl font-title text-gray-900 mb-3">
                         Champion Leaderboard
                     </h1>
-                    <p className="text-xl text-gray-600 font-paragraph">
+                    <p className="text-lg lg:text-xl text-gray-600 font-paragraph">
                         Celebrating companies making a difference through computer donations
                     </p>
                 </div>
 
                 {/* Thermometer and Leaderboard Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     {/* Vertical Thermometer */}
-                    <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-lg p-8">
-                        <h2 className="text-2xl font-title text-gray-900 mb-6 text-center">
+                    <div className="flex flex-col items-center justify-center bg-white rounded-xl shadow-lg p-6">
+                        <h2 className="text-xl font-title text-gray-900 mb-4 text-center">
                             Progress Toward 1 Million Computers
                         </h2>
 
                         <div className="flex flex-col items-center">
                             {/* Goal at top */}
-                            <div className="text-center mb-4">
-                                <div className="text-5xl font-bold text-gray-900">
+                            <div className="text-center mb-3">
+                                <div className="text-4xl font-bold text-gray-900">
                                     {stats.goal.toLocaleString()}
                                 </div>
-                                <div className="text-lg text-gray-600">Goal</div>
+                                <div className="text-base text-gray-600">Goal</div>
                             </div>
 
                             {/* Thermometer */}
-                            <div className="relative w-24 lg:w-20 h-96 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                            <div className="relative w-24 lg:w-20 h-64 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                                 <div
                                     className="absolute bottom-0 w-full bg-gradient-to-t from-c4p to-c4p-hover transition-all duration-1000 ease-out"
                                     style={{
@@ -95,18 +95,18 @@ function Leaderboard() {
                             </div>
 
                             {/* Current amount at bottom */}
-                            <div className="text-center mt-4">
-                                <div className="text-5xl font-bold text-c4p-dark">
+                            <div className="text-center mt-3">
+                                <div className="text-4xl font-bold text-c4p-dark">
                                     {loading ? <AnimatedDots /> : stats.totalComputersDonated.toLocaleString()}
                                 </div>
-                                <div className="text-lg text-gray-600">Computers Donated</div>
+                                <div className="text-base text-gray-600">Computers Donated</div>
                             </div>
                         </div>
                     </div>
 
                     {/* Leaderboard Table */}
-                    <div className="bg-white rounded-xl shadow-lg p-8">
-                        <h3 className="text-3xl font-title text-gray-900 mb-6 text-center">
+                    <div className="bg-white rounded-xl shadow-lg p-6">
+                        <h3 className="text-2xl font-title text-gray-900 mb-4 text-center">
                             Top Companies by Industry
                         </h3>
                         {loading ? (
