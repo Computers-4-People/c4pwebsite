@@ -23,36 +23,6 @@ export default function CertificatePage() {
         fetchCertificateData();
     }, [inventoryId]);
 
-    // Setup print event listeners to hide navbar/footer
-    useEffect(() => {
-        const handleBeforePrint = () => {
-            const navbar = document.querySelector('nav');
-            const footer = document.querySelector('footer');
-            const actionBar = document.querySelector('.action-bar');
-
-            if (navbar) navbar.style.display = 'none';
-            if (footer) footer.style.display = 'none';
-            if (actionBar) actionBar.style.display = 'none';
-        };
-
-        const handleAfterPrint = () => {
-            const navbar = document.querySelector('nav');
-            const footer = document.querySelector('footer');
-            const actionBar = document.querySelector('.action-bar');
-
-            if (navbar) navbar.style.display = '';
-            if (footer) footer.style.display = '';
-            if (actionBar) actionBar.style.display = '';
-        };
-
-        window.addEventListener('beforeprint', handleBeforePrint);
-        window.addEventListener('afterprint', handleAfterPrint);
-
-        return () => {
-            window.removeEventListener('beforeprint', handleBeforePrint);
-            window.removeEventListener('afterprint', handleAfterPrint);
-        };
-    }, []);
 
     const fetchCertificateData = async () => {
         try {
@@ -76,8 +46,59 @@ export default function CertificatePage() {
     };
 
     const handlePrint = () => {
-        // beforeprint event listener will handle hiding navbar/footer
-        window.print();
+        if (!certificateRef.current) return;
+
+        // Get all stylesheets from the current page
+        const styles = Array.from(document.styleSheets)
+            .map(styleSheet => {
+                try {
+                    return Array.from(styleSheet.cssRules)
+                        .map(rule => rule.cssText)
+                        .join('\n');
+                } catch (e) {
+                    // Handle CORS issues with external stylesheets
+                    return '';
+                }
+            })
+            .join('\n');
+
+        // Create a new window with just the certificate content
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Certificate - ${certificateData?.reportId || inventoryId}</title>
+                <style>
+                    ${styles}
+
+                    @media print {
+                        @page {
+                            margin: 0.3in;
+                            size: letter;
+                        }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                ${certificateRef.current.innerHTML}
+            </body>
+            </html>
+        `);
+
+        printWindow.document.close();
+
+        // Wait for content to load, then print
+        setTimeout(() => {
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }, 500);
     };
 
     const handleDownload = async () => {
