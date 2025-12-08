@@ -54,18 +54,18 @@ export const erasureCertificate = {
     // Donor ID
     donorId: '3302',
 
+    // HDD Information (key fields)
+    hddInfo: {
+        model: 'SanDisk Z400s M.2 2280 256GB',
+        size: '238.47 GB',
+        serial: '161326442434',
+    },
+
     // Erasure Results
     erasureResults: {
-        method: 'Model: SanDisk Z400s M.2 2280 256GB, Serial: 161326442434, Size: 238.47 GB, Total Sectors: 500118192, Sector Size: 512B, Interface: IDE, Media Type: SSD, Remapped Sectors: 4, SMART Status: PASSED',
-        remappedSectors: '4',
-        verification: 'NIST 800-88 Purge (BL SE)',
-        startTime: 'Found 4 sectors not erased',
-        duration: 'Total Verification',
-        writePasses: 'NA',
-        processed: '500118192 sectors',
+        method: 'NIST 800-88 Purge',
         endTime: 'December 19, 2023 17:09:32 IST',
         status: 'Completed',
-        cryptographicErase: 'BL - Block Erase, NV - NVMe Erase, SE - Secure Erase',
     },
 
     // Validation

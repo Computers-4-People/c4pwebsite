@@ -12,57 +12,6 @@ export default function NoHDDCertificate({ data }) {
                 </p>
             </div>
 
-            {/* Hardware Test */}
-            <div className="section">
-                <h3>Hardware Test</h3>
-                <div className="two-column-grid">
-                    <div>
-                        <div className="info-row">
-                            <span className="label">Motherboard:</span>
-                            <span className="value success">{data.hardwareTest.motherboard}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Memory:</span>
-                            <span className="value success">{data.hardwareTest.memory}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Mouse/Pointer:</span>
-                            <span className="value success">{data.hardwareTest.mousePointer}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Bluetooth:</span>
-                            <span className="value success">{data.hardwareTest.bluetooth}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Webcam:</span>
-                            <span className="value success">{data.hardwareTest.webcam}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">PC Speaker:</span>
-                            <span className="value success">{data.hardwareTest.pcSpeaker}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="info-row">
-                            <span className="label">Processor:</span>
-                            <span className="value success">{data.hardwareTest.processor}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Keyboard:</span>
-                            <span className="value success">{data.hardwareTest.keyboard}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Wireless(Wifi):</span>
-                            <span className="value success">{data.hardwareTest.wireless}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">Battery:</span>
-                            <span className="value success">{data.hardwareTest.battery}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* Hardware Information */}
             <div className="section">
                 <h3>Hardware Information</h3>
@@ -80,23 +29,11 @@ export default function NoHDDCertificate({ data }) {
                             <span className="label">System Serial:</span>
                             <span className="value">{data.hardware.systemSerial}</span>
                         </div>
-                        <div className="info-row">
-                            <span className="label">Chassis Serial:</span>
-                            <span className="value">{data.hardware.chassisSerial}</span>
-                        </div>
                     </div>
                     <div>
                         <div className="info-row">
                             <span className="label">Chassis Type:</span>
                             <span className="value">{data.hardware.chassisType}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">UUID:</span>
-                            <span className="value">{data.hardware.uuid}</span>
-                        </div>
-                        <div className="info-row">
-                            <span className="label">SKU Number:</span>
-                            <span className="value">{data.hardware.skuNumber}</span>
                         </div>
                         <div className="info-row">
                             <span className="label">Memory (RAM):</span>

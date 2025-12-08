@@ -1,10 +1,17 @@
 import React from 'react';
 
 export default function CertificateHeader({ data }) {
+    const getTitleByType = () => {
+        if (data.certificateType === 'destroyed') {
+            return 'C4P - Certificate of Destruction';
+        }
+        return 'C4P - Certificate of Erasure';
+    };
+
     return (
         <div className="certificate-header">
             <img src="/c4plogo.png" alt="Computers4People" className="certificate-logo" />
-            <h1 className="certificate-title">C4P - Certificate of Erasure</h1>
+            <h1 className="certificate-title">{getTitleByType()}</h1>
 
             <div className="report-info">
                 <div className="report-column">
