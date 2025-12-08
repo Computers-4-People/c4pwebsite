@@ -49,6 +49,8 @@ export default async function handler(req, res) {
 
         const inventory = inventoryRecords[0];
         console.log('Inventory record found:', inventory.ID);
+        console.log('Manufacturer field value:', inventory.Manufacturer);
+        console.log('Manufacturer field type:', typeof inventory.Manufacturer);
 
         // Step 2: Fetch donation record from CRM using Donor_ID
         const donorId = inventory.Donor_ID;
@@ -124,7 +126,9 @@ export default async function handler(req, res) {
 
             // Hardware information
             hardware: {
-                manufacturer: inventory.Manufacturer || 'Unknown',
+                manufacturer: typeof inventory.Manufacturer === 'string'
+                    ? inventory.Manufacturer
+                    : (inventory.Manufacturer?.display_value || inventory.Manufacturer?.[0] || 'Unknown'),
                 modelName: inventory.Model || 'Unknown',
                 systemSerial: inventory.System_Serial_Number || 'N/A',
                 chassisType: inventory.Chassis_Type || 'N/A',

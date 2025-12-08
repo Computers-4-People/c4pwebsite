@@ -245,14 +245,21 @@ function Champions() {
         }
 
         const headers = ['Manufacturer', 'Model', 'Serial #', 'Barcode', 'Computer Type', 'Weight'];
-        const rows = inventoryData.map(item => [
-            item.Manufacturer || '',
-            item.Model || '',
-            item.System_Serial_Number || '',
-            item.Barcode_Save || '',
-            item.Computer_Type || '',
-            item.Weight || ''
-        ]);
+        const rows = inventoryData.map(item => {
+            // Handle Manufacturer dropdown field
+            const manufacturer = typeof item.Manufacturer === 'string'
+                ? item.Manufacturer
+                : (item.Manufacturer?.display_value || item.Manufacturer?.[0] || '');
+
+            return [
+                manufacturer,
+                item.Model || '',
+                item.System_Serial_Number || '',
+                item.Barcode_Save || '',
+                item.Computer_Type || '',
+                item.Weight || ''
+            ];
+        });
 
         const csvContent = [headers, ...rows].map(e => e.join(',')).join('\n');
         const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -467,9 +474,15 @@ function Champions() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {inventoryData.map((item, index) => (
+                                    {inventoryData.map((item, index) => {
+                                        // Handle Manufacturer dropdown field (might be string, object, or array)
+                                        const manufacturer = typeof item.Manufacturer === 'string'
+                                            ? item.Manufacturer
+                                            : (item.Manufacturer?.display_value || item.Manufacturer?.[0] || 'N/A');
+
+                                        return (
                                         <tr key={item.ID || index} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Manufacturer || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-900 font-medium">{manufacturer}</td>
                                             <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Model || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
@@ -487,7 +500,8 @@ function Champions() {
                                                 </a>
                                             </td>
                                         </tr>
-                                    ))}
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         )}
