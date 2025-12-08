@@ -94,7 +94,7 @@ export default async function handler(req, res) {
                         console.log('========================================');
 
                         // Try different field combinations for company name
-                        companyName = donor.Account_Name?.name || donor.Account_Name || donor.Company_Name || donor.Name || 'Unknown';
+                        companyName = donor.Company || donor.Account_Name?.name || donor.Account_Name || donor.Name || 'Unknown';
 
                         // Build address from CRM fields - try multiple field name variations
                         const street = donor.Pickup_Street || donor.Mailing_Street || donor.Street || '';

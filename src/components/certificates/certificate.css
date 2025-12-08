@@ -300,40 +300,39 @@
 
 /* Print Styles */
 @media print {
-    /* Hide navbar, footer, and all fixed elements */
-    nav, footer, .action-bar {
+    /* Hide navbar, footer, and action bar */
+    nav, footer, .action-bar, header {
         display: none !important;
     }
 
-    /* Hide all fixed position elements (navbar is fixed) */
-    .fixed, [class*="fixed"] {
+    /* Target the fixed navbar specifically */
+    .fixed.z-50, .fixed.w-full {
         display: none !important;
     }
 
-    /* Hide any background elements */
-    body > div:not(.certificate-page):not(.certificate-demo-page) {
-        display: none !important;
-    }
-
-    /* Ensure only certificate content shows */
-    body {
-        margin: 0;
-        padding: 0;
+    /* Ensure page shows correctly */
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
         background: white !important;
+        width: 100% !important;
+        height: auto !important;
     }
 
-    /* Show certificate container */
+    /* Show certificate container with proper spacing */
     .certificate-container {
         display: block !important;
-        padding: 0.3in;
-        margin: 0;
-        max-width: 100%;
-        font-size: 9pt;
+        padding: 0.3in !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        font-size: 9pt !important;
         background: white !important;
     }
 
     .certificate-page, .certificate-demo-page {
         background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
     .section {
