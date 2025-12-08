@@ -289,19 +289,33 @@ function Champions() {
 
             const certData = await response.json();
 
-            // Create temporary container
+            // Create temporary container that's hidden but still renderable
             const tempContainer = document.createElement('div');
-            tempContainer.style.position = 'absolute';
-            tempContainer.style.left = '-9999px';
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.top = '-10000px';
+            tempContainer.style.left = '0';
             tempContainer.style.width = '8.5in';
+            tempContainer.style.visibility = 'hidden';
+            tempContainer.style.opacity = '0';
+            tempContainer.style.pointerEvents = 'none';
             document.body.appendChild(tempContainer);
 
             // Render Certificate component
             const root = ReactDOM.createRoot(tempContainer);
-            root.render(<Certificate data={certData} />);
 
-            // Wait for render to complete
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Use a promise to wait for render
+            await new Promise((resolve) => {
+                root.render(<Certificate data={certData} />);
+                // Wait longer for render and CSS to apply
+                setTimeout(resolve, 1500);
+            });
+
+            // Get the actual certificate container element
+            const certElement = tempContainer.querySelector('.certificate-container');
+
+            if (!certElement) {
+                throw new Error('Certificate element not found after rendering');
+            }
 
             // Generate PDF
             const opt = {
@@ -312,7 +326,7 @@ function Champions() {
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            const pdfBlob = await html2pdf().set(opt).from(tempContainer).output('bloburl');
+            const pdfBlob = await html2pdf().set(opt).from(certElement).output('bloburl');
 
             // Open PDF in new tab
             window.open(pdfBlob, '_blank');
@@ -594,11 +608,11 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                            <div className="flex items-center justify-between gap-2">
+                                            <div className="flex flex-col gap-2">
                                                 <span>Data Certificates</span>
                                                 <button
                                                     onClick={downloadAllPDFs}
-                                                    className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all whitespace-nowrap"
+                                                    className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all whitespace-nowrap"
                                                     title="Download all certificates as ZIP"
                                                 >
                                                     <FiDownload className="text-xs" />
