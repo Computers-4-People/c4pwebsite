@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2 } from 'react-icons/fi';
+import html2pdf from 'html2pdf.js';
+import JSZip from 'jszip';
 
 function Champions() {
     const [inventoryData, setInventoryData] = useState([]);
@@ -271,6 +273,71 @@ function Champions() {
         URL.revokeObjectURL(url);
     };
 
+    const downloadAllPDFs = async () => {
+        if (inventoryData.length === 0) {
+            alert('No certificates available to download');
+            return;
+        }
+
+        const zip = new JSZip();
+        const folder = zip.folder('Data_Certificates');
+
+        alert(`Generating ${inventoryData.length} certificates. This may take a moment...`);
+
+        try {
+            // Generate PDFs for each inventory item
+            for (let i = 0; i < inventoryData.length; i++) {
+                const item = inventoryData[i];
+
+                // Fetch certificate data
+                const response = await fetch(`${API_BASE_URL}/api/certificate/${item.ID}`);
+                if (!response.ok) continue;
+
+                const certData = await response.json();
+
+                // Create a temporary container for the certificate
+                const tempContainer = document.createElement('div');
+                tempContainer.style.position = 'absolute';
+                tempContainer.style.left = '-9999px';
+                tempContainer.innerHTML = `
+                    <div class="certificate-container">
+                        <!-- Certificate content will be rendered here -->
+                    </div>
+                `;
+                document.body.appendChild(tempContainer);
+
+                // Generate PDF
+                const opt = {
+                    margin: 0.3,
+                    filename: `Certificate-${item.ID}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true, logging: false },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                const pdfBlob = await html2pdf().set(opt).from(tempContainer).output('blob');
+                folder.file(`Certificate-${item.ID}.pdf`, pdfBlob);
+
+                // Clean up
+                document.body.removeChild(tempContainer);
+            }
+
+            // Generate and download the zip file
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const zipUrl = URL.createObjectURL(zipBlob);
+            const link = document.createElement('a');
+            link.href = zipUrl;
+            link.download = `${companyName.replace(/\s+/g, '_')}_Data_Certificates.zip`;
+            link.click();
+            URL.revokeObjectURL(zipUrl);
+
+            alert('All certificates downloaded successfully!');
+        } catch (error) {
+            console.error('Error generating PDFs:', error);
+            alert('Failed to generate some certificates. Please try again.');
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 pt-20 font-subtitle">
             {/* Header */}
@@ -470,7 +537,19 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Data Certificates</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                                            <div className="flex items-center justify-between">
+                                                <span>Data Certificates</span>
+                                                <button
+                                                    onClick={downloadAllPDFs}
+                                                    className="ml-2 inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-all"
+                                                    title="Download all certificates as ZIP"
+                                                >
+                                                    <FiDownload className="text-xs" />
+                                                    Download All
+                                                </button>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
@@ -490,7 +569,7 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 <a
-                                                    href={`/certificate?id=${item.ID}`}
+                                                    href={`/certificate?id=${item.ID}&auto=true`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"

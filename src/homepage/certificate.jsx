@@ -12,6 +12,7 @@ export default function CertificatePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const certificateRef = useRef(null);
+    const autoGenerate = searchParams.get('auto') === 'true';
 
     useEffect(() => {
         if (!inventoryId) {
@@ -22,6 +23,13 @@ export default function CertificatePage() {
 
         fetchCertificateData();
     }, [inventoryId]);
+
+    // Auto-generate PDF if auto=true parameter is present
+    useEffect(() => {
+        if (autoGenerate && certificateData && certificateRef.current) {
+            handlePrint();
+        }
+    }, [autoGenerate, certificateData]);
 
 
     const fetchCertificateData = async () => {
