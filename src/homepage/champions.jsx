@@ -244,15 +244,13 @@ function Champions() {
             filename = `${companyName.replace(/\s+/g, '_')}_Donation_${donationDate}.csv`;
         }
 
-        const headers = ['Model', 'Serial #', 'Barcode', 'Computer Type', 'Donation ID', 'Date Donated', 'Date Recycled', 'Weight'];
+        const headers = ['Manufacturer', 'Model', 'Serial #', 'Barcode', 'Computer Type', 'Weight'];
         const rows = inventoryData.map(item => [
+            item.Manufacturer || '',
             item.Model || '',
             item.System_Serial_Number || '',
             item.Barcode_Save || '',
             item.Computer_Type || '',
-            item.Donation_ID || '',
-            item.Date_Donated || '',
-            item.Date_Recycled || '',
             item.Weight || ''
         ]);
 
@@ -459,42 +457,34 @@ function Champions() {
                             <table className="min-w-full">
                                 <thead className="bg-gray-50 border-b-2 border-gray-200">
                                     <tr>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Manufacturer</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Model</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Donation ID</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Donated</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date Recycled</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Destruction Certificates</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Data Certificates</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {inventoryData.map((item, index) => (
                                         <tr key={item.ID || index} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Manufacturer || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-900 font-medium">{item.Model || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Donation_ID || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Donated || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Date_Recycled || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
-                                                {item.Data_Certificate ? (
-                                                    <a
-                                                        href={item.Data_Certificate}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
-                                                    >
-                                                        <FiDownload className="text-sm" />
-                                                        View
-                                                    </a>
-                                                ) : (
-                                                    <span className="text-gray-400">Pending</span>
-                                                )}
+                                                <a
+                                                    href={`/certificate?id=${item.ID}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
+                                                >
+                                                    <FiDownload className="text-sm" />
+                                                    View
+                                                </a>
                                             </td>
                                         </tr>
                                     ))}
