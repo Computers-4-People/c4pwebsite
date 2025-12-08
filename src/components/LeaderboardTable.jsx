@@ -72,16 +72,16 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
 
             {/* Table */}
             <div className="overflow-x-auto rounded-xl shadow-md border border-gray-200">
-                <table className="min-w-full bg-white">
+                <table className="w-full bg-white">
                     <thead className="bg-gradient-to-r from-c4p to-c4p-hover text-white">
                         <tr>
-                            <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider w-20">
                                 Rank
                             </th>
                             <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                                 Company
                             </th>
-                            <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider">
+                            <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider w-48">
                                 Computers Donated
                             </th>
                         </tr>
@@ -109,14 +109,9 @@ const LeaderboardTable = ({ leaderboard = [], byIndustry = [] }) => {
                                             {getRankDisplay(rank)}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="font-semibold text-gray-900">
+                                            <div className="font-semibold text-gray-900 whitespace-nowrap">
                                                 {entry.company}
                                             </div>
-                                            {entry.latestDonation && (
-                                                <div className="text-xs text-gray-500">
-                                                    Last donation: {new Date(entry.latestDonation).toLocaleDateString()}
-                                                </div>
-                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="font-bold text-lg text-c4p-dark">
