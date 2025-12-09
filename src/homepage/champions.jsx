@@ -319,32 +319,36 @@ function Champions() {
 
             // Generate PDF with serial number in filename
             const serialNumber = certData.hardware?.systemSerial || itemId;
-            const filename = `${serialNumber} - Data Certificate.pdf`;
+            const pdfTitle = `${serialNumber} - Data Certificate`;
             const opt = {
                 margin: 0.2,
-                filename: filename,
+                filename: `${pdfTitle}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait',
+                    putOnlyUsedFonts: true,
+                    compress: true
+                }
             };
 
-            // Generate PDF as blob
-            const pdfBlob = await html2pdf().set(opt).from(certElement).output('blob');
+            // Generate the PDF and get the jsPDF instance to set metadata
+            const pdf = await html2pdf().set(opt).from(certElement).toPdf().get('pdf');
 
-            // Create blob URL
-            const blobUrl = URL.createObjectURL(pdfBlob);
+            // Set PDF metadata
+            pdf.setProperties({
+                title: pdfTitle,
+                subject: 'Data Erasure Certificate',
+                author: 'Computers 4 People',
+                keywords: 'certificate, data erasure, NIST',
+                creator: 'Computers 4 People Portal'
+            });
 
-            // Create temporary link to download with correct filename
-            const downloadLink = document.createElement('a');
-            downloadLink.href = blobUrl;
-            downloadLink.download = filename;
-            downloadLink.click();
-
-            // Also open in new tab for preview
-            window.open(blobUrl, '_blank');
-
-            // Clean up blob URL after a short delay
-            setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+            // Convert to blob URL and open
+            const pdfBlob = pdf.output('bloburl');
+            window.open(pdfBlob, '_blank');
 
             // Cleanup
             root.unmount();
