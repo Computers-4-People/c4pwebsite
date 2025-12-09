@@ -319,18 +319,32 @@ function Champions() {
 
             // Generate PDF with serial number in filename
             const serialNumber = certData.hardware?.systemSerial || itemId;
+            const filename = `${serialNumber} - Data Certificate.pdf`;
             const opt = {
                 margin: 0.2,
-                filename: `${serialNumber} - Data Certificate.pdf`,
+                filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, logging: false },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            const pdfBlob = await html2pdf().set(opt).from(certElement).output('bloburl');
+            // Generate PDF as blob
+            const pdfBlob = await html2pdf().set(opt).from(certElement).output('blob');
 
-            // Open PDF in new tab
-            window.open(pdfBlob, '_blank');
+            // Create blob URL
+            const blobUrl = URL.createObjectURL(pdfBlob);
+
+            // Create temporary link to download with correct filename
+            const downloadLink = document.createElement('a');
+            downloadLink.href = blobUrl;
+            downloadLink.download = filename;
+            downloadLink.click();
+
+            // Also open in new tab for preview
+            window.open(blobUrl, '_blank');
+
+            // Clean up blob URL after a short delay
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
 
             // Cleanup
             root.unmount();
