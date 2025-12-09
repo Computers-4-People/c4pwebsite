@@ -724,11 +724,12 @@ function Champions() {
                                                 <button
                                                     onClick={downloadAllPDFs}
                                                     className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs font-medium transition-all whitespace-nowrap"
-                                                    title="Download all certificates as ZIP"
+                                                    title="May take a few minutes - keep your browser open"
                                                 >
                                                     <FiDownload className="text-xs" />
                                                     Download All
                                                 </button>
+                                                <span className="text-xs text-gray-500 italic">May take a few minutes</span>
                                             </div>
                                         </th>
                                     </tr>
