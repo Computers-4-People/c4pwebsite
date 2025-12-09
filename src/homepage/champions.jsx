@@ -320,9 +320,11 @@ function Champions() {
             // Generate PDF with serial number in filename
             const serialNumber = certData.hardware?.systemSerial || itemId;
             const pdfTitle = `${serialNumber} - Data Certificate`;
+            const filename = `${pdfTitle}.pdf`;
+
             const opt = {
                 margin: 0.2,
-                filename: `${pdfTitle}.pdf`,
+                filename: filename,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, logging: false },
                 jsPDF: {
@@ -346,9 +348,23 @@ function Champions() {
                 creator: 'Computers 4 People Portal'
             });
 
-            // Convert to blob URL and open
-            const pdfBlob = pdf.output('bloburl');
-            window.open(pdfBlob, '_blank');
+            // Create blob with proper type
+            const pdfBlob = pdf.output('blob');
+            const blobUrl = URL.createObjectURL(new Blob([pdfBlob], { type: 'application/pdf;name=' + filename }));
+
+            // Open in new tab - this will show the title from metadata
+            const newWindow = window.open(blobUrl, '_blank');
+
+            // Set download filename using document.title (some browsers respect this)
+            if (newWindow) {
+                setTimeout(() => {
+                    try {
+                        newWindow.document.title = pdfTitle;
+                    } catch (e) {
+                        // Cross-origin restriction, ignore
+                    }
+                }, 100);
+            }
 
             // Cleanup
             root.unmount();
