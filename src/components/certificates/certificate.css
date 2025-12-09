@@ -435,7 +435,7 @@
     }
 
     .signature-image-inline {
-        max-height: 5pt !important;
+        max-height: 8pt !important;
         height: auto !important;
         width: auto !important;
     }

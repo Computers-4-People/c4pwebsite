@@ -80,6 +80,12 @@ function Auth() {
             setLoading(true);
             setError('');
             setSuccess(false);
+
+            // Validate email is not empty
+            if (!email || email.trim() === '') {
+                throw new Error('Please enter an email address');
+            }
+
             console.log(email);
 
             // Fetch champion data by email
