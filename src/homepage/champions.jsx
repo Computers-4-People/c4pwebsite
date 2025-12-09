@@ -203,6 +203,7 @@ function Champions() {
                 }
 
                 console.log(`Total computers across all donations: ${allComputers.length}`);
+                console.log('All computers data:', allComputers);
                 setAllInventoryData(allComputers);
                 setInventoryData(allComputers);
 
@@ -215,12 +216,15 @@ function Champions() {
                     ? Math.round((donatedCount / allComputers.length) * 100)
                     : 0;
 
-                setStats({
+                const calculatedStats = {
                     totalComputers: allComputers.length,
                     totalWeight: totalWeight.toFixed(2),
                     donatedPercentage,
                     totalDonations: donorRecords.length
-                });
+                };
+
+                console.log('Calculated stats:', calculatedStats);
+                setStats(calculatedStats);
             } else {
                 console.log('No donation records found for this email');
                 setLoading(false);
@@ -717,7 +721,6 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Weight</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             <div className="flex flex-col gap-2">
                                                 <span>Data Certificates</span>
@@ -748,7 +751,6 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
-                                            <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 <div className="flex gap-2">
                                                     <button
