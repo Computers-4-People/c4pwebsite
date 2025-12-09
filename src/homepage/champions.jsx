@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2 } from 'react-icons/fi';
+import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2, FiEye } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
 import JSZip from 'jszip';
 import Certificate from '../components/certificates/Certificate';
@@ -378,6 +378,70 @@ function Champions() {
         }
     };
 
+    const handleDownloadCertificate = async (itemId) => {
+        setGeneratingPdf(itemId);
+
+        try {
+            // Fetch certificate data
+            const response = await fetch(`${API_BASE_URL}/api/certificate/${itemId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch certificate data');
+            }
+
+            const certData = await response.json();
+
+            // Create temporary container
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'fixed';
+            tempContainer.style.top = '-10000px';
+            tempContainer.style.left = '0';
+            tempContainer.style.width = '8.5in';
+            tempContainer.style.visibility = 'hidden';
+            tempContainer.style.opacity = '0';
+            tempContainer.style.pointerEvents = 'none';
+            document.body.appendChild(tempContainer);
+
+            // Render Certificate component
+            const root = ReactDOM.createRoot(tempContainer);
+
+            await new Promise((resolve) => {
+                root.render(<Certificate data={certData} />);
+                setTimeout(resolve, 300);
+            });
+
+            const certElement = tempContainer.querySelector('.certificate-container');
+
+            if (!certElement) {
+                throw new Error('Certificate element not found after rendering');
+            }
+
+            // Generate PDF with serial number in filename
+            const serialNumber = certData.hardware?.systemSerial || itemId;
+            const filename = `${serialNumber} - Data Certificate.pdf`;
+
+            const opt = {
+                margin: 0.2,
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Download directly
+            await html2pdf().set(opt).from(certElement).save();
+
+            // Cleanup
+            root.unmount();
+            document.body.removeChild(tempContainer);
+
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            alert('Failed to generate PDF. Please try again.');
+        } finally {
+            setGeneratingPdf(null);
+        }
+    };
+
     const downloadAllPDFs = async () => {
         if (inventoryData.length === 0) {
             alert('No certificates available to download');
@@ -400,28 +464,40 @@ function Champions() {
 
                 const certData = await response.json();
 
-                // Create a temporary container for the certificate
+                // Create temporary container
                 const tempContainer = document.createElement('div');
-                tempContainer.style.position = 'absolute';
-                tempContainer.style.left = '-9999px';
-                tempContainer.innerHTML = `
-                    <div class="certificate-container">
-                        <!-- Certificate content will be rendered here -->
-                    </div>
-                `;
+                tempContainer.style.position = 'fixed';
+                tempContainer.style.top = '-10000px';
+                tempContainer.style.left = '0';
+                tempContainer.style.width = '8.5in';
+                tempContainer.style.visibility = 'hidden';
                 document.body.appendChild(tempContainer);
 
-                // Generate PDF
+                // Render Certificate component
+                const root = ReactDOM.createRoot(tempContainer);
+                root.render(<Certificate data={certData} />);
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                const certElement = tempContainer.querySelector('.certificate-container');
+                if (!certElement) continue;
+
+                // Use serial number in filename
+                const serialNumber = certData.hardware?.systemSerial || item.ID;
+                const filename = `${serialNumber} - Data Certificate.pdf`;
+
                 const opt = {
-                    margin: 0.3,
-                    filename: `Certificate-${item.ID}.pdf`,
+                    margin: 0.2,
+                    filename: filename,
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true, logging: false },
                     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
                 };
 
-                const pdfBlob = await html2pdf().set(opt).from(tempContainer).output('blob');
-                folder.file(`Certificate-${item.ID}.pdf`, pdfBlob);
+                const pdfBlob = await html2pdf().set(opt).from(certElement).output('blob');
+                folder.file(filename, pdfBlob);
+
+                // Cleanup
+                root.unmount();
 
                 // Clean up
                 document.body.removeChild(tempContainer);
@@ -673,26 +749,38 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Weight ? `${item.Weight} lbs` : 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm">
-                                                <button
-                                                    onClick={() => handleViewCertificate(item.ID)}
-                                                    disabled={generatingPdf === item.ID}
-                                                    className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-4 py-2 rounded-lg font-medium transition-all"
-                                                >
-                                                    {generatingPdf === item.ID ? (
-                                                        <>
-                                                            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => handleViewCertificate(item.ID)}
+                                                        disabled={generatingPdf === item.ID}
+                                                        className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-2 py-1.5 rounded text-sm transition-all"
+                                                        title="View Certificate"
+                                                    >
+                                                        {generatingPdf === item.ID ? (
+                                                            <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                             </svg>
-                                                            Loading...
-                                                        </>
-                                                    ) : (
-                                                        <>
+                                                        ) : (
+                                                            <FiEye className="text-sm" />
+                                                        )}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDownloadCertificate(item.ID)}
+                                                        disabled={generatingPdf === item.ID}
+                                                        className="inline-flex items-center gap-1 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white px-2 py-1.5 rounded text-sm transition-all"
+                                                        title="Download Certificate"
+                                                    >
+                                                        {generatingPdf === item.ID ? (
+                                                            <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                            </svg>
+                                                        ) : (
                                                             <FiDownload className="text-sm" />
-                                                            View
-                                                        </>
-                                                    )}
-                                                </button>
+                                                        )}
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                         );
