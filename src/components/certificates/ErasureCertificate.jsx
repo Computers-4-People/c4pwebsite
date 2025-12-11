@@ -14,7 +14,7 @@ export default function ErasureCertificate({ data }) {
                         </div>
                         <div className="info-row">
                             <span className="label">Selected Method:</span>
-                            <span className="value">{data.selectedMethod}</span>
+                            <span className="value">{data.selectedMethod || 'Pending Erasure'}</span>
                         </div>
                         <div className="info-row">
                             <span className="label">Number of Passes:</span>
