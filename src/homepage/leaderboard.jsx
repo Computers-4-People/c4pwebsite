@@ -25,12 +25,15 @@ function Leaderboard() {
         fetchLeaderboardData();
     }, []);
 
-    const fetchLeaderboardData = async () => {
+    const fetchLeaderboardData = async (forceRefresh = false) => {
         try {
             setLoading(true);
             setError(null);
 
-            const response = await axios.get(`${API_BASE_URL}/api/leaderboard`);
+            const url = forceRefresh
+                ? `${API_BASE_URL}/api/leaderboard?refresh=true`
+                : `${API_BASE_URL}/api/leaderboard`;
+            const response = await axios.get(url);
             setData(response.data);
             console.log('Leaderboard data loaded:', response.data);
         } catch (err) {
@@ -39,6 +42,10 @@ function Leaderboard() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleRefresh = () => {
+        fetchLeaderboardData(true);
     };
 
     const stats = data?.stats || {
@@ -60,6 +67,13 @@ function Leaderboard() {
                     <p className="text-lg lg:text-xl text-gray-600 font-paragraph">
                         Celebrating companies making a difference through computer donations
                     </p>
+                    <button
+                        onClick={handleRefresh}
+                        disabled={loading}
+                        className="mt-3 text-sm text-gray-500 hover:text-gray-700 transition-colors underline disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {loading ? 'Refreshing...' : 'Refresh Data'}
+                    </button>
                 </div>
 
                 {/* Thermometer and Leaderboard Section */}

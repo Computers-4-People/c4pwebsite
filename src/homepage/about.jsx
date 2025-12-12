@@ -32,9 +32,12 @@ export default function About() {
         fetchStats();
     }, []);
 
-    const fetchStats = async () => {
+    const fetchStats = async (forceRefresh = false) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/stats`);
+            const url = forceRefresh
+                ? `${API_BASE_URL}/api/stats?refresh=true`
+                : `${API_BASE_URL}/api/stats`;
+            const response = await axios.get(url);
             setStats(response.data);
             setLoading(false);
         } catch (error) {
@@ -42,6 +45,11 @@ export default function About() {
             // Keep default values if fetch fails
             setLoading(false);
         }
+    };
+
+    const handleRefresh = () => {
+        setLoading(true);
+        fetchStats(true);
     };
     //  absolute inset-x-20 inset-y-80 center
     //  p-60 pl-10 text-6xl font-bold flex-row
@@ -129,6 +137,15 @@ export default function About() {
       <p className='text-3xl'>Digital Skills Classes</p>
     </li>
   </ul>
+  <div className='text-center mt-4'>
+    <button
+      onClick={handleRefresh}
+      disabled={loading}
+      className='text-sm text-gray-400 hover:text-white transition-colors underline disabled:opacity-50 disabled:cursor-not-allowed'
+    >
+      {loading ? 'Refreshing...' : 'Refresh Stats'}
+    </button>
+  </div>
 </div>
             
             <Testimonial props={{
