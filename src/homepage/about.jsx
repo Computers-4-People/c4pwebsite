@@ -1,48 +1,13 @@
- import React, { useState, useEffect } from "react";
+ import React from "react";
  import InfoCard from '../components/infocard.jsx';
  import IconCards from "../components/iconcards";
  import Header from "../components/header.jsx";
  import Testimonial from "../components/testimonial.jsx";
- import axios from 'axios';
 
 // import donation from '../donation.jpg';
 import { Link } from "react-router-dom";
 import Carosel from "../components/carosel/carosel";
-
-const AnimatedDots = () => {
-    return (
-        <span className="inline-flex gap-1">
-            <span className="animate-bounce" style={{ animationDelay: '0ms' }}>.</span>
-            <span className="animate-bounce" style={{ animationDelay: '150ms' }}>.</span>
-            <span className="animate-bounce" style={{ animationDelay: '300ms' }}>.</span>
-        </span>
-    );
-};
-
 export default function About() {
-    const [stats, setStats] = useState({
-        computersDonated: 5542,
-        poundsRecycled: 69748
-    });
-    const [loading, setLoading] = useState(true);
-
-    const API_BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '';
-
-    useEffect(() => {
-        fetchStats();
-    }, []);
-
-    const fetchStats = async () => {
-        try {
-            const response = await axios.get(`${API_BASE_URL}/api/stats`);
-            setStats(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching stats:', error);
-            // Keep default values if fetch fails
-            setLoading(false);
-        }
-    };
     //  absolute inset-x-20 inset-y-80 center
     //  p-60 pl-10 text-6xl font-bold flex-row
     // "text-2xl my-10 grid grid-cols-2 gap-4 rows-start-5"
@@ -69,12 +34,12 @@ export default function About() {
         {
             titlePart1: "Reaching New",
             titlePart2: "Communities",
-            description: "In 2024, Computers 4 People began scaling to new states and picking up nationwide, extending its impact to underserved communities across the country while strengthening its mission to bridge the digital divide.",
+            description: "In 2024, a second office opened in Waltham, MA, extending Computers 4 People’s impact to underserved communities across Massachusetts while strengthening its presence in the Northeast.",
             image: "/about/maoffice.jpg",
         },
         {
-            titlePart1: "Today's",
-            titlePart2: "Impact",
+            titlePart1: "Driving Digital Equity",
+            titlePart2: "and Sustainability",
             description: "Today, Computers 4 People is a leader in the Northeast, providing access to technology, reducing e-waste, and championing digital access for thousands of individuals and families.",
             image: "/about/sustainability.jpg ",
         },
@@ -112,22 +77,9 @@ export default function About() {
                 }} /> 
 <div className='bg-cover bg-black p-16 text-white'>
   <ul className='flex flex-col md:flex-row justify-evenly text-center'>
-    <li className='my-4 md:my-0 mx-5'>
-      <div className='text-6xl mb-3'>
-        {loading ? <AnimatedDots /> : stats.computersDonated.toLocaleString()}
-      </div>
-      <p className='text-3xl'>Computers Donated</p>
-    </li>
-    <li className='my-4 md:my-0 mx-5'>
-      <div className='text-6xl mb-3'>
-        {loading ? <AnimatedDots /> : stats.poundsRecycled.toLocaleString()}
-      </div>
-      <p className='text-3xl'>Pounds of e-waste Recycled</p>
-    </li>
-    <li className='my-4 md:my-0 mx-5'>
-      <div className='text-6xl mb-3'>261</div>
-      <p className='text-3xl'>Digital Skills Classes</p>
-    </li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>1,999</div><p className='text-3xl'>Computers Donated</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>28,474</div><p className='text-3xl'>Pounds of e-waste Recycled</p></li>
+    <li className='my-4 md:my-0 mx-5'><div className='text-6xl mb-3'>261</div><p className='text-3xl'>Digital Skills Classes</p></li>
   </ul>
 </div>
             
@@ -138,7 +90,7 @@ export default function About() {
             }} />
             <Testimonial props={{
                 title2: 'Our Mission',
-                desc2: 'We unlock access to the digital world by refurbishing donated devices, teaching essential digital skills, and improving connectivity to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
+                desc2: 'Unlock Access to the Digital World. By refurbishing donated devices, teaching essential digital skills, and improving connectivity, we aim to bridge the digital divide and create opportunities for individuals and communities to thrive in the digital age.',
                 image: '../about/missionstatement.png',
                 side: 'right'
             }}/> 
