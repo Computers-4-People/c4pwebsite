@@ -16,7 +16,6 @@ function Champions() {
     const [loading, setLoading] = useState(true);
     const [testimonials, setTestimonials] = useState([]);
     const [stats, setStats] = useState(null);
-    const [globalStats, setGlobalStats] = useState({ poundsRecycled: 0 });
     const [generatingPdf, setGeneratingPdf] = useState(null); // { id: itemId, action: 'view' | 'download' }
 
     const championResp = JSON.parse(sessionStorage.getItem('championResp')) || {};
@@ -27,17 +26,7 @@ function Champions() {
 
     useEffect(() => {
         fetchDonorData();
-        fetchGlobalStats();
     }, []);
-
-    const fetchGlobalStats = async () => {
-        try {
-            const response = await axios.get(`${API_BASE_URL}/api/stats`);
-            setGlobalStats(response.data);
-        } catch (error) {
-            console.error('Error fetching global stats:', error);
-        }
-    };
 
     useEffect(() => {
         // TEMPORARILY DISABLED - Fetch testimonials after inventory data is loaded
@@ -583,7 +572,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Weight</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{globalStats?.poundsRecycled || 0} <span className="text-2xl text-gray-600">lbs</span></p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalWeight || 0} <span className="text-2xl text-gray-600">lbs</span></p>
                             </div>
                             <div className="bg-green-100 p-4 rounded-full">
                                 <FiBarChart2 className="text-3xl text-green-600" />
