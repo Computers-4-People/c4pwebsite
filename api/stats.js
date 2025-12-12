@@ -11,9 +11,15 @@ let cachedStats = null;
 let cacheExpiration = null;
 
 export default async function handler(req, res) {
+    const skipCache = req.query.refresh === 'true';
+
+    if (skipCache) {
+        console.log("Cache bypass requested");
+    }
+
     // Return cached stats if still valid
     const currentTime = Date.now();
-    if (cachedStats && cacheExpiration && currentTime < cacheExpiration) {
+    if (!skipCache && cachedStats && cacheExpiration && currentTime < cacheExpiration) {
         console.log("Returning cached stats");
         return res.json(cachedStats);
     }
