@@ -52,7 +52,7 @@ function Leaderboard() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
             {/* Main Content */}
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8 lg:py-8">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 lg:pt-32 lg:pb-8">
                 <div className="text-center mb-8">
                     <h1 className="text-4xl lg:text-5xl font-title text-gray-900 mb-3">
                         Champion Leaderboard
