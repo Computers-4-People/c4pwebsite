@@ -21,8 +21,8 @@ const AnimatedDots = () => {
 
 export default function About() {
     const [stats, setStats] = useState({
-        computersDonated: 5700,
-        poundsRecycled: 75000
+        computersDonated: 5775,
+        poundsRecycled: 64519
     });
     const [loading, setLoading] = useState(true);
 
