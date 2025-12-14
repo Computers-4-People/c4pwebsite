@@ -29,18 +29,15 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Using static stats values (updated periodically from inventory)");
+        console.log("Fetching live stats from Zoho Creator...");
 
-        // Use static values to avoid timeout and incorrect filtering
-        // These should be updated periodically from the actual inventory
-        let computersDonated = 5775;
-        let totalWeight = 64519;
-
-        if (false) { // Disabled to prevent timeout and filtering issues
-        const donatedCriteria = encodeURIComponent(
-            '(Status == "Donated") && (Computer_Type != "Monitor") && (Computer_Type != "Phone") && (Computer_Type != "Misc")'
-        );
+        // Simplified criteria - just fetch all donated/recycled records
+        // Remove the restrictive Computer_Type filters
+        const donatedCriteria = encodeURIComponent('Status == "Donated"');
         const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
+
+        let computersDonated = 0;
+        let totalWeight = 0;
 
         try {
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
@@ -132,11 +129,10 @@ export default async function handler(req, res) {
 
         } catch (error) {
             console.error("Error fetching stats:", error.message);
-            // Use fallback values
-            computersDonated = 5542;
-            totalWeight = 69748;
+            // Use fallback values if fetch fails
+            computersDonated = 5775;
+            totalWeight = 64519;
         }
-        } // End of disabled fetching code
 
         const stats = {
             computersDonated: computersDonated,
