@@ -29,15 +29,16 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Fetching live stats from Zoho Creator...");
+        console.log("Using static stats values (same approach as leaderboard)");
 
-        // Simplified criteria - just fetch all donated/recycled records
-        // Remove the restrictive Computer_Type filters
+        // Use static values to match leaderboard approach
+        // These are updated manually from the actual inventory
+        let computersDonated = 5775;
+        let totalWeight = 64519;
+
+        if (false) { // Disabled to match leaderboard approach and avoid filtering issues
         const donatedCriteria = encodeURIComponent('Status == "Donated"');
         const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
-
-        let computersDonated = 0;
-        let totalWeight = 0;
 
         try {
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
@@ -133,6 +134,7 @@ export default async function handler(req, res) {
             computersDonated = 5775;
             totalWeight = 64519;
         }
+        } // End of disabled fetching code
 
         const stats = {
             computersDonated: computersDonated,
