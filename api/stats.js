@@ -63,9 +63,12 @@ export default async function handler(req, res) {
 
         } catch (error) {
             console.error("Error fetching stats:", error.message);
+            if (error.response) {
+                console.error("Analytics API error details:", error.response.status, error.response.data);
+            }
             // Use fallback values if fetch fails
-            computersDonated = 5775;
-            totalWeight = 64519;
+            computersDonated = 5777;
+            totalWeight = 64549;
         }
 
         const stats = {
