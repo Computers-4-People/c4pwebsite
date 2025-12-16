@@ -337,12 +337,18 @@ export default function ShieldHeader() {
 </div>
 
       {/* Out of Office Notice */}
-      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-center text-gray-800 font-medium text-sm sm:text-base">
-            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
-            Any inquiries will be addressed at our soonest convenience upon our return.
-          </p>
+      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-y-2 border-yellow-400 px-4 py-6 sm:py-8 shadow-sm">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <div className="text-3xl sm:text-4xl">⚠️</div>
+          <div className="text-center sm:text-left">
+            <p className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
+              Holiday Notice
+            </p>
+            <p className="text-sm sm:text-base text-gray-700">
+              Our team is out of office from <span className="font-semibold">December 24th - January 4th</span>.
+              Any inquiries will be addressed at our soonest convenience upon our return.
+            </p>
+          </div>
         </div>
       </div>
 
