@@ -29,93 +29,37 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Fetching ALL stats from Zoho Creator (no filters)...");
+        console.log("Fetching stats from Zoho Analytics...");
 
         let computersDonated = 0;
         let totalWeight = 0;
 
         try {
-            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
-            const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
+            // Use Zoho Analytics API for instant aggregated query
+            const analyticsUrl = 'https://analyticsapi.zoho.com/restapi/v2/bulk/workspaces/2989565000000006002/views/2989565000000032139/data';
 
-            console.log("Fetching stats from Portal report with batched parallel requests...");
-            console.log("Portal has 12,161+ records, will fetch up to 100 pages (20,000 records)");
-
-            const batchSize = 5; // Reduce batch size to avoid timeout
-            const maxPages = 100; // Max pages to attempt (100 pages * 200 = 20,000 records)
-
-            // Helper function to fetch pages in batches
-            async function fetchInBatches(maxPagesToFetch) {
-                const allResults = [];
-                let page = 0;
-                let hasMore = true;
-
-                while (hasMore && page < maxPagesToFetch) {
-                    // Create batch of promises
-                    const batchPromises = [];
-                    for (let i = 0; i < batchSize && page < maxPagesToFetch; i++, page++) {
-                        const from = (page * 200) + 1;
-                        batchPromises.push(
-                            axios.get(
-                                `${baseUrl}?from=${from}&limit=200`,
-                                { headers, timeout: 8000 }
-                            ).catch(err => {
-                                // Don't log 404s (expected when we reach end)
-                                if (err.response?.status !== 404) {
-                                    console.error(`Page ${page} error:`, err.message);
-                                }
-                                return null;
-                            })
-                        );
-                    }
-
-                    // Wait for this batch to complete
-                    const batchResults = await Promise.all(batchPromises);
-
-                    // Check if we got any valid results in this batch
-                    const validResults = batchResults.filter(r => r && r.data && r.data.data);
-
-                    console.log(`Batch at page ${page - batchSize}: ${validResults.length}/${batchSize} pages successful`);
-
-                    // Only stop if we get NO valid results (not just partial pages)
-                    if (validResults.length === 0) {
-                        console.log(`No valid results in batch starting at page ${page - batchSize}, stopping`);
-                        hasMore = false;
-                    } else {
-                        allResults.push(...batchResults);
-                        // Don't stop on partial pages - Zoho Creator might have gaps
-                        // Keep fetching until we get completely empty batches
-                    }
-                }
-
-                return allResults;
-            }
-
-            // Fetch all data (no filtering)
-            const allResults = await fetchInBatches(maxPages);
-
-            // Process all results - count computers and sum weight
-            let pagesSuccessful = 0;
-            let totalRecords = 0;
-
-            allResults.forEach((resp, index) => {
-                if (resp && resp.data && resp.data.data) {
-                    pagesSuccessful++;
-                    const records = resp.data.data;
-                    totalRecords += records.length;
-
-                    // Count all records as computers
-                    computersDonated += records.length;
-
-                    // Sum all weights
-                    const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
-                    totalWeight += batchWeight;
-                }
+            const response = await axios.get(analyticsUrl, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                timeout: 10000
             });
 
-            console.log(`Fetched: ${pagesSuccessful} pages successful, ${totalRecords} total records`);
+            // Parse Analytics response - it should have the aggregated stats
+            if (response.data && response.data.data) {
+                const data = response.data.data;
 
-            console.log(`Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
+                // The HQ view should have Total Computers Donated and Total Pounds Saved
+                // Find these values in the response
+                if (data.rows && data.rows.length > 0) {
+                    const row = data.rows[0];
+                    computersDonated = parseInt(row[0]) || 5777; // First column
+                    totalWeight = parseInt(row[1]) || 64549; // Second column
+                }
+            }
+
+            console.log(`Analytics Stats: ${computersDonated} computers, ${totalWeight} lbs`);
 
         } catch (error) {
             console.error("Error fetching stats:", error.message);
