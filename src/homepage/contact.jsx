@@ -11,6 +11,16 @@ export default function Contact() {
 
     return (
         <div id="main-content" className='font-sans overflow-x-hidden'>
+            {/* Out of Office Notice */}
+            <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
+                <div className="max-w-7xl mx-auto">
+                    <p className="text-center text-gray-800 font-medium">
+                        ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
+                        Any inquiries will be addressed at our soonest convenience upon our return.
+                    </p>
+                </div>
+            </div>
+
             <Header props={{
                 bgImage: '/Contact Us/contactbackground.jpeg',
                 titlePart1: 'Contact Us',

@@ -91,6 +91,16 @@ export default function Donate() {
 
   return (
     <div id="main-content" className="font-sans overflow-x-hidden">
+      {/* Out of Office Notice */}
+      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-center text-gray-800 font-medium">
+            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
+            Any inquiries will be addressed at our soonest convenience upon our return.
+          </p>
+        </div>
+      </div>
+
       <Header props={{
         bgImage: '/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg',
         titlePart1: 'Donate Tech',
