@@ -35,14 +35,14 @@ export default async function handler(req, res) {
         let totalWeight = 0;
 
         try {
-            // Try querying the form directly instead of the report
-            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/form/Add_Item`;
+            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
             const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            console.log("Fetching stats from Add_Item form with batched parallel requests...");
+            console.log("Fetching stats from Portal report with batched parallel requests...");
+            console.log("Portal has 12,161+ records, will fetch up to 100 pages (20,000 records)");
 
-            const batchSize = 10; // Fetch 10 pages at a time to avoid overwhelming API
-            const maxPages = 100; // Max pages to attempt
+            const batchSize = 5; // Reduce batch size to avoid timeout
+            const maxPages = 100; // Max pages to attempt (100 pages * 200 = 20,000 records)
 
             // Helper function to fetch pages in batches
             async function fetchInBatches(maxPagesToFetch) {
@@ -74,13 +74,18 @@ export default async function handler(req, res) {
 
                     // Check if we got any valid results in this batch
                     const validResults = batchResults.filter(r => r && r.data && r.data.data);
+
+                    console.log(`Batch at page ${page - batchSize}: ${validResults.length}/${batchSize} pages successful`);
+
                     if (validResults.length === 0) {
+                        console.log(`No valid results in batch starting at page ${page - batchSize}, stopping`);
                         hasMore = false; // No valid results, stop fetching
                     } else {
                         allResults.push(...batchResults);
                         // If any result has < 200 records, we've reached the end
                         const hasPartialPage = validResults.some(r => r.data.data.length < 200);
                         if (hasPartialPage) {
+                            console.log(`Found partial page, reached end of data`);
                             hasMore = false;
                         }
                     }
