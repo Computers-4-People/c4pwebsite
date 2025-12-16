@@ -219,16 +219,6 @@ export default function ShieldHeader() {
 
   return (
     <>
-      {/* Out of Office Notice */}
-      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-center text-gray-800 font-medium">
-            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
-            Any inquiries will be addressed at our soonest convenience upon our return.
-          </p>
-        </div>
-      </div>
-
      {/* First Viewport: Hero + Media Logos */}
 <div
   className={`
@@ -345,6 +335,16 @@ export default function ShieldHeader() {
     </div>
   </div>
 </div>
+
+      {/* Out of Office Notice */}
+      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-center text-gray-800 font-medium text-sm sm:text-base">
+            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
+            Any inquiries will be addressed at our soonest convenience upon our return.
+          </p>
+        </div>
+      </div>
 
       {/* Second Viewport: Features */}
       <div id="features" className="py-20 px-6">

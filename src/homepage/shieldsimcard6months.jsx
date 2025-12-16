@@ -127,15 +127,6 @@ export default function ShieldSimCardSixMonths() {
 
   return (
     <div className="bg-white py-20 px-4 sm:px-8">
-      {/* Out of Office Notice */}
-      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
-        <div className="max-w-7xl mx-auto">
-          <p className="text-center text-gray-800 font-medium">
-            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
-            Any inquiries will be addressed at our soonest convenience upon our return.
-          </p>
-        </div>
-      </div>
       <div className="max-w-7xl mx-auto mb-10">
         <a href="/shield" className="inline-block text-c4p hover:underline font-medium text-sm">
           ← Back to Shield
@@ -229,6 +220,16 @@ export default function ShieldSimCardSixMonths() {
         <ZohoCheckoutFrame
   baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/60"
 />
+        </div>
+      </div>
+
+      {/* Out of Office Notice */}
+      <div className="bg-yellow-50 border-b-2 border-yellow-400 px-4 py-3">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-center text-gray-800 font-medium text-sm sm:text-base">
+            ⚠️ <span className="font-semibold">Holiday Notice:</span> Our team is out of office from December 24th - January 4th.
+            Any inquiries will be addressed at our soonest convenience upon our return.
+          </p>
         </div>
       </div>
 
