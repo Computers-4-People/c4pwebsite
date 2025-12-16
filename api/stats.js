@@ -77,17 +77,14 @@ export default async function handler(req, res) {
 
                     console.log(`Batch at page ${page - batchSize}: ${validResults.length}/${batchSize} pages successful`);
 
+                    // Only stop if we get NO valid results (not just partial pages)
                     if (validResults.length === 0) {
                         console.log(`No valid results in batch starting at page ${page - batchSize}, stopping`);
-                        hasMore = false; // No valid results, stop fetching
+                        hasMore = false;
                     } else {
                         allResults.push(...batchResults);
-                        // If any result has < 200 records, we've reached the end
-                        const hasPartialPage = validResults.some(r => r.data.data.length < 200);
-                        if (hasPartialPage) {
-                            console.log(`Found partial page, reached end of data`);
-                            hasMore = false;
-                        }
+                        // Don't stop on partial pages - Zoho Creator might have gaps
+                        // Keep fetching until we get completely empty batches
                     }
                 }
 
