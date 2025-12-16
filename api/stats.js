@@ -29,16 +29,10 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Using static stats values (same approach as leaderboard)");
+        console.log("Fetching ALL stats from Zoho Creator (no filters)...");
 
-        // Use static values to match leaderboard approach
-        // These are updated manually from the actual inventory
-        let computersDonated = 5775;
-        let totalWeight = 64519;
-
-        if (false) { // Disabled to match leaderboard approach and avoid filtering issues
-        const donatedCriteria = encodeURIComponent('Status == "Donated"');
-        const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
+        let computersDonated = 0;
+        let totalWeight = 0;
 
         try {
             const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
@@ -50,7 +44,7 @@ export default async function handler(req, res) {
             const maxPages = 100; // Max pages to attempt
 
             // Helper function to fetch pages in batches
-            async function fetchInBatches(criteria, maxPagesToFetch) {
+            async function fetchInBatches(maxPagesToFetch) {
                 const allResults = [];
                 let page = 0;
                 let hasMore = true;
@@ -62,7 +56,7 @@ export default async function handler(req, res) {
                         const from = (page * 200) + 1;
                         batchPromises.push(
                             axios.get(
-                                `${baseUrl}?criteria=${criteria}&from=${from}&limit=200`,
+                                `${baseUrl}?from=${from}&limit=200`,
                                 { headers, timeout: 8000 }
                             ).catch(err => {
                                 // Don't log 404s (expected when we reach end)
@@ -94,37 +88,29 @@ export default async function handler(req, res) {
                 return allResults;
             }
 
-            // Fetch count and weight data
-            const [countResults, weightResults] = await Promise.all([
-                fetchInBatches(donatedCriteria, maxPages),
-                fetchInBatches(weightCriteria, maxPages)
-            ]);
+            // Fetch all data (no filtering)
+            const allResults = await fetchInBatches(maxPages);
 
-            // Process count results
-            let countSuccessful = 0;
-            let countRecords = 0;
-            countResults.forEach((resp, index) => {
-                if (resp && resp.data && resp.data.data) {
-                    countSuccessful++;
-                    countRecords += resp.data.data.length;
-                    computersDonated += resp.data.data.length;
-                }
-            });
-            console.log(`Count: ${countSuccessful} pages successful, ${countRecords} records`);
+            // Process all results - count computers and sum weight
+            let pagesSuccessful = 0;
+            let totalRecords = 0;
 
-            // Process weight results
-            let weightSuccessful = 0;
-            let weightRecords = 0;
-            weightResults.forEach((resp, index) => {
+            allResults.forEach((resp, index) => {
                 if (resp && resp.data && resp.data.data) {
-                    weightSuccessful++;
+                    pagesSuccessful++;
                     const records = resp.data.data;
-                    weightRecords += records.length;
+                    totalRecords += records.length;
+
+                    // Count all records as computers
+                    computersDonated += records.length;
+
+                    // Sum all weights
                     const batchWeight = records.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
                     totalWeight += batchWeight;
                 }
             });
-            console.log(`Weight: ${weightSuccessful} pages successful, ${weightRecords} records`);
+
+            console.log(`Fetched: ${pagesSuccessful} pages successful, ${totalRecords} total records`);
 
             console.log(`Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
 
@@ -134,7 +120,6 @@ export default async function handler(req, res) {
             computersDonated = 5775;
             totalWeight = 64519;
         }
-        } // End of disabled fetching code
 
         const stats = {
             computersDonated: computersDonated,
