@@ -35,10 +35,11 @@ export default async function handler(req, res) {
         let totalWeight = 0;
 
         try {
-            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+            // Try querying the form directly instead of the report
+            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/form/Add_Item`;
             const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            console.log("Fetching stats with batched parallel requests...");
+            console.log("Fetching stats from Add_Item form with batched parallel requests...");
 
             const batchSize = 10; // Fetch 10 pages at a time to avoid overwhelming API
             const maxPages = 100; // Max pages to attempt
