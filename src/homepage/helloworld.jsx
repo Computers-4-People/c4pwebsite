@@ -91,11 +91,6 @@ export default function HelloWorld() {
       title: 'Get Internet',
       resources: [
         {
-          name: 'Affordable Connectivity Program (ACP)',
-          description: 'Get up to $30/month off your internet bill (or $75 on Tribal lands)',
-          url: 'https://www.fcc.gov/acp'
-        },
-        {
           name: 'Shield Internet - $14.89/month',
           description: 'Unlimited internet from Computers 4 People, our nonprofit program',
           url: 'https://www.computers4people.org/shield'
@@ -104,6 +99,11 @@ export default function HelloWorld() {
           name: 'Lifeline Program',
           description: 'Free or discounted phone and internet service',
           url: 'https://www.fcc.gov/lifeline-consumers'
+        },
+        {
+          name: 'Find Internet in Your Area',
+          description: 'Compare internet providers and prices where you live',
+          url: 'https://broadbandnow.com/'
         }
       ],
       partners: []
