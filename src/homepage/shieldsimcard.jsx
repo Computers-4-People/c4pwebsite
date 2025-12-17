@@ -168,8 +168,24 @@ export default function Shieldsimcard() {
             </div>
           </div>
 
+          {/* Out of Office Notice */}
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-y-2 border-yellow-400 px-4 py-4 sm:py-5 shadow-sm rounded-lg mt-6 mb-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+              <div className="text-2xl sm:text-3xl">⚠️</div>
+              <div className="text-center sm:text-left">
+                <p className="text-base sm:text-lg font-bold text-gray-900 mb-0.5">
+                  Holiday Notice
+                </p>
+                <p className="text-xs sm:text-sm text-gray-700">
+                  Our team is out of office from <span className="font-semibold">December 24th - January 4th</span>.
+                  Orders placed during this time will be shipped right when we're back. Any inquiries will be addressed at our soonest convenience upon our return.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Title & Description */}
-          <div className="pt-8 sm:pl-[4.5rem]">
+          <div className="pt-4 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Unlimited Internet Plan – SIM Card Only (No Device Included)
             </h1>
@@ -204,22 +220,6 @@ Shield Internet service is prepaid and billed monthly on the 1st. If you cancel,
         <ZohoCheckoutFrame
   baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
 />
-        </div>
-      </div>
-
-      {/* Out of Office Notice */}
-      <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-y-2 border-yellow-400 px-4 py-6 sm:py-8 shadow-sm">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <div className="text-3xl sm:text-4xl">⚠️</div>
-          <div className="text-center sm:text-left">
-            <p className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
-              Holiday Notice
-            </p>
-            <p className="text-sm sm:text-base text-gray-700">
-              Our team is out of office from <span className="font-semibold">December 24th - January 4th</span>.
-              Orders placed during this time will be shipped right when we're back. Any inquiries will be addressed at our soonest convenience upon our return.
-            </p>
-          </div>
         </div>
       </div>
 
