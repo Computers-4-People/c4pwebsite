@@ -240,7 +240,7 @@ Shield Internet service is prepaid and billed monthly on the 1st. If you cancel,
             </p>
             <p className="text-sm sm:text-base text-gray-700">
               Our team is out of office from <span className="font-semibold">December 24th - January 4th</span>.
-              Any inquiries will be addressed at our soonest convenience upon our return.
+              Orders placed during this time will be shipped right when we're back. Any inquiries will be addressed at our soonest convenience upon our return.
             </p>
           </div>
         </div>
