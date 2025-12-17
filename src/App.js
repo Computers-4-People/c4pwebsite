@@ -44,6 +44,7 @@ import Leaderboard from "./homepage/leaderboard";
 import CertificateDemo from "./homepage/certificate-demo";
 import CertificatePage from "./homepage/certificate";
 import Contribution       from "./homepage/addacontribution";
+import HelloWorld from "./homepage/helloworld";
 import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
 import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
 import RobertSmith from "./homepage/fundraiser/robertfsmith";
@@ -201,6 +202,7 @@ function App() {
           <Route path="/certificate-demo" element={<CertificateDemo />} />
           <Route path="/certificate" element={<CertificatePage />} />
           <Route path="/addacontribution" element={<Contribution />} />
+          <Route path="/helloworld" element={<HelloWorld />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<Termsofservice />} />
           <Route path="/pepper" element={<Pepper />} />
