@@ -581,18 +581,6 @@ function Champions() {
                     <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.donatedPercentage || 0}</p>
-                            </div>
-                            <div className="bg-green-100 p-4 rounded-full">
-                                <FiCheck className="text-3xl text-green-600" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
-                        <div className="flex items-center justify-between">
-                            <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Total Donations</p>
                                 <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.totalDonations || 0}</p>
                             </div>
