@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2, FiEye } from 'react-icons/fi';
+import { FiDownload, FiPackage, FiCheck, FiCalendar, FiBarChart2, FiEye, FiBriefcase } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
 import JSZip from 'jszip';
 import Certificate from '../components/certificates/Certificate';
@@ -216,11 +216,21 @@ function Champions() {
                     ? Math.round((donatedCount / allComputers.length) * 100)
                     : 0;
 
+                // Find the most recent donation date
+                const sortedDonations = donorRecords.sort((a, b) => {
+                    const dateA = new Date(a.Entry_Date || a.Date_Donated || 0);
+                    const dateB = new Date(b.Entry_Date || b.Date_Donated || 0);
+                    return dateB - dateA; // Most recent first
+                });
+                const lastDonationDate = sortedDonations[0]?.Entry_Date || sortedDonations[0]?.Date_Donated || null;
+
                 const calculatedStats = {
                     totalComputers: allComputers.length,
                     totalWeight: totalWeight.toFixed(2),
                     donatedPercentage,
-                    totalDonations: donorRecords.length
+                    totalDonations: donorRecords.length,
+                    lastDonationDate,
+                    industry: championResp.Industry || 'Not specified'
                 };
 
                 console.log('Calculated stats:', calculatedStats);
@@ -572,7 +582,7 @@ function Champions() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Donated</p>
-                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.donatedPercentage || 0}<span className="text-2xl text-gray-600">%</span></p>
+                                <p className="text-4xl font-bold text-gray-900 mt-2">{stats?.donatedPercentage || 0}</p>
                             </div>
                             <div className="bg-green-100 p-4 rounded-full">
                                 <FiCheck className="text-3xl text-green-600" />
@@ -588,6 +598,38 @@ function Champions() {
                             </div>
                             <div className="bg-green-100 p-4 rounded-full">
                                 <FiCheck className="text-3xl text-green-600" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Last Donation</p>
+                                <p className="text-xl font-bold text-gray-900 mt-2">
+                                    {stats?.lastDonationDate
+                                        ? new Date(stats.lastDonationDate).toLocaleDateString('en-US', {
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric'
+                                        })
+                                        : 'N/A'}
+                                </p>
+                            </div>
+                            <div className="bg-blue-100 p-4 rounded-full">
+                                <FiCalendar className="text-3xl text-blue-600" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-c4p">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-600 text-sm font-medium uppercase tracking-wide">Industry</p>
+                                <p className="text-xl font-bold text-gray-900 mt-2">{stats?.industry || 'Not specified'}</p>
+                            </div>
+                            <div className="bg-purple-100 p-4 rounded-full">
+                                <FiBriefcase className="text-3xl text-purple-600" />
                             </div>
                         </div>
                     </div>
