@@ -118,19 +118,23 @@ export default async function handler(req, res) {
 
         // Step 3: Determine certificate type
         const status = inventory.Status;
+        const destructionType = inventory.Destruction_Type;
         // Check if drives exist (Drive_Model_1, Drive_Model_2, etc.)
         const hasDrive1 = inventory.Drive_Model_1 || inventory.Drive_Serial_1;
         const hasDrive2 = inventory.Drive_Model_2 || inventory.Drive_Serial_2;
         const hasHDD = hasDrive1 || hasDrive2;
 
         let certificateType = 'erasure'; // default
-        if (status === 'Destroyed') {
+        // Check Destruction_Type field first - if it's "Destroyed", this was physically destroyed
+        if (destructionType === 'Destroyed') {
+            certificateType = 'destroyed';
+        } else if (status === 'Destroyed') {
             certificateType = 'destroyed';
         } else if (status === 'Donated' && !hasHDD) {
             certificateType = 'no_hdd';
         }
 
-        console.log(`Certificate type determined: ${certificateType}`);
+        console.log(`Certificate type determined: ${certificateType} (Status: ${status}, Destruction_Type: ${destructionType})`);
 
         // Step 4: Map fields to certificate data structure
         const certificateData = {
