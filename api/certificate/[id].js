@@ -125,9 +125,13 @@ export default async function handler(req, res) {
         const hasHDD = hasDrive1 || hasDrive2;
 
         let certificateType = 'erasure'; // default
-        // Check Destruction_Type field first - if it's "Destroyed", this was physically destroyed
+        // Check Destruction_Type field first
         if (destructionType === 'Destroyed') {
+            // Physically destroyed
             certificateType = 'destroyed';
+        } else if (destructionType === 'No Drive') {
+            // No drive present
+            certificateType = 'no_hdd';
         } else if (status === 'Destroyed') {
             certificateType = 'destroyed';
         } else if (status === 'Donated' && !hasHDD) {
