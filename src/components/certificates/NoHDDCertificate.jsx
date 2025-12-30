@@ -47,8 +47,7 @@ export default function NoHDDCertificate({ data }) {
             <div className="section verification-statement">
                 <p>
                     This certificate confirms that the above device was inspected and found to contain
-                    no storage drive or solid-state drive. The device has been tested and is ready
-                    for distribution.
+                    no storage drive or solid-state drive.
                 </p>
             </div>
         </div>
