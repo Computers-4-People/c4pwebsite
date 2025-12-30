@@ -739,6 +739,7 @@ function Champions() {
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Serial #</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Barcode</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Type</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Destruction Type</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                             <div className="flex flex-col gap-2">
                                                 <span>Data Certificates</span>
@@ -769,6 +770,9 @@ function Champions() {
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.System_Serial_Number || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700 font-mono">{item.Barcode_Save || 'N/A'}</td>
                                             <td className="px-6 py-4 text-sm text-gray-700">{item.Computer_Type || 'N/A'}</td>
+                                            <td className="px-6 py-4 text-sm text-gray-700">
+                                                {item.Destruction_Type || <span className="text-gray-400 italic">Pending...</span>}
+                                            </td>
                                             <td className="px-6 py-4 text-sm">
                                                 <div className="flex gap-2">
                                                     <button
