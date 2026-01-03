@@ -170,22 +170,6 @@ export default function Shield5grouter() {
             </div>
           </div>
 
-          {/* Out of Office Notice */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-y-2 border-yellow-400 px-4 py-4 sm:py-5 shadow-sm rounded-lg mt-6 mb-4">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-              <div className="text-2xl sm:text-3xl">⚠️</div>
-              <div className="text-center sm:text-left">
-                <p className="text-base sm:text-lg font-bold text-gray-900 mb-0.5">
-                  Holiday Notice
-                </p>
-                <p className="text-xs sm:text-sm text-gray-700">
-                  Our team is out of office from <span className="font-semibold">December 24th - January 4th</span>.
-                  Orders placed during this time will be shipped right when we're back. Any inquiries will be addressed at our soonest convenience upon our return.
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Title & Description */}
           <div className="pt-4 sm:pl-[4.5rem]">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
