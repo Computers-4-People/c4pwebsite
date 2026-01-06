@@ -99,7 +99,7 @@ export default function ShieldSweatshirt() {
       {/* Main Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* Left: Product Display */}
-        <div className="w-full">
+        <div className="w-full order-2 lg:order-1">
           <div className="flex flex-col sm:flex-row gap-6 w-full">
             {/* Thumbnails: left on desktop, below on mobile */}
             <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 sm:pt-2">
@@ -168,7 +168,7 @@ export default function ShieldSweatshirt() {
         </div>
 
         {/* Right: Stripe Checkout Button */}
-        <div className="w-full mt-8 lg:mt-0">
+        <div className="w-full order-1 lg:order-2 mt-0 lg:mt-0">
           <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
