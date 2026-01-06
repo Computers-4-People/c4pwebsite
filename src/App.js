@@ -38,6 +38,7 @@ import Shieldhotspotsim from "./homepage/shieldhotspotsim";
 import Shieldsimcard6months from "./homepage/shieldsimcard6months";
 import Shieldsimcard12months from "./homepage/shieldsimcard12months";
 import Shield5grouter from "./homepage/shield5grouter";
+import ShieldSweatshirt from "./homepage/shieldsweatshirt";
 import PageNotFound from "./homepage/404page";
 import Champions from "./homepage/champions";
 import Leaderboard from "./homepage/leaderboard";
@@ -196,6 +197,7 @@ function App() {
           <Route path="/shieldsimcard6months" element={<Shieldsimcard6months />} />
           <Route path="/shieldsimcard12months" element={<Shieldsimcard12months />} />
           <Route path="/shield5grouter" element={<Shield5grouter />} />
+          <Route path="/shieldsweatshirt" element={<ShieldSweatshirt />} />
           <Route path="/portal" element={<Portal />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/leaderboard" element={<Leaderboard />} />

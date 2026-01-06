@@ -401,7 +401,7 @@ export default function ShieldHeader() {
             Choose What You Need
           </h2>
 
-          {/* Highlighted product */}
+          {/* Highlighted products */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
             <a href="/shieldsimcard" className="block">
               <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
@@ -438,6 +438,43 @@ export default function ShieldHeader() {
                   <p className="text-gray-600 text-sm">
                   Works with hotspots, tablets, or wearables that take a SIM
                   card.
+                  </p>
+                </div>
+              </div>
+            </a>
+
+            {/* Shield Sweatshirt */}
+            <a href="/shieldsweatshirt" className="block">
+              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                {/* Limited Quantity Badge */}
+                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
+                  Limited Quantity
+                </span>
+
+                {/* Title at Top */}
+                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
+                  Internet that gives back
+                </h4>
+
+                {/* Image */}
+                <div className="flex justify-center items-center">
+                  <img
+                    src="/Hotspot/sweatshirtfront.png"
+                    alt="Shield Sweatshirt"
+                    className="h-40 object-contain"
+                  />
+                </div>
+
+                {/* Copy */}
+                <div className="pt-6 text-left">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    Shield Sweatshirt
+                  </h3>
+                  <p className="text-gray-900 text-sm font-medium mb-1">
+                    Support Digital Equity
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Wear your support. 100% of profits provide internet to those in need.
                   </p>
                 </div>
               </div>
