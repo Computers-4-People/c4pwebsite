@@ -97,8 +97,7 @@ export default function Refurbished() {
             most in need.
           </li>
           <li>
-            <strong>Application Process:</strong> To apply, complete the Partner
-            Form below. Applications are reviewed on a rolling basis.
+            <strong>Application Process:</strong> <strong>Application Period is currently closed.</strong> Any new applications will be reviewed later in the year. To apply, complete the Partner Form below.
           </li>
         </ul>
       ),
