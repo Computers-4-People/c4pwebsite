@@ -132,7 +132,7 @@ export default function Donate() {
         side: "right",
         title2: 'Your Data is Safe',
         desc2: (
-          <p>We follow NIST 800-88 standards and provide a certificate of data destruction for every device upon request.</p>
+          <p>We follow NIST 800-88 standards and provide a certificate of data destruction for every device. Donors receive a portal to view and download their data destruction certificates.</p>
         ),
         image: '/E-waste/datacert.png',
         alt: 'Certificate of data destruction'
