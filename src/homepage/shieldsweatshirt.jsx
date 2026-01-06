@@ -171,9 +171,10 @@ export default function ShieldSweatshirt() {
         <div className="w-full order-1 lg:order-2 mt-0 lg:mt-0">
           <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Support Digital Access
-              </h3>
+              <div className="mb-4">
+                <p className="text-4xl font-bold text-gray-900 mb-1">$69</p>
+                <p className="text-sm text-green-600 font-medium">Free Shipping</p>
+              </div>
               <p className="text-gray-600 text-sm">
                 Limited quantity available
               </p>
