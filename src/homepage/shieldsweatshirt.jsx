@@ -137,7 +137,7 @@ export default function ShieldSweatshirt() {
               Shield Sweatshirt – Internet That Gives Back
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-              Wear your support for digital equity. This exclusive Shield sweatshirt represents more than just comfort—it's a statement that everyone deserves internet access.
+              Wear your support for digital access. This exclusive Shield sweatshirt represents more than just comfort—it's a statement that everyone deserves internet access.
 
               <br /><br />
               <b>What makes it special:</b><br />
@@ -159,7 +159,7 @@ export default function ShieldSweatshirt() {
 
               <br /><br />
               <b>Limited availability:</b><br />
-              This is a special limited run. Once they're sold out, they're gone. Get yours now to show your support for digital equity.
+              This is a special limited run. Once they're sold out, they're gone. Get yours now to show your support for digital access.
 
               <br /><br />
               Free shipping on all orders. Your sweatshirt will ship within 3-5 business days.
@@ -172,7 +172,7 @@ export default function ShieldSweatshirt() {
           <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Support Digital Equity
+                Support Digital Access
               </h3>
               <p className="text-gray-600 text-sm">
                 Limited quantity available
