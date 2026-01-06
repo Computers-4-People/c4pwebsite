@@ -56,19 +56,20 @@ export default function Refurbished() {
     props={{
       title2: "Why Join Us as a Partner?",
       desc2: (
-        <ul className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 list-disc list-inside">
-          <li>
-            <strong>Bring Technology to Your Community:</strong> Nominate individuals in your programs for computers.
-          </li>
-          <li>
-            <strong>Host Digital Skills Classes:</strong> Collaborate with us to
-            offer essential tech education.
-          </li>
-          <li>
-            <strong>Innovative Partnerships:</strong> Join forces on creative
-            solutions to enhance digital equity and impact.
-          </li>
-        </ul>
+        <div className="space-y-8">
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Bring Technology to Your Community</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">Nominate individuals in your programs for computers.</p>
+          </div>
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Host Digital Skills Classes</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">Collaborate with us to offer essential tech education.</p>
+          </div>
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Innovative Partnerships</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">Join forces on creative solutions to enhance digital equity and impact.</p>
+          </div>
+        </div>
       ),
       image: "../partner/dvinekonektionevent.png",
       alt: `Computers 4 People distributing laptops at a partner organization`,
@@ -79,27 +80,28 @@ export default function Refurbished() {
     props={{
       title2: "Partner Requirements",
       desc2: (
-        <ul className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7 list-disc list-inside">
-          <li>
-            <strong>Service Area:</strong> The organization must provide services
-            and have a physical location in New Jersey, New York, or
-            Massachusetts.
-          </li>
-          <li>
-            <strong>Mission Alignment:</strong> The organization’s mission
-            should align with Computers 4 People’s goals of promoting digital
-            access and literacy within under-resourced communities.
-          </li>
-          <li>
-            <strong>Device Distribution Capability:</strong> The organization
-            must demonstrate the ability to distribute devices to clients in a
-            responsible and secure manner, ensuring that devices reach those
-            most in need.
-          </li>
-          <li>
-            <strong>Application Process:</strong> <strong>Application Period is currently closed.</strong> Any new applications will be reviewed later in the year. To apply, complete the Partner Form below.
-          </li>
-        </ul>
+        <div className="space-y-8">
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Service Area</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">The organization must provide services and have a physical location in New Jersey, New York, or Massachusetts.</p>
+          </div>
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Mission Alignment</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">The organization's mission should align with Computers 4 People's goals of promoting digital access and literacy within under-resourced communities.</p>
+          </div>
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Device Distribution Capability</h3>
+            <p className="text-lg text-gray-700 leading-relaxed">The organization must demonstrate the ability to distribute devices to clients in a responsible and secure manner, ensuring that devices reach those most in need.</p>
+          </div>
+          <div className="pl-5 border-l-4 border-green-600">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Application Process</h3>
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-3 -ml-5">
+              <p className="text-lg font-bold text-yellow-900">Application Period is currently closed.</p>
+              <p className="text-base text-yellow-800 mt-1">Any new applications will be reviewed later in the year.</p>
+            </div>
+            <p className="text-lg text-gray-700 leading-relaxed">To apply, complete the Partner Form below.</p>
+          </div>
+        </div>
       ),
       image: "../partner/graduation.png",
       alt: `Partner organization taking photos with Computers 4 People team member`,
