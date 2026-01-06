@@ -14,14 +14,14 @@ export default function Donate() {
   const cards = [
     {
       titlePart1: "Donate",
-      titlePart2: "10+ Devices",
-      description: "We’ll pick up your donation at no cost and handle everything securely.",
+      titlePart2: "50+ Devices",
+      description: "We'll pick up your donation at no cost and handle everything securely.",
       image: "/Programs/E-waste/Images/Donor_Scheduling_Ewaste_Pickup.jpeg",
       alt: "Donor arranging pickup"
     },
     {
       titlePart1: "Donate",
-      titlePart2: "<10 Devices",
+      titlePart2: "<50 Devices",
       description: "Easily drop off your devices at our dropoff locations.",
       image: "/Programs/E-waste/Images/c4p_ambassador_Picking_Up_Ewaste.jpeg",
       alt: "Ambassador drop-off"
@@ -96,7 +96,7 @@ export default function Donate() {
         titlePart1: 'Donate Tech',
         titlePart2: 'Securely & Impactfully',
         description: (
-          <p>We ensure your data is fully wiped and your devices go to someone in need. Schedule a free pickup for 10+ devices or drop off fewer anytime.</p>
+          <p>We ensure your data is fully wiped and your devices go to someone in need. Schedule a free pickup for 50+ devices or drop off fewer anytime.</p>
         ),
         links: [{ text: 'Donate Now', clickAction: scrollToForm }]
       }} />
@@ -115,7 +115,7 @@ export default function Donate() {
         desc2: (
           <div>
             <p className="mb-4">
-              Have fewer than 10 devices?{' '}
+              Have fewer than 50 devices?{' '}
               <Link to="/ewastedropoff" className="underline text-c4p hover:text-c4p-hover font-medium">
                 Drop them off at a location near you.
               </Link>
