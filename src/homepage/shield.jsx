@@ -461,7 +461,7 @@ export default function ShieldHeader() {
                   <img
                     src="/Hotspot/sweatshirtfront.png"
                     alt="Shield Sweatshirt"
-                    className="h-40 object-contain"
+                    className="h-64 object-contain"
                   />
                 </div>
 
