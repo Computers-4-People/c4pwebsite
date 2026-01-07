@@ -10,7 +10,7 @@ export default function AdvisoryBoardApplication() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "300vh",
+        height: "250vh",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
