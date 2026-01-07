@@ -28,6 +28,7 @@ import Uploadrecommendation from "./homepage/uploadrecommendation";
 import Eligibility from "./homepage/eligibility";
 import Auth from "./homepage/auth";
 import Boardapplication from "./homepage/boardapplication";
+import AdvisoryBoardApplication from "./homepage/advisoryboardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
 import PrivacyPolicy from "./homepage/privacypolicy";
@@ -188,6 +189,7 @@ function App() {
           <Route path="/eligibility" element={<Eligibility />} />
           <Route path="/uploadrecommendation.html" element={<Uploadrecommendation />} />
           <Route path="/boardapplication" element={<Boardapplication />} />
+          <Route path="/advisoryboardapplication" element={<AdvisoryBoardApplication />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/connect" element={<Shield />} />
           <Route path="/shield" element={<Shield />} />
