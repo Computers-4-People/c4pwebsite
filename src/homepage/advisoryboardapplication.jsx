@@ -19,6 +19,7 @@ export default function AdvisoryBoardApplication() {
     >
       <iframe
         className="pt-20"
+        scrolling="no"
         aria-label="Advisory Board Application Form"
         style={{ width: "100%", height: "100%", border: "none" }}
         src="https://forms.zohopublic.com/Computers4People/form/C4PAdvisoryBoardApplication/formperma/mtBceFBAMg9INwU8nSM3k8D_k3z0tZkjwcvYeQtduF4"
