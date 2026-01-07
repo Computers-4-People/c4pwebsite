@@ -10,7 +10,8 @@ export default function AdvisoryBoardApplication() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        height: "350vh",
+        minHeight: "100vh",
+        height: "auto",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -21,7 +22,12 @@ export default function AdvisoryBoardApplication() {
         className="pt-20"
         scrolling="no"
         aria-label="Advisory Board Application Form"
-        style={{ width: "100%", height: "100%", border: "none" }}
+        style={{
+          width: "100%",
+          height: "3500px", // Fixed pixel height for the form content
+          minHeight: "100vh",
+          border: "none"
+        }}
         src="https://forms.zohopublic.com/Computers4People/form/C4PAdvisoryBoardApplication/formperma/mtBceFBAMg9INwU8nSM3k8D_k3z0tZkjwcvYeQtduF4"
       ></iframe>
     </div>
