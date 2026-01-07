@@ -443,38 +443,35 @@ export default function ShieldHeader() {
               </div>
             </a>
 
-            {/* Shield Sweatshirt */}
-            <a href="/shieldsweatshirt" className="block">
+            {/* Yearly Subscription */}
+            <a href="/shieldsimcard12months" className="block">
               <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                {/* Limited Quantity Badge */}
-                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Limited Quantity
-                </span>
-
                 {/* Title at Top */}
                 <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  Internet that gives back
+                  I already have a device, but need internet service
                 </h4>
 
                 {/* Image */}
                 <div className="flex justify-center items-center">
                   <img
-                    src="/Hotspot/sweatshirtfront.png"
-                    alt="Shield Sweatshirt"
-                    className="h-64 object-contain"
+                    src="/Hotspot/simcard.png"
+                    alt="SIM Card"
+                    className="h-40 object-contain"
                   />
                 </div>
 
                 {/* Copy */}
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Shield Sweatshirt
+                    Yearly Subscription – Internet Only
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $69 + Free Shipping
+                    $156/year
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Wear your support. 100% of profits provide internet to those in need.
+                    Unlimited 4G & 5G internet service only (no device). SIM
+                    included, just insert and go. Perfect to cover your entire
+                    school year.
                   </p>
                 </div>
               </div>
@@ -543,32 +540,35 @@ export default function ShieldHeader() {
               </div>
             </a>
 
-            {/* Card 3: SIM Card Only */}
-            <a href="/shieldsimcard12months" className="block">
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+            {/* Card 3: Shield Sweatshirt */}
+            <a href="/shieldsweatshirt" className="block">
+              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
+                {/* Limited Quantity Badge */}
+                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
+                  Limited Quantity
+                </span>
+
                 <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  I already have a device, but need internet service
+                  Internet that gives back
                 </h4>
 
                 <div className="flex justify-center items-center">
                   <img
-                    src="/Hotspot/simcard.png"
-                    alt="SIM Card"
-                    className="h-40 object-contain"
+                    src="/Hotspot/sweatshirtfront.png"
+                    alt="Shield Sweatshirt"
+                    className="h-64 object-contain"
                   />
                 </div>
 
                 <div className="pt-6 text-left">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Yearly Subscription – Internet Only
+                    Shield Sweatshirt
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $156/year
+                    $69 + Free Shipping
                   </p>
                   <p className="text-gray-600 text-sm">
-                    Unlimited 4G & 5G internet service only (no device). SIM
-                    included, just insert and go. Perfect to cover your entire
-                    school year.
+                    Wear your support. 100% of profits provide internet to those in need.
                   </p>
                 </div>
               </div>
