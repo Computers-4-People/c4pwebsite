@@ -73,10 +73,15 @@ export default function Programs() {
   props={{
     title2: "How It Works",
     desc2: (
-      <div className="text-lg md:text-lg leading-7 md:leading-8 lg:leading-7">
-        For individuals, start by applying for a refurbished computer through our online application. Once approved, devices are provided through our partner organizations to ensure equitable access. <br/><br/>
-
-        For Non-Profits, we offer opportunities to collaborate by bringing technology, training, and connectivity solutions to your community. Partners nominate recipients and host training sessions customized to meet the unique needs of their community.
+      <div className="space-y-8">
+        <div className="pl-5 border-l-4 border-green-600">
+          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">For Individuals</h3>
+          <p className="text-lg text-gray-700 leading-relaxed">Start by applying for a refurbished computer through our online application. Once approved, devices are provided through our partner organizations to ensure equitable access.</p>
+        </div>
+        <div className="pl-5 border-l-4 border-green-600">
+          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">For Non-Profits</h3>
+          <p className="text-lg text-gray-700 leading-relaxed">We offer opportunities to collaborate by bringing technology, training, and connectivity solutions to your community. Partners nominate recipients and host training sessions customized to meet the unique needs of their community.</p>
+        </div>
       </div>
     ),
     image: "../partner/dvinekonektionevent.png",

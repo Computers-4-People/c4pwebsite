@@ -64,11 +64,20 @@ export default function Apply() {
             props={{
                 title2: 'Transforming Lives with Free Computers',
                 desc2: (
-                <p>
-                    According to a <a className="text-green-500 hover:underline" href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">
-                    Pew Research study
-                    </a>, 41% of adults with lower incomes do not own a desktop or laptop computer. This limits access to critical opportunities in education, employment, and healthcare. Computers 4 People provides refurbished laptops, desktops, and tablets at no cost, ensuring everyone can unlock their potential.
-                </p>
+                <div className="space-y-6">
+                    <div className="pl-5 border-l-4 border-green-600">
+                        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">The Digital Divide</h3>
+                        <p className="text-lg text-gray-700 leading-relaxed">
+                            According to a <a className="text-green-600 hover:underline font-semibold" href="https://www.pewresearch.org/short-reads/2021/06/22/digital-divide-persists-even-as-americans-with-lower-incomes-make-gains-in-tech-adoption/">
+                            Pew Research study
+                            </a>, 41% of adults with lower incomes do not own a desktop or laptop computer. This limits access to critical opportunities in education, employment, and healthcare.
+                        </p>
+                    </div>
+                    <div className="pl-5 border-l-4 border-green-600">
+                        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Our Solution</h3>
+                        <p className="text-lg text-gray-700 leading-relaxed">Computers 4 People provides refurbished laptops, desktops, and tablets at no cost, ensuring everyone can unlock their potential.</p>
+                    </div>
+                </div>
                 ),
                 image: '../refurbished/recipient.jpg',
                 side: 'left',
@@ -78,12 +87,23 @@ export default function Apply() {
   props={{
     title2: 'From Donors to Recipients: A Full Circle of Impact',
     desc2: (
-      <p>
-        Generous individuals and organizations donate their unused devices, which are then meticulously
-        refurbished and securely <a className="text-green-500 hover:underline" href="/donate">data-wiped</a> to be in optimal condition. These devices are matched with recipients (located in New Jersey, New York City, or Massachusetts) to help
-        them achieve their goals. Due to reliance on donations, applicants may experience a short
-        waiting period, but the impact is well worth it.
-      </p>
+      <div className="space-y-8">
+        <div className="pl-5 border-l-4 border-green-600">
+          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Donation & Refurbishment</h3>
+          <p className="text-lg text-gray-700 leading-relaxed">
+            Generous individuals and organizations donate their unused devices, which are then meticulously
+            refurbished and securely <a className="text-green-600 hover:underline font-semibold" href="/donate">data-wiped</a> to be in optimal condition.
+          </p>
+        </div>
+        <div className="pl-5 border-l-4 border-green-600">
+          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Matching & Distribution</h3>
+          <p className="text-lg text-gray-700 leading-relaxed">
+            These devices are matched with recipients (located in New Jersey, New York City, or Massachusetts) to help
+            them achieve their goals. Due to reliance on donations, applicants may experience a short
+            waiting period, but the impact is well worth it.
+          </p>
+        </div>
+      </div>
     ),
     image: '../refurbished/luis.png',
     side: 'right',

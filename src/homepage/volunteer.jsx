@@ -71,11 +71,14 @@ export default function Volunteer() {
                     title2: "Volunteer Opportunities for Everyone: Tailored to Your Preferences",
                     desc2: (
                         <div className="space-y-8">
-                            <p>
-                                Our volunteer opportunities are for everyone! <br />
-                                No prior experience required. We offer training on how to refurbish computers and assist in event planning. Join us to make a meaningful impact, all while gaining valuable skills and meeting like-minded people.
-                            </p>
-                            <p>Volunteer opportunities available in-person or remote.</p>
+                            <div className="pl-5 border-l-4 border-green-600">
+                                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">For Everyone</h3>
+                                <p className="text-lg text-gray-700 leading-relaxed">Our volunteer opportunities are for everyone! No prior experience required. We offer training on how to refurbish computers and assist in event planning.</p>
+                            </div>
+                            <div className="pl-5 border-l-4 border-green-600">
+                                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Flexible Options</h3>
+                                <p className="text-lg text-gray-700 leading-relaxed">Join us to make a meaningful impact, all while gaining valuable skills and meeting like-minded people. Volunteer opportunities available in-person or remote.</p>
+                            </div>
                         </div>
                     ),
                     image: "../volunteer/volunteersacha.jpeg",
