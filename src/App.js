@@ -9,6 +9,7 @@ import Apply from "./homepage/apply";
 import DSClasses from "./homepage/dsclasses";
 import About from "./homepage/about";
 import Blog from "./homepage/blog";
+import BlogArticle from "./blog/BlogArticle";
 import Careers from "./homepage/careers";
 import Contact from "./homepage/contact";
 import Ewastedropoff from "./homepage/ewastedropoff";
@@ -165,6 +166,7 @@ function App() {
           <Route path="/apply.html" element={<Apply />} />
           <Route path="/dsclasses" element={<DSClasses />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
