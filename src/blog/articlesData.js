@@ -33,7 +33,7 @@ At Computers 4 People, we use **BitRaser Drive Eraser**, an industry-leading dat
 
 **NIST-Compliant Overwriting**: BitRaser follows the National Institute of Standards and Technology (NIST) 800-88 guidelines for media sanitization. The software overwrites your entire drive multiple times with random patterns of data, making recovery impossible.
 
-**Verification & Certification**: After erasure, BitRaser generates a tamper-proof certificate of data destruction. This certificate proves that data was completely removed and provides an audit trail for compliance purposes. You can view your certificate anytime at [computers4people.org/auth](https://computers4people.org/auth).
+**Verification & Certification**: After erasure, BitRaser generates a tamper-proof certificate of data destruction. This certificate proves that data was completely removed and provides an audit trail for compliance purposes. You can view your certificate anytime in our **Donor Portal** at [computers4people.org/auth](https://computers4people.org/auth).
 
 **Works on All Drive Types**: Whether you're donating a traditional hard drive (HDD) or a solid-state drive (SSD), BitRaser can securely erase it. SSDs require special handling due to their technology, and BitRaser handles this automatically.
 
@@ -51,7 +51,7 @@ Here's what happens when you donate a device to us:
 
 3. **Verification**: BitRaser automatically verifies the erasure was successful and generates a certificate of data destruction linked to the device serial number.
 
-4. **Documentation**: We maintain detailed records of every device erased, including serial numbers and erasure certificates. You can access your certificate at [computers4people.org/auth](https://computers4people.org/auth).
+4. **Documentation**: We maintain detailed records of every device erased, including serial numbers and erasure certificates. You can access your donation history and certificates in the **Donor Portal** at [computers4people.org/auth](https://computers4people.org/auth).
 
 5. **Drive Disposal (if needed)**: If a drive cannot be erased or is not suitable for reuse, we send it to our R2 certified recycling partners who physically shred it. All disposal is tracked by serial number.
 
@@ -70,7 +70,7 @@ Our data erasure process meets or exceeds these recognized standards:
 
 ## Can You View Your Erasure Certificate?
 
-Yes! Every device receives a BitRaser certificate of destruction that you can access online at **[computers4people.org/auth](https://computers4people.org/auth)**. This certificate includes:
+Yes! Every device receives a BitRaser certificate of destruction that you can access online in our **Donor Portal**. Simply log in at **[computers4people.org/auth](https://computers4people.org/auth)** to view your complete donation history and all data destruction certificates. Each certificate includes:
 
 - Date and time of erasure
 - Device serial number and model
@@ -105,7 +105,7 @@ If you have computers, laptops, or tablets to donate, we make it easy. We offer 
 
 **Learn more about donating**: [Visit our donation page](/donate)
 
-**View your data destruction certificate**: [computers4people.org/auth](https://computers4people.org/auth)
+**Access the Donor Portal**: Log in at [computers4people.org/auth](https://computers4people.org/auth) to view your donation history and data destruction certificates
 
 **Questions about data security?** Email us at info@computers4people.org
     `
