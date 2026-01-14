@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import articles from "./articlesData";
 
@@ -15,17 +15,23 @@ export default function BlogArticle() {
   }, [slug]);
 
   // If article not found, redirect to blog
-  if (!article) {
-    useEffect(() => {
+  useEffect(() => {
+    if (!article) {
       navigate('/blog');
-    }, []);
-    return null;
-  }
+    }
+  }, [article, navigate]);
 
   // Set page title for SEO
   useEffect(() => {
-    document.title = `${article.title} | Computers 4 People Blog`;
+    if (article) {
+      document.title = `${article.title} | Computers 4 People Blog`;
+    }
   }, [article]);
+
+  // If article not found, show nothing while redirecting
+  if (!article) {
+    return null;
+  }
 
   // Format date
   const formatDate = (dateString) => {
@@ -65,7 +71,7 @@ export default function BlogArticle() {
 
       // Process links
       const links = [];
-      processedLine = processedLine.replace(linkPattern, (match, text, url) => {
+      processedLine = processedLine.replace(linkPattern, (_match, text, url) => {
         const placeholder = `__LINK_${links.length}__`;
         links.push({ text, url });
         return placeholder;
