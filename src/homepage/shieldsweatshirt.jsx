@@ -172,7 +172,7 @@ export default function ShieldSweatshirt() {
           <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
             <div className="text-center mb-6">
               <div className="mb-4">
-                <p className="text-4xl font-bold text-gray-900 mb-1">$69</p>
+                <p className="text-4xl font-bold text-gray-900 mb-1">$45</p>
                 <p className="text-sm text-green-600 font-medium">Free Shipping</p>
               </div>
               <p className="text-gray-600 text-sm">

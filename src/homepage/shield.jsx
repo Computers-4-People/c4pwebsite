@@ -565,7 +565,7 @@ export default function ShieldHeader() {
                     Shield Sweatshirt
                   </h3>
                   <p className="text-gray-900 text-sm font-medium mb-1">
-                    $69 + Free Shipping
+                    $45 + Free Shipping
                   </p>
                   <p className="text-gray-600 text-sm">
                     Wear your support. 100% of profits provide internet to those in need.
