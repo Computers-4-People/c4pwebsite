@@ -5,8 +5,8 @@ import RecentShipments from './components/RecentShipments';
 // API base URL - Vercel serverless functions
 const API_BASE = '';
 
-// Password protection
-const PORTAL_PASSWORD = process.env.REACT_APP_PORTAL_PASSWORD || 'shieldrocks321';
+// Access code protection
+const PORTAL_ACCESS_CODE = process.env.REACT_APP_FULFILLMENT_KEY || 'shieldrocks321';
 
 export default function FulfillmentPortal() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -29,7 +29,7 @@ export default function FulfillmentPortal() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (passwordInput === PORTAL_PASSWORD) {
+    if (passwordInput === PORTAL_ACCESS_CODE) {
       setAuthenticated(true);
       sessionStorage.setItem('shield_portal_auth', 'true');
       setError('');
