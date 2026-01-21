@@ -6,7 +6,7 @@ import RecentShipments from './components/RecentShipments';
 const API_BASE = '';
 
 // Access code protection
-const PORTAL_ACCESS_CODE = process.env.REACT_APP_FULFILLMENT_KEY || 'shieldrocks321';
+const PORTAL_ACCESS_CODE = process.env.REACT_APP_SHIELD_FULFILLMENT_ACCESS || 'shieldrocks321';
 
 export default function FulfillmentPortal() {
   const [authenticated, setAuthenticated] = useState(false);
