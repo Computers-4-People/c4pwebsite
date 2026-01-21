@@ -32,6 +32,7 @@ import Boardapplication from "./homepage/boardapplication";
 import AdvisoryBoardApplication from "./homepage/advisoryboardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
+import FulfillmentPortal from "./portal/fulfillment";
 import PrivacyPolicy from "./homepage/privacypolicy";
 import Termsofservice from "./homepage/terms-of-service";
 import Shield from "./homepage/shield";
@@ -203,6 +204,7 @@ function App() {
           <Route path="/shield5grouter" element={<Shield5grouter />} />
           <Route path="/shieldsweatshirt" element={<ShieldSweatshirt />} />
           <Route path="/portal" element={<Portal />} />
+          <Route path="/ops-portal-shield-fulfillment" element={<FulfillmentPortal />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/certificate-demo" element={<CertificateDemo />} />

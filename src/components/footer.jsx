@@ -30,9 +30,6 @@ export default function Footer() {
             <Link to="/contact" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Contact Us
             </Link>
-            <Link to="/blog" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-              Blog
-            </Link>
             <Link to="/terms-of-service" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Terms of Service
             </Link>
@@ -59,6 +56,9 @@ export default function Footer() {
               Digital Skills Classes
             </Link>
             <Link to="/partner" className="hover:text-c4p">Non-Profit Partners</Link>
+            <Link to="/blog" className="hover:text-c4p mb-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+              Blog
+            </Link>
           </div>
 
           {/* Column 3 */}
