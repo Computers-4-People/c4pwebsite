@@ -41,14 +41,21 @@ module.exports = async (req, res) => {
 
             console.log('Subscription:', sub.subscription_id);
             console.log('Custom fields:', JSON.stringify(customFields, null, 2));
+            console.log('Address:', JSON.stringify(sub.shipping_address, null, 2));
+            console.log('Customer:', JSON.stringify(sub.customer, null, 2));
+            console.log('Plan:', JSON.stringify(sub.plan, null, 2));
 
             return {
                 subscription_id: sub.subscription_id,
                 subscription_number: sub.subscription_number,
                 name: sub.name,
                 status: sub.status,
+                plan: sub.plan,
+                customer: sub.customer,
+                shipping_address: sub.shipping_address,
                 custom_fields: customFields,
-                raw_custom_fields: sub.custom_fields
+                raw_custom_fields: sub.custom_fields,
+                all_keys: Object.keys(sub)
             };
         });
 
