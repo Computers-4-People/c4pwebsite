@@ -62,6 +62,9 @@ module.exports = async (req, res) => {
 
         const fullSubscription = subDetailResponse.data.subscription;
 
+        // Debug: Log custom fields structure
+        console.log('Full subscription custom_fields:', JSON.stringify(fullSubscription.custom_fields, null, 2));
+
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
         const customFields = fullSubscription.custom_fields.map(field => {
