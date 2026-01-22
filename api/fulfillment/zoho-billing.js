@@ -123,24 +123,12 @@ async function getPendingOrders() {
         });
 
         // Merge subscription data with invoice addresses
-        const mergedOrders = filteredSubscriptions.map((sub, index) => {
+        const mergedOrders = filteredSubscriptions.map(sub => {
             const invoice = invoicesByCustomer.get(sub.customer_id);
-
-            // Debug: log first subscription to see all available fields
-            if (index === 0) {
-                console.log('=== DEBUG FIRST SUBSCRIPTION ===');
-                console.log('plan_name:', sub.plan_name);
-                console.log('cf_device_type:', sub.cf_device_type);
-                console.log('Invoice cf_device_type:', invoice?.cf_device_type);
-                console.log('Invoice shipping_address:', JSON.stringify(invoice?.shipping_address, null, 2));
-                console.log('Invoice shipping_street2:', invoice?.shipping_street2);
-            }
-
             return {
                 ...sub,
                 _source: 'subscription',
-                _invoice_address: invoice?.shipping_address || null,
-                _invoice_line_items: invoice?.line_items || null
+                _invoice_address: invoice?.shipping_address || null
             };
         });
 
@@ -307,11 +295,10 @@ function formatOrderForQueue(record) {
         };
     }
 
-    // Device type based on addon: if there's an addon show it, otherwise "Sim Card Only"
+    // Device type: use cf_device_type if set and not "Blank", otherwise "Sim Card Only"
     let deviceType = 'Sim Card Only';
-    if (record.addons && record.addons.length > 0) {
-        // Use addon name (e.g., "T10", "Shield 5G")
-        deviceType = record.addons[0].addon_description || record.addons[0].name || deviceType;
+    if (record.cf_device_type && record.cf_device_type !== 'Blank' && record.cf_device_type !== '') {
+        deviceType = record.cf_device_type;
     }
 
     return {
