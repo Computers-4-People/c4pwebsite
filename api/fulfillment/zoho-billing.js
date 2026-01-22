@@ -107,47 +107,66 @@ async function getPendingOrders() {
         ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const invoices = invoicesResponse.data.invoices || [];
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Debug: Compare list vs detail endpoint to see if detail has street2
-        if (invoices.length > 0) {
-            const testInvoiceId = invoices[0].invoice_id;
-            const fullInvoiceDetail = await getOrderDetails(testInvoiceId);
-            console.log('=== COMPARISON: List vs Detail endpoint ===');
-            console.log('Invoice LIST shipping_street2:', invoices[0].shipping_street2);
-            console.log('Invoice DETAIL shipping_street2:', fullInvoiceDetail.shipping_street2);
-            console.log('Invoice DETAIL shipping_address:', JSON.stringify(fullInvoiceDetail.shipping_address, null, 2));
+        // Try fetching customer data instead of invoice data for addresses
+        // Fetch first customer to test if it has better address data
+        if (filteredSubscriptions.length > 0) {
+            const testCustomerId = filteredSubscriptions[0].customer_id;
+            try {
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${testCustomerId}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                const customer = customerResponse.data.customer;
+                console.log('=== CUSTOMER DATA TEST ===');
+                console.log('Customer shipping_address:', JSON.stringify(customer.shipping_address, null, 2));
+                console.log('Customer keys:', Object.keys(customer));
+            } catch (error) {
+                console.error('Error fetching customer:', error.message);
+            }
         }
 
-        // Create invoice map by customer_id for address lookup
-        const invoicesByCustomer = new Map();
-        invoices.forEach(inv => {
-            if (inv.customer_id && inv.shipping_address) {
-                invoicesByCustomer.set(inv.customer_id, inv);
-            }
-        });
+        // Create customer map by customer_id for address lookup
+        const customersByCustomerId = new Map();
 
-        // Merge subscription data with invoice addresses
+        // Fetch customer details for each filtered subscription
+        for (const sub of filteredSubscriptions) {
+            try {
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+            } catch (error) {
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+            }
+        }
+
+        // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map((sub, index) => {
-            const invoice = invoicesByCustomer.get(sub.customer_id);
+            const customer = customersByCustomerId.get(sub.customer_id);
 
             // Debug: Find Michael Waite's order and log all data
             if (sub.customer_name && sub.customer_name.toLowerCase().includes('michael waite')) {
                 console.log('=== MICHAEL WAITE DEBUG ===');
-                console.log('Full subscription object:', JSON.stringify(sub, null, 2));
-                console.log('Full invoice object:', JSON.stringify(invoice, null, 2));
+                console.log('Full customer object:', JSON.stringify(customer, null, 2));
+                console.log('Customer shipping_address:', JSON.stringify(customer?.shipping_address, null, 2));
             }
 
             return {
                 ...sub,
                 _source: 'subscription',
-                _invoice_address: invoice?.shipping_address || null,
-                _invoice: invoice || null
+                _customer_address: customer?.shipping_address || null,
+                _customer: customer || null
             };
         });
 
@@ -159,54 +178,52 @@ async function getPendingOrders() {
     }
 }
 
-// Get shipped orders (subscriptions with invoice addresses)
+// Get shipped orders (subscriptions with customer addresses)
 async function getShippedOrders() {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
-        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            })
-        ]);
+        // Fetch subscriptions
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const invoices = invoicesResponse.data.invoices || [];
 
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Create invoice map by customer_id for address lookup
-        const invoicesByCustomer = new Map();
-        invoices.forEach(inv => {
-            if (inv.customer_id && inv.shipping_address) {
-                invoicesByCustomer.set(inv.customer_id, inv);
+        // Fetch customer details for each filtered subscription
+        const customersByCustomerId = new Map();
+        for (const sub of filteredSubscriptions) {
+            try {
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+            } catch (error) {
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
             }
-        });
+        }
 
-        // Merge subscription data with invoice addresses
+        // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
-            const invoice = invoicesByCustomer.get(sub.customer_id);
+            const customer = customersByCustomerId.get(sub.customer_id);
             return {
                 ...sub,
                 _source: 'subscription',
-                _invoice_address: invoice?.shipping_address || null,
-                _invoice: invoice || null
+                _customer_address: customer?.shipping_address || null,
+                _customer: customer || null
             };
         });
 
@@ -292,27 +309,22 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
 
-    // Use invoice address if available (from _invoice_address), otherwise fall back to custom fields
+    // Use customer address if available (from _customer_address), otherwise fall back to custom fields
     let shippingAddress;
-    if (record._invoice_address) {
-        // Check both shipping_address.street2 and top-level shipping_street2
-        const address2 = record._invoice_address.street2 || record._invoice?.shipping_street2 || '';
-
+    if (record._customer_address) {
         // Debug Michael Waite's address formatting
         if (record.customer_name && record.customer_name.toLowerCase().includes('michael waite')) {
             console.log('=== FORMATTING MICHAEL WAITE ADDRESS ===');
-            console.log('_invoice_address.street2:', record._invoice_address.street2);
-            console.log('_invoice.shipping_street2:', record._invoice?.shipping_street2);
-            console.log('Final address2:', address2);
+            console.log('_customer_address:', JSON.stringify(record._customer_address, null, 2));
         }
 
         shippingAddress = {
-            address: record._invoice_address.street || record._invoice?.shipping_street || '',
-            address2: address2,
-            city: record._invoice_address.city || record._invoice?.shipping_city || '',
-            state: record._invoice_address.state || record._invoice?.shipping_state || '',
-            zip: record._invoice_address.zipcode || record._invoice?.shipping_zipcode || '',
-            country: record._invoice_address.country || 'USA'
+            address: record._customer_address.street || '',
+            address2: record._customer_address.street2 || '',
+            city: record._customer_address.city || '',
+            state: record._customer_address.state || '',
+            zip: record._customer_address.zipcode || record._customer_address.zip || '',
+            country: record._customer_address.country || 'USA'
         };
     } else {
         // Fall back to custom fields if no invoice address
