@@ -123,8 +123,16 @@ async function getPendingOrders() {
         });
 
         // Merge subscription data with invoice addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
+        const mergedOrders = filteredSubscriptions.map((sub, index) => {
             const invoice = invoicesByCustomer.get(sub.customer_id);
+
+            // Debug: Find Michael Waite's order and log all data
+            if (sub.customer_name && sub.customer_name.toLowerCase().includes('michael waite')) {
+                console.log('=== MICHAEL WAITE DEBUG ===');
+                console.log('Full subscription object:', JSON.stringify(sub, null, 2));
+                console.log('Full invoice object:', JSON.stringify(invoice, null, 2));
+            }
+
             return {
                 ...sub,
                 _source: 'subscription',
@@ -279,6 +287,14 @@ function formatOrderForQueue(record) {
     if (record._invoice_address) {
         // Check both shipping_address.street2 and top-level shipping_street2
         const address2 = record._invoice_address.street2 || record._invoice?.shipping_street2 || '';
+
+        // Debug Michael Waite's address formatting
+        if (record.customer_name && record.customer_name.toLowerCase().includes('michael waite')) {
+            console.log('=== FORMATTING MICHAEL WAITE ADDRESS ===');
+            console.log('_invoice_address.street2:', record._invoice_address.street2);
+            console.log('_invoice.shipping_street2:', record._invoice?.shipping_street2);
+            console.log('Final address2:', address2);
+        }
 
         shippingAddress = {
             address: record._invoice_address.street || record._invoice?.shipping_street || '',
