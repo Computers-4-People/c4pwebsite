@@ -22,13 +22,28 @@ module.exports = async (req, res) => {
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                per_page: 10  // Just get 10 for debugging
+                per_page: 5  // Just get 5 for debugging
             }
         });
 
         const subscriptions = response.data.subscriptions || [];
 
-        console.log(`Found ${subscriptions.length} subscriptions`);
+        console.log(`Found ${subscriptions.length} subscriptions from LIST endpoint`);
+
+        // Now fetch full details for first subscription to compare
+        let fullSubscription = null;
+        if (subscriptions.length > 0) {
+            const firstSubId = subscriptions[0].subscription_id;
+            console.log(`Fetching full details for ${firstSubId}...`);
+            const fullResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${firstSubId}`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                }
+            });
+            fullSubscription = fullResponse.data.subscription;
+            console.log('Full subscription data fetched');
+        }
 
         // Debug each subscription's custom fields
         const debugData = subscriptions.map(sub => {
@@ -63,7 +78,17 @@ module.exports = async (req, res) => {
             success: true,
             count: subscriptions.length,
             subscriptions: debugData,
-            full_response: response.data
+            full_subscription_example: fullSubscription ? {
+                subscription_id: fullSubscription.subscription_id,
+                subscription_number: fullSubscription.subscription_number,
+                name: fullSubscription.name,
+                created_time: fullSubscription.created_time,
+                plan: fullSubscription.plan,
+                customer: fullSubscription.customer,
+                shipping_address_at_root: fullSubscription.shipping_address,
+                customer_shipping_address: fullSubscription.customer?.shipping_address,
+                custom_fields: fullSubscription.custom_fields
+            } : null
         });
     } catch (error) {
         console.error('Debug error:', error.response?.data || error.message);

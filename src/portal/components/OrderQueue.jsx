@@ -559,6 +559,12 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Device
               </th>
+              <th
+                className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                onClick={() => sortOrders('created_date')}
+              >
+                Created
+              </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Enter SIM Card #
               </th>
@@ -608,6 +614,9 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   ) : (
                     <span className="text-gray-400 italic">No device</span>
                   )}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-500">
+                  {order.created_date ? new Date(order.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                 </td>
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   {order.assigned_sim ? (

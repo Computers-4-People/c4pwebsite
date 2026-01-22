@@ -180,6 +180,9 @@ function formatOrderForQueue(subscription) {
     const shippingAddr = subscription.customer?.shipping_address || subscription.shipping_address || {};
 
     return {
+        // Frontend expects invoice_id and invoice_number (legacy naming from when we used invoices)
+        invoice_id: subscription.subscription_id,
+        invoice_number: subscription.subscription_number || subscription.name,
         subscription_id: subscription.subscription_id,
         subscription_number: subscription.subscription_number || subscription.name,
         customer_name: subscription.customer?.display_name || subscription.customer_name || '',
