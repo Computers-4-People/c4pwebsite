@@ -51,14 +51,13 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions
+        // Get all subscriptions (no filter_by parameter for subscriptions endpoint)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                filter_by: 'Status.All',
                 per_page: 200
             }
         });
@@ -82,14 +81,13 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions
+        // Get all subscriptions (no filter_by parameter for subscriptions endpoint)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                filter_by: 'Status.All',
                 per_page: 200
             }
         });
