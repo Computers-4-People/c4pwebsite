@@ -101,10 +101,10 @@ async function getPendingOrders() {
 
         const invoices = response.data.invoices || [];
 
-        // Filter for orders with Shipping Status=New Manual Order
+        // Invoices list endpoint does NOT include custom_fields array,
+        // but DOES include direct properties like cf_shipping_status
         const filtered = invoices.filter(invoice => {
-            const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
-            return shippingStatus === 'New Manual Order';
+            return invoice.cf_shipping_status === 'New Manual Order';
         });
 
         // Invoices list endpoint includes shipping_address in 1 API call!
@@ -135,10 +135,10 @@ async function getShippedOrders() {
 
         const invoices = response.data.invoices || [];
 
-        // Filter for orders that have been shipped
+        // Invoices list endpoint does NOT include custom_fields array,
+        // but DOES include direct properties like cf_shipping_status
         const filtered = invoices.filter(invoice => {
-            const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
-            return shippingStatus === 'Shipped';
+            return invoice.cf_shipping_status === 'Shipped';
         });
 
         // Invoices list endpoint includes shipping_address in 1 API call!
@@ -222,9 +222,9 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
 
 // Format invoice for queue display
 function formatOrderForQueue(invoice) {
-    const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
-
-    // Invoices list endpoint includes full shipping_address object!
+    // Invoices list endpoint does NOT include custom_fields array,
+    // but DOES include direct properties like cf_shipping_status, cf_device_type, etc.
+    const shippingStatus = invoice.cf_shipping_status || '';
     const shippingAddr = invoice.shipping_address || {};
 
     return {
@@ -244,16 +244,16 @@ function formatOrderForQueue(invoice) {
             zip: shippingAddr.zipcode || shippingAddr.zip || '',
             country: shippingAddr.country || 'USA'
         },
-        device_type: getCustomFieldValue(invoice, 'Device Type') || '',
-        status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(invoice, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
-        assigned_sim: getCustomFieldValue(invoice, 'SIM Card Number'),
-        tracking_number: getCustomFieldValue(invoice, 'Tracking Number'),
-        line_status: getCustomFieldValue(invoice, 'Line Status'),
-        device_status: getCustomFieldValue(invoice, 'Device Status'),
-        ordered_by: getCustomFieldValue(invoice, 'Ordered By'),
-        active_on_tmobile: getCustomFieldValue(invoice, 'Active On TMobile'),
-        tmobile_line_number: getCustomFieldValue(invoice, 'TMobile Line Number'),
-        device_sn: getCustomFieldValue(invoice, 'Device SN'),
+        device_type: invoice.cf_device_type || '',
+        status: shippingStatus === 'Shipped' ? 'shipped' : (invoice.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
+        assigned_sim: invoice.cf_sim_card_number || '',
+        tracking_number: invoice.cf_tracking_number || '',
+        line_status: invoice.cf_line_status || '',
+        device_status: invoice.cf_device_status || '',
+        ordered_by: invoice.cf_ordered_by || '',
+        active_on_tmobile: invoice.cf_active_on_tmobile || '',
+        tmobile_line_number: invoice.cf_tmobile_line_number || '',
+        device_sn: invoice.cf_device_sn || '',
         created_date: invoice.created_time,
         updated_date: invoice.updated_time,
         shipped_date: shippingStatus === 'Shipped' ? invoice.updated_time : null
