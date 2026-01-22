@@ -8,10 +8,24 @@ function FixCredentials() {
     const [loading, setLoading] = useState(false);
 
     React.useEffect(() => {
+        // Restore credentials from localStorage if we came back from OAuth
+        const savedClientId = localStorage.getItem('fix_creds_client_id');
+        const savedClientSecret = localStorage.getItem('fix_creds_client_secret');
+        if (savedClientId) {
+            setClientId(savedClientId);
+        }
+        if (savedClientSecret) {
+            setClientSecret(savedClientSecret);
+        }
+
+        // Check for code in URL
         const urlParams = new URLSearchParams(window.location.search);
         const codeFromUrl = urlParams.get('code');
         if (codeFromUrl) {
             setCode(codeFromUrl);
+            // Clear localStorage after successful OAuth
+            localStorage.removeItem('fix_creds_client_id');
+            localStorage.removeItem('fix_creds_client_secret');
         }
     }, []);
 
@@ -20,6 +34,10 @@ function FixCredentials() {
             alert('Please enter Client ID first!');
             return;
         }
+
+        // Save credentials to localStorage so we can retrieve them after redirect
+        localStorage.setItem('fix_creds_client_id', clientId);
+        localStorage.setItem('fix_creds_client_secret', clientSecret);
 
         // All necessary scopes for Creator and CRM
         const scopes = [
@@ -37,7 +55,7 @@ function FixCredentials() {
             'ZohoCRM.org.ALL'
         ].join(',');
 
-        const redirectUri = 'https://computers4people.org/fix-credentials';
+        const redirectUri = 'http://computers4people.org/oauth2callback';
         const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=${encodeURIComponent(scopes)}&client_id=${clientId}&response_type=code&access_type=offline&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
         window.location.href = authUrl;

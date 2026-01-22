@@ -205,6 +205,7 @@ function App() {
           <Route path="/shieldsweatshirt" element={<ShieldSweatshirt />} />
           <Route path="/portal" element={<Portal />} />
           <Route path="/fix-credentials" element={<FixCredentials />} />
+          <Route path="/oauth2callback" element={<FixCredentials />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/certificate-demo" element={<CertificateDemo />} />

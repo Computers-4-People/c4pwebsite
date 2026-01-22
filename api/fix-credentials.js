@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Code, clientId, and clientSecret are required' });
     }
 
-    const redirectUri = 'https://computers4people.org/fix-credentials';
+    const redirectUri = 'http://computers4people.org/oauth2callback';
 
     try {
         console.log('=== GENERATING REFRESH TOKEN TO FIX CREDENTIALS ===');
