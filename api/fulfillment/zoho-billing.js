@@ -88,7 +88,7 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (list endpoint returns minimal details)
+        // Get all subscriptions (list endpoint returns minimal but sufficient data)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -107,9 +107,10 @@ async function getPendingOrders() {
             return shippingStatus === 'New Manual Order';
         });
 
-        // Fetch full details in batches to avoid rate limiting (429 errors)
-        // Uses default: 3 per batch, 7 second delay = ~25 requests/minute
-        return await fetchSubscriptionDetailsInBatches(filtered);
+        // Return list data directly to avoid Vercel timeout (15 second limit)
+        // Full details can be fetched on-demand if needed via getOrderDetails()
+        console.log(`Found ${filtered.length} pending orders`);
+        return filtered;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -122,7 +123,7 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (list endpoint returns minimal details)
+        // Get all subscriptions (list endpoint returns minimal but sufficient data)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -141,9 +142,9 @@ async function getShippedOrders() {
             return shippingStatus === 'Shipped';
         });
 
-        // Fetch full details in batches to avoid rate limiting (429 errors)
-        // Uses default: 3 per batch, 7 second delay = ~25 requests/minute
-        return await fetchSubscriptionDetailsInBatches(filtered);
+        // Return list data directly to avoid Vercel timeout (15 second limit)
+        console.log(`Found ${filtered.length} shipped orders`);
+        return filtered;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -201,8 +202,14 @@ const updateInvoiceFields = updateSubscriptionFields;
 // Format subscription for queue display
 function formatOrderForQueue(subscription) {
     const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
-    // Shipping address is nested inside customer object per Zoho API
-    const shippingAddr = subscription.customer?.shipping_address || subscription.shipping_address || {};
+
+    // List endpoint provides: subscription_id, name, customer_name, customer_id, email,
+    // plan_name, status, custom_fields, but NOT full customer/address objects
+    // Address must be stored in custom fields or fetched separately
+    const addressCustomField = getCustomFieldValue(subscription, 'Shipping Address');
+    const cityCustomField = getCustomFieldValue(subscription, 'Shipping City');
+    const stateCustomField = getCustomFieldValue(subscription, 'Shipping State');
+    const zipCustomField = getCustomFieldValue(subscription, 'Shipping Zip');
 
     return {
         // Frontend expects invoice_id and invoice_number (legacy naming from when we used invoices)
@@ -210,18 +217,19 @@ function formatOrderForQueue(subscription) {
         invoice_number: subscription.subscription_number || subscription.name,
         subscription_id: subscription.subscription_id,
         subscription_number: subscription.subscription_number || subscription.name,
-        customer_name: subscription.customer?.display_name || subscription.customer_name || '',
-        email: subscription.customer?.email || '',
-        phone: subscription.customer?.phone || subscription.customer?.mobile || '',
+        customer_name: subscription.customer_name || '',
+        email: subscription.email || '',
+        phone: subscription.phone || '',
         shipping_address: {
-            address: shippingAddr.street || shippingAddr.address || '',
-            address2: shippingAddr.street2 || shippingAddr.address2 || '',
-            city: shippingAddr.city || '',
-            state: shippingAddr.state || '',
-            zip: shippingAddr.zip || '',
-            country: shippingAddr.country || 'USA'
+            // Try custom fields first, fallback to nested objects if fetched via getOrderDetails
+            address: addressCustomField || subscription.customer?.shipping_address?.street || subscription.shipping_address?.street || '',
+            address2: getCustomFieldValue(subscription, 'Shipping Address 2') || subscription.customer?.shipping_address?.street2 || subscription.shipping_address?.street2 || '',
+            city: cityCustomField || subscription.customer?.shipping_address?.city || subscription.shipping_address?.city || '',
+            state: stateCustomField || subscription.customer?.shipping_address?.state || subscription.shipping_address?.state || '',
+            zip: zipCustomField || subscription.customer?.shipping_address?.zip || subscription.shipping_address?.zip || '',
+            country: getCustomFieldValue(subscription, 'Shipping Country') || subscription.customer?.shipping_address?.country || subscription.shipping_address?.country || 'USA'
         },
-        device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan?.name || '',
+        device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan_name || subscription.plan?.name || '',
         status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
         assigned_sim: getCustomFieldValue(subscription, 'SIM Card Number'),
         tracking_number: getCustomFieldValue(subscription, 'Tracking Number'),
