@@ -1,7 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'sim_inventory.json');
+// Use /tmp for Vercel serverless environment (writable)
+const DATA_FILE = path.join('/tmp', 'sim_inventory.json');
 
 // Initialize data file if it doesn't exist
 async function initDataFile() {
