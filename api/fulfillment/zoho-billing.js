@@ -64,9 +64,9 @@ async function getPendingOrders() {
 
         const subscriptions = response.data.subscriptions || [];
 
-        // Filter for orders with cf_shipping_status=New Manual Order
+        // Filter for orders with Shipping Status=New Manual Order
         return subscriptions.filter(subscription => {
-            const shippingStatus = getCustomFieldValue(subscription, 'cf_shipping_status');
+            const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
             return shippingStatus === 'New Manual Order';
         });
     } catch (error) {
@@ -96,7 +96,7 @@ async function getShippedOrders() {
 
         // Filter for orders that have been shipped
         return subscriptions.filter(subscription => {
-            const shippingStatus = getCustomFieldValue(subscription, 'cf_shipping_status');
+            const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
             return shippingStatus === 'Shipped';
         });
     } catch (error) {
@@ -155,7 +155,7 @@ const updateInvoiceFields = updateSubscriptionFields;
 
 // Format subscription for queue display
 function formatOrderForQueue(subscription) {
-    const shippingStatus = getCustomFieldValue(subscription, 'cf_shipping_status');
+    const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
 
     return {
         subscription_id: subscription.subscription_id,
@@ -171,16 +171,16 @@ function formatOrderForQueue(subscription) {
             zip: subscription.shipping_address?.zip || '',
             country: subscription.shipping_address?.country || 'USA'
         },
-        device_type: getCustomFieldValue(subscription, 'cf_device_type') || subscription.plan?.name || '',
-        status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'cf_sim_card_number') ? 'ready_to_ship' : 'pending_sim'),
-        assigned_sim: getCustomFieldValue(subscription, 'cf_sim_card_number'),
-        tracking_number: getCustomFieldValue(subscription, 'cf_tracking_number'),
-        line_status: getCustomFieldValue(subscription, 'cf_line_status'),
-        device_status: getCustomFieldValue(subscription, 'cf_device_status'),
-        ordered_by: getCustomFieldValue(subscription, 'cf_ordered_by'),
-        active_on_tmobile: getCustomFieldValue(subscription, 'cf_active_on_tmobile'),
-        tmobile_line_number: getCustomFieldValue(subscription, 'cf_tmobile_line_number'),
-        device_sn: getCustomFieldValue(subscription, 'cf_device_sn'),
+        device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan?.name || '',
+        status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
+        assigned_sim: getCustomFieldValue(subscription, 'SIM Card Number'),
+        tracking_number: getCustomFieldValue(subscription, 'Tracking Number'),
+        line_status: getCustomFieldValue(subscription, 'Line Status'),
+        device_status: getCustomFieldValue(subscription, 'Device Status'),
+        ordered_by: getCustomFieldValue(subscription, 'Ordered By'),
+        active_on_tmobile: getCustomFieldValue(subscription, 'Active On TMobile'),
+        tmobile_line_number: getCustomFieldValue(subscription, 'TMobile Line Number'),
+        device_sn: getCustomFieldValue(subscription, 'Device SN'),
         created_date: subscription.created_time,
         updated_date: subscription.updated_time,
         shipped_date: shippingStatus === 'Shipped' ? subscription.updated_time : null
