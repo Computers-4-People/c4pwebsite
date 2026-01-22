@@ -62,11 +62,10 @@ module.exports = async (req, res) => {
 
         const fullSubscription = subDetailResponse.data.subscription;
 
-        // Debug: Log custom fields structure
-        console.log('Full subscription custom_fields:', JSON.stringify(fullSubscription.custom_fields, null, 2));
-
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
+        // Start with existing custom fields and update matching ones
         const customFields = fullSubscription.custom_fields.map(field => {
             // Match by api_name (cf_*) which is more reliable than label
             if (field.api_name === 'cf_shipping_status') {
@@ -83,6 +82,30 @@ module.exports = async (req, res) => {
             }
             return field;
         });
+
+        // Check if fields exist, if not add them
+        const fieldNames = customFields.map(f => f.api_name);
+
+        if (!fieldNames.includes('cf_shipping_date')) {
+            customFields.push({
+                label: 'Shipping Date',
+                value: currentDate
+            });
+        }
+
+        if (tracking_number && !fieldNames.includes('cf_tracking_number')) {
+            customFields.push({
+                label: 'Tracking Number',
+                value: tracking_number
+            });
+        }
+
+        if (sim_card && !fieldNames.includes('cf_sim_card_number')) {
+            customFields.push({
+                label: 'SIM Card Number',
+                value: sim_card
+            });
+        }
 
         await updateSubscriptionFields(subscriptionId, customFields);
 
