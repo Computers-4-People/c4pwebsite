@@ -88,16 +88,16 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch both invoices and subscriptions in parallel
-        const [invoicesResponse, subscriptionsResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
+        // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
+        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: { per_page: 200 }
             }),
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
@@ -106,70 +106,56 @@ async function getPendingOrders() {
             })
         ]);
 
-        const invoices = invoicesResponse.data.invoices || [];
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
 
-        // Filter invoices
-        const filteredInvoices = invoices.filter(invoice => {
-            return invoice.cf_shipping_status === 'New Manual Order';
-        });
-
-        // Filter subscriptions
+        // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Tag each with source type for formatting
-        filteredInvoices.forEach(inv => inv._source = 'invoice');
-        filteredSubscriptions.forEach(sub => sub._source = 'subscription');
-
-        // Deduplicate by customer_id (invoices DON'T have subscription_id!)
-        // Each customer should have only one subscription, so group by customer_id
-        // Prefer invoices (they have addresses), but keep only one per customer
-        const customerMap = new Map();
-
-        // First add all invoices (they have addresses)
-        filteredInvoices.forEach(invoice => {
-            const customerId = invoice.customer_id;
-            if (customerId && !customerMap.has(customerId)) {
-                customerMap.set(customerId, invoice);
+        // Create invoice map by customer_id for address lookup
+        const invoicesByCustomer = new Map();
+        invoices.forEach(inv => {
+            if (inv.customer_id && inv.shipping_address) {
+                invoicesByCustomer.set(inv.customer_id, inv);
             }
         });
 
-        // Then add subscriptions that don't have invoices yet
-        filteredSubscriptions.forEach(subscription => {
-            const customerId = subscription.customer_id;
-            if (customerId && !customerMap.has(customerId)) {
-                customerMap.set(customerId, subscription);
-            }
+        // Merge subscription data with invoice addresses
+        const mergedOrders = filteredSubscriptions.map(sub => {
+            const invoice = invoicesByCustomer.get(sub.customer_id);
+            return {
+                ...sub,
+                _source: 'subscription',
+                _invoice_address: invoice?.shipping_address || null
+            };
         });
 
-        const deduped = Array.from(customerMap.values());
-
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique customers`);
-        return deduped;
+        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
+        return mergedOrders;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
     }
 }
 
-// Get shipped orders (both invoices and subscriptions)
+// Get shipped orders (subscriptions with invoice addresses)
 async function getShippedOrders() {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch both invoices and subscriptions in parallel
-        const [invoicesResponse, subscriptionsResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
+        // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
+        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: { per_page: 200 }
             }),
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
@@ -178,45 +164,34 @@ async function getShippedOrders() {
             })
         ]);
 
-        const invoices = invoicesResponse.data.invoices || [];
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
 
-        // Filter for shipped
-        const filteredInvoices = invoices.filter(invoice => {
-            return invoice.cf_shipping_status === 'Shipped';
-        });
-
+        // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Tag each with source type
-        filteredInvoices.forEach(inv => inv._source = 'invoice');
-        filteredSubscriptions.forEach(sub => sub._source = 'subscription');
-
-        // Deduplicate by customer_id
-        const customerMap = new Map();
-
-        // First add all invoices (they have addresses)
-        filteredInvoices.forEach(invoice => {
-            const customerId = invoice.customer_id;
-            if (customerId && !customerMap.has(customerId)) {
-                customerMap.set(customerId, invoice);
+        // Create invoice map by customer_id for address lookup
+        const invoicesByCustomer = new Map();
+        invoices.forEach(inv => {
+            if (inv.customer_id && inv.shipping_address) {
+                invoicesByCustomer.set(inv.customer_id, inv);
             }
         });
 
-        // Then add subscriptions that don't have invoices yet
-        filteredSubscriptions.forEach(subscription => {
-            const customerId = subscription.customer_id;
-            if (customerId && !customerMap.has(customerId)) {
-                customerMap.set(customerId, subscription);
-            }
+        // Merge subscription data with invoice addresses
+        const mergedOrders = filteredSubscriptions.map(sub => {
+            const invoice = invoicesByCustomer.get(sub.customer_id);
+            return {
+                ...sub,
+                _source: 'subscription',
+                _invoice_address: invoice?.shipping_address || null
+            };
         });
 
-        const deduped = Array.from(customerMap.values());
-
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique customers`);
-        return deduped;
+        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
+        return mergedOrders;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -293,27 +268,23 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     }
 }
 
-// Format order (invoice or subscription) for queue display
+// Format order (subscription with invoice address) for queue display
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
 
-    // Determine if this is an invoice or subscription by checking for _source tag
-    const isInvoice = record._source === 'invoice';
-
-    // Invoices have shipping_address object directly
-    // Subscriptions have custom fields: cf_street, cf_city, cf_state, cf_zip_code
+    // Use invoice address if available (from _invoice_address), otherwise fall back to custom fields
     let shippingAddress;
-    if (isInvoice && record.shipping_address) {
+    if (record._invoice_address) {
         shippingAddress = {
-            address: record.shipping_address.street || '',
-            address2: record.shipping_address.street2 || '',
-            city: record.shipping_address.city || '',
-            state: record.shipping_address.state || '',
-            zip: record.shipping_address.zipcode || record.shipping_address.zip || '',
-            country: record.shipping_address.country || 'USA'
+            address: record._invoice_address.street || '',
+            address2: record._invoice_address.street2 || '',
+            city: record._invoice_address.city || '',
+            state: record._invoice_address.state || '',
+            zip: record._invoice_address.zipcode || record._invoice_address.zip || '',
+            country: record._invoice_address.country || 'USA'
         };
     } else {
-        // Subscription - use custom fields
+        // Fall back to custom fields if no invoice address
         shippingAddress = {
             address: record.cf_street || '',
             address2: '',
@@ -324,24 +295,19 @@ function formatOrderForQueue(record) {
         };
     }
 
-    // Invoices DON'T have subscription_id, so we use customer_id for deduplication
-    // But for display, show subscription info if available, otherwise use invoice/customer ID
-    const subscriptionId = record.subscription_id || record.customer_id;
-    const subscriptionNumber = isInvoice
-        ? (record.number || record.invoice_number)
-        : (record.subscription_number || record.name);
-
     return {
-        // Frontend expects invoice_id - use subscription_id if available, otherwise customer_id
-        invoice_id: subscriptionId,
-        invoice_number: subscriptionNumber,
-        subscription_id: subscriptionId,
-        subscription_number: subscriptionNumber,
+        // Frontend expects invoice_id - use customer_id for mark-shipped lookup
+        invoice_id: record.customer_id,
+        invoice_number: record.subscription_number || record.name || '',
+        // Show actual subscription ID and number
+        subscription_id: record.subscription_id,
+        subscription_number: record.subscription_number || record.name || '',
         customer_name: record.customer_name || '',
         email: record.email || '',
         phone: record.phone || record.mobile_phone || '',
         shipping_address: shippingAddress,
-        device_type: record.cf_device_type || record.plan_name || '',
+        // Device type from plan_name or custom field
+        device_type: record.plan_name || record.cf_device_type || '',
         status: shippingStatus === 'Shipped' ? 'shipped' : (record.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
         assigned_sim: record.cf_sim_card_number || '',
         tracking_number: record.cf_tracking_number || '',
