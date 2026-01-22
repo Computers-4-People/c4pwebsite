@@ -82,14 +82,14 @@ async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 3, d
     return results;
 }
 
-// Get pending orders (subscriptions with cf_shipping_status=New Manual Order)
+// Get pending orders (invoices with cf_shipping_status=New Manual Order)
 async function getPendingOrders() {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (list endpoint returns minimal but sufficient data)
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+        // Get all invoices - list endpoint includes full shipping_address object!
+        const response = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
@@ -99,17 +99,16 @@ async function getPendingOrders() {
             }
         });
 
-        const subscriptions = response.data.subscriptions || [];
+        const invoices = response.data.invoices || [];
 
         // Filter for orders with Shipping Status=New Manual Order
-        const filtered = subscriptions.filter(subscription => {
-            const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
+        const filtered = invoices.filter(invoice => {
+            const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
             return shippingStatus === 'New Manual Order';
         });
 
-        // Return list data directly to avoid Vercel timeout (15 second limit)
-        // Full details can be fetched on-demand if needed via getOrderDetails()
-        console.log(`Found ${filtered.length} pending orders`);
+        // Invoices list endpoint includes shipping_address in 1 API call!
+        console.log(`Found ${filtered.length} pending orders from invoices`);
         return filtered;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
@@ -123,8 +122,8 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (list endpoint returns minimal but sufficient data)
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+        // Get all invoices - list endpoint includes full shipping_address object!
+        const response = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
@@ -134,16 +133,16 @@ async function getShippedOrders() {
             }
         });
 
-        const subscriptions = response.data.subscriptions || [];
+        const invoices = response.data.invoices || [];
 
         // Filter for orders that have been shipped
-        const filtered = subscriptions.filter(subscription => {
-            const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
+        const filtered = invoices.filter(invoice => {
+            const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
             return shippingStatus === 'Shipped';
         });
 
-        // Return list data directly to avoid Vercel timeout (15 second limit)
-        console.log(`Found ${filtered.length} shipped orders`);
+        // Invoices list endpoint includes shipping_address in 1 API call!
+        console.log(`Found ${filtered.length} shipped orders from invoices`);
         return filtered;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
@@ -151,27 +150,52 @@ async function getShippedOrders() {
     }
 }
 
-// Get order details by subscription ID
-async function getOrderDetails(subscriptionId) {
+// Get order details by invoice ID
+async function getOrderDetails(invoiceId) {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`, {
+        const response = await axios.get(`https://www.zohoapis.com/billing/v1/invoices/${invoiceId}`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
             }
         });
 
-        return response.data.subscription;
+        return response.data.invoice;
     } catch (error) {
-        console.error('Error fetching order details:', error.response?.data || error.message);
+        console.error('Error fetching invoice details:', error.response?.data || error.message);
         throw error;
     }
 }
 
-// Update subscription custom fields
+// Update invoice custom fields
+async function updateInvoiceFields(invoiceId, customFields) {
+    const accessToken = await getZohoBillingAccessToken();
+    const orgId = process.env.ZOHO_ORG_ID;
+
+    try {
+        const response = await axios.put(
+            `https://www.zohoapis.com/billing/v1/invoices/${invoiceId}`,
+            { custom_fields: customFields },
+            {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        return response.data.invoice;
+    } catch (error) {
+        console.error('Error updating invoice:', error.response?.data || error.message);
+        throw error;
+    }
+}
+
+// Keep old subscription functions for backwards compatibility if needed
 async function updateSubscriptionFields(subscriptionId, customFields) {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
@@ -196,51 +220,43 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     }
 }
 
-// Keep old name for backwards compatibility
-const updateInvoiceFields = updateSubscriptionFields;
+// Format invoice for queue display
+function formatOrderForQueue(invoice) {
+    const shippingStatus = getCustomFieldValue(invoice, 'Shipping Status');
 
-// Format subscription for queue display
-function formatOrderForQueue(subscription) {
-    const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
-
-    // List endpoint does NOT include customer object, but DOES include custom fields
-    // Address stored in custom fields: cf_street, cf_city, cf_state, cf_zip_code
-    // Access via direct properties (subscription.cf_street) or getCustomFieldValue()
-    const street = subscription.cf_street || getCustomFieldValue(subscription, 'Street') || '';
-    const city = subscription.cf_city || getCustomFieldValue(subscription, 'City') || '';
-    const state = subscription.cf_state || getCustomFieldValue(subscription, 'State') || '';
-    const zip = subscription.cf_zip_code || getCustomFieldValue(subscription, 'Zip Code') || '';
+    // Invoices list endpoint includes full shipping_address object!
+    const shippingAddr = invoice.shipping_address || {};
 
     return {
-        // Frontend expects invoice_id and invoice_number (legacy naming from when we used invoices)
-        invoice_id: subscription.subscription_id,
-        invoice_number: subscription.subscription_number || subscription.name,
-        subscription_id: subscription.subscription_id,
-        subscription_number: subscription.subscription_number || subscription.name,
-        customer_name: subscription.customer_name || '',
-        email: subscription.email || '',
-        phone: subscription.phone || subscription.mobile_phone || '',
+        // Frontend expects invoice_id and invoice_number - perfect, we're using invoices now!
+        invoice_id: invoice.invoice_id,
+        invoice_number: invoice.invoice_number || invoice.number,
+        subscription_id: invoice.subscription_id || invoice.invoice_id, // Use invoice_id as fallback
+        subscription_number: invoice.invoice_number || invoice.number,
+        customer_name: invoice.customer_name || '',
+        email: invoice.email || '',
+        phone: invoice.phone || '',
         shipping_address: {
-            address: street,
-            address2: '', // No street2 custom field
-            city: city,
-            state: state,
-            zip: zip,
-            country: 'USA'
+            address: shippingAddr.street || '',
+            address2: shippingAddr.street2 || '',
+            city: shippingAddr.city || '',
+            state: shippingAddr.state || '',
+            zip: shippingAddr.zipcode || shippingAddr.zip || '',
+            country: shippingAddr.country || 'USA'
         },
-        device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan_name || subscription.plan?.name || '',
-        status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
-        assigned_sim: getCustomFieldValue(subscription, 'SIM Card Number'),
-        tracking_number: getCustomFieldValue(subscription, 'Tracking Number'),
-        line_status: getCustomFieldValue(subscription, 'Line Status'),
-        device_status: getCustomFieldValue(subscription, 'Device Status'),
-        ordered_by: getCustomFieldValue(subscription, 'Ordered By'),
-        active_on_tmobile: getCustomFieldValue(subscription, 'Active On TMobile'),
-        tmobile_line_number: getCustomFieldValue(subscription, 'TMobile Line Number'),
-        device_sn: getCustomFieldValue(subscription, 'Device SN'),
-        created_date: subscription.created_time,
-        updated_date: subscription.updated_time,
-        shipped_date: shippingStatus === 'Shipped' ? subscription.updated_time : null
+        device_type: getCustomFieldValue(invoice, 'Device Type') || '',
+        status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(invoice, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
+        assigned_sim: getCustomFieldValue(invoice, 'SIM Card Number'),
+        tracking_number: getCustomFieldValue(invoice, 'Tracking Number'),
+        line_status: getCustomFieldValue(invoice, 'Line Status'),
+        device_status: getCustomFieldValue(invoice, 'Device Status'),
+        ordered_by: getCustomFieldValue(invoice, 'Ordered By'),
+        active_on_tmobile: getCustomFieldValue(invoice, 'Active On TMobile'),
+        tmobile_line_number: getCustomFieldValue(invoice, 'TMobile Line Number'),
+        device_sn: getCustomFieldValue(invoice, 'Device SN'),
+        created_date: invoice.created_time,
+        updated_date: invoice.updated_time,
+        shipped_date: shippingStatus === 'Shipped' ? invoice.updated_time : null
     };
 }
 
