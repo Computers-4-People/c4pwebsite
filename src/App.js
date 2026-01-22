@@ -49,6 +49,7 @@ import CertificatePage from "./homepage/certificate";
 import Contribution       from "./homepage/addacontribution";
 import HelloWorld from "./homepage/helloworld";
 import FixCredentials from "./portal/fix-credentials";
+import FulfillmentPortal from "./portal/fulfillment";
 import Jackdorsey from "./homepage/fundraiser/jackdorsey144";
 import CraigNewmark from "./homepage/fundraiser/craignewmarknotmanagementsince2000";
 import RobertSmith from "./homepage/fundraiser/robertfsmith";
@@ -206,6 +207,7 @@ function App() {
           <Route path="/portal" element={<Portal />} />
           <Route path="/fix-credentials" element={<FixCredentials />} />
           <Route path="/oauth2callback" element={<FixCredentials />} />
+          <Route path="/ops-portal-shield-fulfillment" element={<FulfillmentPortal />} />
           <Route path="/champions" element={<Champions />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/certificate-demo" element={<CertificateDemo />} />
