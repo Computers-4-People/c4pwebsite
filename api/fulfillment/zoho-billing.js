@@ -123,11 +123,30 @@ async function getPendingOrders() {
         filteredInvoices.forEach(inv => inv._source = 'invoice');
         filteredSubscriptions.forEach(sub => sub._source = 'subscription');
 
-        // Combine both - invoices first (they have addresses), then subscriptions
-        const combined = [...filteredInvoices, ...filteredSubscriptions];
+        // Deduplicate by subscription_id (invoices have subscription_id field)
+        // Prefer invoices (they have addresses), but keep only one per subscription
+        const subscriptionMap = new Map();
 
-        console.log(`Found ${filteredInvoices.length} pending invoices + ${filteredSubscriptions.length} pending subscriptions = ${combined.length} total`);
-        return combined;
+        // First add all invoices (they have addresses)
+        filteredInvoices.forEach(invoice => {
+            const subId = invoice.subscription_id || invoice.customer_id;
+            if (subId && !subscriptionMap.has(subId)) {
+                subscriptionMap.set(subId, invoice);
+            }
+        });
+
+        // Then add subscriptions that don't have invoices yet
+        filteredSubscriptions.forEach(subscription => {
+            const subId = subscription.subscription_id;
+            if (subId && !subscriptionMap.has(subId)) {
+                subscriptionMap.set(subId, subscription);
+            }
+        });
+
+        const deduped = Array.from(subscriptionMap.values());
+
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique subscriptions`);
+        return deduped;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -174,10 +193,29 @@ async function getShippedOrders() {
         filteredInvoices.forEach(inv => inv._source = 'invoice');
         filteredSubscriptions.forEach(sub => sub._source = 'subscription');
 
-        const combined = [...filteredInvoices, ...filteredSubscriptions];
+        // Deduplicate by subscription_id
+        const subscriptionMap = new Map();
 
-        console.log(`Found ${filteredInvoices.length} shipped invoices + ${filteredSubscriptions.length} shipped subscriptions = ${combined.length} total`);
-        return combined;
+        // First add all invoices (they have addresses)
+        filteredInvoices.forEach(invoice => {
+            const subId = invoice.subscription_id || invoice.customer_id;
+            if (subId && !subscriptionMap.has(subId)) {
+                subscriptionMap.set(subId, invoice);
+            }
+        });
+
+        // Then add subscriptions that don't have invoices yet
+        filteredSubscriptions.forEach(subscription => {
+            const subId = subscription.subscription_id;
+            if (subId && !subscriptionMap.has(subId)) {
+                subscriptionMap.set(subId, subscription);
+            }
+        });
+
+        const deduped = Array.from(subscriptionMap.values());
+
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique subscriptions`);
+        return deduped;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -285,11 +323,18 @@ function formatOrderForQueue(record) {
         };
     }
 
+    // Always show subscription_id (invoices have subscription_id linking to their subscription)
+    const subscriptionId = record.subscription_id;
+    const subscriptionNumber = isInvoice
+        ? (record.subscription_number || record.name)
+        : (record.subscription_number || record.name);
+
     return {
-        invoice_id: isInvoice ? record.invoice_id : record.subscription_id,
-        invoice_number: isInvoice ? (record.invoice_number || record.number) : (record.subscription_number || record.name),
-        subscription_id: record.subscription_id || record.invoice_id,
-        subscription_number: isInvoice ? (record.invoice_number || record.number) : (record.subscription_number || record.name),
+        // Frontend expects invoice_id but we'll use subscription_id for both to avoid duplicates
+        invoice_id: subscriptionId || record.invoice_id,
+        invoice_number: subscriptionNumber || record.number,
+        subscription_id: subscriptionId,
+        subscription_number: subscriptionNumber,
         customer_name: record.customer_name || '',
         email: record.email || '',
         phone: record.phone || record.mobile_phone || '',

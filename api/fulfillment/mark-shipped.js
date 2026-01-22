@@ -1,4 +1,6 @@
-const { updateInvoiceFields, getOrderDetails } = require('./zoho-billing');
+const { updateInvoiceFields, updateSubscriptionFields } = require('./zoho-billing');
+const axios = require('axios');
+const { getZohoBillingAccessToken } = require('./zoho-billing');
 
 module.exports = async (req, res) => {
     // Set CORS headers
@@ -20,16 +22,28 @@ module.exports = async (req, res) => {
         if (!invoice_id) {
             return res.status(400).json({
                 success: false,
-                error: 'Missing invoice_id'
+                error: 'Missing invoice_id (subscription_id)'
             });
         }
 
-        // Get current invoice to preserve other custom fields
-        const invoice = await getOrderDetails(invoice_id);
+        // invoice_id is actually subscription_id now (frontend sends subscription_id)
+        const subscriptionId = invoice_id;
+        const accessToken = await getZohoBillingAccessToken();
+        const orgId = process.env.ZOHO_ORG_ID;
 
-        // Update invoice with shipping info
+        // Get current subscription to preserve other custom fields
+        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            }
+        });
+
+        const subscription = response.data.subscription;
+
+        // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-        const customFields = invoice.custom_fields.map(field => {
+        const customFields = subscription.custom_fields.map(field => {
             if (field.label === 'Shipping Status') {
                 return { ...field, value: 'Shipped' };
             }
@@ -45,7 +59,7 @@ module.exports = async (req, res) => {
             return field;
         });
 
-        await updateInvoiceFields(invoice_id, customFields);
+        await updateSubscriptionFields(subscriptionId, customFields);
 
         return res.status(200).json({
             success: true,
