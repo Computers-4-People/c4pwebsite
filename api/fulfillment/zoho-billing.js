@@ -156,20 +156,22 @@ const updateInvoiceFields = updateSubscriptionFields;
 // Format subscription for queue display
 function formatOrderForQueue(subscription) {
     const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
+    // Shipping address is nested inside customer object per Zoho API
+    const shippingAddr = subscription.customer?.shipping_address || subscription.shipping_address || {};
 
     return {
         subscription_id: subscription.subscription_id,
         subscription_number: subscription.subscription_number || subscription.name,
         customer_name: subscription.customer?.display_name || subscription.customer_name || '',
         email: subscription.customer?.email || '',
-        phone: subscription.customer?.phone || '',
+        phone: subscription.customer?.phone || subscription.customer?.mobile || '',
         shipping_address: {
-            address: subscription.shipping_address?.street || '',
-            address2: subscription.shipping_address?.street2 || '',
-            city: subscription.shipping_address?.city || '',
-            state: subscription.shipping_address?.state || '',
-            zip: subscription.shipping_address?.zip || '',
-            country: subscription.shipping_address?.country || 'USA'
+            address: shippingAddr.street || shippingAddr.address || '',
+            address2: shippingAddr.street2 || shippingAddr.address2 || '',
+            city: shippingAddr.city || '',
+            state: shippingAddr.state || '',
+            zip: shippingAddr.zip || '',
+            country: shippingAddr.country || 'USA'
         },
         device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan?.name || '',
         status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
