@@ -44,32 +44,53 @@ module.exports = async (req, res) => {
 
         const subscriptions = subsResponse.data.subscriptions || [];
 
+        const { getCustomFieldValue } = require('./zoho-billing');
+
         return res.status(200).json({
             success: true,
             invoices_count: invoices.length,
             subscriptions_count: subscriptions.length,
-            invoice_list_data: invoices.map(inv => ({
-                invoice_id: inv.invoice_id,
-                invoice_number: inv.number,
-                customer_name: inv.customer_name,
-                email: inv.email,
-                has_customer_object: !!inv.customer,
-                has_billing_address: !!inv.billing_address,
-                has_shipping_address: !!inv.shipping_address,
-                billing_address: inv.billing_address,
-                shipping_address: inv.shipping_address,
-                customer: inv.customer,
-                all_keys: Object.keys(inv)
-            })),
-            subscription_list_data: subscriptions.map(sub => ({
-                subscription_id: sub.subscription_id,
-                name: sub.name,
-                customer_name: sub.customer_name,
-                email: sub.email,
-                has_customer_object: !!sub.customer,
-                has_shipping_address: !!(sub.customer?.shipping_address || sub.shipping_address),
-                all_keys: Object.keys(sub)
-            }))
+            invoice_list_data: invoices.map(inv => {
+                const customFieldsDebug = {};
+                if (inv.custom_fields && Array.isArray(inv.custom_fields)) {
+                    inv.custom_fields.forEach(cf => {
+                        customFieldsDebug[cf.label || cf.api_name] = cf.value;
+                    });
+                }
+
+                return {
+                    invoice_id: inv.invoice_id,
+                    invoice_number: inv.number,
+                    customer_name: inv.customer_name,
+                    email: inv.email,
+                    has_shipping_address: !!inv.shipping_address,
+                    shipping_address: inv.shipping_address,
+                    shipping_status_via_function: getCustomFieldValue(inv, 'Shipping Status'),
+                    shipping_status_direct: inv.cf_shipping_status,
+                    custom_fields_parsed: customFieldsDebug,
+                    raw_custom_fields: inv.custom_fields,
+                    all_keys: Object.keys(inv)
+                };
+            }),
+            subscription_list_data: subscriptions.map(sub => {
+                const customFieldsDebug = {};
+                if (sub.custom_fields && Array.isArray(sub.custom_fields)) {
+                    sub.custom_fields.forEach(cf => {
+                        customFieldsDebug[cf.label || cf.api_name] = cf.value;
+                    });
+                }
+
+                return {
+                    subscription_id: sub.subscription_id,
+                    name: sub.name,
+                    customer_name: sub.customer_name,
+                    email: sub.email,
+                    shipping_status_via_function: getCustomFieldValue(sub, 'Shipping Status'),
+                    shipping_status_direct: sub.cf_shipping_status,
+                    custom_fields_parsed: customFieldsDebug,
+                    all_keys: Object.keys(sub)
+                };
+            })
         });
     } catch (error) {
         console.error('Debug error:', error.response?.data || error.message);
