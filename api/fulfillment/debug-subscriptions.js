@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
         const accessToken = await getZohoBillingAccessToken();
         const orgId = process.env.ZOHO_ORG_ID;
 
-        console.log('=== DEBUG: Fetching subscriptions ===');
+        console.log('=== DEBUG: Testing LIST vs INDIVIDUAL endpoint ===');
 
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
@@ -22,13 +22,14 @@ module.exports = async (req, res) => {
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                per_page: 5  // Just get 5 for debugging
+                per_page: 3  // Just get 3 for debugging
             }
         });
 
         const subscriptions = response.data.subscriptions || [];
 
         console.log(`Found ${subscriptions.length} subscriptions from LIST endpoint`);
+        console.log('First subscription from LIST:', JSON.stringify(subscriptions[0], null, 2));
 
         // Now fetch full details for first subscription to compare
         let fullSubscription = null;
@@ -42,52 +43,29 @@ module.exports = async (req, res) => {
                 }
             });
             fullSubscription = fullResponse.data.subscription;
-            console.log('Full subscription data fetched');
+            console.log('Full subscription from INDIVIDUAL endpoint:', JSON.stringify(fullSubscription, null, 2));
         }
-
-        // Debug each subscription's custom fields
-        const debugData = subscriptions.map(sub => {
-            const customFields = {};
-            if (sub.custom_fields && Array.isArray(sub.custom_fields)) {
-                sub.custom_fields.forEach(cf => {
-                    customFields[cf.label || cf.customfield_id] = cf.value;
-                });
-            }
-
-            console.log('Subscription:', sub.subscription_id);
-            console.log('Custom fields:', JSON.stringify(customFields, null, 2));
-            console.log('Address:', JSON.stringify(sub.shipping_address, null, 2));
-            console.log('Customer:', JSON.stringify(sub.customer, null, 2));
-            console.log('Plan:', JSON.stringify(sub.plan, null, 2));
-
-            return {
-                subscription_id: sub.subscription_id,
-                subscription_number: sub.subscription_number,
-                name: sub.name,
-                status: sub.status,
-                plan: sub.plan,
-                customer: sub.customer,
-                shipping_address: sub.shipping_address,
-                custom_fields: customFields,
-                raw_custom_fields: sub.custom_fields,
-                all_keys: Object.keys(sub)
-            };
-        });
 
         return res.status(200).json({
             success: true,
             count: subscriptions.length,
-            subscriptions: debugData,
-            full_subscription_example: fullSubscription ? {
+            list_endpoint_data: subscriptions.map(sub => ({
+                subscription_id: sub.subscription_id,
+                name: sub.name,
+                customer_name: sub.customer_name,
+                email: sub.email,
+                has_customer_object: !!sub.customer,
+                customer: sub.customer,
+                has_shipping_address: !!(sub.customer?.shipping_address || sub.shipping_address),
+                all_keys: Object.keys(sub)
+            })),
+            individual_endpoint_data: fullSubscription ? {
                 subscription_id: fullSubscription.subscription_id,
-                subscription_number: fullSubscription.subscription_number,
                 name: fullSubscription.name,
-                created_time: fullSubscription.created_time,
-                plan: fullSubscription.plan,
+                has_customer_object: !!fullSubscription.customer,
                 customer: fullSubscription.customer,
-                shipping_address_at_root: fullSubscription.shipping_address,
-                customer_shipping_address: fullSubscription.customer?.shipping_address,
-                custom_fields: fullSubscription.custom_fields
+                has_shipping_address: !!(fullSubscription.customer?.shipping_address || fullSubscription.shipping_address),
+                all_keys: Object.keys(fullSubscription)
             } : null
         });
     } catch (error) {
