@@ -295,6 +295,13 @@ function formatOrderForQueue(record) {
         };
     }
 
+    // Device type based on addon: if there's an addon show it, otherwise "Sim Card Only"
+    let deviceType = 'Sim Card Only';
+    if (record.addons && record.addons.length > 0) {
+        // Use addon name (e.g., "T10", "Shield 5G")
+        deviceType = record.addons[0].addon_description || record.addons[0].name || deviceType;
+    }
+
     return {
         // Frontend expects invoice_id - use customer_id for mark-shipped lookup
         invoice_id: record.customer_id,
@@ -306,8 +313,8 @@ function formatOrderForQueue(record) {
         email: record.email || '',
         phone: record.phone || record.mobile_phone || '',
         shipping_address: shippingAddress,
-        // Device type from plan_name or custom field
-        device_type: record.plan_name || record.cf_device_type || '',
+        // Device type from addon
+        device_type: deviceType,
         status: shippingStatus === 'Shipped' ? 'shipped' : (record.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
         assigned_sim: record.cf_sim_card_number || '',
         tracking_number: record.cf_tracking_number || '',
