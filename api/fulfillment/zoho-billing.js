@@ -128,7 +128,8 @@ async function getPendingOrders() {
             return {
                 ...sub,
                 _source: 'subscription',
-                _invoice_address: invoice?.shipping_address || null
+                _invoice_address: invoice?.shipping_address || null,
+                _invoice: invoice || null
             };
         });
 
@@ -186,7 +187,8 @@ async function getShippedOrders() {
             return {
                 ...sub,
                 _source: 'subscription',
-                _invoice_address: invoice?.shipping_address || null
+                _invoice_address: invoice?.shipping_address || null,
+                _invoice: invoice || null
             };
         });
 
@@ -275,12 +277,15 @@ function formatOrderForQueue(record) {
     // Use invoice address if available (from _invoice_address), otherwise fall back to custom fields
     let shippingAddress;
     if (record._invoice_address) {
+        // Check both shipping_address.street2 and top-level shipping_street2
+        const address2 = record._invoice_address.street2 || record._invoice?.shipping_street2 || '';
+
         shippingAddress = {
-            address: record._invoice_address.street || '',
-            address2: record._invoice_address.street2 || '',
-            city: record._invoice_address.city || '',
-            state: record._invoice_address.state || '',
-            zip: record._invoice_address.zipcode || record._invoice_address.zip || '',
+            address: record._invoice_address.street || record._invoice?.shipping_street || '',
+            address2: address2,
+            city: record._invoice_address.city || record._invoice?.shipping_city || '',
+            state: record._invoice_address.state || record._invoice?.shipping_state || '',
+            zip: record._invoice_address.zipcode || record._invoice?.shipping_zipcode || '',
             country: record._invoice_address.country || 'USA'
         };
     } else {
