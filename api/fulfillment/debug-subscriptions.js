@@ -14,9 +14,10 @@ module.exports = async (req, res) => {
         const accessToken = await getZohoBillingAccessToken();
         const orgId = process.env.ZOHO_ORG_ID;
 
-        console.log('=== DEBUG: Testing LIST vs INDIVIDUAL endpoint ===');
+        console.log('=== DEBUG: Testing INVOICES vs SUBSCRIPTIONS endpoint ===');
 
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+        // Test invoices list endpoint
+        const invoicesResponse = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
@@ -26,47 +27,49 @@ module.exports = async (req, res) => {
             }
         });
 
-        const subscriptions = response.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
+        console.log(`Found ${invoices.length} invoices from LIST endpoint`);
+        console.log('First invoice from LIST:', JSON.stringify(invoices[0], null, 2));
 
-        console.log(`Found ${subscriptions.length} subscriptions from LIST endpoint`);
-        console.log('First subscription from LIST:', JSON.stringify(subscriptions[0], null, 2));
+        // Test subscriptions list endpoint
+        const subsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: {
+                per_page: 3
+            }
+        });
 
-        // Now fetch full details for first subscription to compare
-        let fullSubscription = null;
-        if (subscriptions.length > 0) {
-            const firstSubId = subscriptions[0].subscription_id;
-            console.log(`Fetching full details for ${firstSubId}...`);
-            const fullResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${firstSubId}`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                }
-            });
-            fullSubscription = fullResponse.data.subscription;
-            console.log('Full subscription from INDIVIDUAL endpoint:', JSON.stringify(fullSubscription, null, 2));
-        }
+        const subscriptions = subsResponse.data.subscriptions || [];
 
         return res.status(200).json({
             success: true,
-            count: subscriptions.length,
-            list_endpoint_data: subscriptions.map(sub => ({
+            invoices_count: invoices.length,
+            subscriptions_count: subscriptions.length,
+            invoice_list_data: invoices.map(inv => ({
+                invoice_id: inv.invoice_id,
+                invoice_number: inv.number,
+                customer_name: inv.customer_name,
+                email: inv.email,
+                has_customer_object: !!inv.customer,
+                has_billing_address: !!inv.billing_address,
+                has_shipping_address: !!inv.shipping_address,
+                billing_address: inv.billing_address,
+                shipping_address: inv.shipping_address,
+                customer: inv.customer,
+                all_keys: Object.keys(inv)
+            })),
+            subscription_list_data: subscriptions.map(sub => ({
                 subscription_id: sub.subscription_id,
                 name: sub.name,
                 customer_name: sub.customer_name,
                 email: sub.email,
                 has_customer_object: !!sub.customer,
-                customer: sub.customer,
                 has_shipping_address: !!(sub.customer?.shipping_address || sub.shipping_address),
                 all_keys: Object.keys(sub)
-            })),
-            individual_endpoint_data: fullSubscription ? {
-                subscription_id: fullSubscription.subscription_id,
-                name: fullSubscription.name,
-                has_customer_object: !!fullSubscription.customer,
-                customer: fullSubscription.customer,
-                has_shipping_address: !!(fullSubscription.customer?.shipping_address || fullSubscription.shipping_address),
-                all_keys: Object.keys(fullSubscription)
-            } : null
+            }))
         });
     } catch (error) {
         console.error('Debug error:', error.response?.data || error.message);
