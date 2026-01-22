@@ -132,7 +132,8 @@ async function getPendingOrders() {
                 console.log('plan_name:', sub.plan_name);
                 console.log('cf_device_type:', sub.cf_device_type);
                 console.log('Invoice cf_device_type:', invoice?.cf_device_type);
-                console.log('Subscription addons:', sub.addons);
+                console.log('Invoice shipping_address:', JSON.stringify(invoice?.shipping_address, null, 2));
+                console.log('Invoice shipping_street2:', invoice?.shipping_street2);
             }
 
             return {
