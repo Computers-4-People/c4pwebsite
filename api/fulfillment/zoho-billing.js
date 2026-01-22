@@ -129,10 +129,10 @@ async function getPendingOrders() {
             // Debug: log first subscription to see all available fields
             if (index === 0) {
                 console.log('=== DEBUG FIRST SUBSCRIPTION ===');
-                console.log('Subscription keys:', Object.keys(sub));
+                console.log('plan_name:', sub.plan_name);
+                console.log('cf_device_type:', sub.cf_device_type);
+                console.log('Invoice cf_device_type:', invoice?.cf_device_type);
                 console.log('Subscription addons:', sub.addons);
-                console.log('Invoice keys:', invoice ? Object.keys(invoice) : 'no invoice');
-                console.log('Invoice line_items:', invoice?.line_items);
             }
 
             return {
