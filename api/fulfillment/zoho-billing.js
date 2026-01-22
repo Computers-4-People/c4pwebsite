@@ -123,37 +123,30 @@ async function getPendingOrders() {
         filteredInvoices.forEach(inv => inv._source = 'invoice');
         filteredSubscriptions.forEach(sub => sub._source = 'subscription');
 
-        // Deduplicate by subscription_id (invoices have subscription_id field)
-        // Prefer invoices (they have addresses), but keep only one per subscription
-        const subscriptionMap = new Map();
-
-        // Debug: Check what subscription_id values invoices actually have
-        console.log('Sample invoice subscription_ids:', filteredInvoices.slice(0, 3).map(inv => ({
-            invoice_id: inv.invoice_id,
-            subscription_id: inv.subscription_id,
-            customer_id: inv.customer_id,
-            customer_name: inv.customer_name
-        })));
+        // Deduplicate by customer_id (invoices DON'T have subscription_id!)
+        // Each customer should have only one subscription, so group by customer_id
+        // Prefer invoices (they have addresses), but keep only one per customer
+        const customerMap = new Map();
 
         // First add all invoices (they have addresses)
         filteredInvoices.forEach(invoice => {
-            const subId = invoice.subscription_id || invoice.customer_id || invoice.email;
-            if (subId && !subscriptionMap.has(subId)) {
-                subscriptionMap.set(subId, invoice);
+            const customerId = invoice.customer_id;
+            if (customerId && !customerMap.has(customerId)) {
+                customerMap.set(customerId, invoice);
             }
         });
 
         // Then add subscriptions that don't have invoices yet
         filteredSubscriptions.forEach(subscription => {
-            const subId = subscription.subscription_id || subscription.email;
-            if (subId && !subscriptionMap.has(subId)) {
-                subscriptionMap.set(subId, subscription);
+            const customerId = subscription.customer_id;
+            if (customerId && !customerMap.has(customerId)) {
+                customerMap.set(customerId, subscription);
             }
         });
 
-        const deduped = Array.from(subscriptionMap.values());
+        const deduped = Array.from(customerMap.values());
 
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique after dedup`);
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique customers`);
         return deduped;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
@@ -201,28 +194,28 @@ async function getShippedOrders() {
         filteredInvoices.forEach(inv => inv._source = 'invoice');
         filteredSubscriptions.forEach(sub => sub._source = 'subscription');
 
-        // Deduplicate by subscription_id
-        const subscriptionMap = new Map();
+        // Deduplicate by customer_id
+        const customerMap = new Map();
 
         // First add all invoices (they have addresses)
         filteredInvoices.forEach(invoice => {
-            const subId = invoice.subscription_id || invoice.customer_id || invoice.email;
-            if (subId && !subscriptionMap.has(subId)) {
-                subscriptionMap.set(subId, invoice);
+            const customerId = invoice.customer_id;
+            if (customerId && !customerMap.has(customerId)) {
+                customerMap.set(customerId, invoice);
             }
         });
 
         // Then add subscriptions that don't have invoices yet
         filteredSubscriptions.forEach(subscription => {
-            const subId = subscription.subscription_id || subscription.email;
-            if (subId && !subscriptionMap.has(subId)) {
-                subscriptionMap.set(subId, subscription);
+            const customerId = subscription.customer_id;
+            if (customerId && !customerMap.has(customerId)) {
+                customerMap.set(customerId, subscription);
             }
         });
 
-        const deduped = Array.from(subscriptionMap.values());
+        const deduped = Array.from(customerMap.values());
 
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique after dedup`);
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique customers`);
         return deduped;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
@@ -331,16 +324,17 @@ function formatOrderForQueue(record) {
         };
     }
 
-    // Always show subscription_id (invoices have subscription_id linking to their subscription)
-    const subscriptionId = record.subscription_id;
+    // Invoices DON'T have subscription_id, so we use customer_id for deduplication
+    // But for display, show subscription info if available, otherwise use invoice/customer ID
+    const subscriptionId = record.subscription_id || record.customer_id;
     const subscriptionNumber = isInvoice
-        ? (record.subscription_number || record.name)
+        ? (record.number || record.invoice_number)
         : (record.subscription_number || record.name);
 
     return {
-        // Frontend expects invoice_id but we'll use subscription_id for both to avoid duplicates
-        invoice_id: subscriptionId || record.invoice_id,
-        invoice_number: subscriptionNumber || record.number,
+        // Frontend expects invoice_id - use subscription_id if available, otherwise customer_id
+        invoice_id: subscriptionId,
+        invoice_number: subscriptionNumber,
         subscription_id: subscriptionId,
         subscription_number: subscriptionNumber,
         customer_name: record.customer_name || '',

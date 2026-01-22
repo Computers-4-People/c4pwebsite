@@ -26,24 +26,45 @@ module.exports = async (req, res) => {
             });
         }
 
-        // invoice_id is actually subscription_id now (frontend sends subscription_id)
-        const subscriptionId = invoice_id;
+        // invoice_id is actually customer_id now (since invoices don't have subscription_id)
+        // We need to find the subscription for this customer
+        const customerId = invoice_id;
         const accessToken = await getZohoBillingAccessToken();
         const orgId = process.env.ZOHO_ORG_ID;
 
-        // Get current subscription to preserve other custom fields
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`, {
+        // Get all subscriptions for this customer
+        const subsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: {
+                per_page: 200
+            }
+        });
+
+        const subscriptions = subsResponse.data.subscriptions || [];
+        const subscription = subscriptions.find(sub => sub.customer_id === customerId);
+
+        if (!subscription) {
+            throw new Error(`No subscription found for customer_id ${customerId}`);
+        }
+
+        const subscriptionId = subscription.subscription_id;
+
+        // Fetch full subscription details to get custom_fields array
+        const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
             }
         });
 
-        const subscription = response.data.subscription;
+        const fullSubscription = subDetailResponse.data.subscription;
 
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-        const customFields = subscription.custom_fields.map(field => {
+        const customFields = fullSubscription.custom_fields.map(field => {
             if (field.label === 'Shipping Status') {
                 return { ...field, value: 'Shipped' };
             }
