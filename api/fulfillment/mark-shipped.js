@@ -28,9 +28,13 @@ module.exports = async (req, res) => {
         const invoice = await getOrderDetails(invoice_id);
 
         // Update invoice with shipping info
+        const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
         const customFields = invoice.custom_fields.map(field => {
             if (field.label === 'Shipping Status') {
                 return { ...field, value: 'Shipped' };
+            }
+            if (field.label === 'Shipping Date') {
+                return { ...field, value: currentDate };
             }
             if (field.label === 'Tracking Number' && tracking_number) {
                 return { ...field, value: tracking_number };

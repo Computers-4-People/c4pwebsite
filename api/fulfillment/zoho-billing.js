@@ -51,7 +51,7 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (no filter_by parameter for subscriptions endpoint)
+        // Get all subscriptions (list endpoint returns minimal details)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -65,10 +65,20 @@ async function getPendingOrders() {
         const subscriptions = response.data.subscriptions || [];
 
         // Filter for orders with Shipping Status=New Manual Order
-        return subscriptions.filter(subscription => {
+        const filtered = subscriptions.filter(subscription => {
             const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
             return shippingStatus === 'New Manual Order';
         });
+
+        // Fetch full details for each filtered subscription (list endpoint lacks customer/plan details)
+        const fullDetailsPromises = filtered.map(sub =>
+            getOrderDetails(sub.subscription_id).catch(err => {
+                console.error(`Failed to fetch details for ${sub.subscription_id}:`, err.message);
+                return sub; // Return minimal data if fetch fails
+            })
+        );
+
+        return await Promise.all(fullDetailsPromises);
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -81,7 +91,7 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all subscriptions (no filter_by parameter for subscriptions endpoint)
+        // Get all subscriptions (list endpoint returns minimal details)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -95,10 +105,20 @@ async function getShippedOrders() {
         const subscriptions = response.data.subscriptions || [];
 
         // Filter for orders that have been shipped
-        return subscriptions.filter(subscription => {
+        const filtered = subscriptions.filter(subscription => {
             const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
             return shippingStatus === 'Shipped';
         });
+
+        // Fetch full details for each filtered subscription (list endpoint lacks customer/plan details)
+        const fullDetailsPromises = filtered.map(sub =>
+            getOrderDetails(sub.subscription_id).catch(err => {
+                console.error(`Failed to fetch details for ${sub.subscription_id}:`, err.message);
+                return sub; // Return minimal data if fetch fails
+            })
+        );
+
+        return await Promise.all(fullDetailsPromises);
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
