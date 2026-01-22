@@ -62,38 +62,52 @@ module.exports = async (req, res) => {
 
         const fullSubscription = subDetailResponse.data.subscription;
 
-        // Update subscription with shipping info using direct property approach
+        // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
-        const accessToken = await getZohoBillingAccessToken();
-        const orgId = process.env.ZOHO_ORG_ID;
-
-        // Build update payload with direct cf_* properties
-        const updatePayload = {
-            cf_shipping_status: 'Shipped',
-            cf_shipping_date: currentDate
-        };
-
-        if (tracking_number) {
-            updatePayload.cf_tracking_number = tracking_number;
-        }
-
-        if (sim_card) {
-            updatePayload.cf_sim_card_number = sim_card;
-        }
-
-        // Update subscription using direct PUT with cf_* properties
-        await axios.put(
-            `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
-            updatePayload,
-            {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId,
-                    'Content-Type': 'application/json'
-                }
+        // Start with existing custom fields and update matching ones
+        const customFields = fullSubscription.custom_fields.map(field => {
+            // Match by api_name (cf_*) which is more reliable than label
+            if (field.api_name === 'cf_shipping_status') {
+                return { ...field, value: 'Shipped' };
             }
-        );
+            if (field.api_name === 'cf_shipping_date') {
+                return { ...field, value: currentDate };
+            }
+            if (field.api_name === 'cf_tracking_number' && tracking_number) {
+                return { ...field, value: tracking_number };
+            }
+            if (field.api_name === 'cf_sim_card_number' && sim_card) {
+                return { ...field, value: sim_card };
+            }
+            return field;
+        });
+
+        // Check if fields exist, if not add them
+        const fieldNames = customFields.map(f => f.api_name);
+
+        if (!fieldNames.includes('cf_shipping_date')) {
+            customFields.push({
+                label: 'Shipping Date',
+                value: currentDate
+            });
+        }
+
+        if (tracking_number && !fieldNames.includes('cf_tracking_number')) {
+            customFields.push({
+                label: 'Tracking Number',
+                value: tracking_number
+            });
+        }
+
+        if (sim_card && !fieldNames.includes('cf_sim_card_number')) {
+            customFields.push({
+                label: 'SIM Card Number',
+                value: sim_card
+            });
+        }
+
+        await updateSubscriptionFields(subscriptionId, customFields);
 
         return res.status(200).json({
             success: true,
