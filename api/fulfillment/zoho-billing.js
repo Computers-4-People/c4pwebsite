@@ -114,6 +114,16 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
+        // Debug: Compare list vs detail endpoint to see if detail has street2
+        if (invoices.length > 0) {
+            const testInvoiceId = invoices[0].invoice_id;
+            const fullInvoiceDetail = await getOrderDetails(testInvoiceId);
+            console.log('=== COMPARISON: List vs Detail endpoint ===');
+            console.log('Invoice LIST shipping_street2:', invoices[0].shipping_street2);
+            console.log('Invoice DETAIL shipping_street2:', fullInvoiceDetail.shipping_street2);
+            console.log('Invoice DETAIL shipping_address:', JSON.stringify(fullInvoiceDetail.shipping_address, null, 2));
+        }
+
         // Create invoice map by customer_id for address lookup
         const invoicesByCustomer = new Map();
         invoices.forEach(inv => {
