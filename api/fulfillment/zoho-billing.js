@@ -51,11 +51,16 @@ function delay(ms) {
 }
 
 // Fetch subscriptions in batches to avoid rate limiting
-async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 5, delayMs = 200) {
+// Zoho API limit: 30 requests per minute threshold
+// We use 3 per batch with 7 second delay = ~25 requests per minute (safe margin)
+async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 3, delayMs = 7000) {
     const results = [];
+
+    console.log(`Fetching details for ${subscriptions.length} subscriptions in batches of ${batchSize}...`);
 
     for (let i = 0; i < subscriptions.length; i += batchSize) {
         const batch = subscriptions.slice(i, i + batchSize);
+        console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(subscriptions.length / batchSize)}...`);
 
         const batchPromises = batch.map(sub =>
             getOrderDetails(sub.subscription_id).catch(err => {
@@ -67,12 +72,13 @@ async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 5, d
         const batchResults = await Promise.all(batchPromises);
         results.push(...batchResults);
 
-        // Add delay between batches to avoid rate limiting
+        // Add delay between batches to avoid rate limiting (30 req/min threshold)
         if (i + batchSize < subscriptions.length) {
             await delay(delayMs);
         }
     }
 
+    console.log(`Completed fetching ${results.length} subscription details`);
     return results;
 }
 
@@ -102,7 +108,8 @@ async function getPendingOrders() {
         });
 
         // Fetch full details in batches to avoid rate limiting (429 errors)
-        return await fetchSubscriptionDetailsInBatches(filtered, 5, 200);
+        // Uses default: 3 per batch, 7 second delay = ~25 requests/minute
+        return await fetchSubscriptionDetailsInBatches(filtered);
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -135,7 +142,8 @@ async function getShippedOrders() {
         });
 
         // Fetch full details in batches to avoid rate limiting (429 errors)
-        return await fetchSubscriptionDetailsInBatches(filtered, 5, 200);
+        // Uses default: 3 per batch, 7 second delay = ~25 requests/minute
+        return await fetchSubscriptionDetailsInBatches(filtered);
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
