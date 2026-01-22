@@ -127,9 +127,17 @@ async function getPendingOrders() {
         // Prefer invoices (they have addresses), but keep only one per subscription
         const subscriptionMap = new Map();
 
+        // Debug: Check what subscription_id values invoices actually have
+        console.log('Sample invoice subscription_ids:', filteredInvoices.slice(0, 3).map(inv => ({
+            invoice_id: inv.invoice_id,
+            subscription_id: inv.subscription_id,
+            customer_id: inv.customer_id,
+            customer_name: inv.customer_name
+        })));
+
         // First add all invoices (they have addresses)
         filteredInvoices.forEach(invoice => {
-            const subId = invoice.subscription_id || invoice.customer_id;
+            const subId = invoice.subscription_id || invoice.customer_id || invoice.email;
             if (subId && !subscriptionMap.has(subId)) {
                 subscriptionMap.set(subId, invoice);
             }
@@ -137,7 +145,7 @@ async function getPendingOrders() {
 
         // Then add subscriptions that don't have invoices yet
         filteredSubscriptions.forEach(subscription => {
-            const subId = subscription.subscription_id;
+            const subId = subscription.subscription_id || subscription.email;
             if (subId && !subscriptionMap.has(subId)) {
                 subscriptionMap.set(subId, subscription);
             }
@@ -145,7 +153,7 @@ async function getPendingOrders() {
 
         const deduped = Array.from(subscriptionMap.values());
 
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique subscriptions`);
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique after dedup`);
         return deduped;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
@@ -198,7 +206,7 @@ async function getShippedOrders() {
 
         // First add all invoices (they have addresses)
         filteredInvoices.forEach(invoice => {
-            const subId = invoice.subscription_id || invoice.customer_id;
+            const subId = invoice.subscription_id || invoice.customer_id || invoice.email;
             if (subId && !subscriptionMap.has(subId)) {
                 subscriptionMap.set(subId, invoice);
             }
@@ -206,7 +214,7 @@ async function getShippedOrders() {
 
         // Then add subscriptions that don't have invoices yet
         filteredSubscriptions.forEach(subscription => {
-            const subId = subscription.subscription_id;
+            const subId = subscription.subscription_id || subscription.email;
             if (subId && !subscriptionMap.has(subId)) {
                 subscriptionMap.set(subId, subscription);
             }
@@ -214,7 +222,7 @@ async function getShippedOrders() {
 
         const deduped = Array.from(subscriptionMap.values());
 
-        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique subscriptions`);
+        console.log(`Found ${filteredInvoices.length} invoices + ${filteredSubscriptions.length} subscriptions = ${deduped.length} unique after dedup`);
         return deduped;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
