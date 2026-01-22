@@ -45,6 +45,37 @@ function getCustomFieldValue(invoice, fieldLabel) {
     return field?.value || '';
 }
 
+// Helper function to add delay (rate limiting)
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Fetch subscriptions in batches to avoid rate limiting
+async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 5, delayMs = 200) {
+    const results = [];
+
+    for (let i = 0; i < subscriptions.length; i += batchSize) {
+        const batch = subscriptions.slice(i, i + batchSize);
+
+        const batchPromises = batch.map(sub =>
+            getOrderDetails(sub.subscription_id).catch(err => {
+                console.error(`Failed to fetch details for ${sub.subscription_id}:`, err.message);
+                return sub; // Return minimal data if fetch fails
+            })
+        );
+
+        const batchResults = await Promise.all(batchPromises);
+        results.push(...batchResults);
+
+        // Add delay between batches to avoid rate limiting
+        if (i + batchSize < subscriptions.length) {
+            await delay(delayMs);
+        }
+    }
+
+    return results;
+}
+
 // Get pending orders (subscriptions with cf_shipping_status=New Manual Order)
 async function getPendingOrders() {
     const accessToken = await getZohoBillingAccessToken();
@@ -70,15 +101,8 @@ async function getPendingOrders() {
             return shippingStatus === 'New Manual Order';
         });
 
-        // Fetch full details for each filtered subscription (list endpoint lacks customer/plan details)
-        const fullDetailsPromises = filtered.map(sub =>
-            getOrderDetails(sub.subscription_id).catch(err => {
-                console.error(`Failed to fetch details for ${sub.subscription_id}:`, err.message);
-                return sub; // Return minimal data if fetch fails
-            })
-        );
-
-        return await Promise.all(fullDetailsPromises);
+        // Fetch full details in batches to avoid rate limiting (429 errors)
+        return await fetchSubscriptionDetailsInBatches(filtered, 5, 200);
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -110,15 +134,8 @@ async function getShippedOrders() {
             return shippingStatus === 'Shipped';
         });
 
-        // Fetch full details for each filtered subscription (list endpoint lacks customer/plan details)
-        const fullDetailsPromises = filtered.map(sub =>
-            getOrderDetails(sub.subscription_id).catch(err => {
-                console.error(`Failed to fetch details for ${sub.subscription_id}:`, err.message);
-                return sub; // Return minimal data if fetch fails
-            })
-        );
-
-        return await Promise.all(fullDetailsPromises);
+        // Fetch full details in batches to avoid rate limiting (429 errors)
+        return await fetchSubscriptionDetailsInBatches(filtered, 5, 200);
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
