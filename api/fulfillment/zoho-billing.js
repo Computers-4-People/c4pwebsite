@@ -203,13 +203,9 @@ const updateInvoiceFields = updateSubscriptionFields;
 function formatOrderForQueue(subscription) {
     const shippingStatus = getCustomFieldValue(subscription, 'Shipping Status');
 
-    // List endpoint provides: subscription_id, name, customer_name, customer_id, email,
-    // plan_name, status, custom_fields, but NOT full customer/address objects
-    // Address must be stored in custom fields or fetched separately
-    const addressCustomField = getCustomFieldValue(subscription, 'Shipping Address');
-    const cityCustomField = getCustomFieldValue(subscription, 'Shipping City');
-    const stateCustomField = getCustomFieldValue(subscription, 'Shipping State');
-    const zipCustomField = getCustomFieldValue(subscription, 'Shipping Zip');
+    // List endpoint DOES include full customer object with shipping_address!
+    // Access via subscription.customer.shipping_address
+    const shippingAddr = subscription.customer?.shipping_address || {};
 
     return {
         // Frontend expects invoice_id and invoice_number (legacy naming from when we used invoices)
@@ -217,17 +213,16 @@ function formatOrderForQueue(subscription) {
         invoice_number: subscription.subscription_number || subscription.name,
         subscription_id: subscription.subscription_id,
         subscription_number: subscription.subscription_number || subscription.name,
-        customer_name: subscription.customer_name || '',
-        email: subscription.email || '',
-        phone: subscription.phone || '',
+        customer_name: subscription.customer?.display_name || subscription.customer_name || '',
+        email: subscription.customer?.email || subscription.email || '',
+        phone: subscription.customer?.phone || subscription.phone || '',
         shipping_address: {
-            // Try custom fields first, fallback to nested objects if fetched via getOrderDetails
-            address: addressCustomField || subscription.customer?.shipping_address?.street || subscription.shipping_address?.street || '',
-            address2: getCustomFieldValue(subscription, 'Shipping Address 2') || subscription.customer?.shipping_address?.street2 || subscription.shipping_address?.street2 || '',
-            city: cityCustomField || subscription.customer?.shipping_address?.city || subscription.shipping_address?.city || '',
-            state: stateCustomField || subscription.customer?.shipping_address?.state || subscription.shipping_address?.state || '',
-            zip: zipCustomField || subscription.customer?.shipping_address?.zip || subscription.shipping_address?.zip || '',
-            country: getCustomFieldValue(subscription, 'Shipping Country') || subscription.customer?.shipping_address?.country || subscription.shipping_address?.country || 'USA'
+            address: shippingAddr.street || '',
+            address2: shippingAddr.street2 || '',
+            city: shippingAddr.city || '',
+            state: shippingAddr.state || '',
+            zip: shippingAddr.zip || '',
+            country: shippingAddr.country || 'USA'
         },
         device_type: getCustomFieldValue(subscription, 'Device Type') || subscription.plan_name || subscription.plan?.name || '',
         status: shippingStatus === 'Shipped' ? 'shipped' : (getCustomFieldValue(subscription, 'SIM Card Number') ? 'ready_to_ship' : 'pending_sim'),
