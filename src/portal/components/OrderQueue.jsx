@@ -132,10 +132,10 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       return;
     }
 
-    // Check that all orders with devices have tracking numbers
+    // Check that all orders with devices (except Sim Card Only) have tracking numbers
     const ordersNeedingTracking = selectedOrders.filter(orderId => {
       const order = orders.find(o => o.invoice_id === orderId);
-      return order?.device_type && !trackingInputs[orderId]?.trim();
+      return order?.device_type && order.device_type !== 'Sim Card Only' && !trackingInputs[orderId]?.trim();
     });
 
     if (ordersNeedingTracking.length > 0) {
@@ -158,7 +158,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           body: JSON.stringify({
             invoice_id: orderId,
             sim_card: simInputs[orderId],
-            tracking_number: order?.device_type ? trackingInputs[orderId] : undefined
+            tracking_number: (order?.device_type && order.device_type !== 'Sim Card Only') ? trackingInputs[orderId] : undefined
           })
         });
 
@@ -489,7 +489,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                 const ordersWithSim = selectedOrders.filter(orderId => simInputs[orderId]?.trim()).length;
                 const ordersWithDevices = selectedOrders.filter(orderId => {
                   const order = orders.find(o => o.invoice_id === orderId);
-                  return order?.device_type;
+                  return order?.device_type && order.device_type !== 'Sim Card Only';
                 }).length;
                 const ordersWithTracking = selectedOrders.filter(orderId => trackingInputs[orderId]?.trim()).length;
 
@@ -634,7 +634,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   )}
                 </td>
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                  {order.device_type ? (
+                  {order.device_type && order.device_type !== 'Sim Card Only' ? (
                     <input
                       type="text"
                       value={trackingInputs[order.invoice_id] || ''}
@@ -643,7 +643,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
                     />
                   ) : (
-                    <span className="text-gray-400 text-xs italic">No device</span>
+                    <span className="text-gray-400 text-xs italic">N/A</span>
                   )}
                 </td>
               </tr>
