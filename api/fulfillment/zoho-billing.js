@@ -113,30 +113,8 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Try fetching customer data instead of invoice data for addresses
-        // Fetch first customer to test if it has better address data
-        if (filteredSubscriptions.length > 0) {
-            const testCustomerId = filteredSubscriptions[0].customer_id;
-            try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${testCustomerId}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
-                const customer = customerResponse.data.customer;
-                console.log('=== CUSTOMER DATA TEST ===');
-                console.log('Customer shipping_address:', JSON.stringify(customer.shipping_address, null, 2));
-                console.log('Customer keys:', Object.keys(customer));
-            } catch (error) {
-                console.error('Error fetching customer:', error.message);
-            }
-        }
-
-        // Create customer map by customer_id for address lookup
+        // Fetch customer details for each filtered subscription to get complete addresses
         const customersByCustomerId = new Map();
-
-        // Fetch customer details for each filtered subscription
         for (const sub of filteredSubscriptions) {
             try {
                 const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
@@ -152,21 +130,12 @@ async function getPendingOrders() {
         }
 
         // Merge subscription data with customer addresses
-        const mergedOrders = filteredSubscriptions.map((sub, index) => {
+        const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-
-            // Debug: Find Michael Waite's order and log all data
-            if (sub.customer_name && sub.customer_name.toLowerCase().includes('michael waite')) {
-                console.log('=== MICHAEL WAITE DEBUG ===');
-                console.log('Full customer object:', JSON.stringify(customer, null, 2));
-                console.log('Customer shipping_address:', JSON.stringify(customer?.shipping_address, null, 2));
-            }
-
             return {
                 ...sub,
                 _source: 'subscription',
-                _customer_address: customer?.shipping_address || null,
-                _customer: customer || null
+                _customer_address: customer?.shipping_address || null
             };
         });
 
@@ -222,8 +191,7 @@ async function getShippedOrders() {
             return {
                 ...sub,
                 _source: 'subscription',
-                _customer_address: customer?.shipping_address || null,
-                _customer: customer || null
+                _customer_address: customer?.shipping_address || null
             };
         });
 
@@ -312,12 +280,6 @@ function formatOrderForQueue(record) {
     // Use customer address if available (from _customer_address), otherwise fall back to custom fields
     let shippingAddress;
     if (record._customer_address) {
-        // Debug Michael Waite's address formatting
-        if (record.customer_name && record.customer_name.toLowerCase().includes('michael waite')) {
-            console.log('=== FORMATTING MICHAEL WAITE ADDRESS ===');
-            console.log('_customer_address:', JSON.stringify(record._customer_address, null, 2));
-        }
-
         shippingAddress = {
             address: record._customer_address.street || '',
             address2: record._customer_address.street2 || '',
