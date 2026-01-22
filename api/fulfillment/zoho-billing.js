@@ -82,68 +82,102 @@ async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 3, d
     return results;
 }
 
-// Get pending orders (invoices with cf_shipping_status=New Manual Order)
+// Get pending orders (both invoices and subscriptions with cf_shipping_status=New Manual Order)
 async function getPendingOrders() {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all invoices - list endpoint includes full shipping_address object!
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: {
-                per_page: 200
-            }
-        });
+        // Fetch both invoices and subscriptions in parallel
+        const [invoicesResponse, subscriptionsResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            })
+        ]);
 
-        const invoices = response.data.invoices || [];
+        const invoices = invoicesResponse.data.invoices || [];
+        const subscriptions = subscriptionsResponse.data.subscriptions || [];
 
-        // Invoices list endpoint does NOT include custom_fields array,
-        // but DOES include direct properties like cf_shipping_status
-        const filtered = invoices.filter(invoice => {
+        // Filter invoices
+        const filteredInvoices = invoices.filter(invoice => {
             return invoice.cf_shipping_status === 'New Manual Order';
         });
 
-        // Invoices list endpoint includes shipping_address in 1 API call!
-        console.log(`Found ${filtered.length} pending orders from invoices`);
-        return filtered;
+        // Filter subscriptions
+        const filteredSubscriptions = subscriptions.filter(subscription => {
+            return subscription.cf_shipping_status === 'New Manual Order';
+        });
+
+        // Tag each with source type for formatting
+        filteredInvoices.forEach(inv => inv._source = 'invoice');
+        filteredSubscriptions.forEach(sub => sub._source = 'subscription');
+
+        // Combine both - invoices first (they have addresses), then subscriptions
+        const combined = [...filteredInvoices, ...filteredSubscriptions];
+
+        console.log(`Found ${filteredInvoices.length} pending invoices + ${filteredSubscriptions.length} pending subscriptions = ${combined.length} total`);
+        return combined;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
     }
 }
 
-// Get shipped orders
+// Get shipped orders (both invoices and subscriptions)
 async function getShippedOrders() {
     const accessToken = await getZohoBillingAccessToken();
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Get all invoices - list endpoint includes full shipping_address object!
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: {
-                per_page: 200
-            }
-        });
+        // Fetch both invoices and subscriptions in parallel
+        const [invoicesResponse, subscriptionsResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            })
+        ]);
 
-        const invoices = response.data.invoices || [];
+        const invoices = invoicesResponse.data.invoices || [];
+        const subscriptions = subscriptionsResponse.data.subscriptions || [];
 
-        // Invoices list endpoint does NOT include custom_fields array,
-        // but DOES include direct properties like cf_shipping_status
-        const filtered = invoices.filter(invoice => {
+        // Filter for shipped
+        const filteredInvoices = invoices.filter(invoice => {
             return invoice.cf_shipping_status === 'Shipped';
         });
 
-        // Invoices list endpoint includes shipping_address in 1 API call!
-        console.log(`Found ${filtered.length} shipped orders from invoices`);
-        return filtered;
+        const filteredSubscriptions = subscriptions.filter(subscription => {
+            return subscription.cf_shipping_status === 'Shipped';
+        });
+
+        // Tag each with source type
+        filteredInvoices.forEach(inv => inv._source = 'invoice');
+        filteredSubscriptions.forEach(sub => sub._source = 'subscription');
+
+        const combined = [...filteredInvoices, ...filteredSubscriptions];
+
+        console.log(`Found ${filteredInvoices.length} shipped invoices + ${filteredSubscriptions.length} shipped subscriptions = ${combined.length} total`);
+        return combined;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -220,43 +254,59 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     }
 }
 
-// Format invoice for queue display
-function formatOrderForQueue(invoice) {
-    // Invoices list endpoint does NOT include custom_fields array,
-    // but DOES include direct properties like cf_shipping_status, cf_device_type, etc.
-    const shippingStatus = invoice.cf_shipping_status || '';
-    const shippingAddr = invoice.shipping_address || {};
+// Format order (invoice or subscription) for queue display
+function formatOrderForQueue(record) {
+    const shippingStatus = record.cf_shipping_status || '';
+
+    // Determine if this is an invoice or subscription by checking for _source tag
+    const isInvoice = record._source === 'invoice';
+
+    // Invoices have shipping_address object directly
+    // Subscriptions have custom fields: cf_street, cf_city, cf_state, cf_zip_code
+    let shippingAddress;
+    if (isInvoice && record.shipping_address) {
+        shippingAddress = {
+            address: record.shipping_address.street || '',
+            address2: record.shipping_address.street2 || '',
+            city: record.shipping_address.city || '',
+            state: record.shipping_address.state || '',
+            zip: record.shipping_address.zipcode || record.shipping_address.zip || '',
+            country: record.shipping_address.country || 'USA'
+        };
+    } else {
+        // Subscription - use custom fields
+        shippingAddress = {
+            address: record.cf_street || '',
+            address2: '',
+            city: record.cf_city || '',
+            state: record.cf_state || '',
+            zip: record.cf_zip_code || '',
+            country: 'USA'
+        };
+    }
 
     return {
-        // Frontend expects invoice_id and invoice_number - perfect, we're using invoices now!
-        invoice_id: invoice.invoice_id,
-        invoice_number: invoice.invoice_number || invoice.number,
-        subscription_id: invoice.subscription_id || invoice.invoice_id, // Use invoice_id as fallback
-        subscription_number: invoice.invoice_number || invoice.number,
-        customer_name: invoice.customer_name || '',
-        email: invoice.email || '',
-        phone: invoice.phone || '',
-        shipping_address: {
-            address: shippingAddr.street || '',
-            address2: shippingAddr.street2 || '',
-            city: shippingAddr.city || '',
-            state: shippingAddr.state || '',
-            zip: shippingAddr.zipcode || shippingAddr.zip || '',
-            country: shippingAddr.country || 'USA'
-        },
-        device_type: invoice.cf_device_type || '',
-        status: shippingStatus === 'Shipped' ? 'shipped' : (invoice.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
-        assigned_sim: invoice.cf_sim_card_number || '',
-        tracking_number: invoice.cf_tracking_number || '',
-        line_status: invoice.cf_line_status || '',
-        device_status: invoice.cf_device_status || '',
-        ordered_by: invoice.cf_ordered_by || '',
-        active_on_tmobile: invoice.cf_active_on_tmobile || '',
-        tmobile_line_number: invoice.cf_tmobile_line_number || '',
-        device_sn: invoice.cf_device_sn || '',
-        created_date: invoice.created_time,
-        updated_date: invoice.updated_time,
-        shipped_date: shippingStatus === 'Shipped' ? invoice.updated_time : null
+        invoice_id: isInvoice ? record.invoice_id : record.subscription_id,
+        invoice_number: isInvoice ? (record.invoice_number || record.number) : (record.subscription_number || record.name),
+        subscription_id: record.subscription_id || record.invoice_id,
+        subscription_number: isInvoice ? (record.invoice_number || record.number) : (record.subscription_number || record.name),
+        customer_name: record.customer_name || '',
+        email: record.email || '',
+        phone: record.phone || record.mobile_phone || '',
+        shipping_address: shippingAddress,
+        device_type: record.cf_device_type || record.plan_name || '',
+        status: shippingStatus === 'Shipped' ? 'shipped' : (record.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
+        assigned_sim: record.cf_sim_card_number || '',
+        tracking_number: record.cf_tracking_number || '',
+        line_status: record.cf_line_status || '',
+        device_status: record.cf_device_status || '',
+        ordered_by: record.cf_ordered_by || '',
+        active_on_tmobile: record.cf_active_on_tmobile || '',
+        tmobile_line_number: record.cf_tmobile_line_number || '',
+        device_sn: record.cf_device_sn || '',
+        created_date: record.created_time,
+        updated_date: record.updated_time,
+        shipped_date: shippingStatus === 'Shipped' ? record.updated_time : null
     };
 }
 
