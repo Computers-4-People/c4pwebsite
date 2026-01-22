@@ -123,13 +123,16 @@ async function getPendingOrders() {
         });
 
         // Merge subscription data with invoice addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
+        const mergedOrders = filteredSubscriptions.map((sub, index) => {
             const invoice = invoicesByCustomer.get(sub.customer_id);
 
-            // Debug: log addon and invoice line items structure
-            if (sub.addons || invoice?.line_items) {
-                console.log('DEBUG subscription addons:', JSON.stringify(sub.addons, null, 2));
-                console.log('DEBUG invoice line_items:', JSON.stringify(invoice?.line_items, null, 2));
+            // Debug: log first subscription to see all available fields
+            if (index === 0) {
+                console.log('=== DEBUG FIRST SUBSCRIPTION ===');
+                console.log('Subscription keys:', Object.keys(sub));
+                console.log('Subscription addons:', sub.addons);
+                console.log('Invoice keys:', invoice ? Object.keys(invoice) : 'no invoice');
+                console.log('Invoice line_items:', invoice?.line_items);
             }
 
             return {
