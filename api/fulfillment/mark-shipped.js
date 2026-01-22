@@ -65,16 +65,17 @@ module.exports = async (req, res) => {
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
         const customFields = fullSubscription.custom_fields.map(field => {
-            if (field.label === 'Shipping Status') {
+            // Match by api_name (cf_*) which is more reliable than label
+            if (field.api_name === 'cf_shipping_status') {
                 return { ...field, value: 'Shipped' };
             }
-            if (field.label === 'Shipping Date') {
+            if (field.api_name === 'cf_shipping_date') {
                 return { ...field, value: currentDate };
             }
-            if (field.label === 'Tracking Number' && tracking_number) {
+            if (field.api_name === 'cf_tracking_number' && tracking_number) {
                 return { ...field, value: tracking_number };
             }
-            if (field.label === 'SIM Card Number' && sim_card) {
+            if (field.api_name === 'cf_sim_card_number' && sim_card) {
                 return { ...field, value: sim_card };
             }
             return field;
