@@ -113,6 +113,15 @@ async function getPendingOrders() {
 
         console.log(`Fetched ${liveResponse.data.subscriptions?.length || 0} live + ${cancelledResponse.data.subscriptions?.length || 0} cancelled = ${subscriptions.length} total subscriptions`);
 
+        // Debug: Show all unique cf_shipping_status values
+        const shippingStatuses = new Set();
+        subscriptions.forEach(sub => {
+            if (sub.cf_shipping_status) {
+                shippingStatuses.add(sub.cf_shipping_status);
+            }
+        });
+        console.log('Unique shipping status values found:', Array.from(shippingStatuses));
+
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
@@ -128,14 +137,63 @@ async function getPendingOrders() {
         });
 
         const customers = customersResponse.data.customers || [];
+        const pageInfo = customersResponse.data.page_context || {};
+        console.log(`Customers API returned: ${customers.length} customers, has_more_page: ${pageInfo.has_more_page}, total: ${customersResponse.data.total || 'unknown'}`);
 
         // Create customer map by customer_id
         const customersByCustomerId = new Map();
+        let customersWithAddress = 0;
         customers.forEach(customer => {
             customersByCustomerId.set(customer.customer_id, customer);
+            if (customer.shipping_address) {
+                customersWithAddress++;
+            }
         });
 
-        console.log(`Fetched ${customers.length} customers in single API call`);
+        console.log(`Fetched ${customers.length} customers (${customersWithAddress} have shipping addresses)`);
+
+        // Debug: Check if we're getting customer data for filtered subscriptions
+        const matchedCustomers = filteredSubscriptions.filter(sub =>
+            customersByCustomerId.has(sub.customer_id)
+        ).length;
+        console.log(`Matched ${matchedCustomers} out of ${filteredSubscriptions.length} subscriptions to customers`);
+
+        // Debug: Sample unmatched subscriptions
+        const unmatchedSubs = filteredSubscriptions.filter(sub =>
+            !customersByCustomerId.has(sub.customer_id)
+        );
+        if (unmatchedSubs.length > 0) {
+            console.log(`Sample unmatched subscription customer_ids:`, unmatchedSubs.slice(0, 3).map(s => s.customer_id));
+        }
+
+        // Debug: Check subscription statuses in filtered list
+        const statusCounts = {};
+        subscriptions.forEach(sub => {
+            statusCounts[sub.status] = (statusCounts[sub.status] || 0) + 1;
+        });
+        console.log('Subscription status counts:', statusCounts);
+
+        // Debug: Count how many filtered subscriptions have customers with addresses
+        let subsWithAddress = 0;
+        filteredSubscriptions.forEach(sub => {
+            const customer = customersByCustomerId.get(sub.customer_id);
+            if (customer?.shipping_address) {
+                subsWithAddress++;
+            }
+        });
+        console.log(`${subsWithAddress} out of ${filteredSubscriptions.length} filtered subscriptions have customer addresses`);
+
+        // Debug: Log first 3 subscription-to-customer mappings with actual address data
+        console.log('Sample subscription-to-customer mappings (first 3):');
+        filteredSubscriptions.slice(0, 3).forEach((sub, idx) => {
+            const customer = customersByCustomerId.get(sub.customer_id);
+            console.log(`  ${idx + 1}. Sub ${sub.subscription_number} (customer_id: ${sub.customer_id})`);
+            console.log(`     Customer found: ${!!customer}, Has address: ${!!customer?.shipping_address}`);
+            if (customer?.shipping_address) {
+                const addr = customer.shipping_address;
+                console.log(`     Address: ${addr.street || 'N/A'}, ${addr.street2 || 'N/A'}, ${addr.city || 'N/A'}, ${addr.state || 'N/A'} ${addr.zipcode || addr.zip || 'N/A'}`);
+            }
+        });
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
