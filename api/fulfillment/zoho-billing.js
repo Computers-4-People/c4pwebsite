@@ -106,8 +106,8 @@ async function getPendingOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        // Fetch all customers in parallel pages (2-3 API calls total)
-        const [customersPage1, customersPage2] = await Promise.all([
+        // Fetch all customers in parallel pages (fetch enough pages to cover all customers)
+        const [customersPage1, customersPage2, customersPage3, customersPage4, customersPage5] = await Promise.all([
             axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -121,15 +121,39 @@ async function getPendingOrders() {
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: { per_page: 200, page: 2 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 3 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 4 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 5 }
             })
         ]);
 
         const allCustomers = [
             ...(customersPage1.data.customers || []),
-            ...(customersPage2.data.customers || [])
+            ...(customersPage2.data.customers || []),
+            ...(customersPage3.data.customers || []),
+            ...(customersPage4.data.customers || []),
+            ...(customersPage5.data.customers || [])
         ];
 
-        console.log(`Fetched ${allCustomers.length} total customers from 2 pages`);
+        console.log(`Fetched ${allCustomers.length} total customers from 5 pages`);
 
         // Create customer map
         const customersByCustomerId = new Map();
@@ -139,20 +163,9 @@ async function getPendingOrders() {
 
         console.log(`Customer map has ${customersByCustomerId.size} entries`);
 
-        // Log a few customer IDs from the map
-        const mapCustomerIds = Array.from(customersByCustomerId.keys()).slice(0, 5);
-        console.log('Sample customer IDs in map:', mapCustomerIds);
-
-        // Log a few customer IDs from subscriptions
-        const subCustomerIds = filteredSubscriptions.slice(0, 5).map(s => s.customer_id);
-        console.log('Sample customer IDs from subscriptions:', subCustomerIds);
-
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            if (!customer) {
-                console.log(`Missing customer for subscription ${sub.subscription_number}, customer_id: ${sub.customer_id}`);
-            }
             return {
                 ...sub,
                 _source: 'subscription',
@@ -194,8 +207,8 @@ async function getShippedOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        // Fetch all customers in parallel pages (2 API calls total)
-        const [customersPage1, customersPage2] = await Promise.all([
+        // Fetch all customers in parallel pages (fetch enough pages to cover all customers)
+        const [customersPage1, customersPage2, customersPage3, customersPage4, customersPage5] = await Promise.all([
             axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -209,15 +222,39 @@ async function getShippedOrders() {
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: { per_page: 200, page: 2 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 3 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 4 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 5 }
             })
         ]);
 
         const allCustomers = [
             ...(customersPage1.data.customers || []),
-            ...(customersPage2.data.customers || [])
+            ...(customersPage2.data.customers || []),
+            ...(customersPage3.data.customers || []),
+            ...(customersPage4.data.customers || []),
+            ...(customersPage5.data.customers || [])
         ];
 
-        console.log(`Fetched ${allCustomers.length} total shipped customers from 2 pages`);
+        console.log(`Fetched ${allCustomers.length} total shipped customers from 5 pages`);
 
         // Create customer map
         const customersByCustomerId = new Map();
