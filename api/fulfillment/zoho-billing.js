@@ -120,31 +120,65 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Fetch customer details for each filtered subscription to get complete addresses
+        // Fetch customer and invoice details for each filtered subscription
         const customersByCustomerId = new Map();
+        const invoiceDetailsByCustomerId = new Map();
+
         for (const sub of filteredSubscriptions) {
+            const invoice = invoicesByCustomerId.get(sub.customer_id);
+            if (!invoice) {
+                console.warn(`No invoice found for customer ${sub.customer_id}`);
+                continue;
+            }
+
             try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
+                // Fetch customer and invoice detail in parallel
+                const [customerResponse, invoiceDetailResponse] = await Promise.all([
+                    axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    }),
+                    axios.get(`https://www.zohoapis.com/billing/v1/invoices/${invoice.invoice_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    })
+                ]);
+
                 customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+                invoiceDetailsByCustomerId.set(sub.customer_id, invoiceDetailResponse.data.invoice);
             } catch (error) {
-                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                console.error(`Error fetching details for customer ${sub.customer_id}:`, error.message);
             }
         }
 
-        // Merge subscription data with customer addresses and device type from invoice
+        // Merge subscription data with customer addresses and device type from invoice items
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            const invoice = invoicesByCustomerId.get(sub.customer_id);
+            const invoiceDetail = invoiceDetailsByCustomerId.get(sub.customer_id);
 
-            // Get device type from invoice cf_device_type field (NOT from subscription)
-            let deviceType = invoice?.cf_device_type || 'Sim Card Only';
-            if (deviceType === 'Blank' || deviceType === '') {
-                deviceType = 'Sim Card Only';
+            // Extract device type from invoice_items by finding the device item
+            let deviceType = 'Sim Card Only';
+            if (invoiceDetail?.invoice_items) {
+                // Find device item (usually has higher price or specific names)
+                const deviceItem = invoiceDetail.invoice_items.find(item =>
+                    item.name?.includes('Hotspot') ||
+                    item.name?.includes('T10') ||
+                    item.name?.includes('Shield 5G') ||
+                    (item.price && item.price > 100) // Devices are expensive
+                );
+
+                if (deviceItem) {
+                    const itemName = deviceItem.name || '';
+                    if (itemName.includes('Shield') || itemName.includes('5G')) {
+                        deviceType = 'Shield 5G';
+                    } else if (itemName.includes('T10')) {
+                        deviceType = 'T10';
+                    }
+                }
             }
 
             return {
@@ -201,31 +235,65 @@ async function getShippedOrders() {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Fetch customer details for each filtered subscription
+        // Fetch customer and invoice details for each filtered subscription
         const customersByCustomerId = new Map();
+        const invoiceDetailsByCustomerId = new Map();
+
         for (const sub of filteredSubscriptions) {
+            const invoice = invoicesByCustomerId.get(sub.customer_id);
+            if (!invoice) {
+                console.warn(`No invoice found for customer ${sub.customer_id}`);
+                continue;
+            }
+
             try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
+                // Fetch customer and invoice detail in parallel
+                const [customerResponse, invoiceDetailResponse] = await Promise.all([
+                    axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    }),
+                    axios.get(`https://www.zohoapis.com/billing/v1/invoices/${invoice.invoice_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    })
+                ]);
+
                 customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+                invoiceDetailsByCustomerId.set(sub.customer_id, invoiceDetailResponse.data.invoice);
             } catch (error) {
-                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                console.error(`Error fetching details for customer ${sub.customer_id}:`, error.message);
             }
         }
 
-        // Merge subscription data with customer addresses and device type from invoice
+        // Merge subscription data with customer addresses and device type from invoice items
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            const invoice = invoicesByCustomerId.get(sub.customer_id);
+            const invoiceDetail = invoiceDetailsByCustomerId.get(sub.customer_id);
 
-            // Get device type from invoice cf_device_type field (NOT from subscription)
-            let deviceType = invoice?.cf_device_type || 'Sim Card Only';
-            if (deviceType === 'Blank' || deviceType === '') {
-                deviceType = 'Sim Card Only';
+            // Extract device type from invoice_items by finding the device item
+            let deviceType = 'Sim Card Only';
+            if (invoiceDetail?.invoice_items) {
+                // Find device item (usually has higher price or specific names)
+                const deviceItem = invoiceDetail.invoice_items.find(item =>
+                    item.name?.includes('Hotspot') ||
+                    item.name?.includes('T10') ||
+                    item.name?.includes('Shield 5G') ||
+                    (item.price && item.price > 100) // Devices are expensive
+                );
+
+                if (deviceItem) {
+                    const itemName = deviceItem.name || '';
+                    if (itemName.includes('Shield') || itemName.includes('5G')) {
+                        deviceType = 'Shield 5G';
+                    } else if (itemName.includes('T10')) {
+                        deviceType = 'T10';
+                    }
+                }
             }
 
             return {
