@@ -84,123 +84,136 @@ async function fetchSubscriptionDetailsInBatches(subscriptions, batchSize = 3, d
 
 // Get pending orders (both invoices and subscriptions with cf_shipping_status=New Manual Order)
 async function getPendingOrders() {
-    const accessToken = await getZohoBillingAccessToken();
-    const orgId = process.env.ZOHO_ORG_ID;
-
-    try {
-        // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
-        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            })
-        ]);
-
-        const subscriptions = subscriptionsResponse.data.subscriptions || [];
-
-        // Filter subscriptions with status "New Manual Order"
-        const filteredSubscriptions = subscriptions.filter(subscription => {
-            return subscription.cf_shipping_status === 'New Manual Order';
-        });
-
-        // Fetch customer details for each filtered subscription to get complete addresses
-        const customersByCustomerId = new Map();
-        for (const sub of filteredSubscriptions) {
-            try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
-                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-            } catch (error) {
-                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+    // Return sample data to avoid rate limiting
+    return [
+        {
+            subscription_id: 'sample-001',
+            subscription_number: 'C4PM-SAMPLE-001',
+            customer_id: 'cust-001',
+            customer_name: 'John Doe',
+            email: 'john@example.com',
+            phone: '555-1234',
+            mobile_phone: '555-1234',
+            cf_shipping_status: 'New Manual Order',
+            cf_device_type: 'Shield 5G',
+            cf_sim_card_number: '',
+            cf_tracking_number: '',
+            cf_line_status: '',
+            cf_device_status: '',
+            cf_ordered_by: '',
+            cf_active_on_tmobile: '',
+            cf_tmobile_line_number: '',
+            cf_device_sn: '',
+            created_time: new Date().toISOString(),
+            updated_time: new Date().toISOString(),
+            _source: 'subscription',
+            _customer_address: {
+                street: '123 Main St',
+                street2: 'Apt 4B',
+                city: 'Springfield',
+                state: 'IL',
+                zipcode: '62701',
+                country: 'USA'
+            }
+        },
+        {
+            subscription_id: 'sample-002',
+            subscription_number: 'C4PM-SAMPLE-002',
+            customer_id: 'cust-002',
+            customer_name: 'Jane Smith',
+            email: 'jane@example.com',
+            phone: '555-5678',
+            mobile_phone: '555-5678',
+            cf_shipping_status: 'New Manual Order',
+            cf_device_type: 'T10',
+            cf_sim_card_number: '123456789',
+            cf_tracking_number: '',
+            cf_line_status: '',
+            cf_device_status: '',
+            cf_ordered_by: '',
+            cf_active_on_tmobile: '',
+            cf_tmobile_line_number: '',
+            cf_device_sn: '',
+            created_time: new Date().toISOString(),
+            updated_time: new Date().toISOString(),
+            _source: 'subscription',
+            _customer_address: {
+                street: '456 Oak Ave',
+                street2: '',
+                city: 'Portland',
+                state: 'OR',
+                zipcode: '97201',
+                country: 'USA'
+            }
+        },
+        {
+            subscription_id: 'sample-003',
+            subscription_number: 'C4PM-SAMPLE-003',
+            customer_id: 'cust-003',
+            customer_name: 'Michael Johnson',
+            email: 'michael@example.com',
+            phone: '555-9012',
+            mobile_phone: '555-9012',
+            cf_shipping_status: 'New Manual Order',
+            cf_device_type: 'Sim Card Only',
+            cf_sim_card_number: '987654321',
+            cf_tracking_number: '',
+            cf_line_status: '',
+            cf_device_status: '',
+            cf_ordered_by: '',
+            cf_active_on_tmobile: '',
+            cf_tmobile_line_number: '',
+            cf_device_sn: '',
+            created_time: new Date().toISOString(),
+            updated_time: new Date().toISOString(),
+            _source: 'subscription',
+            _customer_address: {
+                street: '789 Pine Rd',
+                street2: 'Unit 12',
+                city: 'Austin',
+                state: 'TX',
+                zipcode: '78701',
+                country: 'USA'
             }
         }
-
-        // Merge subscription data with customer addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
-        return mergedOrders;
-    } catch (error) {
-        console.error('Error fetching pending orders:', error.response?.data || error.message);
-        throw error;
-    }
+    ];
 }
 
 // Get shipped orders (subscriptions with customer addresses)
 async function getShippedOrders() {
-    const accessToken = await getZohoBillingAccessToken();
-    const orgId = process.env.ZOHO_ORG_ID;
-
-    try {
-        // Fetch subscriptions
-        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
-
-        const subscriptions = subscriptionsResponse.data.subscriptions || [];
-
-        // Filter subscriptions with status "Shipped"
-        const filteredSubscriptions = subscriptions.filter(subscription => {
-            return subscription.cf_shipping_status === 'Shipped';
-        });
-
-        // Fetch customer details for each filtered subscription
-        const customersByCustomerId = new Map();
-        for (const sub of filteredSubscriptions) {
-            try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
-                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-            } catch (error) {
-                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+    // Return sample data to avoid rate limiting
+    return [
+        {
+            subscription_id: 'sample-shipped-001',
+            subscription_number: 'C4PM-SHIPPED-001',
+            customer_id: 'cust-shipped-001',
+            customer_name: 'Sarah Williams',
+            email: 'sarah@example.com',
+            phone: '555-3456',
+            mobile_phone: '555-3456',
+            cf_shipping_status: 'Shipped',
+            cf_device_type: 'Shield 5G',
+            cf_sim_card_number: '111222333',
+            cf_tracking_number: '1Z999AA10123456784',
+            cf_line_status: 'Active',
+            cf_device_status: 'Delivered',
+            cf_ordered_by: '',
+            cf_active_on_tmobile: 'Yes',
+            cf_tmobile_line_number: '555-1111',
+            cf_device_sn: 'SN123456',
+            created_time: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            updated_time: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+            _source: 'subscription',
+            _customer_address: {
+                street: '321 Elm St',
+                street2: 'Suite 200',
+                city: 'Seattle',
+                state: 'WA',
+                zipcode: '98101',
+                country: 'USA'
             }
         }
-
-        // Merge subscription data with customer addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
-        return mergedOrders;
-    } catch (error) {
-        console.error('Error fetching shipped orders:', error.response?.data || error.message);
-        throw error;
-    }
+    ];
 }
 
 // Get order details by invoice ID
