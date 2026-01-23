@@ -106,28 +106,50 @@ async function getPendingOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        // Log first subscription to see available fields
-        if (filteredSubscriptions.length > 0) {
-            const sample = filteredSubscriptions[0];
-            console.log('Sample subscription:', JSON.stringify({
-                subscription_id: sample.subscription_id,
-                customer_name: sample.customer_name,
-                customer_id: sample.customer_id,
-                email: sample.email,
-                cf_street: sample.cf_street,
-                cf_city: sample.cf_city,
-                cf_state: sample.cf_state,
-                cf_zip_code: sample.cf_zip_code,
-                cf_device_type: sample.cf_device_type
-            }, null, 2));
+        // Fetch customers in parallel batches to avoid timeout
+        // Batch size of 10 with parallel requests should stay under 15 second limit
+        const batchSize = 10;
+        const customersByCustomerId = new Map();
+
+        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
+            const batch = filteredSubscriptions.slice(i, i + batchSize);
+
+            const batchPromises = batch.map(async (sub) => {
+                try {
+                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    });
+                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
+                } catch (error) {
+                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                    return null;
+                }
+            });
+
+            const batchResults = await Promise.all(batchPromises);
+            batchResults.forEach(result => {
+                if (result) {
+                    customersByCustomerId.set(result.customer_id, result.customer);
+                }
+            });
         }
 
-        // Return subscriptions as-is, formatOrderForQueue will handle address formatting
-        return filteredSubscriptions.map(sub => ({
-            ...sub,
-            _source: 'subscription',
-            _customer_address: null
-        }));
+        console.log(`Fetched ${customersByCustomerId.size} customer addresses`);
+
+        // Merge subscription data with customer addresses
+        const mergedOrders = filteredSubscriptions.map(sub => {
+            const customer = customersByCustomerId.get(sub.customer_id);
+            return {
+                ...sub,
+                _source: 'subscription',
+                _customer_address: customer?.shipping_address || null
+            };
+        });
+
+        return mergedOrders;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -158,12 +180,49 @@ async function getShippedOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        // Return subscriptions as-is, formatOrderForQueue will handle address formatting
-        return filteredSubscriptions.map(sub => ({
-            ...sub,
-            _source: 'subscription',
-            _customer_address: null
-        }));
+        // Fetch customers in parallel batches to avoid timeout
+        const batchSize = 10;
+        const customersByCustomerId = new Map();
+
+        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
+            const batch = filteredSubscriptions.slice(i, i + batchSize);
+
+            const batchPromises = batch.map(async (sub) => {
+                try {
+                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    });
+                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
+                } catch (error) {
+                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                    return null;
+                }
+            });
+
+            const batchResults = await Promise.all(batchPromises);
+            batchResults.forEach(result => {
+                if (result) {
+                    customersByCustomerId.set(result.customer_id, result.customer);
+                }
+            });
+        }
+
+        console.log(`Fetched ${customersByCustomerId.size} shipped customer addresses`);
+
+        // Merge subscription data with customer addresses
+        const mergedOrders = filteredSubscriptions.map(sub => {
+            const customer = customersByCustomerId.get(sub.customer_id);
+            return {
+                ...sub,
+                _source: 'subscription',
+                _customer_address: customer?.shipping_address || null
+            };
+        });
+
+        return mergedOrders;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -244,28 +303,15 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
 
-    // Use customer address if available (from _customer_address), otherwise fall back to custom fields
-    let shippingAddress;
-    if (record._customer_address) {
-        shippingAddress = {
-            address: record._customer_address.street || '',
-            address2: record._customer_address.street2 || '',
-            city: record._customer_address.city || '',
-            state: record._customer_address.state || '',
-            zip: record._customer_address.zipcode || record._customer_address.zip || '',
-            country: record._customer_address.country || 'USA'
-        };
-    } else {
-        // Fall back to custom fields if no customer address
-        shippingAddress = {
-            address: record.cf_street || '',
-            address2: record.cf_street2 || record.cf_address2 || '',
-            city: record.cf_city || '',
-            state: record.cf_state || '',
-            zip: record.cf_zip_code || '',
-            country: 'USA'
-        };
-    }
+    // Use customer address from _customer_address
+    const shippingAddress = {
+        address: record._customer_address?.street || '',
+        address2: record._customer_address?.street2 || '',
+        city: record._customer_address?.city || '',
+        state: record._customer_address?.state || '',
+        zip: record._customer_address?.zipcode || record._customer_address?.zip || '',
+        country: record._customer_address?.country || 'USA'
+    };
 
     // Device type: use cf_device_type if set and not "Blank", otherwise "Sim Card Only"
     let deviceType = 'Sim Card Only';
