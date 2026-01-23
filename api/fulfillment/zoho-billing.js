@@ -154,41 +154,47 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Fetch customer details for each filtered subscription to get complete addresses
+        // Fetch customer details with rate limiting (max 25 requests per minute)
         const customersByCustomerId = new Map();
-        let successCount = 0;
-        let failCount = 0;
-        const errors = [];
+        const BATCH_SIZE = 20;  // Process 20 at a time
+        const DELAY_MS = 3000;   // 3 second delay between batches (20 calls per minute = safe)
 
-        for (const sub of filteredSubscriptions) {
-            try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
-                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-                successCount++;
-            } catch (error) {
-                const errorMsg = error.response?.data?.message || error.message;
-                console.error(`Error fetching customer ${sub.customer_id} (${sub.customer_name}): ${errorMsg}`);
-                errors.push({ customer_id: sub.customer_id, name: sub.customer_name, error: errorMsg });
-                failCount++;
+        for (let i = 0; i < filteredSubscriptions.length; i += BATCH_SIZE) {
+            const batch = filteredSubscriptions.slice(i, i + BATCH_SIZE);
+
+            const batchPromises = batch.map(async (sub) => {
+                try {
+                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    });
+                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
+                } catch (error) {
+                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                    return { customer_id: sub.customer_id, customer: null };
+                }
+            });
+
+            const batchResults = await Promise.all(batchPromises);
+            batchResults.forEach(result => {
+                if (result.customer) {
+                    customersByCustomerId.set(result.customer_id, result.customer);
+                }
+            });
+
+            // Add delay between batches to avoid rate limiting
+            if (i + BATCH_SIZE < filteredSubscriptions.length) {
+                await delay(DELAY_MS);
             }
         }
 
-        console.log(`Customer fetch results: ${successCount} successful, ${failCount} failed`);
-        if (errors.length > 0 && errors.length <= 5) {
-            console.log('Sample errors:', JSON.stringify(errors.slice(0, 3), null, 2));
-        }
+        console.log(`Fetched ${customersByCustomerId.size} customer addresses successfully`);
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            if (!customer?.shipping_address) {
-                console.log(`No customer address for ${sub.customer_name} (${sub.customer_id})`);
-            }
             return {
                 ...sub,
                 _source: 'subscription',
@@ -239,19 +245,38 @@ async function getShippedOrders() {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Fetch customer details for each filtered subscription
+        // Fetch customer details with rate limiting
         const customersByCustomerId = new Map();
-        for (const sub of filteredSubscriptions) {
-            try {
-                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                    headers: {
-                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                        'X-com-zoho-subscriptions-organizationid': orgId
-                    }
-                });
-                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-            } catch (error) {
-                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+        const BATCH_SIZE = 20;
+        const DELAY_MS = 3000;
+
+        for (let i = 0; i < filteredSubscriptions.length; i += BATCH_SIZE) {
+            const batch = filteredSubscriptions.slice(i, i + BATCH_SIZE);
+
+            const batchPromises = batch.map(async (sub) => {
+                try {
+                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    });
+                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
+                } catch (error) {
+                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+                    return { customer_id: sub.customer_id, customer: null };
+                }
+            });
+
+            const batchResults = await Promise.all(batchPromises);
+            batchResults.forEach(result => {
+                if (result.customer) {
+                    customersByCustomerId.set(result.customer_id, result.customer);
+                }
+            });
+
+            if (i + BATCH_SIZE < filteredSubscriptions.length) {
+                await delay(DELAY_MS);
             }
         }
 
