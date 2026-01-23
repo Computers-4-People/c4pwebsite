@@ -579,9 +579,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 SIM Qty
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Device Qty
-              </th>
+              {deviceTypeFilter !== 'Sim Card Only' && (
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Device Qty
+                </th>
+              )}
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => sortOrders('created_date')}
@@ -641,9 +643,15 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                 <td className="px-4 py-3 text-sm text-gray-500">
                   {order.sim_card_quantity || '—'}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
-                  {order.device_quantity || '—'}
-                </td>
+                {deviceTypeFilter !== 'Sim Card Only' && (
+                  <td className="px-4 py-3 text-sm text-gray-500">
+                    {order.device_type === 'Sim Card Only' ? (
+                      <span className="text-gray-400 text-xs italic">N/A</span>
+                    ) : (
+                      order.device_quantity || '—'
+                    )}
+                  </td>
+                )}
                 <td className="px-4 py-3 text-sm text-gray-500">
                   {order.created_date ? new Date(order.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                 </td>

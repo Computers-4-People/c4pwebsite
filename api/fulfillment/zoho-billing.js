@@ -109,6 +109,11 @@ async function getPendingOrders() {
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
         const customers = customersResponse.data.customers || [];
 
+        console.log(`Fetched ${customers.length} customers from API`);
+        if (customers.length > 0) {
+            console.log('Sample customer data:', JSON.stringify(customers[0], null, 2));
+        }
+
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
@@ -120,9 +125,14 @@ async function getPendingOrders() {
             customerMap.set(customer.customer_id, customer);
         });
 
+        console.log(`Customer map has ${customerMap.size} entries`);
+
         // Merge subscription data with customer addresses
         const orders = filteredSubscriptions.map(sub => {
             const customer = customerMap.get(sub.customer_id);
+            if (!customer) {
+                console.log(`No customer found for subscription ${sub.subscription_id}, customer_id: ${sub.customer_id}`);
+            }
             return {
                 ...sub,
                 _source: 'subscription',
@@ -130,7 +140,10 @@ async function getPendingOrders() {
             };
         });
 
+        const ordersWithAddresses = orders.filter(o => o._customer_address !== null).length;
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
+        console.log(`${ordersWithAddresses} orders have customer addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing addresses`);
+
         return orders;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
@@ -165,6 +178,8 @@ async function getShippedOrders() {
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
         const customers = customersResponse.data.customers || [];
 
+        console.log(`Fetched ${customers.length} customers from API (shipped)`);
+
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
@@ -179,6 +194,9 @@ async function getShippedOrders() {
         // Merge subscription data with customer addresses
         const orders = filteredSubscriptions.map(sub => {
             const customer = customerMap.get(sub.customer_id);
+            if (!customer) {
+                console.log(`No customer found for shipped subscription ${sub.subscription_id}, customer_id: ${sub.customer_id}`);
+            }
             return {
                 ...sub,
                 _source: 'subscription',
@@ -186,7 +204,10 @@ async function getShippedOrders() {
             };
         });
 
+        const ordersWithAddresses = orders.filter(o => o._customer_address !== null).length;
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
+        console.log(`${ordersWithAddresses} shipped orders have customer addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing addresses`);
+
         return orders;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
