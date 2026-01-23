@@ -127,73 +127,40 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Fetch ALL customers in ONE API call
-        const customersResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
+        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        const customers = customersResponse.data.customers || [];
-        const pageInfo = customersResponse.data.page_context || {};
-        console.log(`Customers API returned: ${customers.length} customers, has_more_page: ${pageInfo.has_more_page}, total: ${customersResponse.data.total || 'unknown'}`);
-
-        // Create customer map by customer_id
+        // Fetch customer details individually by customer_id with rate limiting
+        // Batch size: 5 customers per batch, 12 second delay = 25 requests/minute (under 30 limit)
         const customersByCustomerId = new Map();
-        let customersWithAddress = 0;
-        customers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-            if (customer.shipping_address) {
-                customersWithAddress++;
+        const batchSize = 5;
+        const delayMs = 12000;
+
+        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
+            const batch = filteredSubscriptions.slice(i, i + batchSize);
+            console.log(`Fetching customer details batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(filteredSubscriptions.length / batchSize)}...`);
+
+            const batchPromises = batch.map(sub =>
+                axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                }).then(response => {
+                    customersByCustomerId.set(sub.customer_id, response.data.customer);
+                }).catch(err => {
+                    console.error(`Failed to fetch customer ${sub.customer_id}:`, err.message);
+                })
+            );
+
+            await Promise.all(batchPromises);
+
+            // Add delay between batches to avoid rate limiting
+            if (i + batchSize < filteredSubscriptions.length) {
+                await delay(delayMs);
             }
-        });
-
-        console.log(`Fetched ${customers.length} customers (${customersWithAddress} have shipping addresses)`);
-
-        // Debug: Check if we're getting customer data for filtered subscriptions
-        const matchedCustomers = filteredSubscriptions.filter(sub =>
-            customersByCustomerId.has(sub.customer_id)
-        ).length;
-        console.log(`Matched ${matchedCustomers} out of ${filteredSubscriptions.length} subscriptions to customers`);
-
-        // Debug: Sample unmatched subscriptions
-        const unmatchedSubs = filteredSubscriptions.filter(sub =>
-            !customersByCustomerId.has(sub.customer_id)
-        );
-        if (unmatchedSubs.length > 0) {
-            console.log(`Sample unmatched subscription customer_ids:`, unmatchedSubs.slice(0, 3).map(s => s.customer_id));
         }
 
-        // Debug: Check subscription statuses in filtered list
-        const statusCounts = {};
-        subscriptions.forEach(sub => {
-            statusCounts[sub.status] = (statusCounts[sub.status] || 0) + 1;
-        });
-        console.log('Subscription status counts:', statusCounts);
-
-        // Debug: Count how many filtered subscriptions have customers with addresses
-        let subsWithAddress = 0;
-        filteredSubscriptions.forEach(sub => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            if (customer?.shipping_address) {
-                subsWithAddress++;
-            }
-        });
-        console.log(`${subsWithAddress} out of ${filteredSubscriptions.length} filtered subscriptions have customer addresses`);
-
-        // Debug: Log first 3 subscription-to-customer mappings with actual address data
-        console.log('Sample subscription-to-customer mappings (first 3):');
-        filteredSubscriptions.slice(0, 3).forEach((sub, idx) => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            console.log(`  ${idx + 1}. Sub ${sub.subscription_number} (customer_id: ${sub.customer_id})`);
-            console.log(`     Customer found: ${!!customer}, Has address: ${!!customer?.shipping_address}`);
-            if (customer?.shipping_address) {
-                const addr = customer.shipping_address;
-                console.log(`     Address: ${addr.street || 'N/A'}, ${addr.street2 || 'N/A'}, ${addr.city || 'N/A'}, ${addr.state || 'N/A'} ${addr.zipcode || addr.zip || 'N/A'}`);
-            }
-        });
+        console.log(`Fetched ${customersByCustomerId.size} customer details`);
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
@@ -205,7 +172,6 @@ async function getPendingOrders() {
             };
         });
 
-        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
         return mergedOrders;
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
@@ -247,22 +213,36 @@ async function getShippedOrders() {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Fetch ALL customers in ONE API call
-        const customersResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
+        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        const customers = customersResponse.data.customers || [];
-
-        // Create customer map by customer_id
+        // Fetch customer details individually by customer_id with rate limiting
         const customersByCustomerId = new Map();
-        customers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-        });
+        const batchSize = 5;
+        const delayMs = 12000;
+
+        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
+            const batch = filteredSubscriptions.slice(i, i + batchSize);
+
+            const batchPromises = batch.map(sub =>
+                axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                }).then(response => {
+                    customersByCustomerId.set(sub.customer_id, response.data.customer);
+                }).catch(err => {
+                    console.error(`Failed to fetch customer ${sub.customer_id}:`, err.message);
+                })
+            );
+
+            await Promise.all(batchPromises);
+
+            // Add delay between batches
+            if (i + batchSize < filteredSubscriptions.length) {
+                await delay(delayMs);
+            }
+        }
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
@@ -274,7 +254,6 @@ async function getShippedOrders() {
             };
         });
 
-        console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
         return mergedOrders;
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
