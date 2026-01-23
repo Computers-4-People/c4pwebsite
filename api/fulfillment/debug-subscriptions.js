@@ -38,24 +38,38 @@ module.exports = async (req, res) => {
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                per_page: 3
+                per_page: 100  // Increase to find C4PM-01857
             }
         });
 
         const subscriptions = subsResponse.data.subscriptions || [];
 
-        // Test fetching individual subscription detail to see if it has addons
+        // Find subscription C4PM-01857 (has 5G addon according to user)
+        const targetSub = subscriptions.find(s => s.subscription_number === 'C4PM-01857');
+
         let subscriptionDetail = null;
-        if (subscriptions.length > 0) {
-            const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptions[0].subscription_id}`, {
+        if (targetSub) {
+            const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${targetSub.subscription_id}`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 }
             });
             subscriptionDetail = subDetailResponse.data.subscription;
-            console.log('Subscription DETAIL fields:', Object.keys(subscriptionDetail));
-            console.log('Subscription DETAIL addons:', subscriptionDetail.addons);
+            console.log('Subscription C4PM-01857 DETAIL fields:', Object.keys(subscriptionDetail));
+            console.log('Subscription C4PM-01857 addons:', subscriptionDetail.addons);
+            console.log('Subscription C4PM-01857 line_items:', subscriptionDetail.line_items);
+        } else {
+            // Fallback to first subscription if C4PM-01857 not in first 3
+            if (subscriptions.length > 0) {
+                const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptions[0].subscription_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                subscriptionDetail = subDetailResponse.data.subscription;
+            }
         }
 
         const { getCustomFieldValue } = require('./zoho-billing');
@@ -63,6 +77,8 @@ module.exports = async (req, res) => {
         return res.status(200).json({
             subscription_detail_fields: subscriptionDetail ? Object.keys(subscriptionDetail) : [],
             subscription_detail_addons: subscriptionDetail?.addons || null,
+            subscription_detail_line_items: subscriptionDetail?.line_items || null,
+            subscription_number: subscriptionDetail?.subscription_number || 'Not found',
             success: true,
             invoices_count: invoices.length,
             subscriptions_count: subscriptions.length,
