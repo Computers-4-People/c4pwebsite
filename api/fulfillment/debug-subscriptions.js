@@ -44,9 +44,25 @@ module.exports = async (req, res) => {
 
         const subscriptions = subsResponse.data.subscriptions || [];
 
+        // Test fetching individual subscription detail to see if it has addons
+        let subscriptionDetail = null;
+        if (subscriptions.length > 0) {
+            const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${subscriptions[0].subscription_id}`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                }
+            });
+            subscriptionDetail = subDetailResponse.data.subscription;
+            console.log('Subscription DETAIL fields:', Object.keys(subscriptionDetail));
+            console.log('Subscription DETAIL addons:', subscriptionDetail.addons);
+        }
+
         const { getCustomFieldValue } = require('./zoho-billing');
 
         return res.status(200).json({
+            subscription_detail_fields: subscriptionDetail ? Object.keys(subscriptionDetail) : [],
+            subscription_detail_addons: subscriptionDetail?.addons || null,
             success: true,
             invoices_count: invoices.length,
             subscriptions_count: subscriptions.length,
