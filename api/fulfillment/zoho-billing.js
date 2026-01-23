@@ -88,8 +88,8 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions, invoices, and addons in parallel
-        const [subscriptionsResponse, invoicesResponse, addonsResponse] = await Promise.all([
+        // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
+        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
             axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -103,77 +103,44 @@ async function getPendingOrders() {
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/addons`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
             })
         ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const addons = addonsResponse.data.addons || [];
-
-        // Create addon lookup by addon_code
-        const addonsByCode = new Map();
-        addons.forEach(addon => {
-            addonsByCode.set(addon.addon_code, addon);
-        });
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Fetch customer details and subscription details for each filtered subscription
+        // Fetch customer details for each filtered subscription
         const customersByCustomerId = new Map();
-        const subscriptionDetailsById = new Map();
-
         for (const sub of filteredSubscriptions) {
             try {
-                // Fetch customer and subscription details in parallel
-                const [customerResponse, subDetailResponse] = await Promise.all([
-                    axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    }),
-                    axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    })
-                ]);
-
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
                 customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-                subscriptionDetailsById.set(sub.subscription_id, subDetailResponse.data.subscription);
             } catch (error) {
-                console.error(`Error fetching details for subscription ${sub.subscription_id}:`, error.message);
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
             }
         }
 
-        // Merge subscription data with customer addresses and addon info
+        // Merge subscription data with customer addresses and device type
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            const subDetail = subscriptionDetailsById.get(sub.subscription_id);
 
-            // Determine device type from addons
+            // Determine device type from subscription name or plan name
             let deviceType = 'Sim Card Only';
-            if (subDetail?.addons && subDetail.addons.length > 0) {
-                const addonCode = subDetail.addons[0].addon_code;
-                const addon = addonsByCode.get(addonCode);
-                if (addon?.name) {
-                    // Extract device name from addon name
-                    if (addon.name.includes('Shield') || addon.name.includes('5G')) {
-                        deviceType = 'Shield 5G';
-                    } else if (addon.name.includes('T10')) {
-                        deviceType = 'T10';
-                    }
-                }
+            const subName = (sub.name || sub.plan_name || '').toLowerCase();
+
+            if (subName.includes('shield') || subName.includes('5g')) {
+                deviceType = 'Shield 5G';
+            } else if (subName.includes('t10') || subName.includes('t-10')) {
+                deviceType = 'T10';
             }
 
             return {
@@ -198,83 +165,50 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions and addons in parallel
-        const [subscriptionsResponse, addonsResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/addons`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            })
-        ]);
+        // Fetch subscriptions
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const addons = addonsResponse.data.addons || [];
-
-        // Create addon lookup by addon_code
-        const addonsByCode = new Map();
-        addons.forEach(addon => {
-            addonsByCode.set(addon.addon_code, addon);
-        });
 
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Fetch customer details and subscription details for each filtered subscription
+        // Fetch customer details for each filtered subscription
         const customersByCustomerId = new Map();
-        const subscriptionDetailsById = new Map();
-
         for (const sub of filteredSubscriptions) {
             try {
-                const [customerResponse, subDetailResponse] = await Promise.all([
-                    axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    }),
-                    axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    })
-                ]);
-
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
                 customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
-                subscriptionDetailsById.set(sub.subscription_id, subDetailResponse.data.subscription);
             } catch (error) {
-                console.error(`Error fetching details for subscription ${sub.subscription_id}:`, error.message);
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
             }
         }
 
-        // Merge subscription data with customer addresses and addon info
+        // Merge subscription data with customer addresses and device type
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
-            const subDetail = subscriptionDetailsById.get(sub.subscription_id);
 
-            // Determine device type from addons
+            // Determine device type from subscription name or plan name
             let deviceType = 'Sim Card Only';
-            if (subDetail?.addons && subDetail.addons.length > 0) {
-                const addonCode = subDetail.addons[0].addon_code;
-                const addon = addonsByCode.get(addonCode);
-                if (addon?.name) {
-                    if (addon.name.includes('Shield') || addon.name.includes('5G')) {
-                        deviceType = 'Shield 5G';
-                    } else if (addon.name.includes('T10')) {
-                        deviceType = 'T10';
-                    }
-                }
+            const subName = (sub.name || sub.plan_name || '').toLowerCase();
+
+            if (subName.includes('shield') || subName.includes('5g')) {
+                deviceType = 'Shield 5G';
+            } else if (subName.includes('t10') || subName.includes('t-10')) {
+                deviceType = 'T10';
             }
 
             return {
