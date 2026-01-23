@@ -25,8 +25,8 @@ module.exports = async (req, res) => {
             params: { per_page: 200 }
         });
 
-        // Call 2: Fetch addons
-        const addonsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/addons`, {
+        // Call 2: Fetch invoices
+        const invoicesResponse = await axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
@@ -35,44 +35,45 @@ module.exports = async (req, res) => {
         });
 
         const subscriptions = subsResponse.data.subscriptions || [];
-        const addons = addonsResponse.data.addons || [];
+        const invoices = invoicesResponse.data.invoices || [];
 
-        console.log(`Fetched ${subscriptions.length} subscriptions, ${addons.length} addons`);
+        console.log(`Fetched ${subscriptions.length} subscriptions, ${invoices.length} invoices`);
 
-        // Find subscription C4PM-01857 (has 5G addon according to user)
+        // Find subscription C4PM-01857 and its matching invoice
         const targetSub = subscriptions.find(s => s.subscription_number === 'C4PM-01857');
+        const targetInvoice = targetSub ? invoices.find(inv => inv.customer_id === targetSub.customer_id) : null;
 
-        // Call 3: Fetch detail for one subscription to see addon structure
-        let subscriptionDetail = null;
-        if (targetSub) {
-            const subDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions/${targetSub.subscription_id}`, {
+        // Call 3: Fetch invoice detail to see line_items (where device addon is)
+        let invoiceDetail = null;
+        if (targetInvoice) {
+            const invDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/invoices/${targetInvoice.invoice_id}`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 }
             });
-            subscriptionDetail = subDetailResponse.data.subscription;
-            console.log('Subscription C4PM-01857 addons:', JSON.stringify(subscriptionDetail.addons, null, 2));
+            invoiceDetail = invDetailResponse.data.invoice;
+            console.log('Invoice detail line_items:', JSON.stringify(invoiceDetail.line_items, null, 2));
         }
 
         return res.status(200).json({
             total_api_calls: 3,
             subscriptions_count: subscriptions.length,
-            addons_count: addons.length,
+            invoices_count: invoices.length,
             target_subscription_found: !!targetSub,
             target_subscription_number: targetSub?.subscription_number || 'Not found',
-            target_subscription_name: targetSub?.name || 'N/A',
-            target_subscription_plan_name: targetSub?.plan_name || 'N/A',
-            subscription_detail_addons: subscriptionDetail?.addons || null,
-            subscription_detail_plan: subscriptionDetail?.plan || null,
-            all_addons_list: addons.map(addon => ({
-                addon_code: addon.addon_code,
-                name: addon.name,
-                type: addon.type,
-                status: addon.status
-            })),
+            target_subscription_customer_id: targetSub?.customer_id || 'N/A',
+            target_invoice_found: !!targetInvoice,
+            target_invoice_id: targetInvoice?.invoice_id || 'N/A',
+            target_invoice_number: targetInvoice?.invoice_number || 'N/A',
+            invoice_detail_line_items: invoiceDetail?.line_items || null,
+            invoice_has_subscription_id: invoiceDetail ? ('subscription_id' in invoiceDetail) : false,
+            invoice_subscription_id: invoiceDetail?.subscription_id || null,
+            sample_invoice_fields: targetInvoice ? Object.keys(targetInvoice) : [],
             sample_subscriptions: subscriptions.slice(0, 3).map(sub => ({
                 subscription_number: sub.subscription_number,
+                subscription_id: sub.subscription_id,
+                customer_id: sub.customer_id,
                 name: sub.name,
                 plan_name: sub.plan_name,
                 customer_name: sub.customer_name
