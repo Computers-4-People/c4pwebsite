@@ -107,19 +107,20 @@ async function getPendingOrders() {
         ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
+
+        // Debug: Check if invoices have line_items
+        if (invoices.length > 0) {
+            const firstInvoice = invoices[0];
+            console.log('Sample invoice fields:', Object.keys(firstInvoice));
+            console.log('Sample invoice line_items:', firstInvoice.line_items);
+            console.log('Sample invoice subscription_id:', firstInvoice.subscription_id);
+        }
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
-
-        // Debug: Log first subscription to see all available fields
-        if (filteredSubscriptions.length > 0) {
-            const firstSub = filteredSubscriptions[0];
-            console.log('Sample subscription fields:', Object.keys(firstSub));
-            console.log('Sample subscription addons:', firstSub.addons);
-            console.log('Sample subscription line_items:', firstSub.line_items);
-        }
 
         // Fetch customer details for each filtered subscription to get complete addresses
         const customersByCustomerId = new Map();
