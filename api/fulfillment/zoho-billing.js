@@ -88,37 +88,37 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions and customers in parallel (only 2 API calls)
-        const [subscriptionsResponse, customersResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            })
-        ]);
+        // Fetch subscriptions
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const customers = customersResponse.data.customers || [];
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Create customer map for quick lookup
+        // Fetch customer details for each filtered subscription to get complete addresses
         const customersByCustomerId = new Map();
-        customers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-        });
+        for (const sub of filteredSubscriptions) {
+            try {
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+            } catch (error) {
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+            }
+        }
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
@@ -144,37 +144,37 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions and customers in parallel (only 2 API calls)
-        const [subscriptionsResponse, customersResponse] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200 }
-            })
-        ]);
+        // Fetch subscriptions
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
-        const customers = customersResponse.data.customers || [];
 
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Create customer map for quick lookup
+        // Fetch customer details for each filtered subscription
         const customersByCustomerId = new Map();
-        customers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-        });
+        for (const sub of filteredSubscriptions) {
+            try {
+                const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    }
+                });
+                customersByCustomerId.set(sub.customer_id, customerResponse.data.customer);
+            } catch (error) {
+                console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
+            }
+        }
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
