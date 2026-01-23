@@ -628,7 +628,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       type="text"
                       value={simInputs[order.invoice_id] || ''}
                       onChange={(e) => handleSimInput(order.invoice_id, e.target.value)}
-                      placeholder="Enter SIM ICCID"
+                      placeholder="Enter SIM Number"
                       className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
                     />
                   )}
