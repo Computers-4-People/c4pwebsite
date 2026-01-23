@@ -139,9 +139,20 @@ async function getPendingOrders() {
 
         console.log(`Customer map has ${customersByCustomerId.size} entries`);
 
+        // Log a few customer IDs from the map
+        const mapCustomerIds = Array.from(customersByCustomerId.keys()).slice(0, 5);
+        console.log('Sample customer IDs in map:', mapCustomerIds);
+
+        // Log a few customer IDs from subscriptions
+        const subCustomerIds = filteredSubscriptions.slice(0, 5).map(s => s.customer_id);
+        console.log('Sample customer IDs from subscriptions:', subCustomerIds);
+
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
+            if (!customer) {
+                console.log(`Missing customer for subscription ${sub.subscription_number}, customer_id: ${sub.customer_id}`);
+            }
             return {
                 ...sub,
                 _source: 'subscription',
