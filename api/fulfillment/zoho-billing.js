@@ -104,46 +104,30 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Get unique customer IDs
-        const customerIds = [...new Set(filteredSubscriptions.map(sub => sub.customer_id))];
-        console.log(`Need to fetch ${customerIds.length} unique customers for ${filteredSubscriptions.length} subscriptions`);
-
-        // Fetch customers with filter by customer_id (1 API call)
-        const customersResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: {
-                per_page: 200,
-                customer_id: customerIds.join(',')
-            }
-        });
-
-        const customers = customersResponse.data.customers || [];
-        console.log(`Fetched ${customers.length} customers by ID filter`);
-
-        // Create customer map
-        const customerMap = new Map();
-        customers.forEach(customer => {
-            customerMap.set(customer.customer_id, customer);
-        });
-
-        // Merge subscription data with customer addresses
-        const orders = filteredSubscriptions.map(sub => {
-            const customer = customerMap.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        const ordersWithAddresses = orders.filter(o => o._customer_address !== null).length;
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
-        console.log(`${ordersWithAddresses} orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
 
-        return orders;
+        // Log first subscription to see available fields
+        if (filteredSubscriptions.length > 0) {
+            const sample = filteredSubscriptions[0];
+            console.log('Sample subscription:', JSON.stringify({
+                subscription_id: sample.subscription_id,
+                customer_name: sample.customer_name,
+                customer_id: sample.customer_id,
+                email: sample.email,
+                cf_street: sample.cf_street,
+                cf_city: sample.cf_city,
+                cf_state: sample.cf_state,
+                cf_zip_code: sample.cf_zip_code,
+                cf_device_type: sample.cf_device_type
+            }, null, 2));
+        }
+
+        // Return subscriptions as-is, formatOrderForQueue will handle address formatting
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription',
+            _customer_address: null
+        }));
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -172,46 +156,14 @@ async function getShippedOrders() {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Get unique customer IDs
-        const customerIds = [...new Set(filteredSubscriptions.map(sub => sub.customer_id))];
-        console.log(`Need to fetch ${customerIds.length} unique customers for ${filteredSubscriptions.length} shipped subscriptions`);
-
-        // Fetch customers with filter by customer_id (1 API call)
-        const customersResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: {
-                per_page: 200,
-                customer_id: customerIds.join(',')
-            }
-        });
-
-        const customers = customersResponse.data.customers || [];
-        console.log(`Fetched ${customers.length} shipped customers by ID filter`);
-
-        // Create customer map
-        const customerMap = new Map();
-        customers.forEach(customer => {
-            customerMap.set(customer.customer_id, customer);
-        });
-
-        // Merge subscription data with customer addresses
-        const orders = filteredSubscriptions.map(sub => {
-            const customer = customerMap.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        const ordersWithAddresses = orders.filter(o => o._customer_address !== null).length;
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
-        console.log(`${ordersWithAddresses} shipped orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
 
-        return orders;
+        // Return subscriptions as-is, formatOrderForQueue will handle address formatting
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription',
+            _customer_address: null
+        }));
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
