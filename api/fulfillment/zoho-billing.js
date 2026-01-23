@@ -88,29 +88,45 @@ async function getPendingOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions only (1 API call)
-        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
+        // Fetch subscriptions and customers in parallel (2 API calls)
+        const [subscriptionsResponse, customersResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            })
+        ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const customers = customersResponse.data.customers || [];
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Return subscriptions without customer addresses to avoid timeout
-        // Addresses should come from custom fields (cf_street, cf_city, etc.)
+        // Create customer map for quick lookup
+        const customerMap = new Map();
+        customers.forEach(customer => {
+            customerMap.set(customer.customer_id, customer);
+        });
+
+        // Merge subscription data with customer addresses
         const orders = filteredSubscriptions.map(sub => {
+            const customer = customerMap.get(sub.customer_id);
             return {
                 ...sub,
                 _source: 'subscription',
-                _customer_address: null
+                _customer_address: customer?.shipping_address || null
             };
         });
 
@@ -128,29 +144,45 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions only (1 API call)
-        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
+        // Fetch subscriptions and customers in parallel (2 API calls)
+        const [subscriptionsResponse, customersResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            })
+        ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const customers = customersResponse.data.customers || [];
 
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'Shipped';
         });
 
-        // Return subscriptions without customer addresses to avoid timeout
-        // Addresses should come from custom fields (cf_street, cf_city, etc.)
+        // Create customer map for quick lookup
+        const customerMap = new Map();
+        customers.forEach(customer => {
+            customerMap.set(customer.customer_id, customer);
+        });
+
+        // Merge subscription data with customer addresses
         const orders = filteredSubscriptions.map(sub => {
+            const customer = customerMap.get(sub.customer_id);
             return {
                 ...sub,
                 _source: 'subscription',
-                _customer_address: null
+                _customer_address: customer?.shipping_address || null
             };
         });
 
@@ -287,6 +319,8 @@ function formatOrderForQueue(record) {
         active_on_tmobile: record.cf_active_on_tmobile || '',
         tmobile_line_number: record.cf_tmobile_line_number || '',
         device_sn: record.cf_device_sn || '',
+        sim_card_quantity: record.cf_sim_card_quantity || '',
+        device_quantity: record.cf_device_quantity || '',
         created_date: record.created_time,
         updated_date: record.updated_time,
         shipped_date: shippingStatus === 'Shipped' ? record.updated_time : null

@@ -7,6 +7,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [deviceTypeFilter, setDeviceTypeFilter] = useState('Sim Card Only');
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
@@ -90,12 +91,18 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     fetchOrders();
   }, []);
 
-  // Filter orders by search term
+  // Filter orders by search term and device type
   useEffect(() => {
     let filtered = orders;
 
+    // Filter by device type
+    if (deviceTypeFilter && deviceTypeFilter !== 'All') {
+      filtered = filtered.filter(order => order.device_type === deviceTypeFilter);
+    }
+
+    // Filter by search term
     if (searchTerm) {
-      filtered = orders.filter(order =>
+      filtered = filtered.filter(order =>
         order.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -103,7 +110,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     }
 
     setFilteredOrders(filtered);
-  }, [searchTerm, orders]);
+  }, [searchTerm, deviceTypeFilter, orders]);
 
   // Sort orders
   const sortOrders = (key) => {
@@ -422,6 +429,16 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           />
         </div>
 
+        <select
+          value={deviceTypeFilter}
+          onChange={(e) => setDeviceTypeFilter(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        >
+          <option value="All">All Devices</option>
+          <option value="Sim Card Only">SIM Card Only</option>
+          <option value="Shield 5G">Shield 5G</option>
+          <option value="T10">T10</option>
+        </select>
 
         <button
           onClick={fetchOrders}
@@ -559,6 +576,12 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Device
               </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                SIM Qty
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Device Qty
+              </th>
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => sortOrders('created_date')}
@@ -614,6 +637,12 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   ) : (
                     <span className="text-gray-400 italic">No device</span>
                   )}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-500">
+                  {order.sim_card_quantity || '—'}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-500">
+                  {order.device_quantity || '—'}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-500">
                   {order.created_date ? new Date(order.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
