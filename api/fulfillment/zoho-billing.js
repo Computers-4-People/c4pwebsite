@@ -113,6 +113,14 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
+        // Debug: Log first subscription to see all available fields
+        if (filteredSubscriptions.length > 0) {
+            const firstSub = filteredSubscriptions[0];
+            console.log('Sample subscription fields:', Object.keys(firstSub));
+            console.log('Sample subscription addons:', firstSub.addons);
+            console.log('Sample subscription line_items:', firstSub.line_items);
+        }
+
         // Fetch customer details for each filtered subscription to get complete addresses
         const customersByCustomerId = new Map();
         for (const sub of filteredSubscriptions) {
