@@ -43,40 +43,41 @@ module.exports = async (req, res) => {
         const targetSub = subscriptions.find(s => s.subscription_number === 'C4PM-01857');
         const targetInvoice = targetSub ? invoices.find(inv => inv.customer_id === targetSub.customer_id) : null;
 
-        // Call 3: Fetch invoice detail to see line_items (where device addon is)
-        let invoiceDetail = null;
-        if (targetInvoice) {
-            const invDetailResponse = await axios.get(`https://www.zohoapis.com/billing/v1/invoices/${targetInvoice.invoice_id}`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                }
-            });
-            invoiceDetail = invDetailResponse.data.invoice;
-            console.log('Invoice detail line_items:', JSON.stringify(invoiceDetail.line_items, null, 2));
-        }
+        console.log('Target subscription cf_device_type:', targetSub?.cf_device_type);
+        console.log('Target invoice cf_device_type:', targetInvoice?.cf_device_type);
+
+        // Get sample of invoices with different device types
+        const invoicesByDeviceType = {};
+        invoices.slice(0, 20).forEach(inv => {
+            const deviceType = inv.cf_device_type || 'Blank';
+            if (!invoicesByDeviceType[deviceType]) {
+                invoicesByDeviceType[deviceType] = [];
+            }
+            if (invoicesByDeviceType[deviceType].length < 2) {
+                invoicesByDeviceType[deviceType].push({
+                    invoice_number: inv.invoice_number,
+                    customer_name: inv.customer_name,
+                    cf_device_type: inv.cf_device_type
+                });
+            }
+        });
 
         return res.status(200).json({
-            total_api_calls: 3,
+            total_api_calls: 2,
             subscriptions_count: subscriptions.length,
             invoices_count: invoices.length,
             target_subscription_found: !!targetSub,
             target_subscription_number: targetSub?.subscription_number || 'Not found',
-            target_subscription_customer_id: targetSub?.customer_id || 'N/A',
+            target_subscription_cf_device_type: targetSub?.cf_device_type || 'Not set',
             target_invoice_found: !!targetInvoice,
-            target_invoice_id: targetInvoice?.invoice_id || 'N/A',
             target_invoice_number: targetInvoice?.invoice_number || 'N/A',
-            invoice_detail_line_items: invoiceDetail?.line_items || null,
-            invoice_has_subscription_id: invoiceDetail ? ('subscription_id' in invoiceDetail) : false,
-            invoice_subscription_id: invoiceDetail?.subscription_id || null,
-            sample_invoice_fields: targetInvoice ? Object.keys(targetInvoice) : [],
-            sample_subscriptions: subscriptions.slice(0, 3).map(sub => ({
+            target_invoice_cf_device_type: targetInvoice?.cf_device_type || 'Not set',
+            invoices_by_device_type: invoicesByDeviceType,
+            sample_subscriptions_with_device_type: subscriptions.slice(0, 5).map(sub => ({
                 subscription_number: sub.subscription_number,
-                subscription_id: sub.subscription_id,
-                customer_id: sub.customer_id,
-                name: sub.name,
+                customer_name: sub.customer_name,
                 plan_name: sub.plan_name,
-                customer_name: sub.customer_name
+                cf_device_type: sub.cf_device_type || 'Blank'
             })),
             success: true
         });
