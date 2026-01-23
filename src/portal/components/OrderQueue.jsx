@@ -95,9 +95,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   useEffect(() => {
     let filtered = orders;
 
-    // Filter by device type
+    // Filter by device type (case-insensitive)
     if (deviceTypeFilter && deviceTypeFilter !== 'All') {
-      filtered = filtered.filter(order => order.device_type === deviceTypeFilter);
+      filtered = filtered.filter(order =>
+        order.device_type?.toLowerCase() === deviceTypeFilter.toLowerCase()
+      );
     }
 
     // Filter by search term
@@ -142,7 +144,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     // Check that all orders with devices (except Sim Card Only) have tracking numbers
     const ordersNeedingTracking = selectedOrders.filter(orderId => {
       const order = orders.find(o => o.invoice_id === orderId);
-      return order?.device_type && order.device_type !== 'Sim Card Only' && !trackingInputs[orderId]?.trim();
+      return order?.device_type && order.device_type.toLowerCase() !== 'sim card only' && !trackingInputs[orderId]?.trim();
     });
 
     if (ordersNeedingTracking.length > 0) {
@@ -165,7 +167,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           body: JSON.stringify({
             invoice_id: orderId,
             sim_card: simInputs[orderId],
-            tracking_number: (order?.device_type && order.device_type !== 'Sim Card Only') ? trackingInputs[orderId] : undefined
+            tracking_number: (order?.device_type && order.device_type.toLowerCase() !== 'sim card only') ? trackingInputs[orderId] : undefined
           })
         });
 
@@ -506,7 +508,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                 const ordersWithSim = selectedOrders.filter(orderId => simInputs[orderId]?.trim()).length;
                 const ordersWithDevices = selectedOrders.filter(orderId => {
                   const order = orders.find(o => o.invoice_id === orderId);
-                  return order?.device_type && order.device_type !== 'Sim Card Only';
+                  return order?.device_type && order.device_type.toLowerCase() !== 'sim card only';
                 }).length;
                 const ordersWithTracking = selectedOrders.filter(orderId => trackingInputs[orderId]?.trim()).length;
 
@@ -579,7 +581,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 SIM Qty
               </th>
-              {deviceTypeFilter !== 'Sim Card Only' && (
+              {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Device Qty
                 </th>
@@ -643,9 +645,9 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                 <td className="px-4 py-3 text-sm text-gray-500">
                   {order.sim_card_quantity || '—'}
                 </td>
-                {deviceTypeFilter !== 'Sim Card Only' && (
+                {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
                   <td className="px-4 py-3 text-sm text-gray-500">
-                    {order.device_type === 'Sim Card Only' ? (
+                    {order.device_type?.toLowerCase() === 'sim card only' ? (
                       <span className="text-gray-400 text-xs italic">N/A</span>
                     ) : (
                       order.device_quantity || '—'
@@ -671,7 +673,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   )}
                 </td>
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                  {order.device_type && order.device_type !== 'Sim Card Only' ? (
+                  {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
                     <input
                       type="text"
                       value={trackingInputs[order.invoice_id] || ''}
