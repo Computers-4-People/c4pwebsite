@@ -106,44 +106,38 @@ async function getPendingOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        // Fetch customers in batches with delay to respect rate limits
-        // Zoho limit: ~30 requests per minute, use smaller batches with delay
-        const batchSize = 5;
-        const delayMs = 1500; // 1.5 second delay between batches
+        // Fetch all customers in parallel pages (2-3 API calls total)
+        const [customersPage1, customersPage2] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 1 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 2 }
+            })
+        ]);
+
+        const allCustomers = [
+            ...(customersPage1.data.customers || []),
+            ...(customersPage2.data.customers || [])
+        ];
+
+        console.log(`Fetched ${allCustomers.length} total customers from 2 pages`);
+
+        // Create customer map
         const customersByCustomerId = new Map();
+        allCustomers.forEach(customer => {
+            customersByCustomerId.set(customer.customer_id, customer);
+        });
 
-        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
-            const batch = filteredSubscriptions.slice(i, i + batchSize);
-
-            const batchPromises = batch.map(async (sub) => {
-                try {
-                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    });
-                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
-                } catch (error) {
-                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
-                    return null;
-                }
-            });
-
-            const batchResults = await Promise.all(batchPromises);
-            batchResults.forEach(result => {
-                if (result) {
-                    customersByCustomerId.set(result.customer_id, result.customer);
-                }
-            });
-
-            // Add delay between batches (except for last batch)
-            if (i + batchSize < filteredSubscriptions.length) {
-                await delay(delayMs);
-            }
-        }
-
-        console.log(`Fetched ${customersByCustomerId.size} customer addresses`);
+        console.log(`Customer map has ${customersByCustomerId.size} entries`);
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
@@ -154,6 +148,9 @@ async function getPendingOrders() {
                 _customer_address: customer?.shipping_address || null
             };
         });
+
+        const ordersWithAddresses = mergedOrders.filter(o => o._customer_address !== null).length;
+        console.log(`${ordersWithAddresses} orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
 
         return mergedOrders;
     } catch (error) {
@@ -186,43 +183,36 @@ async function getShippedOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        // Fetch customers in batches with delay to respect rate limits
-        const batchSize = 5;
-        const delayMs = 1500; // 1.5 second delay between batches
+        // Fetch all customers in parallel pages (2 API calls total)
+        const [customersPage1, customersPage2] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 1 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200, page: 2 }
+            })
+        ]);
+
+        const allCustomers = [
+            ...(customersPage1.data.customers || []),
+            ...(customersPage2.data.customers || [])
+        ];
+
+        console.log(`Fetched ${allCustomers.length} total shipped customers from 2 pages`);
+
+        // Create customer map
         const customersByCustomerId = new Map();
-
-        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
-            const batch = filteredSubscriptions.slice(i, i + batchSize);
-
-            const batchPromises = batch.map(async (sub) => {
-                try {
-                    const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers/${sub.customer_id}`, {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId
-                        }
-                    });
-                    return { customer_id: sub.customer_id, customer: customerResponse.data.customer };
-                } catch (error) {
-                    console.error(`Error fetching customer ${sub.customer_id}:`, error.message);
-                    return null;
-                }
-            });
-
-            const batchResults = await Promise.all(batchPromises);
-            batchResults.forEach(result => {
-                if (result) {
-                    customersByCustomerId.set(result.customer_id, result.customer);
-                }
-            });
-
-            // Add delay between batches (except for last batch)
-            if (i + batchSize < filteredSubscriptions.length) {
-                await delay(delayMs);
-            }
-        }
-
-        console.log(`Fetched ${customersByCustomerId.size} shipped customer addresses`);
+        allCustomers.forEach(customer => {
+            customersByCustomerId.set(customer.customer_id, customer);
+        });
 
         // Merge subscription data with customer addresses
         const mergedOrders = filteredSubscriptions.map(sub => {
@@ -233,6 +223,9 @@ async function getShippedOrders() {
                 _customer_address: customer?.shipping_address || null
             };
         });
+
+        const ordersWithAddresses = mergedOrders.filter(o => o._customer_address !== null).length;
+        console.log(`${ordersWithAddresses} shipped orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
 
         return mergedOrders;
     } catch (error) {
