@@ -106,9 +106,10 @@ async function getPendingOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        // Fetch customers in parallel batches to avoid timeout
-        // Batch size of 10 with parallel requests should stay under 15 second limit
-        const batchSize = 10;
+        // Fetch customers in batches with delay to respect rate limits
+        // Zoho limit: ~30 requests per minute, use smaller batches with delay
+        const batchSize = 5;
+        const delayMs = 1500; // 1.5 second delay between batches
         const customersByCustomerId = new Map();
 
         for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
@@ -135,6 +136,11 @@ async function getPendingOrders() {
                     customersByCustomerId.set(result.customer_id, result.customer);
                 }
             });
+
+            // Add delay between batches (except for last batch)
+            if (i + batchSize < filteredSubscriptions.length) {
+                await delay(delayMs);
+            }
         }
 
         console.log(`Fetched ${customersByCustomerId.size} customer addresses`);
@@ -180,8 +186,9 @@ async function getShippedOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        // Fetch customers in parallel batches to avoid timeout
-        const batchSize = 10;
+        // Fetch customers in batches with delay to respect rate limits
+        const batchSize = 5;
+        const delayMs = 1500; // 1.5 second delay between batches
         const customersByCustomerId = new Map();
 
         for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
@@ -208,6 +215,11 @@ async function getShippedOrders() {
                     customersByCustomerId.set(result.customer_id, result.customer);
                 }
             });
+
+            // Add delay between batches (except for last batch)
+            if (i + batchSize < filteredSubscriptions.length) {
+                await delay(delayMs);
+            }
         }
 
         console.log(`Fetched ${customersByCustomerId.size} shipped customer addresses`);
