@@ -104,6 +104,19 @@ async function getPendingOrders() {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
+        // Log a sample subscription to see what fields are available
+        if (filteredSubscriptions.length > 0) {
+            console.log('Sample subscription fields:', Object.keys(filteredSubscriptions[0]));
+            console.log('Sample subscription custom fields:', JSON.stringify({
+                cf_street: filteredSubscriptions[0].cf_street,
+                cf_street2: filteredSubscriptions[0].cf_street2,
+                cf_address2: filteredSubscriptions[0].cf_address2,
+                cf_city: filteredSubscriptions[0].cf_city,
+                cf_state: filteredSubscriptions[0].cf_state,
+                cf_zip_code: filteredSubscriptions[0].cf_zip_code
+            }, null, 2));
+        }
+
         // Map subscriptions without fetching customers - use custom fields for address
         const orders = filteredSubscriptions.map(sub => {
             return {
