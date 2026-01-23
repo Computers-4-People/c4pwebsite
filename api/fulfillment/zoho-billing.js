@@ -133,13 +133,13 @@ async function getPendingOrders() {
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
 
-            // Determine device type from subscription name or plan name
+            // Determine device type from plan_name (most reliable source)
             let deviceType = 'Sim Card Only';
-            const subName = (sub.name || sub.plan_name || '').toLowerCase();
+            const planName = (sub.plan_name || '').toLowerCase();
 
-            if (subName.includes('shield') || subName.includes('5g')) {
+            if (planName.includes('shield')) {
                 deviceType = 'Shield 5G';
-            } else if (subName.includes('t10') || subName.includes('t-10')) {
+            } else if (planName.includes('t10') || planName.includes('t-10')) {
                 deviceType = 'T10';
             }
 
@@ -201,13 +201,13 @@ async function getShippedOrders() {
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
 
-            // Determine device type from subscription name or plan name
+            // Determine device type from plan_name (most reliable source)
             let deviceType = 'Sim Card Only';
-            const subName = (sub.name || sub.plan_name || '').toLowerCase();
+            const planName = (sub.plan_name || '').toLowerCase();
 
-            if (subName.includes('shield') || subName.includes('5g')) {
+            if (planName.includes('shield')) {
                 deviceType = 'Shield 5G';
-            } else if (subName.includes('t10') || subName.includes('t-10')) {
+            } else if (planName.includes('t10') || planName.includes('t-10')) {
                 deviceType = 'T10';
             }
 
