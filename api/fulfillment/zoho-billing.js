@@ -107,13 +107,20 @@ async function getPendingOrders() {
         ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
+
+        // Create invoice lookup by customer_id for device type
+        const invoicesByCustomerId = new Map();
+        invoices.forEach(invoice => {
+            invoicesByCustomerId.set(invoice.customer_id, invoice);
+        });
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
             return subscription.cf_shipping_status === 'New Manual Order';
         });
 
-        // Fetch customer details for each filtered subscription
+        // Fetch customer details for each filtered subscription to get complete addresses
         const customersByCustomerId = new Map();
         for (const sub of filteredSubscriptions) {
             try {
@@ -129,18 +136,15 @@ async function getPendingOrders() {
             }
         }
 
-        // Merge subscription data with customer addresses and device type
+        // Merge subscription data with customer addresses and device type from invoice
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
+            const invoice = invoicesByCustomerId.get(sub.customer_id);
 
-            // Determine device type from plan_name (most reliable source)
-            let deviceType = 'Sim Card Only';
-            const planName = (sub.plan_name || '').toLowerCase();
-
-            if (planName.includes('shield')) {
-                deviceType = 'Shield 5G';
-            } else if (planName.includes('t10') || planName.includes('t-10')) {
-                deviceType = 'T10';
+            // Get device type from invoice cf_device_type field (NOT from subscription)
+            let deviceType = invoice?.cf_device_type || 'Sim Card Only';
+            if (deviceType === 'Blank' || deviceType === '') {
+                deviceType = 'Sim Card Only';
             }
 
             return {
@@ -165,16 +169,32 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions
-        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: { per_page: 200 }
-        });
+        // Fetch subscriptions and invoices in parallel
+        const [subscriptionsResponse, invoicesResponse] = await Promise.all([
+            axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            }),
+            axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: { per_page: 200 }
+            })
+        ]);
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
+        const invoices = invoicesResponse.data.invoices || [];
+
+        // Create invoice lookup by customer_id for device type
+        const invoicesByCustomerId = new Map();
+        invoices.forEach(invoice => {
+            invoicesByCustomerId.set(invoice.customer_id, invoice);
+        });
 
         // Filter subscriptions with status "Shipped"
         const filteredSubscriptions = subscriptions.filter(subscription => {
@@ -197,18 +217,15 @@ async function getShippedOrders() {
             }
         }
 
-        // Merge subscription data with customer addresses and device type
+        // Merge subscription data with customer addresses and device type from invoice
         const mergedOrders = filteredSubscriptions.map(sub => {
             const customer = customersByCustomerId.get(sub.customer_id);
+            const invoice = invoicesByCustomerId.get(sub.customer_id);
 
-            // Determine device type from plan_name (most reliable source)
-            let deviceType = 'Sim Card Only';
-            const planName = (sub.plan_name || '').toLowerCase();
-
-            if (planName.includes('shield')) {
-                deviceType = 'Shield 5G';
-            } else if (planName.includes('t10') || planName.includes('t-10')) {
-                deviceType = 'T10';
+            // Get device type from invoice cf_device_type field (NOT from subscription)
+            let deviceType = invoice?.cf_device_type || 'Sim Card Only';
+            if (deviceType === 'Blank' || deviceType === '') {
+                deviceType = 'Sim Card Only';
             }
 
             return {
@@ -324,9 +341,9 @@ function formatOrderForQueue(record) {
         };
     }
 
-    // Device type: use _device_type from addon lookup, fallback to cf_device_type
-    let deviceType = record._device_type || 'Sim Card Only';
-    if (!record._device_type && record.cf_device_type && record.cf_device_type !== 'Blank' && record.cf_device_type !== '') {
+    // Device type: use cf_device_type if set and not "Blank", otherwise "Sim Card Only"
+    let deviceType = 'Sim Card Only';
+    if (record.cf_device_type && record.cf_device_type !== 'Blank' && record.cf_device_type !== '') {
         deviceType = record.cf_device_type;
     }
 
