@@ -89,13 +89,17 @@ async function getPendingOrders() {
 
     try {
         // Fetch both subscriptions (source of truth for count) and invoices (for addresses)
+        // Get ALL subscriptions regardless of status (live, cancelled, dunning, etc.)
         const [subscriptionsResponse, invoicesResponse] = await Promise.all([
             axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
-                params: { per_page: 200 }
+                params: {
+                    per_page: 200,
+                    filter_by: 'Status.All'  // Get all subscription statuses
+                }
             }),
             axios.get(`https://www.zohoapis.com/billing/v1/invoices`, {
                 headers: {
@@ -153,13 +157,16 @@ async function getShippedOrders() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
-        // Fetch subscriptions
+        // Fetch subscriptions - get ALL statuses (live, cancelled, dunning, etc.)
         const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
-            params: { per_page: 200 }
+            params: {
+                per_page: 200,
+                filter_by: 'Status.All'  // Get all subscription statuses
+            }
         });
 
         const subscriptions = subscriptionsResponse.data.subscriptions || [];
