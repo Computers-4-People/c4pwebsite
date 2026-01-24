@@ -328,7 +328,7 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Status</p>
                                             <p className="text-3xl font-black text-c4p-darker">
-                                                {subscription?.cf_shipping_status === 'New Manual order'
+                                                {subscription?.cf_shipping_status?.toLowerCase() === 'new manual order'
                                                     ? 'Awaiting Shipping'
                                                     : subscription?.cf_shipping_status === 'Shipped'
                                                     ? 'Active'
@@ -360,8 +360,8 @@ export default function ShieldPortal() {
 
                                 {/* Shipping Information */}
                                 {(() => {
-                                    // Don't show if status is "New Manual order"
-                                    if (!subscription?.cf_shipping_status || subscription.cf_shipping_status === 'New Manual order') {
+                                    // Don't show if status is "New Manual Order"
+                                    if (!subscription?.cf_shipping_status || subscription.cf_shipping_status?.toLowerCase() === 'new manual order') {
                                         return null;
                                     }
 
@@ -417,50 +417,47 @@ export default function ShieldPortal() {
 
                                 {/* Account Information */}
                                 <div className="bg-white border border-neutral-200 rounded-xl p-6">
-                                    <h3 className="text-lg font-bold text-c4p-darker mb-3">Account Information</h3>
-                                    <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <h3 className="text-lg font-bold text-c4p-darker">Account Information</h3>
+                                        {/* Shipping Address Tooltip - only show if status is "Awaiting Shipping" */}
+                                        {subscription?.cf_shipping_status?.toLowerCase() === 'new manual order' && (
+                                            <div className="relative group">
+                                                <div className="flex items-center gap-1 px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full cursor-help border border-amber-300">
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <span>Awaiting Shipping</span>
+                                                </div>
+                                                {/* Tooltip */}
+                                                <div className="absolute right-0 top-full mt-2 w-64 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                                    <p className="font-semibold mb-2">Shipping Address:</p>
+                                                    <p>{subscription?.cf_street || 'N/A'}</p>
+                                                    {subscription?.cf_street_2 && <p>{subscription.cf_street_2}</p>}
+                                                    <p>
+                                                        {subscription?.cf_city || 'N/A'}, {subscription?.cf_state || 'N/A'} {subscription?.cf_zip_code || 'N/A'}
+                                                    </p>
+                                                    <p>{subscription?.cf_country || 'USA'}</p>
+                                                    {/* Arrow pointing up */}
+                                                    <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="space-y-2 text-sm">
                                         <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Name:</p>
+                                            <p className="font-semibold text-c4p-dark min-w-[140px]">Name:</p>
                                             <p className="text-gray-700">{subscription?.customer_name || subscriber?.customer_name || 'N/A'}</p>
                                         </div>
-
                                         <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">City:</p>
-                                            <p className="text-gray-700">{subscription?.cf_city || 'N/A'}</p>
-                                        </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Street:</p>
-                                            <p className="text-gray-700">
-                                                {subscription?.cf_street || 'N/A'}
-                                                {subscription?.cf_street_2 && <span><br />{subscription.cf_street_2}</span>}
-                                            </p>
-                                        </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">State:</p>
-                                            <p className="text-gray-700">{subscription?.cf_state || 'N/A'}</p>
-                                        </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">SIM Card Quantity:</p>
+                                            <p className="font-semibold text-c4p-dark min-w-[140px]">SIM Card Quantity:</p>
                                             <p className="text-gray-700">{subscription?.cf_sim_card_quantity || 'N/A'}</p>
                                         </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Zip Code:</p>
-                                            <p className="text-gray-700">{subscription?.cf_zip_code || 'N/A'}</p>
-                                        </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Device Type:</p>
-                                            <p className="text-gray-700">{subscription?.cf_device_type || 'N/A'}</p>
-                                        </div>
-
-                                        <div className="flex">
-                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Country:</p>
-                                            <p className="text-gray-700">{subscription?.cf_country || 'N/A'}</p>
-                                        </div>
+                                        {subscription?.cf_device_type && subscription.cf_device_type !== 'N/A' && subscription.cf_device_type !== '' && (
+                                            <div className="flex">
+                                                <p className="font-semibold text-c4p-dark min-w-[140px]">Device Type:</p>
+                                                <p className="text-gray-700">{subscription.cf_device_type}</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
