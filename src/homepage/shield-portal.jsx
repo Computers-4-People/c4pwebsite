@@ -600,6 +600,9 @@ export default function ShieldPortal() {
                                 </label>
                                 <input
                                     type="text"
+                                    inputMode="numeric"
+                                    autoComplete="cc-number"
+                                    name="cardnumber"
                                     value={cardNumber}
                                     onChange={handleCardNumberChange}
                                     placeholder="1234 5678 9012 3456"
@@ -614,6 +617,9 @@ export default function ShieldPortal() {
                                     </label>
                                     <input
                                         type="text"
+                                        inputMode="numeric"
+                                        autoComplete="cc-exp-month"
+                                        name="cc-exp-month"
                                         value={expiryMonth}
                                         onChange={(e) => setExpiryMonth(e.target.value.replace(/\D/g, '').substring(0, 2))}
                                         placeholder="MM"
@@ -627,6 +633,9 @@ export default function ShieldPortal() {
                                     </label>
                                     <input
                                         type="text"
+                                        inputMode="numeric"
+                                        autoComplete="cc-exp-year"
+                                        name="cc-exp-year"
                                         value={expiryYear}
                                         onChange={(e) => setExpiryYear(e.target.value.replace(/\D/g, '').substring(0, 4))}
                                         placeholder="YYYY"
@@ -640,6 +649,9 @@ export default function ShieldPortal() {
                                     </label>
                                     <input
                                         type="text"
+                                        inputMode="numeric"
+                                        autoComplete="cc-csc"
+                                        name="cvc"
                                         value={cvv}
                                         onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').substring(0, 4))}
                                         placeholder="123"
