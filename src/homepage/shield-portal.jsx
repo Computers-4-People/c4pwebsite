@@ -184,7 +184,7 @@ export default function ShieldPortal() {
                     <h2 className="text-2xl font-bold text-c4p-darker mb-2">
                         Welcome, {subscriber?.customer_name || 'Shield Subscriber'}!
                     </h2>
-                    <p className="text-gray-600">Account Number: {subscription?.subscription_number || 'N/A'}</p>
+                    <p className="text-gray-600">Account: {subscription?.subscription_number || 'N/A'}</p>
                 </div>
 
                 {/* Tab Navigation */}
@@ -291,6 +291,34 @@ export default function ShieldPortal() {
                                     >
                                         Update Payment Method
                                     </a>
+                                </div>
+
+                                {/* Referral Program */}
+                                <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-6">
+                                    <h3 className="text-lg font-bold text-c4p-darker mb-4">Refer a Friend, Get a Month Free!</h3>
+                                    <p className="text-gray-700 mb-4">
+                                        Share Shield with friends and family. When they sign up using your referral link, you'll get a month free!
+                                    </p>
+                                    <div className="bg-white border border-c4p/30 rounded-lg p-4 mb-4">
+                                        <p className="text-sm text-gray-600 mb-2">Your Referral Link:</p>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="text"
+                                                readOnly
+                                                value={`https://www.computers4people.org/shield?ref=${subscription?.subscription_number || ''}`}
+                                                className="flex-1 px-3 py-2 bg-neutral-50 border border-neutral-300 rounded text-sm"
+                                            />
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(`https://www.computers4people.org/shield?ref=${subscription?.subscription_number || ''}`);
+                                                    alert('Referral link copied to clipboard!');
+                                                }}
+                                                className="px-4 py-2 bg-c4p hover:bg-c4p-hover text-white rounded font-semibold text-sm transition-colors"
+                                            >
+                                                Copy
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         )}
