@@ -330,8 +330,8 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Next Billing</p>
                                             <p className="text-3xl font-black text-white">
-                                                {subscription?.current_term_ends_at
-                                                    ? new Date(subscription.current_term_ends_at).toLocaleDateString()
+                                                {subscription?.next_billing_at
+                                                    ? new Date(subscription.next_billing_at).toLocaleDateString()
                                                     : 'N/A'}
                                             </p>
                                         </div>
