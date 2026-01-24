@@ -35,12 +35,7 @@ module.exports = async (req, res) => {
 
         const subscription = response.data.subscription;
 
-        console.log('Subscription date fields:', {
-            next_billing_at: subscription.next_billing_at,
-            current_term_starts_at: subscription.current_term_starts_at,
-            current_term_ends_at: subscription.current_term_ends_at,
-            created_at: subscription.created_at
-        });
+        console.log('Full subscription data:', JSON.stringify(subscription, null, 2));
 
         return res.status(200).json({
             subscription_id: subscription.subscription_id,
@@ -53,7 +48,9 @@ module.exports = async (req, res) => {
             cf_tracking_number: subscription.cf_tracking_number,
             cf_shipping_date: subscription.cf_shipping_date,
             cf_device_type: subscription.cf_device_type,
-            hostedpage_url: subscription.hostedpage_url
+            hostedpage_url: subscription.hostedpage_url,
+            card: subscription.card,
+            customer_id: subscription.customer_id
         });
 
     } catch (error) {

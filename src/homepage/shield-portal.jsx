@@ -16,6 +16,9 @@ export default function ShieldPortal() {
     const [subscription, setSubscription] = useState(null);
     const [invoices, setInvoices] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
+    const [showCancelModal, setShowCancelModal] = useState(false);
+    const [cancelReason, setCancelReason] = useState('');
+    const [cancelLoading, setCancelLoading] = useState(false);
 
     useEffect(() => {
         const recordId = searchParams.get('recordId');
@@ -136,6 +139,46 @@ export default function ShieldPortal() {
         } catch (error) {
             console.error('Error downloading invoice:', error);
             alert('Failed to download invoice. Please try again.');
+        }
+    };
+
+    const handleCancelSubscription = async () => {
+        if (!cancelReason.trim()) {
+            alert('Please provide a reason for cancellation.');
+            return;
+        }
+
+        if (!window.confirm('Are you sure you want to cancel your subscription? It will remain active until the end of your current billing period.')) {
+            return;
+        }
+
+        setCancelLoading(true);
+        try {
+            await axios.post(`${API_BASE_URL}/api/shield-cancel-subscription`, {
+                subscriptionId: subscription.subscription_id,
+                reason: cancelReason
+            });
+
+            alert('Your subscription has been scheduled for cancellation at the end of the current billing period.');
+            setShowCancelModal(false);
+            setCancelReason('');
+
+            // Refresh subscription data
+            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionStorage.getItem('shield_portal_recordId')}`);
+            setSubscription(subscriptionData.data);
+        } catch (error) {
+            console.error('Error cancelling subscription:', error);
+            alert(error.response?.data?.error || 'Failed to cancel subscription. Please try again.');
+        } finally {
+            setCancelLoading(false);
+        }
+    };
+
+    const handleUpdatePayment = () => {
+        if (subscription?.hostedpage_url) {
+            window.open(subscription.hostedpage_url, '_blank', 'width=800,height=600');
+        } else {
+            alert('Payment update is not available at this time. Please contact support.');
         }
     };
 
@@ -280,17 +323,35 @@ export default function ShieldPortal() {
                                 {/* Payment Method */}
                                 <div className="bg-white border border-neutral-200 rounded-xl p-6">
                                     <h3 className="text-lg font-bold text-c4p-darker mb-4">Payment Method</h3>
+                                    {subscription?.card && (
+                                        <p className="text-gray-600 mb-4">
+                                            Current Card: •••• •••• •••• {subscription.card.last_four_digits || subscription.card.last4 || 'N/A'}
+                                            {subscription.card.card_type && ` (${subscription.card.card_type})`}
+                                        </p>
+                                    )}
                                     <p className="text-gray-600 mb-4">
-                                        To update your payment method, please visit your Zoho billing portal.
+                                        Update your payment method securely through our payment portal.
                                     </p>
-                                    <a
-                                        href={subscription?.hostedpage_url || '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <button
+                                        onClick={handleUpdatePayment}
                                         className="inline-block px-6 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-semibold shadow-lg hover:shadow-xl"
                                     >
                                         Update Payment Method
-                                    </a>
+                                    </button>
+                                </div>
+
+                                {/* Cancel Subscription */}
+                                <div className="bg-white border border-red-200 rounded-xl p-6">
+                                    <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Subscription</h3>
+                                    <p className="text-gray-600 mb-4">
+                                        Need to cancel? Your subscription will remain active until the end of your current billing period.
+                                    </p>
+                                    <button
+                                        onClick={() => setShowCancelModal(true)}
+                                        className="inline-block px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all font-semibold"
+                                    >
+                                        Cancel Subscription
+                                    </button>
                                 </div>
 
                                 {/* Referral Program */}
@@ -452,6 +513,43 @@ export default function ShieldPortal() {
                     </div>
                 </div>
             </div>
+
+            {/* Cancel Subscription Modal */}
+            {showCancelModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+                        <h3 className="text-xl font-bold text-c4p-darker mb-4">Cancel Subscription</h3>
+                        <p className="text-gray-600 mb-4">
+                            We're sorry to see you go. Please let us know why you're canceling:
+                        </p>
+                        <textarea
+                            value={cancelReason}
+                            onChange={(e) => setCancelReason(e.target.value)}
+                            placeholder="Tell us why you're canceling..."
+                            className="w-full px-3 py-2 border border-neutral-300 rounded-lg mb-4 h-24 resize-none"
+                        />
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowCancelModal(false);
+                                    setCancelReason('');
+                                }}
+                                disabled={cancelLoading}
+                                className="flex-1 px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-gray-700 rounded-lg font-semibold transition-colors"
+                            >
+                                Keep Subscription
+                            </button>
+                            <button
+                                onClick={handleCancelSubscription}
+                                disabled={cancelLoading}
+                                className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+                            >
+                                {cancelLoading ? 'Canceling...' : 'Confirm Cancellation'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
