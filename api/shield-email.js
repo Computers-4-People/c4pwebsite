@@ -17,86 +17,78 @@ module.exports = async (req, res) => {
     }
 
     if (req.method !== 'POST') {
-        return res.status(405).json({ success: false, error: 'Method not allowed' });
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     const { email, recordId, jwt } = req.query;
 
     if (!email || !recordId || !jwt) {
-        return res.status(400).json({
-            success: false,
-            error: 'Missing required parameters'
-        });
+        return res.status(400).json({ error: 'Email, recordId, and jwt are required' });
     }
 
     try {
-        console.log('Starting email send process...');
-        const startTime = Date.now();
-
-        // Create portal link
+        const decodedEmail = decodeURIComponent(email);
         const portalLink = `https://www.computers4people.org/shield-portal?recordId=${recordId}&jwt=${jwt}`;
 
-        console.log('Creating transporter...');
-        // Configure nodemailer with Zoho
+        // Create Zoho Mail transporter
         const transporter = nodemailer.createTransport({
             host: 'smtp.zoho.com',
             port: 465,
             secure: true,
-            pool: true,
             auth: {
                 user: process.env.ZOHO_MAIL_USER || 'info@computers4people.org',
                 pass: process.env.ZOHO_MAIL_PASSWORD
             }
         });
-        console.log(`Transporter created in ${Date.now() - startTime}ms`);
 
-        // Simplified email HTML template
-        const emailHtml = `
-        <html>
-          <body style="font-family: Arial, sans-serif; padding: 20px;">
-            <h1 style="color: #00d64e;">Shield Portal Access</h1>
-            <p>Click the button below to access your Shield subscriber portal:</p>
-            <p style="margin: 30px 0;">
-              <a href="${portalLink}"
-                 style="background-color: #00d64e; color: white; padding: 12px 30px;
-                        text-decoration: none; border-radius: 5px; display: inline-block;">
-                Access Portal
-              </a>
-            </p>
-            <p style="color: #666; font-size: 12px; margin-top: 30px;">
-              <strong>Note:</strong> This link will expire in 1 minute for security purposes.
-            </p>
-            <p style="color: #666; font-size: 12px;">
-              If you didn't request this, please ignore this email.
-            </p>
-          </body>
-        </html>
-        `;
+        // Email content
+        const mailOptions = {
+            from: '"Computers 4 People - Shield" <info@computers4people.org>',
+            to: decodedEmail,
+            subject: 'Your Shield Portal Access Link',
+            html: `
+                <html>
+                  <body style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h1 style="color: #00d64e;">Welcome to Shield Portal!</h1>
+                    <p>Click the button below to access your portal:</p>
+                    <p style="margin: 30px 0;">
+                      <a href="${portalLink}"
+                         style="background-color: #00d64e; color: white; padding: 12px 30px;
+                                text-decoration: none; border-radius: 5px; display: inline-block;">
+                        Access Your Portal
+                      </a>
+                    </p>
+                    <p>Or copy and paste this link into your browser:</p>
+                    <p style="background-color: #f5f5f5; padding: 10px; word-break: break-all;">
+                      ${portalLink}
+                    </p>
+                    <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                      This link will expire for security purposes. If you didn't request this, please ignore this email.
+                    </p>
+                  </body>
+                </html>
+            `,
+            text: `Welcome to Shield Portal! Access your portal at: ${portalLink}`
+        };
 
         // Send email
-        console.log(`Sending email to ${email}...`);
-        const sendStartTime = Date.now();
-        const info = await transporter.sendMail({
-            from: '"Computers 4 People - Shield" <info@computers4people.org>',
-            to: email,
-            subject: 'Your Shield Portal Access Link',
-            html: emailHtml,
-            text: `Shield Portal Access\n\nAccess your Shield subscriber portal at: ${portalLink}\n\nNote: This link will expire in 1 minute for security purposes.\n\nIf you didn't request this, please ignore this email.`
-        });
+        const info = await transporter.sendMail(mailOptions);
 
-        console.log(`Email sent in ${Date.now() - sendStartTime}ms:`, info.messageId);
-        console.log(`Total email process time: ${Date.now() - startTime}ms`);
+        console.log('Email sent successfully:', info.messageId);
 
-        return res.status(200).json({
-            success: true,
+        res.status(200).json({
+            message: 'Email sent successfully via Zoho Mail',
             messageId: info.messageId
         });
 
     } catch (error) {
-        console.error('Error sending Shield email:', error);
-        return res.status(500).json({
-            success: false,
-            error: error.message || 'Failed to send email'
+        console.error('Email error:', {
+            message: error.message,
+            stack: error.stack
+        });
+        res.status(500).json({
+            error: 'Failed to send email',
+            details: error.message
         });
     }
 };
