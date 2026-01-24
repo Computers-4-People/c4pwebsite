@@ -20,6 +20,7 @@ export default function ShieldPortal() {
     const [cancelReason, setCancelReason] = useState('');
     const [cancelLoading, setCancelLoading] = useState(false);
     const [paymentLoading, setPaymentLoading] = useState(false);
+    const [reactivateLoading, setReactivateLoading] = useState(false);
 
     useEffect(() => {
         const recordId = searchParams.get('recordId');
@@ -212,6 +213,30 @@ export default function ShieldPortal() {
             alert(error.response?.data?.error || 'Failed to cancel subscription. Please try again.');
         } finally {
             setCancelLoading(false);
+        }
+    };
+
+    const handleReactivateSubscription = async () => {
+        if (!window.confirm('Are you sure you want to reactivate your subscription? Billing will resume on the next scheduled date.')) {
+            return;
+        }
+
+        setReactivateLoading(true);
+        try {
+            await axios.post(`${API_BASE_URL}/api/shield-reactivate-subscription`, {
+                subscriptionId: subscription.subscription_id
+            });
+
+            alert('Your subscription has been reactivated successfully!');
+
+            // Refresh subscription data
+            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionStorage.getItem('shield_portal_recordId')}`);
+            setSubscription(subscriptionData.data);
+        } catch (error) {
+            console.error('Error reactivating subscription:', error);
+            alert(error.response?.data?.error || 'Failed to reactivate subscription. Please try again.');
+        } finally {
+            setReactivateLoading(false);
         }
     };
 
@@ -637,19 +662,37 @@ export default function ShieldPortal() {
                                     </a>
                                 </div>
 
-                                {/* Cancel Subscription */}
-                                <div className="bg-white border border-red-200 rounded-xl p-6">
-                                    <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Subscription</h3>
-                                    <p className="text-gray-600 mb-4">
-                                        Need to cancel? Your subscription will remain active until the end of your current billing period.
-                                    </p>
-                                    <button
-                                        onClick={() => setShowCancelModal(true)}
-                                        className="inline-block px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all font-semibold"
-                                    >
-                                        Cancel Subscription
-                                    </button>
-                                </div>
+                                {/* Cancel or Reactivate Subscription */}
+                                {subscription?.status === 'non_renewing' ? (
+                                    /* Reactivate Subscription */
+                                    <div className="bg-white border border-green-200 rounded-xl p-6">
+                                        <h3 className="text-lg font-bold text-green-600 mb-4">Reactivate Subscription</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Your subscription is scheduled to be cancelled. Want to keep it? Reactivate to continue your service.
+                                        </p>
+                                        <button
+                                            onClick={handleReactivateSubscription}
+                                            disabled={reactivateLoading}
+                                            className="inline-block px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all font-semibold disabled:opacity-50"
+                                        >
+                                            {reactivateLoading ? 'Reactivating...' : 'Reactivate Subscription'}
+                                        </button>
+                                    </div>
+                                ) : (
+                                    /* Cancel Subscription */
+                                    <div className="bg-white border border-red-200 rounded-xl p-6">
+                                        <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Subscription</h3>
+                                        <p className="text-gray-600 mb-4">
+                                            Need to cancel? Your subscription will remain active until the end of your current billing period.
+                                        </p>
+                                        <button
+                                            onClick={() => setShowCancelModal(true)}
+                                            className="inline-block px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all font-semibold"
+                                        >
+                                            Cancel Subscription
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

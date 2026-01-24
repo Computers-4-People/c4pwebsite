@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { subscriptionId, reason } = req.body;
+    const { subscriptionId } = req.body;
 
     if (!subscriptionId) {
         return res.status(400).json({ error: 'Subscription ID is required' });
@@ -25,9 +25,9 @@ module.exports = async (req, res) => {
         const accessToken = await getZohoBillingAccessToken();
         const orgId = process.env.ZOHO_ORG_ID;
 
-        // Cancel subscription at end of term (cancel_at_end is a query parameter)
+        // Reactivate subscription
         const response = await axios.post(
-            `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}/cancel?cancel_at_end=true`,
+            `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}/reactivate`,
             {},
             {
                 headers: {
@@ -38,20 +38,18 @@ module.exports = async (req, res) => {
             }
         );
 
-        console.log('Cancellation reason:', reason || 'Customer requested cancellation');
-
-        console.log('Subscription cancelled:', subscriptionId);
+        console.log('Subscription reactivated:', subscriptionId);
 
         return res.status(200).json({
             success: true,
-            message: 'Subscription will be cancelled at the end of the current billing period',
+            message: 'Subscription has been reactivated successfully',
             data: response.data
         });
 
     } catch (error) {
-        console.error('Error cancelling subscription:', error.response?.data || error.message);
+        console.error('Error reactivating subscription:', error.response?.data || error.message);
         return res.status(500).json({
-            error: error.response?.data?.message || error.message || 'Failed to cancel subscription'
+            error: error.response?.data?.message || error.message || 'Failed to reactivate subscription'
         });
     }
 };
