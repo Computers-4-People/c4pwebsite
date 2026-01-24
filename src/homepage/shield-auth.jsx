@@ -126,7 +126,7 @@ function ShieldAuth() {
         <div className="w-full md:w-1/2 max-w-[500px] my-6 md:my-16 relative md:left-0 text-center">
             <div className="mt-2">
                 <h1 className="text-3xl md:text-4xl font-auth mb-2">Hello Again!</h1>
-                <p className="text-gray-600 mb-8 md:mb-16 font-auth text-base md:text-lg">Welcome back to the digital portal!</p>
+                <p className="text-gray-600 mb-8 md:mb-16 font-auth text-base md:text-lg">Welcome to the Shield Internet Portal!</p>
                 <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex flex-col items-center space-y-4">
                     <input
                         type="email"
