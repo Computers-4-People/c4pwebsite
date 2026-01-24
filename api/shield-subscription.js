@@ -42,13 +42,21 @@ module.exports = async (req, res) => {
             status: subscription.status,
             next_billing_at: subscription.next_billing_at,
             current_term_ends_at: subscription.current_term_ends_at,
-            cf_shipping_status: subscription.cf_shipping_status,
-            cf_tracking_number: subscription.cf_tracking_number,
-            cf_shipping_date: subscription.cf_shipping_date,
-            cf_device_type: subscription.cf_device_type,
+            cf_shipping_status: subscription.custom_field_hash?.cf_shipping_status,
+            cf_tracking_number: subscription.custom_field_hash?.cf_tracking_number,
+            cf_shipping_date: subscription.custom_field_hash?.cf_shipping_date,
+            cf_device_type: subscription.custom_field_hash?.cf_device_type,
             hostedpage_url: subscription.hostedpage_url,
             card: subscription.card,
-            customer_id: subscription.customer_id
+            customer_id: subscription.customer_id,
+            customer_name: subscription.customer?.display_name,
+            cf_street: subscription.custom_field_hash?.cf_street,
+            cf_street_2: subscription.custom_field_hash?.cf_street_2,
+            cf_city: subscription.custom_field_hash?.cf_city,
+            cf_state: subscription.custom_field_hash?.cf_state,
+            cf_zip_code: subscription.custom_field_hash?.cf_zip_code,
+            cf_country: subscription.custom_field_hash?.cf_country,
+            cf_sim_card_quantity: subscription.custom_field_hash?.cf_sim_card_quantity
         });
 
     } catch (error) {

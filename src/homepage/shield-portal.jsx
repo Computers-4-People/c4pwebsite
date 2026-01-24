@@ -402,32 +402,43 @@ export default function ShieldPortal() {
                                             <p className="text-gray-700 col-span-2">{subscription?.customer_name || subscriber?.customer_name || 'N/A'}</p>
                                         </div>
 
-                                        {subscription?.shipping_address && (
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <p className="font-semibold text-c4p-dark">Shipping Address:</p>
-                                                <p className="text-gray-700 col-span-2">
-                                                    {subscription.shipping_address.attention && <span>{subscription.shipping_address.attention}<br /></span>}
-                                                    {subscription.shipping_address.street && <span>{subscription.shipping_address.street}<br /></span>}
-                                                    {subscription.shipping_address.city && subscription.shipping_address.state &&
-                                                        <span>{subscription.shipping_address.city}, {subscription.shipping_address.state} {subscription.shipping_address.zip}<br /></span>}
-                                                    {subscription.shipping_address.country}
-                                                </p>
-                                            </div>
-                                        )}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">Street:</p>
+                                            <p className="text-gray-700 col-span-2">
+                                                {subscription?.cf_street || 'N/A'}
+                                                {subscription?.cf_street_2 && <span><br />{subscription.cf_street_2}</span>}
+                                            </p>
+                                        </div>
 
-                                        {subscription?.cf_number_of_sims && (
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <p className="font-semibold text-c4p-dark">Number of SIMs:</p>
-                                                <p className="text-gray-700 col-span-2">{subscription.cf_number_of_sims}</p>
-                                            </div>
-                                        )}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">City:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_city || 'N/A'}</p>
+                                        </div>
 
-                                        {subscription?.cf_device_type && (
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <p className="font-semibold text-c4p-dark">Device Ordered:</p>
-                                                <p className="text-gray-700 col-span-2">{subscription.cf_device_type}</p>
-                                            </div>
-                                        )}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">State:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_state || 'N/A'}</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">Zip Code:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_zip_code || 'N/A'}</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">Country:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_country || 'N/A'}</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">SIM Card Quantity:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_sim_card_quantity || 'N/A'}</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-2">
+                                            <p className="font-semibold text-c4p-dark">Device Type:</p>
+                                            <p className="text-gray-700 col-span-2">{subscription?.cf_device_type || 'N/A'}</p>
+                                        </div>
                                     </div>
                                 </div>
 
