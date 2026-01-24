@@ -346,9 +346,14 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Next Billing</p>
                                             <p className="text-3xl font-black text-white">
-                                                {subscription?.next_billing_at
-                                                    ? new Date(subscription.next_billing_at).toLocaleDateString()
-                                                    : 'N/A'}
+                                                {subscription?.next_billing_at ? (() => {
+                                                    console.log('Next billing date from API:', subscription.next_billing_at);
+                                                    console.log('Current term ends:', subscription.current_term_ends_at);
+                                                    const date = new Date(subscription.next_billing_at);
+                                                    console.log('Parsed date object:', date);
+                                                    console.log('Formatted date:', date.toLocaleDateString());
+                                                    return date.toLocaleDateString();
+                                                })() : 'N/A'}
                                             </p>
                                         </div>
                                     </div>
