@@ -5,7 +5,7 @@ export default function RecentShipments({ apiBase }) {
   const [filteredShipments, setFilteredShipments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [dateFilter, setDateFilter] = useState('today'); // 'today', 'week', 'month', 'all'
+  const [dateFilter, setDateFilter] = useState('2days'); // 'today', '2days', 'week', 'month', 'all'
   const [selectedShipment, setSelectedShipment] = useState(null);
 
   // Fetch shipped orders
@@ -90,6 +90,7 @@ export default function RecentShipments({ apiBase }) {
     // Date filter
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const twoDaysAgo = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000);
     const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
     const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
 
@@ -97,6 +98,11 @@ export default function RecentShipments({ apiBase }) {
       filtered = filtered.filter(s => {
         const shipDate = new Date(s.shipped_date || s.updated_date);
         return shipDate >= today;
+      });
+    } else if (dateFilter === '2days') {
+      filtered = filtered.filter(s => {
+        const shipDate = new Date(s.shipped_date || s.updated_date);
+        return shipDate >= twoDaysAgo;
       });
     } else if (dateFilter === 'week') {
       filtered = filtered.filter(s => {
@@ -168,6 +174,7 @@ export default function RecentShipments({ apiBase }) {
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="today">Today</option>
+          <option value="2days">Last 2 Days</option>
           <option value="week">Last 7 Days</option>
           <option value="month">Last 30 Days</option>
           <option value="all">All Time</option>
