@@ -54,7 +54,10 @@ module.exports = async (req, res) => {
             cf_device_type: subscription.cf_device_type,
             hostedpage_url: subscription.hostedpage_url,
             card: subscription.card,
-            customer_id: subscription.customer_id
+            customer_id: subscription.customer_id,
+            customer_name: subscription.customer_name,
+            shipping_address: subscription.shipping_address,
+            cf_number_of_sims: subscription.cf_number_of_sims
         });
 
     } catch (error) {
