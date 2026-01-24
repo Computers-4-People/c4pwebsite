@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import OrderDetailPanel from './OrderDetailPanel';
 import { jsPDF } from 'jspdf';
 
@@ -14,6 +14,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [simInputs, setSimInputs] = useState({}); // Track SIM input for each order
   const [trackingInputs, setTrackingInputs] = useState({}); // Track tracking number for each order
   const [shipping, setShipping] = useState(false);
+  const simInputRefs = useRef({}); // Store refs for SIM input fields
 
   // Fetch orders
   const fetchOrders = async () => {
@@ -210,6 +211,31 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     }));
   };
 
+  // Handle Enter key press on SIM input to jump to next field
+  const handleSimKeyDown = (e, currentOrderId) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      // Find the current order index
+      const currentIndex = filteredOrders.findIndex(order => order.invoice_id === currentOrderId);
+
+      // Find the next order that doesn't have a SIM assigned
+      let nextIndex = currentIndex + 1;
+      while (nextIndex < filteredOrders.length) {
+        const nextOrder = filteredOrders[nextIndex];
+        if (!nextOrder.assigned_sim) {
+          // Focus the next SIM input field
+          const nextInput = simInputRefs.current[nextOrder.invoice_id];
+          if (nextInput) {
+            nextInput.focus();
+            return;
+          }
+        }
+        nextIndex++;
+      }
+    }
+  };
+
   // Generate shipping labels PDF (Avery 5136 - 3x10)
   const generateShippingLabels = () => {
     const doc = new jsPDF({
@@ -307,6 +333,12 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       // Always generate 30 labels (full page)
       const totalLabels = 30;
 
+      // Calculate logo dimensions preserving aspect ratio
+      const maxLogoHeight = 15;
+      const aspectRatio = img.width / img.height;
+      const logoHeight = maxLogoHeight;
+      const logoWidth = logoHeight * aspectRatio;
+
       for (let labelIndex = 0; labelIndex < totalLabels; labelIndex++) {
         if (labelIndex > 0 && labelIndex % 30 === 0) {
           doc.addPage();
@@ -319,9 +351,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
         const x = leftMargin + col * horizontalPitch;
         const y = topMargin + row * verticalPitch;
 
-        // Add Shield logo - centered vertically
-        const logoWidth = 15;
-        const logoHeight = 15;
+        // Add Shield logo - centered vertically, aspect ratio preserved
         const logoY = y + (labelHeight - logoHeight) / 2;
         doc.addImage(img, 'PNG', x + 3, logoY, logoWidth, logoHeight);
 
@@ -672,9 +702,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                     </div>
                   ) : (
                     <input
+                      ref={(el) => simInputRefs.current[order.invoice_id] = el}
                       type="text"
                       value={simInputs[order.invoice_id] || ''}
                       onChange={(e) => handleSimInput(order.invoice_id, e.target.value)}
+                      onKeyDown={(e) => handleSimKeyDown(e, order.invoice_id)}
                       placeholder="Enter SIM Number"
                       className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
                     />
