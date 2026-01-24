@@ -30,99 +30,62 @@ module.exports = async (req, res) => {
     }
 
     try {
+        console.log('Starting email send process...');
+        const startTime = Date.now();
+
         // Create portal link
         const portalLink = `https://www.computers4people.org/shield-portal?recordId=${recordId}&jwt=${jwt}`;
 
+        console.log('Creating transporter...');
         // Configure nodemailer with Zoho
         const transporter = nodemailer.createTransport({
             host: 'smtp.zoho.com',
             port: 465,
             secure: true,
+            pool: true,
             auth: {
                 user: process.env.ZOHO_MAIL_USER || 'info@computers4people.org',
                 pass: process.env.ZOHO_MAIL_PASSWORD
             }
         });
+        console.log(`Transporter created in ${Date.now() - startTime}ms`);
 
-        // Email HTML template
+        // Simplified email HTML template
         const emailHtml = `
-        <!DOCTYPE html>
         <html>
-        <head>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #333;
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 20px;
-                }
-                .header {
-                    background: linear-gradient(135deg, #007029 0%, #00d64e 100%);
-                    color: white;
-                    padding: 30px;
-                    text-align: center;
-                    border-radius: 10px 10px 0 0;
-                }
-                .content {
-                    background: #f9f9f9;
-                    padding: 30px;
-                    border-radius: 0 0 10px 10px;
-                }
-                .button {
-                    display: inline-block;
-                    padding: 15px 30px;
-                    background: #00d64e;
-                    color: white;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    font-weight: bold;
-                    margin: 20px 0;
-                }
-                .button:hover {
-                    background: #00a33b;
-                }
-                .footer {
-                    margin-top: 30px;
-                    padding-top: 20px;
-                    border-top: 1px solid #ddd;
-                    text-align: center;
-                    font-size: 12px;
-                    color: #666;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <h1>Welcome to Shield Portal</h1>
-            </div>
-            <div class="content">
-                <p>Hello,</p>
-                <p>Click the button below to access your Shield subscriber portal:</p>
-                <div style="text-align: center;">
-                    <a href="${portalLink}" class="button">Access Portal</a>
-                </div>
-                <p><strong>Note:</strong> This link will expire in 1 minute for security purposes.</p>
-                <p>If you did not request this email, please ignore it or contact our support team.</p>
-            </div>
-            <div class="footer">
-                <p>© ${new Date().getFullYear()} Computers 4 People Inc. All rights reserved.</p>
-                <p>321 Newark St #32, Hoboken, NJ 07030</p>
-            </div>
-        </body>
+          <body style="font-family: Arial, sans-serif; padding: 20px;">
+            <h1 style="color: #00d64e;">Shield Portal Access</h1>
+            <p>Click the button below to access your Shield subscriber portal:</p>
+            <p style="margin: 30px 0;">
+              <a href="${portalLink}"
+                 style="background-color: #00d64e; color: white; padding: 12px 30px;
+                        text-decoration: none; border-radius: 5px; display: inline-block;">
+                Access Portal
+              </a>
+            </p>
+            <p style="color: #666; font-size: 12px; margin-top: 30px;">
+              <strong>Note:</strong> This link will expire in 1 minute for security purposes.
+            </p>
+            <p style="color: #666; font-size: 12px;">
+              If you didn't request this, please ignore this email.
+            </p>
+          </body>
         </html>
         `;
 
         // Send email
+        console.log(`Sending email to ${email}...`);
+        const sendStartTime = Date.now();
         const info = await transporter.sendMail({
             from: '"Computers 4 People - Shield" <info@computers4people.org>',
             to: email,
             subject: 'Your Shield Portal Access Link',
-            html: emailHtml
+            html: emailHtml,
+            text: `Shield Portal Access\n\nAccess your Shield subscriber portal at: ${portalLink}\n\nNote: This link will expire in 1 minute for security purposes.\n\nIf you didn't request this, please ignore this email.`
         });
 
-        console.log('Email sent:', info.messageId);
+        console.log(`Email sent in ${Date.now() - sendStartTime}ms:`, info.messageId);
+        console.log(`Total email process time: ${Date.now() - startTime}ms`);
 
         return res.status(200).json({
             success: true,
