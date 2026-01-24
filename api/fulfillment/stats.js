@@ -1,5 +1,4 @@
-const { getPendingOrders, getCustomFieldValue } = require('./zoho-billing');
-const { getInventoryStats } = require('./sim-inventory');
+const { getPendingOrders, getShippedOrders } = require('./zoho-billing');
 
 module.exports = async (req, res) => {
     // Set CORS headers
@@ -16,28 +15,42 @@ module.exports = async (req, res) => {
     }
 
     try {
-        // Get all pending orders
-        const invoices = await getPendingOrders();
+        // Get all pending and shipped orders
+        const [pendingOrders, shippedOrders] = await Promise.all([
+            getPendingOrders(),
+            getShippedOrders()
+        ]);
 
-        // Count orders needing SIM
-        const pendingSimCount = invoices.filter(invoice => {
-            const simCard = getCustomFieldValue(invoice, 'SIM Card Number');
-            return !simCard;
+        // Count SIMs to ship (all pending orders need SIM cards)
+        const simsToShip = pendingOrders.length;
+
+        // Count Shield 5G to ship (pending orders with device type Shield 5G)
+        const shield5GToShip = pendingOrders.filter(order =>
+            order.cf_device_type?.toLowerCase() === 'shield 5g'
+        ).length;
+
+        // Count T10 to ship (pending orders with device type T10)
+        const t10ToShip = pendingOrders.filter(order =>
+            order.cf_device_type?.toLowerCase() === 't10'
+        ).length;
+
+        // Count shipped in last 2 days
+        const twoDaysAgo = new Date();
+        twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+        const shippedLast2Days = shippedOrders.filter(order => {
+            if (!order.updated_time) return false;
+            const shippedDate = new Date(order.updated_time);
+            return shippedDate >= twoDaysAgo;
         }).length;
-
-        // Get SIM inventory stats
-        const inventoryStats = await getInventoryStats();
-
-        // TODO: Get shipped today count from Zoho
-        // For now, return 0
-        const shippedTodayCount = 0;
 
         return res.status(200).json({
             success: true,
             stats: {
-                pending_sim_count: pendingSimCount,
-                unassigned_sims_count: inventoryStats.unassigned_sims,
-                shipped_today_count: shippedTodayCount
+                sims_to_ship: simsToShip,
+                shield_5g_to_ship: shield5GToShip,
+                t10_to_ship: t10ToShip,
+                shipped_last_2_days: shippedLast2Days
             }
         });
     } catch (error) {
