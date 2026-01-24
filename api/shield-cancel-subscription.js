@@ -17,6 +17,8 @@ module.exports = async (req, res) => {
 
     const { subscriptionId, reason } = req.body;
 
+    console.log('Cancel request received:', { subscriptionId, reason, hasReason: !!reason });
+
     if (!subscriptionId) {
         return res.status(400).json({ error: 'Subscription ID is required' });
     }
@@ -27,10 +29,14 @@ module.exports = async (req, res) => {
 
         // Cancel subscription at end of term
         // cancel_at_end is query param, but Zoho also requires cancellation_reason in body
+        const cancellationReason = reason && reason.trim() ? reason.trim() : 'Customer requested cancellation';
+
+        console.log('Sending to Zoho:', { subscriptionId, cancellationReason });
+
         const response = await axios.post(
             `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}/cancel?cancel_at_end=true`,
             {
-                cancellation_reason: reason || 'Customer requested cancellation'
+                reason: cancellationReason
             },
             {
                 headers: {
@@ -44,7 +50,7 @@ module.exports = async (req, res) => {
         console.log('Subscription cancelled:', subscriptionId);
 
         // Store cancellation reason in custom field
-        if (reason) {
+        if (cancellationReason && cancellationReason !== 'Customer requested cancellation') {
             try {
                 await axios.put(
                     `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
@@ -52,7 +58,7 @@ module.exports = async (req, res) => {
                         custom_fields: [
                             {
                                 label: 'cf_cancellation_reason',
-                                value: reason
+                                value: cancellationReason
                             }
                         ]
                     },
