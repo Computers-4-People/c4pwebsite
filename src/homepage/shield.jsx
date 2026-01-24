@@ -77,6 +77,21 @@ const faqs = [
     answer:
       "Yes! If you're looking to provide internet access for a group, organization, or program, please reach out to us to explore a custom partnership: info@computers4people.org",
   },
+  {
+    question: "How do I manage my subscription?",
+    answer: (
+      <>
+        You can manage your Shield Internet subscription, update your payment method, view shipping information, and more through our{" "}
+        <a
+          href="/shield-auth"
+          className="text-blue-500 underline"
+        >
+          subscriber portal
+        </a>
+        . Just enter your email address to get started.
+      </>
+    ),
+  },
 ];
 
 function FAQSection() {
@@ -292,6 +307,14 @@ export default function ShieldHeader() {
       >
         Get Connected Now
       </motion.button>
+    </a>
+
+    {/* Subscriber Portal Link */}
+    <a
+      href="/shield-auth"
+      className="mt-4 text-sm text-gray-700 hover:text-c4p-dark underline transition"
+    >
+      Already a subscriber? Manage your subscription
     </a>
 
     {/* Mission Telecom */}
