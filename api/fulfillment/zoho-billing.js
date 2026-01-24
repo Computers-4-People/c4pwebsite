@@ -106,77 +106,11 @@ async function getPendingOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
 
-        // Fetch all customers in parallel pages (fetch enough pages to cover all customers)
-        const [customersPage1, customersPage2, customersPage3, customersPage4, customersPage5] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 1 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 2 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 3 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 4 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 5 }
-            })
-        ]);
-
-        const allCustomers = [
-            ...(customersPage1.data.customers || []),
-            ...(customersPage2.data.customers || []),
-            ...(customersPage3.data.customers || []),
-            ...(customersPage4.data.customers || []),
-            ...(customersPage5.data.customers || [])
-        ];
-
-        console.log(`Fetched ${allCustomers.length} total customers from 5 pages`);
-
-        // Create customer map
-        const customersByCustomerId = new Map();
-        allCustomers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-        });
-
-        console.log(`Customer map has ${customersByCustomerId.size} entries`);
-
-        // Merge subscription data with customer addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        const ordersWithAddresses = mergedOrders.filter(o => o._customer_address !== null).length;
-        console.log(`${ordersWithAddresses} orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
-
-        return mergedOrders;
+        // Return subscriptions with custom field addresses
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription'
+        }));
     } catch (error) {
         console.error('Error fetching pending orders:', error.response?.data || error.message);
         throw error;
@@ -207,75 +141,11 @@ async function getShippedOrders() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "Shipped"`);
 
-        // Fetch all customers in parallel pages (fetch enough pages to cover all customers)
-        const [customersPage1, customersPage2, customersPage3, customersPage4, customersPage5] = await Promise.all([
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 1 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 2 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 3 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 4 }
-            }),
-            axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: { per_page: 200, page: 5 }
-            })
-        ]);
-
-        const allCustomers = [
-            ...(customersPage1.data.customers || []),
-            ...(customersPage2.data.customers || []),
-            ...(customersPage3.data.customers || []),
-            ...(customersPage4.data.customers || []),
-            ...(customersPage5.data.customers || [])
-        ];
-
-        console.log(`Fetched ${allCustomers.length} total shipped customers from 5 pages`);
-
-        // Create customer map
-        const customersByCustomerId = new Map();
-        allCustomers.forEach(customer => {
-            customersByCustomerId.set(customer.customer_id, customer);
-        });
-
-        // Merge subscription data with customer addresses
-        const mergedOrders = filteredSubscriptions.map(sub => {
-            const customer = customersByCustomerId.get(sub.customer_id);
-            return {
-                ...sub,
-                _source: 'subscription',
-                _customer_address: customer?.shipping_address || null
-            };
-        });
-
-        const ordersWithAddresses = mergedOrders.filter(o => o._customer_address !== null).length;
-        console.log(`${ordersWithAddresses} shipped orders have addresses, ${filteredSubscriptions.length - ordersWithAddresses} missing`);
-
-        return mergedOrders;
+        // Return subscriptions with custom field addresses
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription'
+        }));
     } catch (error) {
         console.error('Error fetching shipped orders:', error.response?.data || error.message);
         throw error;
@@ -352,18 +222,18 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     }
 }
 
-// Format order (subscription with invoice address) for queue display
+// Format order (subscription with custom field address) for queue display
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
 
-    // Use customer address from _customer_address
+    // Use subscription custom fields for address
     const shippingAddress = {
-        address: record._customer_address?.street || '',
-        address2: record._customer_address?.street2 || '',
-        city: record._customer_address?.city || '',
-        state: record._customer_address?.state || '',
-        zip: record._customer_address?.zipcode || record._customer_address?.zip || '',
-        country: record._customer_address?.country || 'USA'
+        address: record.cf_street || '',
+        address2: record.cf_street_2 || '',
+        city: record.cf_city || '',
+        state: record.cf_state || '',
+        zip: record.cf_zip_code || '',
+        country: record.cf_country || 'USA'
     };
 
     // Device type: use cf_device_type if set and not "Blank", otherwise "Sim Card Only"
