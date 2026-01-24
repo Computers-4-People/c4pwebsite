@@ -34,8 +34,7 @@ module.exports = async (req, res) => {
                 'X-com-zoho-subscriptions-organizationid': orgId
             },
             params: {
-                per_page: 200,
-                status: 'all'
+                per_page: 200
             }
         });
 
