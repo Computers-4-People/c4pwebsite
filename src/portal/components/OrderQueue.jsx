@@ -333,19 +333,20 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       // Always generate 30 labels (full page)
       const totalLabels = 30;
 
-      // Calculate logo dimensions to fit in small square, preserving aspect ratio
-      const maxLogoSize = 10; // Small 10mm square
+      // Calculate logo dimensions to fit in 15mm square area, but keep small and preserve aspect ratio
+      const logoSquareSize = 15; // 15mm square area
+      const actualLogoSize = 10; // Logo itself is smaller than the square
       const aspectRatio = img.width / img.height;
       let logoWidth, logoHeight;
 
       if (aspectRatio > 1) {
         // Wider than tall
-        logoWidth = maxLogoSize;
-        logoHeight = maxLogoSize / aspectRatio;
+        logoWidth = actualLogoSize;
+        logoHeight = actualLogoSize / aspectRatio;
       } else {
         // Taller than wide
-        logoHeight = maxLogoSize;
-        logoWidth = maxLogoSize * aspectRatio;
+        logoHeight = actualLogoSize;
+        logoWidth = actualLogoSize * aspectRatio;
       }
 
       for (let labelIndex = 0; labelIndex < totalLabels; labelIndex++) {
@@ -363,12 +364,13 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
         // Center text vertically
         const textStartY = y + labelHeight / 2 - 3;
 
-        // Add small Shield logo next to first line of text, centered in square
+        // Add small Shield logo in 15mm square, centered
+        const logoX = x + 3 + (logoSquareSize - logoWidth) / 2; // Center horizontally in square
         const logoY = textStartY - logoHeight / 2; // Center logo vertically with text
-        doc.addImage(img, 'PNG', x + 3, logoY, logoWidth, logoHeight);
+        doc.addImage(img, 'PNG', logoX, logoY, logoWidth, logoHeight);
 
         // Text starts after logo square
-        const textX = x + 3 + maxLogoSize + 2;
+        const textX = x + 3 + logoSquareSize + 2;
 
         // Draw "Computers 4 People" text
         doc.setFontSize(11);
