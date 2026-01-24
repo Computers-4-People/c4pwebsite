@@ -1,0 +1,58 @@
+const { getZohoBillingAccessToken } = require('./fulfillment/zoho-billing');
+const axios = require('axios');
+
+module.exports = async (req, res) => {
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    if (req.method !== 'GET') {
+        return res.status(405).json({ success: false, error: 'Method not allowed' });
+    }
+
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+
+    try {
+        const accessToken = await getZohoBillingAccessToken();
+        const orgId = process.env.ZOHO_ORG_ID;
+
+        // Search for subscriptions by email
+        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: {
+                per_page: 200,
+                email: email
+            }
+        });
+
+        const subscriptions = response.data.subscriptions || [];
+
+        if (subscriptions.length === 0) {
+            return res.status(404).json({ success: false, error: 'No subscription found' });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: subscriptions
+        });
+
+    } catch (error) {
+        console.error('Error fetching Shield subscriber:', error.response?.data || error.message);
+        return res.status(500).json({
+            success: false,
+            error: error.message || 'Failed to fetch subscriber'
+        });
+    }
+};

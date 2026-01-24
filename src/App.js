@@ -28,10 +28,12 @@ import Checkin from "./homepage/checkin";
 import Uploadrecommendation from "./homepage/uploadrecommendation";
 import Eligibility from "./homepage/eligibility";
 import Auth from "./homepage/auth";
+import ShieldAuth from "./homepage/shield-auth";
 import Boardapplication from "./homepage/boardapplication";
 import AdvisoryBoardApplication from "./homepage/advisoryboardapplication";
 import Pepper from "./homepage/pepper";
 import Portal from "./homepage/portal";
+import ShieldPortal from "./homepage/shield-portal";
 import PrivacyPolicy from "./homepage/privacypolicy";
 import Termsofservice from "./homepage/terms-of-service";
 import Shield from "./homepage/shield";
@@ -180,6 +182,7 @@ function App() {
           <Route path="/press" element={<Press />} />
           <Route path="/press.html" element={<Press />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/shield-auth" element={<ShieldAuth />} />
           <Route path="/impact" element={<Impact />} />
           <Route path="/partner" element={<Partner />} />
           <Route path="/programs" element={<Programs />} />
@@ -206,6 +209,7 @@ function App() {
           <Route path="/shield5grouter" element={<Shield5grouter />} />
           <Route path="/shieldsweatshirt" element={<ShieldSweatshirt />} />
           <Route path="/portal" element={<Portal />} />
+          <Route path="/shield-portal" element={<ShieldPortal />} />
           <Route path="/fix-credentials" element={<FixCredentials />} />
           <Route path="/oauth2callback" element={<FixCredentials />} />
           <Route path="/ops-portal-shield-fulfillment" element={<FulfillmentPortal />} />
