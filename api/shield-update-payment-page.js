@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
             `https://www.zohoapis.com/billing/v1/hostedpages/updatecard`,
             {
                 subscription_id: subscriptionId,
-                redirect_url: 'https://www.computers4people.org/shield-portal'
+                redirect_url: 'https://www.computers4people.org/payment-success.html'
             },
             {
                 headers: {

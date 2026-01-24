@@ -39,6 +39,30 @@ export default function ShieldPortal() {
             // Validate and store session
             validateAndInitialize(recordId, jwt);
         }
+
+        // Listen for payment update messages from popup
+        const handleMessage = async (event) => {
+            if (event.data.type === 'PAYMENT_UPDATED') {
+                console.log('Payment updated, refreshing subscription data...');
+                // Refresh subscription data to show new card
+                const sessionRecordId = sessionStorage.getItem('shield_portal_recordId');
+                if (sessionRecordId) {
+                    try {
+                        const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionRecordId}`);
+                        setSubscription(subscriptionData.data);
+                        console.log('Subscription data refreshed');
+                    } catch (error) {
+                        console.error('Error refreshing subscription:', error);
+                    }
+                }
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
     }, [searchParams, navigate]);
 
     const validateAndInitialize = async (recordId, jwt) => {
@@ -192,11 +216,15 @@ export default function ShieldPortal() {
             const left = (window.screen.width - width) / 2;
             const top = (window.screen.height - height) / 2;
 
-            window.open(
+            const popup = window.open(
                 hostedPageUrl,
                 'UpdatePayment',
-                `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+                `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=no,status=no`
             );
+
+            if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                alert('Please allow popups for this site to update your payment method.');
+            }
         } catch (error) {
             console.error('Error creating payment update page:', error);
             alert('Failed to open payment update page. Please try again.');
