@@ -19,6 +19,7 @@ export default function ShieldPortal() {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
     const [cancelLoading, setCancelLoading] = useState(false);
+    const [paymentLoading, setPaymentLoading] = useState(false);
 
     useEffect(() => {
         const recordId = searchParams.get('recordId');
@@ -174,20 +175,33 @@ export default function ShieldPortal() {
         }
     };
 
-    const handleUpdatePayment = () => {
-        if (subscription?.hostedpage_url) {
-            // Open in new window
+    const handleUpdatePayment = async () => {
+        try {
+            setPaymentLoading(true);
+
+            // Generate hosted page for updating card
+            const response = await axios.post(`${API_BASE_URL}/api/shield-update-payment-page`, {
+                subscriptionId: subscription.subscription_id
+            });
+
+            const hostedPageUrl = response.data.url;
+
+            // Open in centered popup
             const width = 600;
             const height = 700;
             const left = (window.screen.width - width) / 2;
             const top = (window.screen.height - height) / 2;
+
             window.open(
-                subscription.hostedpage_url,
+                hostedPageUrl,
                 'UpdatePayment',
                 `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
             );
-        } else {
-            alert('Payment update is not available at this time. Please contact support.');
+        } catch (error) {
+            console.error('Error creating payment update page:', error);
+            alert('Failed to open payment update page. Please try again.');
+        } finally {
+            setPaymentLoading(false);
         }
     };
 
@@ -344,9 +358,10 @@ export default function ShieldPortal() {
                                     </p>
                                     <button
                                         onClick={handleUpdatePayment}
-                                        className="inline-block px-6 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-semibold shadow-lg hover:shadow-xl"
+                                        disabled={paymentLoading}
+                                        className="inline-block px-6 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-semibold shadow-lg hover:shadow-xl disabled:opacity-50"
                                     >
-                                        Update Payment Method
+                                        {paymentLoading ? 'Opening...' : 'Update Payment Method'}
                                     </button>
                                 </div>
 
