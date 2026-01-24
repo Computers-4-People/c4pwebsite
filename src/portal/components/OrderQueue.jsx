@@ -459,7 +459,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-c4p"></div>
       </div>
     );
   }
@@ -474,14 +474,14 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
             placeholder="Search by customer, email, or sub ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-c4p focus:border-c4p"
           />
         </div>
 
         <select
           value={deviceTypeFilter}
           onChange={(e) => setDeviceTypeFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-4 py-2 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-c4p focus:border-c4p font-semibold text-c4p-dark"
         >
           <option value="All">All Devices</option>
           <option value="Sim Card Only">SIM Card Only</option>
@@ -491,7 +491,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
 
         <button
           onClick={fetchOrders}
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          className="px-4 py-2 bg-c4p/10 text-c4p-dark rounded-lg hover:bg-c4p/20 transition-colors font-semibold border border-c4p/30"
         >
           Refresh
         </button>
@@ -500,16 +500,16 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       {/* Instructions and Label Buttons */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         {/* Instructions */}
-        <div className="lg:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="lg:col-span-2 bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-c4p-dark mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="flex-1">
-              <p className="text-sm font-medium text-blue-900">
+              <p className="text-sm font-semibold text-c4p-darker">
                 How to ship orders:
               </p>
-              <ol className="text-xs text-blue-700 mt-1 list-decimal list-inside space-y-1">
+              <ol className="text-xs text-c4p-dark mt-1 list-decimal list-inside space-y-1">
                 <li>Select orders using the checkboxes</li>
                 <li>Enter SIM card ICCID numbers for <strong>ALL</strong> selected orders</li>
                 <li>Enter tracking numbers <strong>only for orders with devices</strong></li>
@@ -520,22 +520,22 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
         </div>
 
         {/* Label Generation Buttons */}
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div className="bg-gradient-to-br from-c4p/10 to-c4p/5 border border-c4p/30 rounded-xl p-4">
           <div className="space-y-2">
-            <p className="text-sm font-medium text-purple-900 mb-3">
-              📄 Print Labels (Avery 5136)
+            <p className="text-sm font-semibold text-c4p-darker mb-3">
+              Print Labels (Avery 5136)
             </p>
             <button
               onClick={generateShippingLabels}
               disabled={filteredOrders.length === 0}
-              className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2 bg-c4p text-white rounded-lg hover:bg-c4p-hover transition-colors text-sm font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
               Shipping Labels
             </button>
             <button
               onClick={generateReturnLabels}
               disabled={filteredOrders.length === 0}
-              className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2 bg-c4p-dark text-white rounded-lg hover:bg-c4p-darker transition-colors text-sm font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
             >
               Return Labels
             </button>
@@ -545,12 +545,12 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
 
       {/* Action Bar */}
       {selectedOrders.length > 0 && (
-        <div className="flex flex-wrap gap-3 mb-6 bg-green-50 border-2 border-green-500 rounded-lg p-4 shadow-lg">
+        <div className="flex flex-wrap gap-3 mb-6 bg-gradient-to-r from-c4p/10 to-c4p-hover/10 border-2 border-c4p rounded-xl p-4 shadow-lg">
           <div className="flex-1">
-            <p className="text-base font-bold text-green-900">
+            <p className="text-base font-bold text-c4p-darker">
               {selectedOrders.length} order{selectedOrders.length !== 1 ? 's' : ''} selected
             </p>
-            <p className="text-sm text-green-700 mt-1">
+            <p className="text-sm text-c4p-dark mt-1">
               {(() => {
                 const ordersWithSim = selectedOrders.filter(orderId => simInputs[orderId]?.trim()).length;
                 const ordersWithDevices = selectedOrders.filter(orderId => {
@@ -577,9 +577,9 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           <button
             onClick={handleShipSelected}
             disabled={shipping}
-            className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-bold text-lg disabled:bg-gray-300 disabled:cursor-not-allowed shadow-md"
+            className="px-8 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-bold text-lg disabled:bg-gray-300 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >
-            {shipping ? 'Shipping...' : '📦 Ship Selected Orders'}
+            {shipping ? 'Shipping...' : 'Ship Selected Orders'}
           </button>
           <button
             onClick={() => {
@@ -587,7 +587,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               setSimInputs({});
               setTrackingInputs({});
             }}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+            className="px-4 py-2 bg-neutral-200 text-gray-700 rounded-lg hover:bg-neutral-300 transition-colors font-semibold"
           >
             Clear
           </button>
@@ -712,7 +712,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       onChange={(e) => handleSimInput(order.invoice_id, e.target.value)}
                       onKeyDown={(e) => handleSimKeyDown(e, order.invoice_id)}
                       placeholder="Enter SIM Number"
-                      className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
+                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
                     />
                   )}
                 </td>
@@ -723,7 +723,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       value={trackingInputs[order.invoice_id] || ''}
                       onChange={(e) => handleTrackingInput(order.invoice_id, e.target.value)}
                       placeholder="Enter tracking #"
-                      className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono"
+                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
                     />
                   ) : (
                     <span className="text-gray-400 text-xs italic">N/A</span>

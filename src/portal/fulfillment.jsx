@@ -83,23 +83,26 @@ export default function FulfillmentPortal() {
   // Show login form if not authenticated
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-20">
-        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+      <div className="min-h-screen bg-neutral-50 flex items-center justify-center pt-20">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full border border-neutral-200">
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Shield Fulfillment Portal</h1>
+            <div className="flex justify-center mb-4">
+              <img src="/Hotspot/shield.png" alt="Shield" className="h-16 w-16 object-contain" />
+            </div>
+            <h1 className="text-2xl font-bold text-c4p-darker">Shield Fulfillment Portal</h1>
             <p className="text-sm text-gray-500 mt-2">Enter password to access</p>
           </div>
 
           <form onSubmit={handleLogin}>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-c4p-dark mb-2">
                 Password
               </label>
               <input
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-c4p focus:border-c4p"
                 placeholder="Enter password"
                 autoFocus
               />
@@ -113,7 +116,7 @@ export default function FulfillmentPortal() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+              className="w-full py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg font-semibold hover:from-c4p-hover hover:to-c4p-dark transition-all shadow-lg hover:shadow-xl"
             >
               Access Portal
             </button>
@@ -124,19 +127,22 @@ export default function FulfillmentPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-neutral-50 pt-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="bg-gradient-to-r from-c4p-dark to-c4p border-b border-c4p-darker shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Shield Fulfillment Portal</h1>
-              <p className="text-sm text-gray-500 mt-1">Internal order fulfillment system</p>
+            <div className="flex items-center gap-4">
+              <img src="/Hotspot/shield.png" alt="Shield" className="h-12 w-12 object-contain" />
+              <div>
+                <h1 className="text-3xl font-bold text-white">Shield Fulfillment Portal</h1>
+                <p className="text-sm text-white/80 mt-1">Internal order fulfillment system</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <button
                 onClick={fetchStats}
-                className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2"
+                className="text-sm text-white/90 hover:text-white flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -145,7 +151,7 @@ export default function FulfillmentPortal() {
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm text-white bg-white/10 hover:bg-white/20 rounded-lg transition-colors border border-white/20"
               >
                 Logout
               </button>
@@ -158,86 +164,78 @@ export default function FulfillmentPortal() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* SIMs to Ship */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-yellow-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">SIMs to Ship</p>
-                <p className="text-4xl font-bold text-gray-900 mt-2">
-                  {loading ? '—' : stats.sims_to_ship}
-                </p>
-              </div>
-              <div className="bg-yellow-100 rounded-full p-3">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200 hover:shadow-xl transition-shadow">
+            <div className="relative z-10">
+              <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">SIMs to Ship</p>
+              <p className="text-5xl font-black text-c4p-darker">
+                {loading ? '—' : stats.sims_to_ship}
+              </p>
+            </div>
+            <div className="absolute -bottom-4 -right-4 opacity-5">
+              <svg className="w-32 h-32 text-c4p" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 8h1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-1v1a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-1H6a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h1V7a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v1zM9 8h6V7H9v1z" />
+              </svg>
             </div>
           </div>
 
           {/* Shield 5G to Ship */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">Shield 5G to Ship</p>
-                <p className="text-4xl font-bold text-gray-900 mt-2">
-                  {loading ? '—' : stats.shield_5g_to_ship}
-                </p>
-              </div>
-              <div className="bg-blue-100 rounded-full p-3">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              </div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200 hover:shadow-xl transition-shadow">
+            <div className="relative z-10">
+              <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Shield 5G to Ship</p>
+              <p className="text-5xl font-black text-c4p-darker">
+                {loading ? '—' : stats.shield_5g_to_ship}
+              </p>
+            </div>
+            <div className="absolute -bottom-4 -right-4 opacity-5">
+              <svg className="w-32 h-32 text-c4p" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+              </svg>
             </div>
           </div>
 
           {/* T10 to Ship */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">T10 to Ship</p>
-                <p className="text-4xl font-bold text-gray-900 mt-2">
-                  {loading ? '—' : stats.t10_to_ship}
-                </p>
-              </div>
-              <div className="bg-purple-100 rounded-full p-3">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200 hover:shadow-xl transition-shadow">
+            <div className="relative z-10">
+              <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">T10 to Ship</p>
+              <p className="text-5xl font-black text-c4p-darker">
+                {loading ? '—' : stats.t10_to_ship}
+              </p>
+            </div>
+            <div className="absolute -bottom-4 -right-4 opacity-5">
+              <svg className="w-32 h-32 text-c4p" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
             </div>
           </div>
 
           {/* Shipped Last 2 Days */}
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-gray-600 uppercase tracking-wider">Shipped Last 2 Days</p>
-                <p className="text-4xl font-bold text-gray-900 mt-2">
-                  {loading ? '—' : stats.shipped_last_2_days}
-                </p>
-              </div>
-              <div className="bg-green-100 rounded-full p-3">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
+          <div className="relative overflow-hidden bg-gradient-to-br from-c4p to-c4p-hover rounded-2xl shadow-lg p-6 border border-c4p-dark hover:shadow-xl transition-shadow">
+            <div className="relative z-10">
+              <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Shipped Last 2 Days</p>
+              <p className="text-5xl font-black text-white">
+                {loading ? '—' : stats.shipped_last_2_days}
+              </p>
+            </div>
+            <div className="absolute -bottom-4 -right-4 opacity-10">
+              <svg className="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M5 13l4 4L19 7" />
+              </svg>
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="bg-white rounded-lg shadow mb-6">
-          <div className="border-b border-gray-200">
+        <div className="bg-white rounded-xl shadow-lg mb-6 border border-neutral-200">
+          <div className="border-b border-neutral-200">
             <nav className="flex -mb-px">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+                  className={`px-6 py-4 text-sm font-semibold border-b-2 transition-all ${
                     activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'border-c4p text-c4p-dark bg-c4p/5'
+                      : 'border-transparent text-gray-500 hover:text-c4p-dark hover:border-c4p/30 hover:bg-neutral-50'
                   }`}
                 >
                   {tab.label}
