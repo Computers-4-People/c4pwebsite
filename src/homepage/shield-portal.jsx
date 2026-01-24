@@ -350,14 +350,9 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Next Billing</p>
                                             <p className="text-3xl font-black text-white">
-                                                {subscription?.next_billing_at ? (() => {
-                                                    console.log('Next billing date from API:', subscription.next_billing_at);
-                                                    console.log('Current term ends:', subscription.current_term_ends_at);
-                                                    const date = new Date(subscription.next_billing_at);
-                                                    console.log('Parsed date object:', date);
-                                                    console.log('Formatted date:', date.toLocaleDateString());
-                                                    return date.toLocaleDateString();
-                                                })() : 'N/A'}
+                                                {subscription?.next_billing_at
+                                                    ? new Date(subscription.next_billing_at + 'T00:00:00').toLocaleDateString()
+                                                    : 'N/A'}
                                             </p>
                                         </div>
                                     </div>
@@ -422,49 +417,49 @@ export default function ShieldPortal() {
 
                                 {/* Account Information */}
                                 <div className="bg-white border border-neutral-200 rounded-xl p-6">
-                                    <h3 className="text-lg font-bold text-c4p-darker mb-4">Account Information</h3>
-                                    <div className="space-y-3 text-sm">
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">Name:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.customer_name || subscriber?.customer_name || 'N/A'}</p>
+                                    <h3 className="text-lg font-bold text-c4p-darker mb-3">Account Information</h3>
+                                    <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Name:</p>
+                                            <p className="text-gray-700">{subscription?.customer_name || subscriber?.customer_name || 'N/A'}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">Street:</p>
-                                            <p className="text-gray-700 col-span-2">
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">City:</p>
+                                            <p className="text-gray-700">{subscription?.cf_city || 'N/A'}</p>
+                                        </div>
+
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Street:</p>
+                                            <p className="text-gray-700">
                                                 {subscription?.cf_street || 'N/A'}
                                                 {subscription?.cf_street_2 && <span><br />{subscription.cf_street_2}</span>}
                                             </p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">City:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_city || 'N/A'}</p>
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">State:</p>
+                                            <p className="text-gray-700">{subscription?.cf_state || 'N/A'}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">State:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_state || 'N/A'}</p>
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">SIM Card Quantity:</p>
+                                            <p className="text-gray-700">{subscription?.cf_sim_card_quantity || 'N/A'}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">Zip Code:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_zip_code || 'N/A'}</p>
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Zip Code:</p>
+                                            <p className="text-gray-700">{subscription?.cf_zip_code || 'N/A'}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">Country:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_country || 'N/A'}</p>
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Device Type:</p>
+                                            <p className="text-gray-700">{subscription?.cf_device_type || 'N/A'}</p>
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">SIM Card Quantity:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_sim_card_quantity || 'N/A'}</p>
-                                        </div>
-
-                                        <div className="grid grid-cols-3 gap-2">
-                                            <p className="font-semibold text-c4p-dark">Device Type:</p>
-                                            <p className="text-gray-700 col-span-2">{subscription?.cf_device_type || 'N/A'}</p>
+                                        <div className="flex">
+                                            <p className="font-semibold text-c4p-dark min-w-[120px]">Country:</p>
+                                            <p className="text-gray-700">{subscription?.cf_country || 'N/A'}</p>
                                         </div>
                                     </div>
                                 </div>
