@@ -35,9 +35,6 @@ module.exports = async (req, res) => {
 
         const subscription = response.data.subscription;
 
-        console.log('Full subscription object from Zoho:');
-        console.log(JSON.stringify(subscription, null, 2));
-
         return res.status(200).json({
             subscription_id: subscription.subscription_id,
             subscription_number: subscription.subscription_number,
@@ -51,10 +48,7 @@ module.exports = async (req, res) => {
             cf_device_type: subscription.cf_device_type,
             hostedpage_url: subscription.hostedpage_url,
             card: subscription.card,
-            customer_id: subscription.customer_id,
-            customer_name: subscription.customer_name,
-            shipping_address: subscription.shipping_address,
-            cf_number_of_sims: subscription.cf_number_of_sims
+            customer_id: subscription.customer_id
         });
 
     } catch (error) {
