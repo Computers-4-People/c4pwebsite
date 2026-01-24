@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
         const accessToken = await getZohoBillingAccessToken();
         const orgId = process.env.ZOHO_ORG_ID;
 
-        // Search for subscriptions by email
+        // Fetch all subscriptions and filter by email (Zoho doesn't support email filter directly)
         const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -33,11 +33,16 @@ module.exports = async (req, res) => {
             },
             params: {
                 per_page: 200,
-                email: email
+                status: 'all'
             }
         });
 
-        const subscriptions = response.data.subscriptions || [];
+        const allSubscriptions = response.data.subscriptions || [];
+
+        // Filter by email
+        const subscriptions = allSubscriptions.filter(sub =>
+            sub.email && sub.email.toLowerCase() === email.toLowerCase()
+        );
 
         if (subscriptions.length === 0) {
             return res.status(404).json({ success: false, error: 'No subscription found' });
