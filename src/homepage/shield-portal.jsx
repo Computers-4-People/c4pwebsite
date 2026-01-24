@@ -20,6 +20,11 @@ export default function ShieldPortal() {
     const [cancelReason, setCancelReason] = useState('');
     const [cancelLoading, setCancelLoading] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiryMonth, setExpiryMonth] = useState('');
+    const [expiryYear, setExpiryYear] = useState('');
+    const [cvv, setCvv] = useState('');
+    const [paymentLoading, setPaymentLoading] = useState(false);
 
     useEffect(() => {
         const recordId = searchParams.get('recordId');
@@ -177,6 +182,64 @@ export default function ShieldPortal() {
 
     const handleUpdatePayment = () => {
         setShowPaymentModal(true);
+    };
+
+    const formatCardNumber = (value) => {
+        const cleaned = value.replace(/\s/g, '');
+        const formatted = cleaned.match(/.{1,4}/g)?.join(' ') || cleaned;
+        return formatted.substring(0, 19); // Max 16 digits + 3 spaces
+    };
+
+    const handleCardNumberChange = (e) => {
+        const value = e.target.value.replace(/\D/g, '');
+        setCardNumber(formatCardNumber(value));
+    };
+
+    const handleSubmitCard = async (e) => {
+        e.preventDefault();
+
+        if (!cardNumber || !expiryMonth || !expiryYear || !cvv) {
+            alert('Please fill in all card details');
+            return;
+        }
+
+        const cleanCardNumber = cardNumber.replace(/\s/g, '');
+        if (cleanCardNumber.length < 13 || cleanCardNumber.length > 16) {
+            alert('Please enter a valid card number');
+            return;
+        }
+
+        if (cvv.length < 3 || cvv.length > 4) {
+            alert('Please enter a valid CVV');
+            return;
+        }
+
+        setPaymentLoading(true);
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/shield-update-card`, {
+                customerId: subscription.customer_id,
+                cardNumber: cleanCardNumber,
+                expiryMonth: expiryMonth,
+                expiryYear: expiryYear,
+                cvv: cvv
+            });
+
+            alert('Payment method updated successfully!');
+            setShowPaymentModal(false);
+            setCardNumber('');
+            setExpiryMonth('');
+            setExpiryYear('');
+            setCvv('');
+
+            // Refresh subscription data to show new card
+            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionStorage.getItem('shield_portal_recordId')}`);
+            setSubscription(subscriptionData.data);
+        } catch (error) {
+            console.error('Error updating card:', error);
+            alert(error.response?.data?.error || 'Failed to update payment method. Please try again.');
+        } finally {
+            setPaymentLoading(false);
+        }
     };
 
     if (loading) {
@@ -514,23 +577,90 @@ export default function ShieldPortal() {
             {/* Update Payment Modal */}
             {showPaymentModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-6 max-h-[90vh] flex flex-col">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-xl font-bold text-c4p-darker">Update Payment Method</h3>
                             <button
-                                onClick={() => setShowPaymentModal(false)}
+                                onClick={() => {
+                                    setShowPaymentModal(false);
+                                    setCardNumber('');
+                                    setExpiryMonth('');
+                                    setExpiryYear('');
+                                    setCvv('');
+                                }}
                                 className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
                             >
                                 ×
                             </button>
                         </div>
-                        <div className="flex-1 overflow-hidden">
-                            <iframe
-                                src={subscription?.hostedpage_url}
-                                className="w-full h-full border-0 rounded-lg"
-                                title="Update Payment Method"
-                            />
-                        </div>
+                        <form onSubmit={handleSubmitCard} className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Card Number
+                                </label>
+                                <input
+                                    type="text"
+                                    value={cardNumber}
+                                    onChange={handleCardNumberChange}
+                                    placeholder="1234 5678 9012 3456"
+                                    className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p"
+                                    maxLength="19"
+                                />
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Month
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={expiryMonth}
+                                        onChange={(e) => setExpiryMonth(e.target.value.replace(/\D/g, '').substring(0, 2))}
+                                        placeholder="MM"
+                                        className="w-full px-3 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p"
+                                        maxLength="2"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Year
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={expiryYear}
+                                        onChange={(e) => setExpiryYear(e.target.value.replace(/\D/g, '').substring(0, 4))}
+                                        placeholder="YYYY"
+                                        className="w-full px-3 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p"
+                                        maxLength="4"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        CVV
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={cvv}
+                                        onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').substring(0, 4))}
+                                        placeholder="123"
+                                        className="w-full px-3 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-c4p"
+                                        maxLength="4"
+                                    />
+                                </div>
+                            </div>
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+                                <p className="text-xs text-blue-700">
+                                    🔒 Your payment information is encrypted and securely transmitted to our payment processor.
+                                </p>
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={paymentLoading}
+                                className="w-full px-6 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-semibold shadow-lg disabled:opacity-50"
+                            >
+                                {paymentLoading ? 'Updating...' : 'Update Payment Method'}
+                            </button>
+                        </form>
                     </div>
                 </div>
             )}
