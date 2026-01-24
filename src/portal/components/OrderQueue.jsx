@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import OrderDetailPanel from './OrderDetailPanel';
 import { jsPDF } from 'jspdf';
 
 export default function OrderQueue({ apiBase, onStatsUpdate }) {
@@ -9,7 +8,6 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [deviceTypeFilter, setDeviceTypeFilter] = useState('Sim Card Only');
   const [selectedOrders, setSelectedOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
   const [simInputs, setSimInputs] = useState({}); // Track SIM input for each order
   const [trackingInputs, setTrackingInputs] = useState({}); // Track tracking number for each order
@@ -653,12 +651,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
             {filteredOrders.map((order) => (
               <tr
                 key={order.invoice_id}
-                className="hover:bg-gray-50 cursor-pointer"
-                onClick={(e) => {
-                  if (!e.target.closest('button, input')) {
-                    setSelectedOrder(order);
-                  }
-                }}
+                className="hover:bg-gray-50"
               >
                 <td className="px-4 py-3">
                   <input
@@ -746,19 +739,6 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
         <div className="text-center py-12 text-gray-500">
           No orders found
         </div>
-      )}
-
-      {/* Order Detail Panel */}
-      {selectedOrder && (
-        <OrderDetailPanel
-          order={selectedOrder}
-          apiBase={apiBase}
-          onClose={() => setSelectedOrder(null)}
-          onUpdate={() => {
-            fetchOrders();
-            onStatsUpdate();
-          }}
-        />
       )}
     </div>
   );
