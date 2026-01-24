@@ -236,7 +236,9 @@ export default function ShieldPortal() {
             setSubscription(subscriptionData.data);
         } catch (error) {
             console.error('Error updating card:', error);
-            alert(error.response?.data?.error || 'Failed to update payment method. Please try again.');
+            console.error('Error response:', error.response?.data);
+            const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to update payment method. Please try again.';
+            alert(errorMsg);
         } finally {
             setPaymentLoading(false);
         }

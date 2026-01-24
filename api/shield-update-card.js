@@ -81,10 +81,14 @@ module.exports = async (req, res) => {
         });
 
     } catch (error) {
-        // Log error but don't expose detailed error messages to client
+        // Log full error details for debugging
         console.error('Payment update failed:', error.response?.status);
+        console.error('Error details:', error.response?.data);
+        console.error('Full error:', error.message);
+
         return res.status(500).json({
-            error: 'Failed to update payment method. Please check your card details and try again.'
+            error: error.response?.data?.message || 'Failed to update payment method. Please check your card details and try again.',
+            details: error.response?.data
         });
     }
 };
