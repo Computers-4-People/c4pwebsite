@@ -285,7 +285,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const generateReturnLabels = () => {
     // Load Shield logo
     const img = new Image();
-    img.src = '/Hotspot/shieldlogo.png';
+    img.src = '/Hotspot/shield.png';
 
     img.onload = () => {
       const doc = new jsPDF({
