@@ -328,7 +328,11 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Status</p>
                                             <p className="text-3xl font-black text-c4p-darker">
-                                                {subscription?.cf_shipping_status || 'Active'}
+                                                {subscription?.cf_shipping_status === 'New Manual order'
+                                                    ? 'Awaiting Shipping'
+                                                    : subscription?.cf_shipping_status === 'Shipped'
+                                                    ? 'Active'
+                                                    : subscription?.cf_shipping_status || 'Active'}
                                             </p>
                                         </div>
                                     </div>
@@ -360,38 +364,61 @@ export default function ShieldPortal() {
                                 </div>
 
                                 {/* Shipping Information */}
-                                {subscription?.cf_shipping_status && (
-                                    <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-6">
-                                        <h3 className="text-lg font-bold text-c4p-darker mb-4">Shipping Information</h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                                            <div>
-                                                <p className="font-semibold text-c4p-dark">Status:</p>
-                                                <p className="text-gray-700">{subscription.cf_shipping_status}</p>
-                                            </div>
-                                            {subscription.cf_tracking_number && (
+                                {(() => {
+                                    // Don't show if status is "New Manual order"
+                                    if (!subscription?.cf_shipping_status || subscription.cf_shipping_status === 'New Manual order') {
+                                        return null;
+                                    }
+
+                                    // Don't show if no shipping date
+                                    if (!subscription.cf_shipping_date) {
+                                        return null;
+                                    }
+
+                                    // Don't show if shipped more than 1 week ago
+                                    const shipDate = new Date(subscription.cf_shipping_date);
+                                    const oneWeekAgo = new Date();
+                                    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+                                    if (shipDate < oneWeekAgo) {
+                                        return null;
+                                    }
+
+                                    return (
+                                        <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-6">
+                                            <h3 className="text-lg font-bold text-c4p-darker mb-4">Shipping Information</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                                 <div>
-                                                    <p className="font-semibold text-c4p-dark">Tracking Number:</p>
-                                                    <a
-                                                        href={`https://www.fedex.com/fedextrack/?trknbr=${subscription.cf_tracking_number}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-c4p hover:text-c4p-hover underline"
-                                                    >
-                                                        {subscription.cf_tracking_number}
-                                                    </a>
-                                                </div>
-                                            )}
-                                            {subscription.cf_shipping_date && (
-                                                <div>
-                                                    <p className="font-semibold text-c4p-dark">Shipped Date:</p>
+                                                    <p className="font-semibold text-c4p-dark">Shipping Status:</p>
                                                     <p className="text-gray-700">
-                                                        {new Date(subscription.cf_shipping_date).toLocaleDateString()}
+                                                        {subscription.cf_shipping_status === 'Shipped' ? 'Shipped' : subscription.cf_shipping_status}
                                                     </p>
                                                 </div>
-                                            )}
+                                                {subscription.cf_shipping_date && subscription.cf_shipping_status === 'Shipped' && (
+                                                    <div>
+                                                        <p className="font-semibold text-c4p-dark">Shipped Date:</p>
+                                                        <p className="text-gray-700">
+                                                            {new Date(subscription.cf_shipping_date).toLocaleDateString()}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                {subscription.cf_tracking_number && subscription.cf_shipping_status === 'Shipped' && (
+                                                    <div>
+                                                        <p className="font-semibold text-c4p-dark">Tracking Number:</p>
+                                                        <a
+                                                            href={`https://www.fedex.com/fedextrack/?trknbr=${subscription.cf_tracking_number}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-c4p hover:text-c4p-hover underline"
+                                                        >
+                                                            {subscription.cf_tracking_number}
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    );
+                                })()}
 
                                 {/* Account Information */}
                                 <div className="bg-white border border-neutral-200 rounded-xl p-6">
