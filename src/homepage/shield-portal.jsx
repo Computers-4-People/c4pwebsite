@@ -414,20 +414,6 @@ export default function ShieldPortal() {
                                     </button>
                                 </div>
 
-                                {/* Cancel Subscription */}
-                                <div className="bg-white border border-red-200 rounded-xl p-6">
-                                    <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Subscription</h3>
-                                    <p className="text-gray-600 mb-4">
-                                        Need to cancel? Your subscription will remain active until the end of your current billing period.
-                                    </p>
-                                    <button
-                                        onClick={() => setShowCancelModal(true)}
-                                        className="inline-block px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all font-semibold"
-                                    >
-                                        Cancel Subscription
-                                    </button>
-                                </div>
-
                                 {/* Referral Program */}
                                 <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-6">
                                     <h3 className="text-lg font-bold text-c4p-darker mb-4">Refer a Friend, Get a Month Free!</h3>
@@ -545,7 +531,7 @@ export default function ShieldPortal() {
                                     <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-4">
                                         <h4 className="font-bold text-c4p-darker mb-2">How do I cancel my subscription?</h4>
                                         <p className="text-gray-700 text-sm">
-                                            Please contact our support team through the Support tab to discuss cancellation options.
+                                            You can cancel your subscription anytime from the Support tab. Your service will remain active until the end of your current billing period.
                                         </p>
                                     </div>
 
@@ -581,6 +567,20 @@ export default function ShieldPortal() {
                                     >
                                         Contact Us
                                     </a>
+                                </div>
+
+                                {/* Cancel Subscription */}
+                                <div className="bg-white border border-red-200 rounded-xl p-6">
+                                    <h3 className="text-lg font-bold text-red-600 mb-4">Cancel Subscription</h3>
+                                    <p className="text-gray-600 mb-4">
+                                        Need to cancel? Your subscription will remain active until the end of your current billing period.
+                                    </p>
+                                    <button
+                                        onClick={() => setShowCancelModal(true)}
+                                        className="inline-block px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all font-semibold"
+                                    >
+                                        Cancel Subscription
+                                    </button>
                                 </div>
                             </div>
                         )}
