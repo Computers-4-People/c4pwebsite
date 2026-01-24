@@ -184,7 +184,7 @@ export default function ShieldPortal() {
                     <h2 className="text-2xl font-bold text-c4p-darker mb-2">
                         Welcome, {subscriber?.customer_name || 'Shield Subscriber'}!
                     </h2>
-                    <p className="text-gray-600">Account: {subscriber?.email}</p>
+                    <p className="text-gray-600">Account Number: {subscription?.subscription_number || 'N/A'}</p>
                 </div>
 
                 {/* Tab Navigation */}
@@ -235,8 +235,8 @@ export default function ShieldPortal() {
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Next Billing</p>
                                             <p className="text-3xl font-black text-white">
-                                                {subscription?.next_billing_at
-                                                    ? new Date(subscription.next_billing_at).toLocaleDateString()
+                                                {subscription?.current_term_ends_at
+                                                    ? new Date(subscription.current_term_ends_at).toLocaleDateString()
                                                     : 'N/A'}
                                             </p>
                                         </div>
@@ -418,28 +418,6 @@ export default function ShieldPortal() {
                                     >
                                         Contact Us
                                     </a>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-                                        <h4 className="font-bold text-c4p-darker mb-2">Email Support</h4>
-                                        <p className="text-gray-700 text-sm mb-2">
-                                            For general inquiries:
-                                        </p>
-                                        <a href="mailto:info@computers4people.org" className="text-c4p hover:text-c4p-hover font-semibold">
-                                            info@computers4people.org
-                                        </a>
-                                    </div>
-
-                                    <div className="bg-white border border-neutral-200 rounded-xl p-6">
-                                        <h4 className="font-bold text-c4p-darker mb-2">Phone Support</h4>
-                                        <p className="text-gray-700 text-sm mb-2">
-                                            Call us at:
-                                        </p>
-                                        <a href="tel:+1234567890" className="text-c4p hover:text-c4p-hover font-semibold">
-                                            (123) 456-7890
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         )}
