@@ -1,17 +1,61 @@
 const axios = require('axios');
+const { createClient } = require('redis');
 
-let cachedAccessToken = null;
-let tokenExpiration = null;
+let redisClient = null;
+let redisConnected = false;
 
-// Get Zoho Billing access token
-async function getZohoBillingAccessToken() {
-    const currentTime = Date.now();
-
-    if (cachedAccessToken && tokenExpiration && currentTime < tokenExpiration) {
-        return cachedAccessToken;
+// Initialize Redis client
+async function getRedisClient() {
+    if (redisClient && redisConnected) {
+        return redisClient;
     }
 
     try {
+        redisClient = createClient({
+            username: process.env.REDIS_USER,
+            password: process.env.REDIS_PASSWORD,
+            socket: {
+                host: process.env.REDIS_HOST,
+                port: process.env.REDIS_PORT
+            }
+        });
+
+        redisClient.on('error', err => console.error('Redis Client Error', err));
+
+        await redisClient.connect();
+        redisConnected = true;
+        console.log('Redis connected for Zoho token caching');
+        return redisClient;
+    } catch (error) {
+        console.error('Failed to connect to Redis:', error);
+        return null;
+    }
+}
+
+// Get Zoho Billing access token with Redis caching
+async function getZohoBillingAccessToken() {
+    const CACHE_KEY = 'zoho_billing_access_token';
+    const currentTime = Date.now();
+
+    try {
+        // Try to get from Redis cache first
+        const client = await getRedisClient();
+        if (client) {
+            try {
+                const cachedData = await client.get(CACHE_KEY);
+                if (cachedData) {
+                    const { token, expiration } = JSON.parse(cachedData);
+                    if (currentTime < expiration) {
+                        console.log('Using cached Zoho access token from Redis');
+                        return token;
+                    }
+                }
+            } catch (redisError) {
+                console.error('Redis cache read error:', redisError);
+                // Continue to fetch new token if cache fails
+            }
+        }
+
         // Use ZOHO_BILLING_* credentials (separate from portal credentials)
         const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
         const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
@@ -21,6 +65,7 @@ async function getZohoBillingAccessToken() {
             throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
         }
 
+        console.log('Fetching new Zoho access token...');
         const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
             params: {
                 refresh_token: refreshToken,
@@ -30,9 +75,26 @@ async function getZohoBillingAccessToken() {
             },
         });
 
-        cachedAccessToken = response.data.access_token;
-        tokenExpiration = Date.now() + (response.data.expires_in - 60) * 1000;
-        return cachedAccessToken;
+        const accessToken = response.data.access_token;
+        const expiresIn = response.data.expires_in || 3600;
+        const tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
+
+        // Cache in Redis
+        if (client) {
+            try {
+                await client.set(
+                    CACHE_KEY,
+                    JSON.stringify({ token: accessToken, expiration: tokenExpiration }),
+                    { EX: expiresIn - 60 } // Redis TTL in seconds
+                );
+                console.log('Cached new Zoho access token in Redis');
+            } catch (redisError) {
+                console.error('Redis cache write error:', redisError);
+                // Continue even if caching fails
+            }
+        }
+
+        return accessToken;
     } catch (error) {
         console.error('Error obtaining Zoho Billing access token:', error.response?.data || error.message);
         throw new Error('Failed to get Zoho Billing access token');
