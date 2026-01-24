@@ -35,11 +35,8 @@ module.exports = async (req, res) => {
 
         const subscription = response.data.subscription;
 
-        console.log('Billing dates from Zoho:', {
-            next_billing_at: subscription.next_billing_at,
-            current_term_ends_at: subscription.current_term_ends_at,
-            current_term_starts_at: subscription.current_term_starts_at
-        });
+        console.log('Full subscription object from Zoho:');
+        console.log(JSON.stringify(subscription, null, 2));
 
         return res.status(200).json({
             subscription_id: subscription.subscription_id,
