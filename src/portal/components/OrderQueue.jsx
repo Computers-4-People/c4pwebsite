@@ -243,28 +243,36 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       const y = topMargin + row * verticalPitch;
 
       // Prepare address lines
-      const lines = [];
-      lines.push(order.customer_name);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9); // Slightly smaller to fit long addresses
 
-      // Combine address and address2 on same line
+      const maxWidth = labelWidth - 10; // Leave 5mm margin on each side
+      const lines = [];
+
+      // Add customer name (wrapped if needed)
+      const nameLines = doc.splitTextToSize(order.customer_name, maxWidth);
+      lines.push(...nameLines);
+
+      // Combine address and address2 on same line (wrapped if needed)
       const fullAddress = order.shipping_address.address2
         ? `${order.shipping_address.address} ${order.shipping_address.address2}`
         : order.shipping_address.address;
-      lines.push(fullAddress);
+      const addressLines = doc.splitTextToSize(fullAddress, maxWidth);
+      lines.push(...addressLines);
 
-      lines.push(`${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zip}`);
+      // City, state, zip (wrapped if needed)
+      const cityStateZip = `${order.shipping_address.city}, ${order.shipping_address.state} ${order.shipping_address.zip}`;
+      const cityLines = doc.splitTextToSize(cityStateZip, maxWidth);
+      lines.push(...cityLines);
 
       // Calculate total height and center vertically
-      const lineHeight = 4.5;
+      const lineHeight = 4;
       const totalTextHeight = lines.length * lineHeight;
-      const startY = y + (labelHeight - totalTextHeight) / 2 + 3; // Center vertically
+      const startY = y + (labelHeight - totalTextHeight) / 2 + 2; // Center vertically
 
       // Draw label content
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-
       lines.forEach((line, index) => {
-        doc.text(line, x + 5, startY + (index * lineHeight));
+        doc.text(line, x + 5, startY + (index * lineHeight), { maxWidth: maxWidth });
       });
 
       labelIndex++;
