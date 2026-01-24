@@ -91,6 +91,7 @@ export default function RecentShipments({ apiBase }) {
     // Date filter
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
     const twoDaysAgo = new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000);
     const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
     const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -99,7 +100,8 @@ export default function RecentShipments({ apiBase }) {
       filtered = filtered.filter(s => {
         if (!s.shipped_date) return false;
         const shipDate = new Date(s.shipped_date);
-        return shipDate >= today;
+        // Only include dates from today (not future dates)
+        return shipDate.toDateString() === today.toDateString();
       });
     } else if (dateFilter === '2days') {
       filtered = filtered.filter(s => {
