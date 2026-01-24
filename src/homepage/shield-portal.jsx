@@ -19,6 +19,7 @@ export default function ShieldPortal() {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
     const [cancelLoading, setCancelLoading] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         const recordId = searchParams.get('recordId');
@@ -175,11 +176,7 @@ export default function ShieldPortal() {
     };
 
     const handleUpdatePayment = () => {
-        if (subscription?.hostedpage_url) {
-            window.open(subscription.hostedpage_url, '_blank', 'width=800,height=600');
-        } else {
-            alert('Payment update is not available at this time. Please contact support.');
-        }
+        setShowPaymentModal(true);
     };
 
     if (loading) {
@@ -513,6 +510,30 @@ export default function ShieldPortal() {
                     </div>
                 </div>
             </div>
+
+            {/* Update Payment Modal */}
+            {showPaymentModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-6 max-h-[90vh] flex flex-col">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-xl font-bold text-c4p-darker">Update Payment Method</h3>
+                            <button
+                                onClick={() => setShowPaymentModal(false)}
+                                className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-hidden">
+                            <iframe
+                                src={subscription?.hostedpage_url}
+                                className="w-full h-full border-0 rounded-lg"
+                                title="Update Payment Method"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Cancel Subscription Modal */}
             {showCancelModal && (
