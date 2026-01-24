@@ -128,7 +128,7 @@ export default function Footer() {
 
           {/* Copyright - Centered */}
           <div className="text-center text-sm text-gray-400 py-6">
-            © 2025 Computers For People Inc.
+            © 2026 Computers For People Inc.
           </div>
         </div>
       </div>
