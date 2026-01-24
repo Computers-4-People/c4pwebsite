@@ -42,17 +42,33 @@ export default function ShieldPortal() {
 
         // Listen for payment update messages from popup
         const handleMessage = async (event) => {
-            if (event.data.type === 'PAYMENT_UPDATED') {
-                console.log('Payment updated, refreshing subscription data...');
-                // Refresh subscription data to show new card
+            if (event.data && event.data.type === 'PAYMENT_UPDATED') {
+                console.log('Payment updated! Refreshing subscription data...');
+
                 const sessionRecordId = sessionStorage.getItem('shield_portal_recordId');
-                if (sessionRecordId) {
+                const sessionToken = sessionStorage.getItem('shield_portal_jwt');
+
+                if (sessionRecordId && sessionToken) {
+                    setLoading(true);
                     try {
-                        const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionRecordId}`);
+                        // Refresh all subscription data
+                        const [subscriberData, subscriptionData, invoicesData] = await Promise.all([
+                            axios.get(`${API_BASE_URL}/api/shield-subscriber-data?recordId=${sessionRecordId}`),
+                            axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionRecordId}`),
+                            axios.get(`${API_BASE_URL}/api/shield-invoices?recordId=${sessionRecordId}`)
+                        ]);
+
+                        setSubscriber(subscriberData.data);
                         setSubscription(subscriptionData.data);
-                        console.log('Subscription data refreshed');
+                        setInvoices(invoicesData.data.invoices || []);
+
+                        console.log('Subscription data refreshed successfully!');
+                        alert('Payment method updated successfully!');
                     } catch (error) {
                         console.error('Error refreshing subscription:', error);
+                        alert('Payment updated but failed to refresh. Please refresh the page.');
+                    } finally {
+                        setLoading(false);
                     }
                 }
             }
