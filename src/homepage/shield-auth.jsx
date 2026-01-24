@@ -9,11 +9,16 @@ const API_BASE_URL =
 
 const sendEmail = async (email, recordId, jwt) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/api/shield-email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`);
+        const response = await axios.post(`${API_BASE_URL}/api/shield-email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`, {}, {
+            timeout: 30000 // 30 second timeout
+        });
         return response.data;
     }
     catch (error) {
         console.error('Error sending email:', error);
+        if (error.code === 'ECONNABORTED') {
+            throw new Error('Email sending timed out. Please try again.');
+        }
         throw error;
     }
 }
@@ -47,12 +52,17 @@ const fetchShieldSubscriber = async (email) => {
     try {
         const requestUrl = `${API_BASE_URL}/api/shield-subscriber?email=${encodeURIComponent(email)}`;
         console.log('url:', requestUrl);
-        const response = await axios.get(requestUrl);
+        const response = await axios.get(requestUrl, {
+            timeout: 15000 // 15 second timeout
+        });
         console.log('response:', response.data);
         return response.data;
     }
     catch(e) {
         console.error('Error fetching Shield subscriber data:', e);
+        if (e.code === 'ECONNABORTED') {
+            throw new Error('Request timed out. Please check your connection and try again.');
+        }
         throw e;
     }
 }
@@ -74,10 +84,13 @@ function ShieldAuth() {
                 throw new Error('Please enter an email address');
             }
 
-            console.log(email);
+            console.log('Starting authentication process for:', email);
+            const startTime = Date.now();
 
             // Fetch Shield subscriber data by email
+            console.log('Step 1: Fetching subscriber...');
             const subscriberResponse = await fetchShieldSubscriber(email);
+            console.log(`Subscriber fetched in ${Date.now() - startTime}ms`);
 
             if (!subscriberResponse.data || subscriberResponse.data.length === 0) {
                 throw new Error('No Shield subscription found with this email. Please check your email or contact support.');
@@ -86,19 +99,25 @@ function ShieldAuth() {
             const subscriberData = subscriberResponse.data[0];
             const id = subscriberData.subscription_id || subscriberData.id;
 
+            console.log('Step 2: Generating auth code...');
             const time = Date.now();
             const jwt = await getAuthCode(id, time);
+            console.log(`Auth code generated in ${Date.now() - startTime}ms`);
 
+            console.log('Step 3: Storing timestamp in cache...');
             await axios.post(`${API_BASE_URL}/api/redis-cache`, {
                 key: id,
                 value: time,
                 typeOfData: 'time'
+            }, {
+                timeout: 10000 // 10 second timeout
             });
+            console.log(`Cache updated in ${Date.now() - startTime}ms`);
 
-            console.log('Auth code generated:', jwt);
-
+            console.log('Step 4: Sending email...');
             // Send email with portal link
             await sendEmail(email, id, jwt);
+            console.log(`Email sent! Total time: ${Date.now() - startTime}ms`);
 
             // Only set success after email is sent
             setSuccess(true);
