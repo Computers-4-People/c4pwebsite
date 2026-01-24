@@ -39,8 +39,8 @@ module.exports = async (req, res) => {
         twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
         const shippedLast2Days = shippedOrders.filter(order => {
-            if (!order.updated_time) return false;
-            const shippedDate = new Date(order.updated_time);
+            if (!order.cf_shipping_date) return false;
+            const shippedDate = new Date(order.cf_shipping_date);
             return shippedDate >= twoDaysAgo;
         }).length;
 

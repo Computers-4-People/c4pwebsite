@@ -101,7 +101,8 @@ async function getPendingOrders() {
 
         // Filter subscriptions with status "New Manual Order"
         const filteredSubscriptions = subscriptions.filter(subscription => {
-            return subscription.cf_shipping_status === 'New Manual Order';
+            const status = (subscription.cf_shipping_status || '').trim().toLowerCase();
+            return status === 'new manual order';
         });
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions with status "New Manual Order"`);
@@ -268,7 +269,7 @@ function formatOrderForQueue(record) {
         device_quantity: record.cf_device_quantity || '',
         created_date: record.created_time,
         updated_date: record.updated_time,
-        shipped_date: shippingStatus === 'Shipped' ? record.updated_time : null
+        shipped_date: record.cf_shipping_date || null
     };
 }
 

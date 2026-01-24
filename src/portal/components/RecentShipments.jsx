@@ -14,9 +14,10 @@ export default function RecentShipments({ apiBase }) {
       const response = await fetch(`${apiBase}/api/fulfillment/queue?status=shipped`);
       const data = await response.json();
       if (data.success) {
-        // Sort by shipped date (most recent first)
-        const sorted = data.orders.sort((a, b) =>
-          new Date(b.shipped_date || b.updated_date) - new Date(a.shipped_date || a.updated_date)
+        // Filter out orders without shipped_date, then sort by shipped date (most recent first)
+        const withShippedDate = data.orders.filter(order => order.shipped_date);
+        const sorted = withShippedDate.sort((a, b) =>
+          new Date(b.shipped_date) - new Date(a.shipped_date)
         );
         setShipments(sorted);
         setFilteredShipments(sorted);
@@ -96,22 +97,26 @@ export default function RecentShipments({ apiBase }) {
 
     if (dateFilter === 'today') {
       filtered = filtered.filter(s => {
-        const shipDate = new Date(s.shipped_date || s.updated_date);
+        if (!s.shipped_date) return false;
+        const shipDate = new Date(s.shipped_date);
         return shipDate >= today;
       });
     } else if (dateFilter === '2days') {
       filtered = filtered.filter(s => {
-        const shipDate = new Date(s.shipped_date || s.updated_date);
+        if (!s.shipped_date) return false;
+        const shipDate = new Date(s.shipped_date);
         return shipDate >= twoDaysAgo;
       });
     } else if (dateFilter === 'week') {
       filtered = filtered.filter(s => {
-        const shipDate = new Date(s.shipped_date || s.updated_date);
+        if (!s.shipped_date) return false;
+        const shipDate = new Date(s.shipped_date);
         return shipDate >= weekAgo;
       });
     } else if (dateFilter === 'month') {
       filtered = filtered.filter(s => {
-        const shipDate = new Date(s.shipped_date || s.updated_date);
+        if (!s.shipped_date) return false;
+        const shipDate = new Date(s.shipped_date);
         return shipDate >= monthAgo;
       });
     }
@@ -133,7 +138,7 @@ export default function RecentShipments({ apiBase }) {
       s.device_type || '',
       s.assigned_sim || '',
       s.tracking_number || '',
-      new Date(s.shipped_date || s.updated_date).toLocaleDateString()
+      s.shipped_date ? new Date(s.shipped_date).toLocaleDateString() : ''
     ]);
 
     const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
@@ -212,7 +217,8 @@ export default function RecentShipments({ apiBase }) {
           <p className="text-sm font-medium text-purple-600">Today</p>
           <p className="text-2xl font-bold text-purple-900 mt-1">
             {shipments.filter(s => {
-              const shipDate = new Date(s.shipped_date || s.updated_date);
+              if (!s.shipped_date) return false;
+              const shipDate = new Date(s.shipped_date);
               const today = new Date();
               return shipDate.toDateString() === today.toDateString();
             }).length}
@@ -306,7 +312,7 @@ export default function RecentShipments({ apiBase }) {
                       )}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-500">
-                      {new Date(shipment.shipped_date || shipment.updated_date).toLocaleDateString()}
+                      {shipment.shipped_date ? new Date(shipment.shipped_date).toLocaleDateString() : '—'}
                     </td>
                   </tr>
                 ))
@@ -347,7 +353,7 @@ export default function RecentShipments({ apiBase }) {
                   Shipped
                 </span>
                 <span className="text-sm text-gray-500">
-                  {new Date(selectedShipment.shipped_date || selectedShipment.updated_date).toLocaleString()}
+                  {selectedShipment.shipped_date ? new Date(selectedShipment.shipped_date).toLocaleString() : 'No date'}
                 </span>
               </div>
 
