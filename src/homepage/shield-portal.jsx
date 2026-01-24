@@ -39,37 +39,46 @@ export default function ShieldPortal() {
 
     const validateAndInitialize = async (recordId, jwt) => {
         try {
+            console.log('Step 1: Fetching timestamp from cache...');
             // Validate auth code
             const cacheResponse = await axios.get(`${API_BASE_URL}/api/redis-cache?key=${recordId}&typeOfData=time`);
-            const timestamp = cacheResponse.data.value;
+            const timestamp = cacheResponse.data.data;
+            console.log('Timestamp from cache:', timestamp);
 
+            console.log('Step 2: Validating auth code...');
             const validateResponse = await axios.get(
                 `${API_BASE_URL}/api/validateAuthCode?authCode=${jwt}&timestamp=${timestamp}&userId=${recordId}`
             );
+            console.log('Validation response:', validateResponse.data);
 
             if (!validateResponse.data.valid) {
                 throw new Error('Invalid or expired authentication link');
             }
 
+            console.log('Step 3: Deleting timestamp from cache...');
             // Delete timestamp from cache
             await axios.delete(`${API_BASE_URL}/api/redis-cache?key=${recordId}&typeOfData=time`);
 
+            console.log('Step 4: Getting JWT token...');
             // Get JWT token
             const jwtResponse = await axios.post(`${API_BASE_URL}/api/jwt`, {
                 recordID: recordId
             });
 
             const token = jwtResponse.data.token;
+            console.log('JWT token received');
 
             // Store in session
             sessionStorage.setItem('shield_portal_jwt', token);
             sessionStorage.setItem('shield_portal_recordId', recordId);
 
+            console.log('Step 5: Initializing portal...');
             // Initialize portal
             await initializePortal(recordId, token);
 
         } catch (error) {
             console.error('Validation error:', error);
+            console.error('Error details:', error.response?.data);
             navigate('/shield-auth');
         }
     };
