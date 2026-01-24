@@ -1,4 +1,10 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config({
+    path: './.env.local'
+});
 
 module.exports = async (req, res) => {
     // Set CORS headers
@@ -33,8 +39,8 @@ module.exports = async (req, res) => {
             port: 465,
             secure: true,
             auth: {
-                user: process.env.ZOHO_MAIL_USER,
-                pass: process.env.ZOHO_MAIL_PASS
+                user: process.env.ZOHO_MAIL_USER || 'info@computers4people.org',
+                pass: process.env.ZOHO_MAIL_PASSWORD
             }
         });
 
