@@ -162,14 +162,17 @@ export default function ShieldPortal() {
 
             // Fetch all subscriptions that share the same email
             try {
-                const subscriberEmail = subscriberData.data?.email;
+                const subscriberEmail = subscriptionData.data?.email || subscriberData.data?.email || subscriberData.data?.customer_email;
                 if (subscriberEmail) {
                     const subsResponse = await axios.get(
                         `${API_BASE_URL}/api/shield-subscriber?email=${encodeURIComponent(subscriberEmail)}&findAll=true`
                     );
                     const allSubscriptions = subsResponse.data?.data || [];
                     setSubscriptionsForEmail(allSubscriptions);
+                    console.log('Subscriptions found for email:', subscriberEmail, allSubscriptions.map(sub => sub.subscription_id));
+                    console.log('Subscription count for email:', allSubscriptions.length);
                 } else {
+                    console.log('No subscriber email available to look up subscriptions.');
                     setSubscriptionsForEmail([]);
                 }
             } catch (error) {

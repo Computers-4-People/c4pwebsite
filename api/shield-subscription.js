@@ -40,6 +40,7 @@ module.exports = async (req, res) => {
             subscription_number: subscription.subscription_number,
             amount: subscription.amount,
             status: subscription.status,
+            email: subscription.email || subscription.customer?.email,
             next_billing_at: subscription.next_billing_at,
             current_term_ends_at: subscription.current_term_ends_at,
             cf_shipping_status: subscription.custom_field_hash?.cf_shipping_status,

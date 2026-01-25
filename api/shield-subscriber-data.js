@@ -38,6 +38,7 @@ module.exports = async (req, res) => {
         return res.status(200).json({
             customer_name: subscription.customer_name,
             email: subscription.email,
+            customer_email: subscription.customer?.email,
             customer_id: subscription.customer_id
         });
 
