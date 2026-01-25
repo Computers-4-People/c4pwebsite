@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
-    const { email } = req.query;
+    const { email, findAll } = req.query;
 
     if (!email) {
         return res.status(400).json({ success: false, error: 'Email is required' });
@@ -28,11 +28,12 @@ module.exports = async (req, res) => {
         console.log('Searching for Shield subscription with email:', email);
 
         const normalizedEmail = email.trim().toLowerCase();
+        const shouldFindAll = String(findAll).toLowerCase() === 'true';
         let page = 1;
         let hasMore = true;
         let subscriptions = [];
 
-        // Paginate through subscriptions until a matching email is found
+        // Paginate through subscriptions and collect matching emails
         while (hasMore) {
             const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
                 headers: {
@@ -52,8 +53,10 @@ module.exports = async (req, res) => {
             });
 
             if (pageMatches.length > 0) {
-                subscriptions = pageMatches;
-                break;
+                subscriptions = subscriptions.concat(pageMatches);
+                if (!shouldFindAll) {
+                    break;
+                }
             }
 
             const pageContext = response.data.page_context || {};

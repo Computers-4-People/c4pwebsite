@@ -14,6 +14,9 @@ export default function ShieldPortal() {
     const [loading, setLoading] = useState(true);
     const [subscriber, setSubscriber] = useState(null);
     const [subscription, setSubscription] = useState(null);
+    const [subscriptionsForEmail, setSubscriptionsForEmail] = useState([]);
+    const [selectedSubscriptionId, setSelectedSubscriptionId] = useState(null);
+    const [authRecordId, setAuthRecordId] = useState(null);
     const [invoices, setInvoices] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
     const [showCancelModal, setShowCancelModal] = useState(false);
@@ -48,15 +51,16 @@ export default function ShieldPortal() {
 
                 const sessionRecordId = sessionStorage.getItem('shield_portal_recordId');
                 const sessionToken = sessionStorage.getItem('shield_portal_jwt');
+                const activeSubscriptionId = selectedSubscriptionId || sessionRecordId;
 
-                if (sessionRecordId && sessionToken) {
+                if (activeSubscriptionId && sessionToken) {
                     setLoading(true);
                     try {
                         // Refresh all subscription data
                         const [subscriberData, subscriptionData, invoicesData] = await Promise.all([
-                            axios.get(`${API_BASE_URL}/api/shield-subscriber-data?recordId=${sessionRecordId}`),
-                            axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionRecordId}`),
-                            axios.get(`${API_BASE_URL}/api/shield-invoices?recordId=${sessionRecordId}`)
+                            axios.get(`${API_BASE_URL}/api/shield-subscriber-data?recordId=${activeSubscriptionId}`),
+                            axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${activeSubscriptionId}`),
+                            axios.get(`${API_BASE_URL}/api/shield-invoices?recordId=${activeSubscriptionId}`)
                         ]);
 
                         setSubscriber(subscriberData.data);
@@ -80,7 +84,7 @@ export default function ShieldPortal() {
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [searchParams, navigate]);
+    }, [searchParams, navigate, selectedSubscriptionId]);
 
     const validateAndInitialize = async (recordId, jwt) => {
         try {
@@ -131,6 +135,7 @@ export default function ShieldPortal() {
     const initializePortal = async (recordId, token) => {
         try {
             setLoading(true);
+            setAuthRecordId(recordId);
 
             // Validate JWT
             const validation = validateJWT(token, recordId);
@@ -148,6 +153,24 @@ export default function ShieldPortal() {
             setSubscriber(subscriberData.data);
             setSubscription(subscriptionData.data);
             setInvoices(invoicesData.data.invoices || []);
+            setSelectedSubscriptionId(recordId);
+
+            // Fetch all subscriptions that share the same email
+            try {
+                const subscriberEmail = subscriberData.data?.email;
+                if (subscriberEmail) {
+                    const subsResponse = await axios.get(
+                        `${API_BASE_URL}/api/shield-subscriber?email=${encodeURIComponent(subscriberEmail)}&findAll=true`
+                    );
+                    const allSubscriptions = subsResponse.data?.data || [];
+                    setSubscriptionsForEmail(allSubscriptions);
+                } else {
+                    setSubscriptionsForEmail([]);
+                }
+            } catch (error) {
+                console.error('Error fetching subscriptions by email:', error);
+                setSubscriptionsForEmail([]);
+            }
             setLoading(false);
 
         } catch (error) {
@@ -206,7 +229,8 @@ export default function ShieldPortal() {
             setCancelReason('');
 
             // Refresh subscription data
-            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionStorage.getItem('shield_portal_recordId')}`);
+            const refreshId = selectedSubscriptionId || sessionStorage.getItem('shield_portal_recordId');
+            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${refreshId}`);
             setSubscription(subscriptionData.data);
         } catch (error) {
             console.error('Error cancelling subscription:', error);
@@ -230,7 +254,8 @@ export default function ShieldPortal() {
             alert('Your subscription has been reactivated successfully!');
 
             // Refresh subscription data
-            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${sessionStorage.getItem('shield_portal_recordId')}`);
+            const refreshId = selectedSubscriptionId || sessionStorage.getItem('shield_portal_recordId');
+            const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${refreshId}`);
             setSubscription(subscriptionData.data);
         } catch (error) {
             console.error('Error reactivating subscription:', error);
@@ -271,6 +296,32 @@ export default function ShieldPortal() {
             alert('Failed to open payment update page. Please try again.');
         } finally {
             setPaymentLoading(false);
+        }
+    };
+
+    const handleSubscriptionSelect = async (event) => {
+        const nextId = event.target.value;
+        if (!nextId || nextId === selectedSubscriptionId) {
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const [subscriberData, subscriptionData, invoicesData] = await Promise.all([
+                axios.get(`${API_BASE_URL}/api/shield-subscriber-data?recordId=${nextId}`),
+                axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${nextId}`),
+                axios.get(`${API_BASE_URL}/api/shield-invoices?recordId=${nextId}`)
+            ]);
+
+            setSubscriber(subscriberData.data);
+            setSubscription(subscriptionData.data);
+            setInvoices(invoicesData.data.invoices || []);
+            setSelectedSubscriptionId(nextId);
+        } catch (error) {
+            console.error('Error loading selected subscription:', error);
+            alert('Failed to load that subscription. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -318,9 +369,28 @@ export default function ShieldPortal() {
                 {/* Welcome Card */}
                 <div className="bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 mb-8 border border-neutral-200">
                     <h2 className="text-2xl font-bold text-c4p-darker mb-2">
-                        Welcome, {subscriber?.customer_name || 'Shield Subscriber'}!
+                        Welcome, {subscription?.customer_name || subscriber?.customer_name || 'Shield Subscriber'}!
                     </h2>
                     <p className="text-gray-600">Account: {subscription?.subscription_number || 'N/A'}</p>
+                    {subscriptionsForEmail.length > 1 && (
+                        <div className="mt-4">
+                            <label htmlFor="subscriptionSelect" className="block text-sm font-semibold text-c4p-dark mb-2">
+                                Select a subscription
+                            </label>
+                            <select
+                                id="subscriptionSelect"
+                                value={selectedSubscriptionId || authRecordId || ''}
+                                onChange={handleSubscriptionSelect}
+                                className="w-full max-w-[420px] rounded-md py-2 px-3 ring-1 ring-inset ring-gray-300 bg-white text-sm"
+                            >
+                                {subscriptionsForEmail.map((sub) => (
+                                    <option key={sub.subscription_id} value={sub.subscription_id}>
+                                        {sub.subscription_number || sub.subscription_id} • {sub.status || 'status'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
 
                 {/* Tab Navigation */}
