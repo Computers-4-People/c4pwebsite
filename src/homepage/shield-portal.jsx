@@ -674,6 +674,8 @@ export default function ShieldPortal() {
 
                                     <a
                                         href="/contact"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="inline-block px-8 py-3 bg-gradient-to-r from-c4p to-c4p-hover text-white rounded-lg hover:from-c4p-hover hover:to-c4p-dark transition-all font-semibold shadow-lg hover:shadow-xl"
                                     >
                                         Contact Us
