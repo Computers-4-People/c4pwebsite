@@ -63,12 +63,12 @@ module.exports = async (req, res) => {
                       ${portalLink}
                     </p>
                     <p style="color: #666; font-size: 12px; margin-top: 30px;">
-                      This link will expire for security purposes. If you didn't request this, please ignore this email.
+                      This link is valid for 2 minutes for security purposes. If you didn't request this, please ignore this email.
                     </p>
                   </body>
                 </html>
             `,
-            text: `Welcome to Shield Portal! Access your portal at: ${portalLink}`
+            text: `Welcome to Shield Portal! Access your portal at: ${portalLink} (valid for 2 minutes)`
         };
 
         // Send email

@@ -92,7 +92,8 @@ function ShieldAuth() {
             await axios.post(`${API_BASE_URL}/api/redis-cache`, {
                 key: id,
                 value: time,
-                typeOfData: 'time'
+                typeOfData: 'time',
+                expiryInSeconds: 120
             });
 
             console.log('Auth code generated:', jwt);
@@ -146,7 +147,7 @@ function ShieldAuth() {
                         {loading ? 'Sending...' : 'Unlock'}
                     </button>
                     {error && <p className="text-red-500 mt-2 font-sans">{error}</p>}
-                    {success && <p className="text-green-500 mt-2 font-sans">we have sent you an email to login</p>}
+                    {success && <p className="text-green-500 mt-2 font-sans">We have sent you an email to login. The code is valid for 2 minutes.</p>}
                 </form>
             </div>
         </div>
