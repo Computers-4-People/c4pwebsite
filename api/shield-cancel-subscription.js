@@ -49,32 +49,30 @@ module.exports = async (req, res) => {
 
         console.log('Subscription cancelled:', subscriptionId);
 
-        // Store cancellation reason in custom field
-        if (cancellationReason && cancellationReason !== 'Customer requested cancellation') {
-            try {
-                await axios.put(
-                    `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
-                    {
-                        custom_fields: [
-                            {
-                                label: 'cf_cancellation_reason',
-                                value: cancellationReason
-                            }
-                        ]
-                    },
-                    {
-                        headers: {
-                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                            'X-com-zoho-subscriptions-organizationid': orgId,
-                            'Content-Type': 'application/json'
+        // Store cancellation reason in custom field (always save, even if default)
+        try {
+            await axios.put(
+                `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
+                {
+                    custom_fields: [
+                        {
+                            label: 'Cancellation Reason',
+                            value: cancellationReason
                         }
+                    ]
+                },
+                {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId,
+                        'Content-Type': 'application/json'
                     }
-                );
-                console.log('Cancellation reason saved to cf_cancellation_reason:', reason);
-            } catch (fieldError) {
-                console.error('Error saving cancellation reason:', fieldError.response?.data || fieldError.message);
-                // Don't fail the whole operation if this fails
-            }
+                }
+            );
+            console.log('Cancellation reason saved to custom field:', cancellationReason);
+        } catch (fieldError) {
+            console.error('Error saving cancellation reason:', fieldError.response?.data || fieldError.message);
+            // Don't fail the whole operation if this fails
         }
 
         return res.status(200).json({

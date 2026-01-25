@@ -349,11 +349,21 @@ export default function ShieldPortal() {
                             <div className="space-y-6">
                                 {/* Subscription Status */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200">
+                                    <div className={`relative overflow-hidden rounded-2xl shadow-lg p-6 border ${
+                                        subscription?.status === 'non_renewing'
+                                            ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-300'
+                                            : 'bg-gradient-to-br from-white to-neutral-100 border-neutral-200'
+                                    }`}>
                                         <div className="relative z-10">
-                                            <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Status</p>
-                                            <p className="text-3xl font-black text-c4p-darker">
-                                                {subscription?.cf_shipping_status?.toLowerCase() === 'new manual order'
+                                            <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${
+                                                subscription?.status === 'non_renewing' ? 'text-amber-800' : 'text-c4p-dark'
+                                            }`}>Status</p>
+                                            <p className={`text-3xl font-black ${
+                                                subscription?.status === 'non_renewing' ? 'text-amber-900' : 'text-c4p-darker'
+                                            }`}>
+                                                {subscription?.status === 'non_renewing'
+                                                    ? 'Scheduled for Cancellation'
+                                                    : subscription?.cf_shipping_status?.toLowerCase() === 'new manual order'
                                                     ? 'Awaiting Shipping'
                                                     : subscription?.cf_shipping_status === 'Shipped'
                                                     ? 'Active'
@@ -371,11 +381,19 @@ export default function ShieldPortal() {
                                         </div>
                                     </div>
 
-                                    <div className="relative overflow-hidden bg-gradient-to-br from-c4p to-c4p-hover rounded-2xl shadow-lg p-6 border border-c4p-dark">
+                                    <div className={`relative overflow-hidden rounded-2xl shadow-lg p-6 border ${
+                                        subscription?.status === 'non_renewing'
+                                            ? 'bg-gradient-to-br from-amber-500 to-amber-600 border-amber-700'
+                                            : 'bg-gradient-to-br from-c4p to-c4p-hover border-c4p-dark'
+                                    }`}>
                                         <div className="relative z-10">
-                                            <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">Next Billing</p>
+                                            <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">
+                                                {subscription?.status === 'non_renewing' ? 'Ends On' : 'Next Billing'}
+                                            </p>
                                             <p className="text-3xl font-black text-white">
-                                                {subscription?.next_billing_at
+                                                {subscription?.status === 'non_renewing' && subscription?.current_term_ends_at
+                                                    ? new Date(subscription.current_term_ends_at + 'T00:00:00').toLocaleDateString()
+                                                    : subscription?.next_billing_at
                                                     ? new Date(subscription.next_billing_at + 'T00:00:00').toLocaleDateString()
                                                     : 'N/A'}
                                             </p>
