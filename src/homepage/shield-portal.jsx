@@ -84,7 +84,7 @@ export default function ShieldPortal() {
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [searchParams, navigate, selectedSubscriptionId]);
+    }, [searchParams, navigate]);
 
     const validateAndInitialize = async (recordId, jwt) => {
         try {
@@ -159,6 +159,7 @@ export default function ShieldPortal() {
             setSubscription(subscriptionData.data);
             setInvoices(invoicesData.data.invoices || []);
             setSelectedSubscriptionId(recordId);
+            sessionStorage.setItem('shield_portal_selected_subscriptionId', recordId);
 
             // Fetch all subscriptions that share the same email
             try {
@@ -171,6 +172,10 @@ export default function ShieldPortal() {
                     setSubscriptionsForEmail(allSubscriptions);
                     console.log('Subscriptions found for email:', subscriberEmail, allSubscriptions.map(sub => sub.subscription_id));
                     console.log('Subscription count for email:', allSubscriptions.length);
+                    const savedSelection = sessionStorage.getItem('shield_portal_selected_subscriptionId');
+                    if (savedSelection && savedSelection !== recordId && allSubscriptions.some(sub => sub.subscription_id === savedSelection)) {
+                        await handleSubscriptionSelect({ target: { value: savedSelection } });
+                    }
                 } else {
                     console.log('No subscriber email available to look up subscriptions.');
                     setSubscriptionsForEmail([]);
@@ -325,6 +330,7 @@ export default function ShieldPortal() {
             setSubscription(subscriptionData.data);
             setInvoices(invoicesData.data.invoices || []);
             setSelectedSubscriptionId(nextId);
+            sessionStorage.setItem('shield_portal_selected_subscriptionId', nextId);
         } catch (error) {
             console.error('Error loading selected subscription:', error);
             alert('Failed to load that subscription. Please try again.');
