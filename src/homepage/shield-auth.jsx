@@ -7,9 +7,9 @@ const API_BASE_URL =
             ? 'http://localhost:3000'
             : '';
 
-const sendEmail = async (email, recordId, jwt) => {
+const sendEmail = async (email, recordId, jwt, timestamp) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/api/shield-email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}`);
+        const response = await axios.post(`${API_BASE_URL}/api/shield-email?email=${encodeURIComponent(email)}&recordId=${recordId}&jwt=${jwt}&timestamp=${timestamp}`);
         return response.data;
     }
     catch (error) {
@@ -99,7 +99,7 @@ function ShieldAuth() {
             console.log('Auth code generated:', jwt);
 
             // Send email with portal link
-            await sendEmail(email, id, jwt);
+            await sendEmail(email, id, jwt, time);
 
             // Only set success after email is sent
             setSuccess(true);

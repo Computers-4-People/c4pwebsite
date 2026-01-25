@@ -12,8 +12,8 @@ export default function handler(req, res) {
         console.log('Timestamp:', timestamp);
         console.log('Time difference:', currentTime - timestamp);
 
-        // Check if code is expired (1 minute)
-        if (currentTime - timestamp > 60000) {
+        // Check if code is expired (2 minutes)
+        if (currentTime - timestamp > 120000) {
             console.log('Code expired');
             return res.status(401).json({ valid: false, error: 'Code expired' });
         }

@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { email, recordId, jwt } = req.query;
+    const { email, recordId, jwt, timestamp } = req.query;
 
     if (!email || !recordId || !jwt) {
         return res.status(400).json({ error: 'Email, recordId, and jwt are required' });
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
 
     try {
         const decodedEmail = decodeURIComponent(email);
-        const portalLink = `https://www.computers4people.org/shield-portal?recordId=${recordId}&jwt=${jwt}`;
+        const portalLink = `https://www.computers4people.org/shield-portal?recordId=${recordId}&jwt=${jwt}${timestamp ? `&timestamp=${timestamp}` : ''}`;
 
         // Create Zoho Mail transporter
         const transporter = nodemailer.createTransport({

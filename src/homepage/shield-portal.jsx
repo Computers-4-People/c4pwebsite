@@ -88,11 +88,16 @@ export default function ShieldPortal() {
 
     const validateAndInitialize = async (recordId, jwt) => {
         try {
-            console.log('Step 1: Fetching timestamp from cache...');
-            // Validate auth code
-            const cacheResponse = await axios.get(`${API_BASE_URL}/api/redis-cache?key=${recordId}&typeOfData=time`);
-            const timestamp = cacheResponse.data.data;
-            console.log('Timestamp from cache:', timestamp);
+            let timestamp = searchParams.get('timestamp');
+            if (timestamp) {
+                console.log('Timestamp from URL:', timestamp);
+            } else {
+                console.log('Step 1: Fetching timestamp from cache...');
+                // Validate auth code
+                const cacheResponse = await axios.get(`${API_BASE_URL}/api/redis-cache?key=${recordId}&typeOfData=time`);
+                timestamp = cacheResponse.data.data;
+                console.log('Timestamp from cache:', timestamp);
+            }
 
             console.log('Step 2: Validating auth code...');
             const validateResponse = await axios.get(
