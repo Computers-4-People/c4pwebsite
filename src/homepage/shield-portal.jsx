@@ -245,6 +245,16 @@ export default function ShieldPortal() {
             const refreshId = selectedSubscriptionId || sessionStorage.getItem('shield_portal_recordId');
             const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${refreshId}`);
             setSubscription(subscriptionData.data);
+            // Refresh subscription list statuses
+            if (subscriptionsForEmail.length > 0) {
+                const subscriberEmail = subscriptionData.data?.email || subscriber?.email || subscriber?.customer_email;
+                if (subscriberEmail) {
+                    const subsResponse = await axios.get(
+                        `${API_BASE_URL}/api/shield-subscriber?email=${encodeURIComponent(subscriberEmail)}&findAll=true`
+                    );
+                    setSubscriptionsForEmail(subsResponse.data?.data || []);
+                }
+            }
         } catch (error) {
             console.error('Error cancelling subscription:', error);
             alert(error.response?.data?.error || 'Failed to cancel subscription. Please try again.');
@@ -270,6 +280,16 @@ export default function ShieldPortal() {
             const refreshId = selectedSubscriptionId || sessionStorage.getItem('shield_portal_recordId');
             const subscriptionData = await axios.get(`${API_BASE_URL}/api/shield-subscription?recordId=${refreshId}`);
             setSubscription(subscriptionData.data);
+            // Refresh subscription list statuses
+            if (subscriptionsForEmail.length > 0) {
+                const subscriberEmail = subscriptionData.data?.email || subscriber?.email || subscriber?.customer_email;
+                if (subscriberEmail) {
+                    const subsResponse = await axios.get(
+                        `${API_BASE_URL}/api/shield-subscriber?email=${encodeURIComponent(subscriberEmail)}&findAll=true`
+                    );
+                    setSubscriptionsForEmail(subsResponse.data?.data || []);
+                }
+            }
         } catch (error) {
             console.error('Error reactivating subscription:', error);
             alert(error.response?.data?.error || 'Failed to reactivate subscription. Please try again.');
