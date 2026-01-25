@@ -27,25 +27,39 @@ module.exports = async (req, res) => {
 
         console.log('Searching for Shield subscription with email:', email);
 
-        // Fetch all subscriptions and filter by email (Zoho doesn't support email filter directly)
-        const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-            headers: {
-                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                'X-com-zoho-subscriptions-organizationid': orgId
-            },
-            params: {
-                per_page: 200
+        const normalizedEmail = email.trim().toLowerCase();
+        let page = 1;
+        let hasMore = true;
+        let subscriptions = [];
+
+        // Paginate through subscriptions until a matching email is found
+        while (hasMore) {
+            const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId
+                },
+                params: {
+                    per_page: 200,
+                    page
+                }
+            });
+
+            const pageSubscriptions = response.data.subscriptions || [];
+            const pageMatches = pageSubscriptions.filter(sub => {
+                const subEmail = sub.email || sub.customer?.email || '';
+                return subEmail.toLowerCase() === normalizedEmail;
+            });
+
+            if (pageMatches.length > 0) {
+                subscriptions = pageMatches;
+                break;
             }
-        });
 
-        const allSubscriptions = response.data.subscriptions || [];
-        console.log(`Found ${allSubscriptions.length} total subscriptions`);
-
-        // Filter by email - check both email field and customer email
-        const subscriptions = allSubscriptions.filter(sub => {
-            const subEmail = sub.email || sub.customer?.email || '';
-            return subEmail.toLowerCase() === email.toLowerCase();
-        });
+            const pageContext = response.data.page_context || {};
+            hasMore = Boolean(pageContext.has_more_page);
+            page += 1;
+        }
 
         console.log(`Found ${subscriptions.length} subscriptions matching email ${email}`);
 
