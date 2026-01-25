@@ -537,12 +537,12 @@ export default function ShieldPortal() {
                                             <input
                                                 type="text"
                                                 readOnly
-                                                value={`https://www.computers4people.org/shield?ref=${subscription?.subscription_number || ''}`}
+                                                value={`https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}`}
                                                 className="flex-1 px-3 py-2 bg-neutral-50 border border-neutral-300 rounded text-sm"
                                             />
                                             <button
                                                 onClick={() => {
-                                                    navigator.clipboard.writeText(`https://www.computers4people.org/shield?ref=${subscription?.subscription_number || ''}`);
+                                                    navigator.clipboard.writeText(`https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}`);
                                                     alert('Referral link copied to clipboard!');
                                                 }}
                                                 className="px-4 py-2 bg-c4p hover:bg-c4p-hover text-white rounded font-semibold text-sm transition-colors"
