@@ -146,7 +146,8 @@ export default function TmobileActivationQueue({ apiBase }) {
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'BulkTemplate_SOH.csv';
+    const today = new Date().toISOString().slice(0, 10);
+    link.download = `Shield_Activation_${today}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
