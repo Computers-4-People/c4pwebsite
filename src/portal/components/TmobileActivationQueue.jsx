@@ -128,13 +128,38 @@ export default function TmobileActivationQueue({ apiBase }) {
     }
   };
 
+  const handleDownloadCsv = () => {
+    const simNumbers = orders
+      .map((order) => (order.assigned_sim || '').trim())
+      .filter(Boolean);
+
+    if (simNumbers.length === 0) {
+      window.alert('No SIM card numbers available to export.');
+      return;
+    }
+
+    const header = 'SIM card number';
+    const rows = simNumbers.map((sim) => `"${sim.replace(/"/g, '""')}"`);
+    const csvContent = [header, ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'BulkTemplate_SOH.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h3 className="text-lg font-bold text-c4p-darker">Pending T-Mobile Activation</h3>
-          <p className="text-sm text-gray-500">SIM assigned • Active on T-Mobile = No • Subscription status Live</p>
-        </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-bold text-c4p-darker">Pending T-Mobile Activation</h3>
+            <p className="text-sm text-gray-500">SIM assigned • Active on T-Mobile = No • Subscription status Live</p>
+          </div>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3">
           <input
             type="text"
@@ -143,6 +168,12 @@ export default function TmobileActivationQueue({ apiBase }) {
             placeholder="Search name, email, subscription, SIM"
             className="w-full sm:w-72 px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:ring-2 focus:ring-c4p focus:border-c4p"
           />
+          <button
+            onClick={handleDownloadCsv}
+            className="px-4 py-2 bg-white text-c4p-dark border border-c4p/30 rounded-lg text-sm font-semibold hover:bg-c4p/10"
+          >
+            Download SIM CSV
+          </button>
           <button
             onClick={handleBulkActivate}
             disabled={bulkUpdating || selectedOrders.length === 0}
