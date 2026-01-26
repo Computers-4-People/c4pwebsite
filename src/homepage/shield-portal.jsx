@@ -402,7 +402,7 @@ export default function ShieldPortal() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Welcome Card */}
                 <div className="bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 mb-8 border border-neutral-200">
-                    <h2 className="text-2xl font-bold text-c4p-darker mb-2">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-c4p-darker mb-2 break-words leading-tight">
                         Welcome, {subscription?.customer_name || subscriber?.customer_name || 'Shield Subscriber'}!
                     </h2>
                     <p className="text-gray-600">Account: {subscription?.subscription_number || 'N/A'}</p>
@@ -430,12 +430,12 @@ export default function ShieldPortal() {
                 {/* Tab Navigation */}
                 <div className="bg-white rounded-xl shadow-lg mb-6 border border-neutral-200">
                     <div className="border-b border-neutral-200">
-                        <nav className="flex -mb-px">
+                        <nav className="flex flex-wrap -mb-px">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`px-6 py-4 text-sm font-semibold border-b-2 transition-all ${
+                                    className={`px-4 sm:px-6 py-3 sm:py-4 text-sm font-semibold border-b-2 transition-all whitespace-normal leading-tight ${
                                         activeTab === tab.id
                                             ? 'border-c4p text-c4p-dark bg-c4p/5'
                                             : 'border-transparent text-gray-500 hover:text-c4p-dark hover:border-c4p/30 hover:bg-neutral-50'
@@ -462,7 +462,7 @@ export default function ShieldPortal() {
                                             <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${
                                                 subscription?.status === 'non_renewing' ? 'text-amber-800' : 'text-c4p-dark'
                                             }`}>Status</p>
-                                            <p className={`text-3xl font-black ${
+                                            <p className={`text-2xl sm:text-3xl font-black break-words leading-tight ${
                                                 subscription?.status === 'non_renewing' ? 'text-amber-900' : 'text-c4p-darker'
                                             }`}>
                                                 {subscription?.status === 'non_renewing'
@@ -479,7 +479,7 @@ export default function ShieldPortal() {
                                     <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200">
                                         <div className="relative z-10">
                                             <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Monthly Cost</p>
-                                            <p className="text-3xl font-black text-c4p-darker">
+                                            <p className="text-2xl sm:text-3xl font-black text-c4p-darker break-words leading-tight">
                                                 ${subscription?.amount || '0.00'}
                                             </p>
                                         </div>
@@ -494,7 +494,7 @@ export default function ShieldPortal() {
                                             <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-3">
                                                 {subscription?.status === 'non_renewing' ? 'Ends On' : 'Next Billing'}
                                             </p>
-                                            <p className="text-3xl font-black text-white">
+                                            <p className="text-2xl sm:text-3xl font-black text-white break-words leading-tight">
                                                 {subscription?.status === 'non_renewing' && subscription?.current_term_ends_at
                                                     ? new Date(subscription.current_term_ends_at + 'T00:00:00').toLocaleDateString()
                                                     : subscription?.next_billing_at
@@ -633,20 +633,23 @@ export default function ShieldPortal() {
                                 <div className="bg-gradient-to-br from-c4p/5 to-c4p/10 border border-c4p/20 rounded-xl p-6">
                                     <h3 className="text-lg font-bold text-c4p-darker mb-4">Refer a Friend, Get a Month Free!</h3>
                                     <p className="text-gray-700 mb-4">
-                                        Share Shield with friends and family. When they sign up using your referral link, you'll get a month free!
+                                        Share Shield with friends and family. New customers get 5% off each month when they use your link,
+                                        and you will get an email as soon as they sign up.
                                     </p>
                                     <div className="bg-white border border-c4p/30 rounded-lg p-4 mb-4">
                                         <p className="text-sm text-gray-600 mb-2">Your Referral Link:</p>
-                                        <div className="flex items-center gap-2">
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                                             <input
                                                 type="text"
                                                 readOnly
-                                                value={`https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}`}
+                                                value={`https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}&coupon=REFERRAL5`}
                                                 className="flex-1 px-3 py-2 bg-neutral-50 border border-neutral-300 rounded text-sm"
                                             />
                                             <button
                                                 onClick={() => {
-                                                    navigator.clipboard.writeText(`https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}`);
+                                                    navigator.clipboard.writeText(
+                                                        `https://www.computers4people.org/shield?ref=${subscription?.subscription_id || ''}&coupon=REFERRAL5`
+                                                    );
                                                     alert('Referral link copied to clipboard!');
                                                 }}
                                                 className="px-4 py-2 bg-c4p hover:bg-c4p-hover text-white rounded font-semibold text-sm transition-colors"

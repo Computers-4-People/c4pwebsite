@@ -3,6 +3,31 @@ const axios = require('axios');
 // In-memory cache with timestamp (works per serverless instance)
 let cachedAccessToken = null;
 let tokenExpiration = null;
+let tokenRefreshPromise = null;
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function refreshBillingAccessToken() {
+    // Use ZOHO_BILLING_* credentials (separate from portal credentials)
+    const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
+    const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
+    const clientSecret = process.env.ZOHO_BILLING_CLIENT_SECRET;
+
+    if (!refreshToken || !clientId || !clientSecret) {
+        throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
+    }
+
+    const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
+        params: {
+            refresh_token: refreshToken,
+            client_id: clientId,
+            client_secret: clientSecret,
+            grant_type: 'refresh_token',
+        },
+    });
+
+    return response.data;
+}
 
 // Get Zoho Billing access token with in-memory caching
 async function getZohoBillingAccessToken() {
@@ -14,32 +39,39 @@ async function getZohoBillingAccessToken() {
     }
 
     try {
-        // Use ZOHO_BILLING_* credentials (separate from portal credentials)
-        const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
-        const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
-        const clientSecret = process.env.ZOHO_BILLING_CLIENT_SECRET;
-
-        if (!refreshToken || !clientId || !clientSecret) {
-            throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
+        if (tokenRefreshPromise) {
+            return await tokenRefreshPromise;
         }
 
-        const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
-            params: {
-                refresh_token: refreshToken,
-                client_id: clientId,
-                client_secret: clientSecret,
-                grant_type: 'refresh_token',
-            },
-        });
+        tokenRefreshPromise = (async () => {
+            let attempt = 0;
+            while (attempt < 3) {
+                try {
+                    const data = await refreshBillingAccessToken();
+                    cachedAccessToken = data.access_token;
+                    const expiresIn = data.expires_in || 3600;
+                    tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
+                    return cachedAccessToken;
+                } catch (error) {
+                    const errorData = error.response?.data;
+                    const message = errorData?.error_description || error.message || '';
+                    const isRateLimit = message.toLowerCase().includes('too many requests');
+                    attempt += 1;
+                    if (!isRateLimit || attempt >= 3) {
+                        throw error;
+                    }
+                    await sleep(1000 * attempt);
+                }
+            }
+            throw new Error('Failed to refresh Zoho Billing access token');
+        })();
 
-        cachedAccessToken = response.data.access_token;
-        const expiresIn = response.data.expires_in || 3600;
-        tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
-
-        return cachedAccessToken;
+        return await tokenRefreshPromise;
     } catch (error) {
         console.error('Error obtaining Zoho Billing access token:', error.response?.data || error.message);
         throw new Error('Failed to get Zoho Billing access token');
+    } finally {
+        tokenRefreshPromise = null;
     }
 }
 
