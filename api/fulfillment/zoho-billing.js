@@ -189,6 +189,42 @@ async function getShippedOrders() {
     }
 }
 
+// Get subscriptions pending T-Mobile activation
+async function getPendingTmobileActivations() {
+    const accessToken = await getZohoBillingAccessToken();
+    const orgId = process.env.ZOHO_ORG_ID;
+
+    try {
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
+
+        const subscriptions = subscriptionsResponse.data.subscriptions || [];
+
+        const filteredSubscriptions = subscriptions.filter((subscription) => {
+            const simCard = (subscription.cf_sim_card_number || '').trim();
+            const activeOnTmobile = (subscription.cf_active_on_tmobile || '').trim().toLowerCase();
+            const status = (subscription.status || subscription.subscription_status || '').trim().toLowerCase();
+
+            return simCard !== '' && activeOnTmobile === 'no' && status === 'live';
+        });
+
+        console.log(`Found ${filteredSubscriptions.length} subscriptions pending T-Mobile activation`);
+
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription'
+        }));
+    } catch (error) {
+        console.error('Error fetching pending T-Mobile activations:', error.response?.data || error.message);
+        throw error;
+    }
+}
+
 // Get order details by invoice ID
 async function getOrderDetails(invoiceId) {
     const accessToken = await getZohoBillingAccessToken();
@@ -298,6 +334,7 @@ function formatOrderForQueue(record) {
         line_status: record.cf_line_status || '',
         device_status: record.cf_device_status || '',
         ordered_by: record.cf_ordered_by || '',
+        subscription_status: record.status || record.subscription_status || '',
         active_on_tmobile: record.cf_active_on_tmobile || '',
         tmobile_line_number: record.cf_tmobile_line_number || '',
         device_sn: record.cf_device_sn || '',
@@ -313,6 +350,7 @@ module.exports = {
     getZohoBillingAccessToken,
     getPendingOrders,
     getShippedOrders,
+    getPendingTmobileActivations,
     getOrderDetails,
     updateInvoiceFields,  // Backwards compatibility (points to updateSubscriptionFields)
     updateSubscriptionFields,

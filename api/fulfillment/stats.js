@@ -1,4 +1,4 @@
-const { getPendingOrders, getShippedOrders } = require('./zoho-billing');
+const { getPendingOrders, getShippedOrders, getPendingTmobileActivations } = require('./zoho-billing');
 
 module.exports = async (req, res) => {
     // Set CORS headers
@@ -16,9 +16,10 @@ module.exports = async (req, res) => {
 
     try {
         // Get all pending and shipped orders
-        const [pendingOrders, shippedOrders] = await Promise.all([
+        const [pendingOrders, shippedOrders, pendingTmobile] = await Promise.all([
             getPendingOrders(),
-            getShippedOrders()
+            getShippedOrders(),
+            getPendingTmobileActivations()
         ]);
 
         // Count SIMs to ship (all pending orders need SIM cards)
@@ -50,7 +51,8 @@ module.exports = async (req, res) => {
                 sims_to_ship: simsToShip,
                 shield_5g_to_ship: shield5GToShip,
                 t10_to_ship: t10ToShip,
-                shipped_last_2_days: shippedLast2Days
+                shipped_last_2_days: shippedLast2Days,
+                pending_tmobile_activation: pendingTmobile.length
             }
         });
     } catch (error) {

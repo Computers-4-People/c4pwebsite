@@ -1,4 +1,4 @@
-const { getPendingOrders, getShippedOrders, formatOrderForQueue } = require('./zoho-billing');
+const { getPendingOrders, getShippedOrders, getPendingTmobileActivations, formatOrderForQueue } = require('./zoho-billing');
 
 module.exports = async (req, res) => {
     // Set CORS headers
@@ -20,6 +20,8 @@ module.exports = async (req, res) => {
         let invoices;
         if (status === 'shipped') {
             invoices = await getShippedOrders();
+        } else if (status === 'pending_tmobile') {
+            invoices = await getPendingTmobileActivations();
         } else {
             // Default to pending orders
             invoices = await getPendingOrders();

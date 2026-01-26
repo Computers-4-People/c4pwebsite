@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import OrderQueue from './components/OrderQueue';
 import RecentShipments from './components/RecentShipments';
+import TmobileActivationQueue from './components/TmobileActivationQueue';
 
 // API base URL - Vercel serverless functions
 const API_BASE = '';
@@ -17,7 +18,8 @@ export default function FulfillmentPortal() {
     sims_to_ship: 0,
     shield_5g_to_ship: 0,
     t10_to_ship: 0,
-    shipped_last_2_days: 0
+    shipped_last_2_days: 0,
+    pending_tmobile_activation: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -61,7 +63,8 @@ export default function FulfillmentPortal() {
         sims_to_ship: 4,
         shield_5g_to_ship: 2,
         t10_to_ship: 1,
-        shipped_last_2_days: 3
+        shipped_last_2_days: 3,
+        pending_tmobile_activation: 2
       });
     } finally {
       setLoading(false);
@@ -77,6 +80,7 @@ export default function FulfillmentPortal() {
 
   const tabs = [
     { id: 'queue', label: 'Order Queue' },
+    { id: 'tmobile', label: 'Pending T-Mobile Activation' },
     { id: 'shipments', label: 'Recent Shipments' }
   ];
 
@@ -162,7 +166,7 @@ export default function FulfillmentPortal() {
 
       {/* Stats Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           {/* SIMs to Ship */}
           <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200 hover:shadow-xl transition-shadow">
             <div className="relative z-10">
@@ -222,6 +226,21 @@ export default function FulfillmentPortal() {
               </svg>
             </div>
           </div>
+
+          {/* Pending T-Mobile Activation */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200 hover:shadow-xl transition-shadow">
+            <div className="relative z-10">
+              <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Pending T-Mobile</p>
+              <p className="text-5xl font-black text-c4p-darker">
+                {loading ? '—' : stats.pending_tmobile_activation}
+              </p>
+            </div>
+            <div className="absolute -bottom-4 -right-4 opacity-5">
+              <svg className="w-32 h-32 text-c4p" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 7h10v10H7z" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Tab Navigation */}
@@ -247,6 +266,7 @@ export default function FulfillmentPortal() {
           {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'queue' && <OrderQueue apiBase={API_BASE} onStatsUpdate={fetchStats} />}
+            {activeTab === 'tmobile' && <TmobileActivationQueue apiBase={API_BASE} />}
             {activeTab === 'shipments' && <RecentShipments apiBase={API_BASE} />}
           </div>
         </div>
