@@ -456,6 +456,43 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     }
   };
 
+  const handleDownloadCsv = () => {
+    const rows = filteredOrders.map((order) => {
+      const address = order.shipping_address || {};
+      return [
+        order.customer_name || '',
+        address.address || '',
+        address.address2 || '',
+        address.city || '',
+        address.state || '',
+        address.zip || ''
+      ];
+    });
+
+    if (rows.length === 0) {
+      window.alert('No orders to export.');
+      return;
+    }
+
+    const header = ['Customer Name', 'Address', 'Apt/Unit', 'City', 'State', 'Zip'];
+    const escapeCsv = (value) => `"${String(value).replace(/"/g, '""')}"`;
+    const csvLines = [
+      header.map(escapeCsv).join(','),
+      ...rows.map((row) => row.map(escapeCsv).join(','))
+    ];
+    const csvContent = csvLines.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Shield_Order_Queue.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center py-12">
@@ -488,6 +525,13 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           <option value="Shield 5G">Shield 5G</option>
           <option value="T10">T10</option>
         </select>
+
+        <button
+          onClick={handleDownloadCsv}
+          className="px-4 py-2 bg-white text-c4p-dark rounded-lg hover:bg-c4p/10 transition-colors font-semibold border border-c4p/30"
+        >
+          Download CSV
+        </button>
 
         <button
           onClick={fetchOrders}
