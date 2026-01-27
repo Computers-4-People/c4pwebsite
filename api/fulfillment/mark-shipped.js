@@ -124,6 +124,12 @@ module.exports = async (req, res) => {
         const fields = fullSubscription.custom_fields || [];
         const byApi = new Map();
         const byLabel = new Map();
+        const byNormalizedLabel = new Map();
+
+        const normalizeLabel = (value) =>
+            String(value || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '');
 
         fields.forEach((field) => {
             if (field.api_name) {
@@ -131,8 +137,23 @@ module.exports = async (req, res) => {
             }
             if (field.label) {
                 byLabel.set(field.label, field);
+                byNormalizedLabel.set(normalizeLabel(field.label), field);
             }
         });
+
+        const findField = (apiNames = [], labels = []) => {
+            for (const apiName of apiNames) {
+                if (byApi.has(apiName)) return byApi.get(apiName);
+            }
+            for (const label of labels) {
+                if (byLabel.has(label)) return byLabel.get(label);
+            }
+            for (const label of labels) {
+                const normalized = normalizeLabel(label);
+                if (byNormalizedLabel.has(normalized)) return byNormalizedLabel.get(normalized);
+            }
+            return null;
+        };
 
         const payload = [];
         const addFieldValue = (field, value) => {
@@ -143,18 +164,18 @@ module.exports = async (req, res) => {
             payload.push(entry);
         };
 
-        addFieldValue(byApi.get('cf_shipping_status') || byLabel.get('Shipping Status'), 'Shipped');
-        addFieldValue(byApi.get('cf_shipping_date') || byLabel.get('Shipping Date'), currentDate);
+        addFieldValue(findField(['cf_shipping_status'], ['Shipping Status']), 'Shipped');
+        addFieldValue(findField(['cf_shipping_date'], ['Shipping Date']), currentDate);
         if (tracking_number) {
-            addFieldValue(byApi.get('cf_tracking_number') || byLabel.get('Tracking Number'), tracking_number);
+            addFieldValue(findField(['cf_tracking_number'], ['Tracking Number']), tracking_number);
         }
 
         if (cleanedSimCards[0]) {
-            addFieldValue(byApi.get('cf_sim_card_number') || byLabel.get('SIM Card Number'), cleanedSimCards[0]);
+            addFieldValue(findField(['cf_sim_card_number'], ['SIM Card Number']), cleanedSimCards[0]);
         }
         if (cleanedSimCards[1]) {
             addFieldValue(
-                byApi.get('cf_secondary_sim_card_number') || byLabel.get('Secondary SIM Card Number'),
+                findField(['cf_secondary_sim_card_number'], ['Secondary SIM Card Number', 'SIM Card Number 2', 'SIM Card Number #2']),
                 cleanedSimCards[1]
             );
         }
@@ -165,11 +186,12 @@ module.exports = async (req, res) => {
             if (!value) continue;
             const apiName = `cf_sim_card_number_${i}`;
             const label = `SIM Card Number ${i}`;
-            addFieldValue(byApi.get(apiName) || byLabel.get(label), value);
+            const labelAlt = `SIM Card Number #${i}`;
+            addFieldValue(findField([apiName], [label, labelAlt]), value);
         }
 
         if (device_sn) {
-            addFieldValue(byApi.get('cf_device_sn') || byApi.get('cf_device_s_n') || byLabel.get('Device SN'), device_sn);
+            addFieldValue(findField(['cf_device_sn', 'cf_device_s_n'], ['Device SN', 'Device S/N', 'Device Serial Number']), device_sn);
         }
 
         if (payload.length === 0) {
