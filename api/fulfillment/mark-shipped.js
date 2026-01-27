@@ -121,49 +121,60 @@ module.exports = async (req, res) => {
             ? sim_cards.map((value) => String(value || '').trim()).filter(Boolean)
             : (sim_card ? [String(sim_card).trim()] : []);
 
-        const existingApiNames = new Set(
-            (fullSubscription.custom_fields || [])
-                .map((field) => field.api_name)
-                .filter(Boolean)
-        );
-
         const customFieldsPayload = [];
+        const fields = fullSubscription.custom_fields || [];
 
-        if (existingApiNames.has('cf_shipping_status')) {
-            customFieldsPayload.push({ api_name: 'cf_shipping_status', value: 'Shipped' });
-        }
-        if (existingApiNames.has('cf_shipping_date')) {
-            customFieldsPayload.push({ api_name: 'cf_shipping_date', value: currentDate });
-        }
-        if (tracking_number && existingApiNames.has('cf_tracking_number')) {
-            customFieldsPayload.push({ api_name: 'cf_tracking_number', value: tracking_number });
-        }
+        fields.forEach((field) => {
+            const apiName = field.api_name || '';
+            const label = field.label || '';
 
-        if (cleanedSimCards[0] && existingApiNames.has('cf_sim_card_number')) {
-            customFieldsPayload.push({ api_name: 'cf_sim_card_number', value: cleanedSimCards[0] });
-        }
-        if (cleanedSimCards[1] && existingApiNames.has('cf_secondary_sim_card_number')) {
-            customFieldsPayload.push({ api_name: 'cf_secondary_sim_card_number', value: cleanedSimCards[1] });
-        }
-
-        for (let i = 3; i <= 30; i += 1) {
-            const index = i - 1;
-            if (!cleanedSimCards[index]) {
-                continue;
+            if (apiName === 'cf_shipping_status') {
+                customFieldsPayload.push({ label, api_name: apiName, value: 'Shipped' });
+                return;
             }
-            const apiName = `cf_sim_card_number_${i}`;
-            if (existingApiNames.has(apiName)) {
-                customFieldsPayload.push({ api_name: apiName, value: cleanedSimCards[index] });
+            if (apiName === 'cf_shipping_date') {
+                customFieldsPayload.push({ label, api_name: apiName, value: currentDate });
+                return;
             }
-        }
-
-        if (device_sn) {
-            if (existingApiNames.has('cf_device_sn')) {
-                customFieldsPayload.push({ api_name: 'cf_device_sn', value: device_sn });
-            } else if (existingApiNames.has('cf_device_s_n')) {
-                customFieldsPayload.push({ api_name: 'cf_device_s_n', value: device_sn });
+            if (apiName === 'cf_tracking_number' && tracking_number) {
+                customFieldsPayload.push({ label, api_name: apiName, value: tracking_number });
+                return;
             }
-        }
+            if ((apiName === 'cf_sim_card_number' || label === 'SIM Card Number') && cleanedSimCards[0]) {
+                customFieldsPayload.push({ label, api_name: apiName, value: cleanedSimCards[0] });
+                return;
+            }
+            if (
+                (apiName === 'cf_secondary_sim_card_number' || label === 'Secondary SIM Card Number') &&
+                cleanedSimCards[1]
+            ) {
+                customFieldsPayload.push({ label, api_name: apiName, value: cleanedSimCards[1] });
+                return;
+            }
+            if (apiName === 'cf_device_sn' && device_sn) {
+                customFieldsPayload.push({ label, api_name: apiName, value: device_sn });
+                return;
+            }
+            if (apiName === 'cf_device_s_n' && device_sn) {
+                customFieldsPayload.push({ label, api_name: apiName, value: device_sn });
+                return;
+            }
+            if (apiName.startsWith('cf_sim_card_number_')) {
+                const suffix = Number(apiName.replace('cf_sim_card_number_', ''));
+                const index = Number.isFinite(suffix) ? suffix - 1 : null;
+                if (index !== null && index >= 0 && cleanedSimCards[index]) {
+                    customFieldsPayload.push({ label, api_name: apiName, value: cleanedSimCards[index] });
+                }
+                return;
+            }
+            if (label.startsWith('SIM Card Number ')) {
+                const suffix = Number(label.replace('SIM Card Number ', ''));
+                const index = Number.isFinite(suffix) ? suffix - 1 : null;
+                if (index !== null && index >= 0 && cleanedSimCards[index]) {
+                    customFieldsPayload.push({ label, api_name: apiName, value: cleanedSimCards[index] });
+                }
+            }
+        });
 
         await updateSubscriptionFields(subscriptionId, customFieldsPayload);
 
