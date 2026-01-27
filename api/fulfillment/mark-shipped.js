@@ -133,10 +133,13 @@ module.exports = async (req, res) => {
             if (field.api_name === 'cf_tracking_number' && tracking_number) {
                 return { ...field, value: tracking_number };
             }
-            if (field.api_name === 'cf_sim_card_number' && cleanedSimCards[0]) {
+            if ((field.api_name === 'cf_sim_card_number' || field.label === 'SIM Card Number') && cleanedSimCards[0]) {
                 return { ...field, value: cleanedSimCards[0] };
             }
-            if (field.api_name === 'cf_secondary_sim_card_number' && cleanedSimCards[1]) {
+            if (
+                (field.api_name === 'cf_secondary_sim_card_number' || field.label === 'Secondary SIM Card Number') &&
+                cleanedSimCards[1]
+            ) {
                 return { ...field, value: cleanedSimCards[1] };
             }
             if (field.api_name === 'cf_device_sn' && device_sn) {
@@ -147,6 +150,13 @@ module.exports = async (req, res) => {
             }
             if (field.api_name?.startsWith('cf_sim_card_number_')) {
                 const suffix = Number(field.api_name.replace('cf_sim_card_number_', ''));
+                const index = Number.isFinite(suffix) ? suffix - 1 : null;
+                if (index !== null && index >= 0 && cleanedSimCards[index]) {
+                    return { ...field, value: cleanedSimCards[index] };
+                }
+            }
+            if (field.label?.startsWith('SIM Card Number ')) {
+                const suffix = Number(field.label.replace('SIM Card Number ', ''));
                 const index = Number.isFinite(suffix) ? suffix - 1 : null;
                 if (index !== null && index >= 0 && cleanedSimCards[index]) {
                     return { ...field, value: cleanedSimCards[index] };
@@ -179,12 +189,28 @@ module.exports = async (req, res) => {
             });
         }
 
-        if (device_sn && !fieldNames.includes('cf_device_sn') && !fieldNames.includes('cf_device_s_n')) {
+        if (cleanedSimCards[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
             customFields.push({
-                label: 'Device SN',
-                value: device_sn
+                label: 'Secondary SIM Card Number',
+                value: cleanedSimCards[1]
             });
         }
+
+        for (let i = 3; i <= 30; i += 1) {
+            const index = i - 1;
+            if (!cleanedSimCards[index]) {
+                continue;
+            }
+            const apiName = `cf_sim_card_number_${i}`;
+            if (!fieldNames.includes(apiName)) {
+                customFields.push({
+                    label: `SIM Card Number ${i}`,
+                    value: cleanedSimCards[index]
+                });
+            }
+        }
+
+        // Only update device SN if the field already exists on the subscription
 
         await updateSubscriptionFields(subscriptionId, customFields);
 

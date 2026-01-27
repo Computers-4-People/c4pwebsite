@@ -14,6 +14,33 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [deviceSnInputs, setDeviceSnInputs] = useState({}); // Track device serial number for each order
   const [shipping, setShipping] = useState(false);
   const simInputRefs = useRef({}); // Store refs for SIM input fields
+  const storageKey = 'shield_fulfillment_draft_v1';
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      setSimInputs(parsed.simInputs || {});
+      setTrackingInputs(parsed.trackingInputs || {});
+      setDeviceSnInputs(parsed.deviceSnInputs || {});
+    } catch (error) {
+      console.warn('Failed to load fulfillment draft:', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const payload = {
+        simInputs,
+        trackingInputs,
+        deviceSnInputs
+      };
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    } catch (error) {
+      console.warn('Failed to save fulfillment draft:', error);
+    }
+  }, [simInputs, trackingInputs, deviceSnInputs]);
 
   // Fetch orders
   const fetchOrders = async () => {
@@ -215,8 +242,27 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       await Promise.all(promises);
 
       window.alert(`Successfully shipped ${selectedOrders.length} order(s)!`);
-      setSimInputs({});
-      setTrackingInputs({});
+      setSimInputs(prev => {
+        const next = { ...prev };
+        selectedOrders.forEach((orderId) => {
+          delete next[orderId];
+        });
+        return next;
+      });
+      setTrackingInputs(prev => {
+        const next = { ...prev };
+        selectedOrders.forEach((orderId) => {
+          delete next[orderId];
+        });
+        return next;
+      });
+      setDeviceSnInputs(prev => {
+        const next = { ...prev };
+        selectedOrders.forEach((orderId) => {
+          delete next[orderId];
+        });
+        return next;
+      });
       setSelectedOrders([]);
       fetchOrders();
       onStatsUpdate();
@@ -683,6 +729,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               setSimInputs({});
               setTrackingInputs({});
               setDeviceSnInputs({});
+              localStorage.removeItem(storageKey);
             }}
             className="px-4 py-2 bg-neutral-200 text-gray-700 rounded-lg hover:bg-neutral-300 transition-colors font-semibold"
           >
@@ -728,11 +775,6 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Device Qty
-                </th>
-              )}
-              {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Device SN
                 </th>
               )}
               <th
@@ -798,15 +840,6 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       <span className="text-gray-400 text-xs italic">N/A</span>
                     ) : (
                       order.device_quantity || '—'
-                    )}
-                  </td>
-                )}
-                {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
-                  <td className="px-4 py-3 text-sm text-gray-500 font-mono">
-                    {order.device_type?.toLowerCase() === 'sim card only' ? (
-                      <span className="text-gray-400 text-xs italic">N/A</span>
-                    ) : (
-                      order.device_sn || '—'
                     )}
                   </td>
                 )}
