@@ -66,8 +66,10 @@ module.exports = async (req, res) => {
         return res.status(405).json({ success: false, error: 'Method not allowed' });
     }
 
+    const body = req.body || {};
+
     try {
-        const { invoice_id, tracking_number, sim_card, sim_cards } = req.body;
+        const { invoice_id, tracking_number, sim_card, sim_cards, device_sn } = body;
 
         if (!invoice_id) {
             return res.status(400).json({
@@ -137,10 +139,16 @@ module.exports = async (req, res) => {
             if (field.api_name === 'cf_secondary_sim_card_number' && cleanedSimCards[1]) {
                 return { ...field, value: cleanedSimCards[1] };
             }
+            if (field.api_name === 'cf_device_sn' && device_sn) {
+                return { ...field, value: device_sn };
+            }
+            if (field.api_name === 'cf_device_s_n' && device_sn) {
+                return { ...field, value: device_sn };
+            }
             if (field.api_name?.startsWith('cf_sim_card_number_')) {
                 const suffix = Number(field.api_name.replace('cf_sim_card_number_', ''));
                 const index = Number.isFinite(suffix) ? suffix - 1 : null;
-                if (index && cleanedSimCards[index]) {
+                if (index !== null && index >= 0 && cleanedSimCards[index]) {
                     return { ...field, value: cleanedSimCards[index] };
                 }
             }
@@ -166,33 +174,16 @@ module.exports = async (req, res) => {
 
         if (cleanedSimCards[0] && !fieldNames.includes('cf_sim_card_number')) {
             customFields.push({
-                api_name: 'cf_sim_card_number',
                 label: 'SIM Card Number',
                 value: cleanedSimCards[0]
             });
         }
 
-        if (cleanedSimCards[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
+        if (device_sn && !fieldNames.includes('cf_device_sn') && !fieldNames.includes('cf_device_s_n')) {
             customFields.push({
-                api_name: 'cf_secondary_sim_card_number',
-                label: 'Secondary SIM Card Number',
-                value: cleanedSimCards[1]
+                label: 'Device SN',
+                value: device_sn
             });
-        }
-
-        for (let i = 3; i <= 30; i += 1) {
-            const index = i - 1;
-            if (!cleanedSimCards[index]) {
-                continue;
-            }
-            const apiName = `cf_sim_card_number_${i}`;
-            if (!fieldNames.includes(apiName)) {
-                customFields.push({
-                    api_name: apiName,
-                    label: `SIM Card Number ${i}`,
-                    value: cleanedSimCards[index]
-                });
-            }
         }
 
         await updateSubscriptionFields(subscriptionId, customFields);
@@ -206,10 +197,10 @@ module.exports = async (req, res) => {
 
         // Send error notification email
         await sendErrorEmail({
-            invoice_id: invoice_id,
-            sim_card: sim_card,
-            sim_cards: Array.isArray(sim_cards) ? sim_cards : undefined,
-            tracking_number: tracking_number,
+            invoice_id: body.invoice_id,
+            sim_card: body.sim_card,
+            sim_cards: Array.isArray(body.sim_cards) ? body.sim_cards : undefined,
+            tracking_number: body.tracking_number,
             error: error.message || 'Failed to mark order as shipped',
             stack: error.stack
         });

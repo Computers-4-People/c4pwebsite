@@ -11,6 +11,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
   const [simInputs, setSimInputs] = useState({}); // Track SIM inputs for each order (array)
   const [trackingInputs, setTrackingInputs] = useState({}); // Track tracking number for each order
+  const [deviceSnInputs, setDeviceSnInputs] = useState({}); // Track device serial number for each order
   const [shipping, setShipping] = useState(false);
   const simInputRefs = useRef({}); // Store refs for SIM input fields
 
@@ -199,7 +200,8 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           body: JSON.stringify({
             invoice_id: orderId,
             sim_cards: simCards,
-            tracking_number: (order?.device_type && order.device_type.toLowerCase() !== 'sim card only') ? trackingInputs[orderId] : undefined
+            tracking_number: (order?.device_type && order.device_type.toLowerCase() !== 'sim card only') ? trackingInputs[orderId] : undefined,
+            device_sn: (order?.device_type && order.device_type.toLowerCase() !== 'sim card only') ? deviceSnInputs[orderId] : undefined
           })
         });
 
@@ -241,6 +243,13 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   // Update tracking input for an order
   const handleTrackingInput = (orderId, value) => {
     setTrackingInputs(prev => ({
+      ...prev,
+      [orderId]: value
+    }));
+  };
+
+  const handleDeviceSnInput = (orderId, value) => {
+    setDeviceSnInputs(prev => ({
       ...prev,
       [orderId]: value
     }));
@@ -673,6 +682,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               setSelectedOrders([]);
               setSimInputs({});
               setTrackingInputs({});
+              setDeviceSnInputs({});
             }}
             className="px-4 py-2 bg-neutral-200 text-gray-700 rounded-lg hover:bg-neutral-300 transition-colors font-semibold"
           >
@@ -736,6 +746,9 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Enter Tracking # (if device)
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Enter Device S/N (if device)
               </th>
             </tr>
           </thead>
@@ -843,6 +856,19 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       value={trackingInputs[order.invoice_id] || ''}
                       onChange={(e) => handleTrackingInput(order.invoice_id, e.target.value)}
                       placeholder="Enter tracking #"
+                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-xs italic">N/A</span>
+                  )}
+                </td>
+                <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                  {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
+                    <input
+                      type="text"
+                      value={deviceSnInputs[order.invoice_id] || ''}
+                      onChange={(e) => handleDeviceSnInput(order.invoice_id, e.target.value)}
+                      placeholder="Enter device S/N"
                       className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
                     />
                   ) : (
