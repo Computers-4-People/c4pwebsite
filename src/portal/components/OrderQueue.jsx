@@ -9,7 +9,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [deviceTypeFilter, setDeviceTypeFilter] = useState('Sim Card Only');
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
-  const [simInputs, setSimInputs] = useState({}); // Track SIM input for each order
+  const [simInputs, setSimInputs] = useState({}); // Track SIM inputs for each order (array)
   const [trackingInputs, setTrackingInputs] = useState({}); // Track tracking number for each order
   const [shipping, setShipping] = useState(false);
   const simInputRefs = useRef({}); // Store refs for SIM input fields
@@ -130,10 +130,38 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
     setSortConfig({ key, direction });
   };
 
+  const getSimRequiredCount = (order) => {
+    const raw = Number.parseInt(order?.sim_card_quantity, 10);
+    const normalized = Number.isFinite(raw) ? raw : 1;
+    return Math.min(Math.max(normalized, 1), 30);
+  };
+
+  const getExistingSimNumbers = (order) => {
+    if (Array.isArray(order?.sim_card_numbers) && order.sim_card_numbers.length > 0) {
+      return order.sim_card_numbers.filter(Boolean);
+    }
+    if (order?.assigned_sim) {
+      return [order.assigned_sim];
+    }
+    return [];
+  };
+
+  const getSimInputsForOrder = (orderId, count) => {
+    const existing = Array.isArray(simInputs[orderId]) ? simInputs[orderId] : [];
+    return Array.from({ length: count }, (_, index) => existing[index] || '');
+  };
+
   // Ship selected orders with SIM cards
   const handleShipSelected = async () => {
     // Check that all selected orders have SIM cards entered
-    const ordersNeedingSim = selectedOrders.filter(orderId => !simInputs[orderId]?.trim());
+    const ordersNeedingSim = selectedOrders.filter((orderId) => {
+      const order = orders.find(o => o.invoice_id === orderId);
+      const required = getSimRequiredCount(order);
+      const existing = getExistingSimNumbers(order).length;
+      const inputs = getSimInputsForOrder(orderId, Math.max(required - existing, 0));
+      const filled = existing + inputs.filter(value => value.trim()).length;
+      return filled < required;
+    });
 
     if (ordersNeedingSim.length > 0) {
       window.alert(`Please enter SIM card numbers for all selected orders (${ordersNeedingSim.length} remaining)`);
@@ -158,6 +186,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       // Call API to mark each order as shipped
       const promises = selectedOrders.map(async (orderId) => {
         const order = orders.find(o => o.invoice_id === orderId);
+        const required = getSimRequiredCount(order);
+        const existing = getExistingSimNumbers(order);
+        const inputs = getSimInputsForOrder(orderId, Math.max(required - existing.length, 0));
+        const simCards = [...existing, ...inputs.map((value) => value.trim()).filter(Boolean)].slice(0, required);
+
         const response = await fetch(`${apiBase}/api/fulfillment/mark-shipped`, {
           method: 'POST',
           headers: {
@@ -165,7 +198,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
           },
           body: JSON.stringify({
             invoice_id: orderId,
-            sim_card: simInputs[orderId],
+            sim_cards: simCards,
             tracking_number: (order?.device_type && order.device_type.toLowerCase() !== 'sim card only') ? trackingInputs[orderId] : undefined
           })
         });
@@ -194,11 +227,15 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   };
 
   // Update SIM input for an order
-  const handleSimInput = (orderId, value) => {
-    setSimInputs(prev => ({
-      ...prev,
-      [orderId]: value
-    }));
+  const handleSimInput = (orderId, index, value) => {
+    setSimInputs(prev => {
+      const next = Array.isArray(prev[orderId]) ? [...prev[orderId]] : [];
+      next[index] = value;
+      return {
+        ...prev,
+        [orderId]: next
+      };
+    });
   };
 
   // Update tracking input for an order
@@ -222,7 +259,6 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
       while (nextIndex < filteredOrders.length) {
         const nextOrder = filteredOrders[nextIndex];
         if (!nextOrder.assigned_sim) {
-          // Focus the next SIM input field
           const nextInput = simInputRefs.current[nextOrder.invoice_id];
           if (nextInput) {
             nextInput.focus();
@@ -555,7 +591,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               </p>
               <ol className="text-xs text-c4p-dark mt-1 list-decimal list-inside space-y-1">
                 <li>Select orders using the checkboxes</li>
-                <li>Enter SIM card ICCID numbers for <strong>ALL</strong> selected orders</li>
+                <li>Enter SIM card ICCID numbers for <strong>ALL</strong> selected orders (one per SIM qty)</li>
                 <li>Enter tracking numbers <strong>only for orders with devices</strong></li>
                 <li>Click "Ship Selected Orders" button below</li>
               </ol>
@@ -596,7 +632,14 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
             </p>
             <p className="text-sm text-c4p-dark mt-1">
               {(() => {
-                const ordersWithSim = selectedOrders.filter(orderId => simInputs[orderId]?.trim()).length;
+                const ordersWithSim = selectedOrders.filter((orderId) => {
+                  const order = orders.find(o => o.invoice_id === orderId);
+                  const required = getSimRequiredCount(order);
+                  const existing = getExistingSimNumbers(order).length;
+                  const inputs = getSimInputsForOrder(orderId, Math.max(required - existing, 0));
+                  const filled = existing + inputs.filter((value) => value.trim()).length;
+                  return filled >= required;
+                }).length;
                 const ordersWithDevices = selectedOrders.filter(orderId => {
                   const order = orders.find(o => o.invoice_id === orderId);
                   return order?.device_type && order.device_type.toLowerCase() !== 'sim card only';
@@ -744,21 +787,40 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   {order.created_date ? new Date(order.created_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
                 </td>
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                  {order.assigned_sim ? (
-                    <div className="text-sm text-gray-900 font-mono">
-                      {order.assigned_sim}
-                    </div>
-                  ) : (
-                    <input
-                      ref={(el) => simInputRefs.current[order.invoice_id] = el}
-                      type="text"
-                      value={simInputs[order.invoice_id] || ''}
-                      onChange={(e) => handleSimInput(order.invoice_id, e.target.value)}
-                      onKeyDown={(e) => handleSimKeyDown(e, order.invoice_id)}
-                      placeholder="Enter SIM Number"
-                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
-                    />
-                  )}
+                  {(() => {
+                    const required = getSimRequiredCount(order);
+                    const existing = getExistingSimNumbers(order);
+                    const remaining = Math.max(required - existing.length, 0);
+                    const inputs = getSimInputsForOrder(order.invoice_id, remaining);
+
+                    return (
+                      <div className="space-y-2">
+                        {existing.length > 0 && (
+                          <div className="text-sm text-gray-900 font-mono space-y-1">
+                            {existing.map((sim, index) => (
+                              <div key={`${order.invoice_id}-sim-${index}`}>{sim}</div>
+                            ))}
+                          </div>
+                        )}
+                        {remaining > 0 && (
+                          <div className="space-y-2">
+                            {inputs.map((value, index) => (
+                              <input
+                                key={`${order.invoice_id}-sim-input-${index}`}
+                                ref={index === 0 ? (el) => { simInputRefs.current[order.invoice_id] = el; } : undefined}
+                                type="text"
+                                value={value}
+                                onChange={(e) => handleSimInput(order.invoice_id, index, e.target.value)}
+                                onKeyDown={(e) => index === 0 && handleSimKeyDown(e, order.invoice_id)}
+                                placeholder={`SIM ${existing.length + index + 1}`}
+                                className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </td>
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (

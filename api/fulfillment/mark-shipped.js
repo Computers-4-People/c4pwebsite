@@ -30,7 +30,7 @@ async function sendErrorEmail(errorDetails) {
                             <h3 style="margin-top: 0;">Error Details:</h3>
                             <p><strong>Time:</strong> ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })} EST</p>
                             <p><strong>Invoice/Customer ID:</strong> ${errorDetails.invoice_id || 'Unknown'}</p>
-                            <p><strong>SIM Card:</strong> ${errorDetails.sim_card || 'Not provided'}</p>
+                            <p><strong>SIM Card:</strong> ${errorDetails.sim_card || (errorDetails.sim_cards ? errorDetails.sim_cards.join(', ') : 'Not provided')}</p>
                             <p><strong>Tracking Number:</strong> ${errorDetails.tracking_number || 'Not provided'}</p>
                             <p><strong>Error Message:</strong></p>
                             <pre style="background-color: #ffffff; padding: 10px; border-radius: 4px; overflow-x: auto;">${errorDetails.error}</pre>
@@ -42,7 +42,7 @@ async function sendErrorEmail(errorDetails) {
                     </body>
                 </html>
             `,
-            text: `Fulfillment System Error\n\nTime: ${new Date().toLocaleString()}\nInvoice ID: ${errorDetails.invoice_id}\nSIM Card: ${errorDetails.sim_card}\nTracking: ${errorDetails.tracking_number}\n\nError: ${errorDetails.error}`
+            text: `Fulfillment System Error\n\nTime: ${new Date().toLocaleString()}\nInvoice ID: ${errorDetails.invoice_id}\nSIM Card: ${errorDetails.sim_card || (errorDetails.sim_cards ? errorDetails.sim_cards.join(', ') : 'Not provided')}\nTracking: ${errorDetails.tracking_number}\n\nError: ${errorDetails.error}`
         };
 
         await transporter.sendMail(mailOptions);
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const { invoice_id, tracking_number, sim_card } = req.body;
+        const { invoice_id, tracking_number, sim_card, sim_cards } = req.body;
 
         if (!invoice_id) {
             return res.status(400).json({
@@ -116,6 +116,10 @@ module.exports = async (req, res) => {
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
         // Start with existing custom fields and update matching ones
+        const cleanedSimCards = Array.isArray(sim_cards)
+            ? sim_cards.map((value) => String(value || '').trim()).filter(Boolean)
+            : (sim_card ? [String(sim_card).trim()] : []);
+
         const customFields = fullSubscription.custom_fields.map(field => {
             // Match by api_name (cf_*) which is more reliable than label
             if (field.api_name === 'cf_shipping_status') {
@@ -127,8 +131,18 @@ module.exports = async (req, res) => {
             if (field.api_name === 'cf_tracking_number' && tracking_number) {
                 return { ...field, value: tracking_number };
             }
-            if (field.api_name === 'cf_sim_card_number' && sim_card) {
-                return { ...field, value: sim_card };
+            if (field.api_name === 'cf_sim_card_number' && cleanedSimCards[0]) {
+                return { ...field, value: cleanedSimCards[0] };
+            }
+            if (field.api_name === 'cf_secondary_sim_card_number' && cleanedSimCards[1]) {
+                return { ...field, value: cleanedSimCards[1] };
+            }
+            if (field.api_name?.startsWith('cf_sim_card_number_')) {
+                const suffix = Number(field.api_name.replace('cf_sim_card_number_', ''));
+                const index = Number.isFinite(suffix) ? suffix - 1 : null;
+                if (index && cleanedSimCards[index]) {
+                    return { ...field, value: cleanedSimCards[index] };
+                }
             }
             return field;
         });
@@ -150,11 +164,35 @@ module.exports = async (req, res) => {
             });
         }
 
-        if (sim_card && !fieldNames.includes('cf_sim_card_number')) {
+        if (cleanedSimCards[0] && !fieldNames.includes('cf_sim_card_number')) {
             customFields.push({
+                api_name: 'cf_sim_card_number',
                 label: 'SIM Card Number',
-                value: sim_card
+                value: cleanedSimCards[0]
             });
+        }
+
+        if (cleanedSimCards[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
+            customFields.push({
+                api_name: 'cf_secondary_sim_card_number',
+                label: 'Secondary SIM Card Number',
+                value: cleanedSimCards[1]
+            });
+        }
+
+        for (let i = 3; i <= 30; i += 1) {
+            const index = i - 1;
+            if (!cleanedSimCards[index]) {
+                continue;
+            }
+            const apiName = `cf_sim_card_number_${i}`;
+            if (!fieldNames.includes(apiName)) {
+                customFields.push({
+                    api_name: apiName,
+                    label: `SIM Card Number ${i}`,
+                    value: cleanedSimCards[index]
+                });
+            }
         }
 
         await updateSubscriptionFields(subscriptionId, customFields);
@@ -170,6 +208,7 @@ module.exports = async (req, res) => {
         await sendErrorEmail({
             invoice_id: invoice_id,
             sim_card: sim_card,
+            sim_cards: Array.isArray(sim_cards) ? sim_cards : undefined,
             tracking_number: tracking_number,
             error: error.message || 'Failed to mark order as shipped',
             stack: error.stack

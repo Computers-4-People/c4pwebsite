@@ -298,6 +298,20 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
 // Format order (subscription with custom field address) for queue display
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
+    const simCardNumbers = [];
+
+    if (record.cf_sim_card_number) {
+        simCardNumbers.push(record.cf_sim_card_number);
+    }
+    if (record.cf_secondary_sim_card_number) {
+        simCardNumbers.push(record.cf_secondary_sim_card_number);
+    }
+    for (let i = 3; i <= 30; i += 1) {
+        const fieldName = `cf_sim_card_number_${i}`;
+        if (record[fieldName]) {
+            simCardNumbers.push(record[fieldName]);
+        }
+    }
 
     // Use subscription custom fields for address
     const shippingAddress = {
@@ -330,6 +344,7 @@ function formatOrderForQueue(record) {
         device_type: deviceType,
         status: shippingStatus === 'Shipped' ? 'shipped' : (record.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
         assigned_sim: record.cf_sim_card_number || '',
+        sim_card_numbers: simCardNumbers,
         tracking_number: record.cf_tracking_number || '',
         line_status: record.cf_line_status || '',
         device_status: record.cf_device_status || '',
