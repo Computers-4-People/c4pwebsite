@@ -117,102 +117,66 @@ module.exports = async (req, res) => {
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
-        // Start with existing custom fields and update matching ones
         const cleanedSimCards = Array.isArray(sim_cards)
             ? sim_cards.map((value) => String(value || '').trim()).filter(Boolean)
             : (sim_card ? [String(sim_card).trim()] : []);
 
-        const customFields = fullSubscription.custom_fields.map(field => {
-            // Match by api_name (cf_*) which is more reliable than label
-            if (field.api_name === 'cf_shipping_status') {
-                return { ...field, value: 'Shipped' };
+        const fields = fullSubscription.custom_fields || [];
+        const byApi = new Map();
+        const byLabel = new Map();
+
+        fields.forEach((field) => {
+            if (field.api_name) {
+                byApi.set(field.api_name, field);
             }
-            if (field.api_name === 'cf_shipping_date') {
-                return { ...field, value: currentDate };
+            if (field.label) {
+                byLabel.set(field.label, field);
             }
-            if (field.api_name === 'cf_tracking_number' && tracking_number) {
-                return { ...field, value: tracking_number };
-            }
-            if ((field.api_name === 'cf_sim_card_number' || field.label === 'SIM Card Number') && cleanedSimCards[0]) {
-                return { ...field, value: cleanedSimCards[0] };
-            }
-            if (
-                (field.api_name === 'cf_secondary_sim_card_number' || field.label === 'Secondary SIM Card Number') &&
-                cleanedSimCards[1]
-            ) {
-                return { ...field, value: cleanedSimCards[1] };
-            }
-            if (field.api_name === 'cf_device_sn' && device_sn) {
-                return { ...field, value: device_sn };
-            }
-            if (field.api_name === 'cf_device_s_n' && device_sn) {
-                return { ...field, value: device_sn };
-            }
-            if (field.api_name?.startsWith('cf_sim_card_number_')) {
-                const suffix = Number(field.api_name.replace('cf_sim_card_number_', ''));
-                const index = Number.isFinite(suffix) ? suffix - 1 : null;
-                if (index !== null && index >= 0 && cleanedSimCards[index]) {
-                    return { ...field, value: cleanedSimCards[index] };
-                }
-            }
-            if (field.label?.startsWith('SIM Card Number ')) {
-                const suffix = Number(field.label.replace('SIM Card Number ', ''));
-                const index = Number.isFinite(suffix) ? suffix - 1 : null;
-                if (index !== null && index >= 0 && cleanedSimCards[index]) {
-                    return { ...field, value: cleanedSimCards[index] };
-                }
-            }
-            return field;
         });
 
-        // Check if fields exist, if not add them
-        const fieldNames = customFields.map(f => f.api_name);
+        const payload = [];
+        const addFieldValue = (field, value) => {
+            if (!field || value === undefined) return;
+            const entry = { value };
+            if (field.api_name) entry.api_name = field.api_name;
+            if (field.label) entry.label = field.label;
+            payload.push(entry);
+        };
 
-        if (!fieldNames.includes('cf_shipping_date')) {
-            customFields.push({
-                label: 'Shipping Date',
-                value: currentDate
-            });
+        addFieldValue(byApi.get('cf_shipping_status') || byLabel.get('Shipping Status'), 'Shipped');
+        addFieldValue(byApi.get('cf_shipping_date') || byLabel.get('Shipping Date'), currentDate);
+        if (tracking_number) {
+            addFieldValue(byApi.get('cf_tracking_number') || byLabel.get('Tracking Number'), tracking_number);
         }
 
-        if (tracking_number && !fieldNames.includes('cf_tracking_number')) {
-            customFields.push({
-                label: 'Tracking Number',
-                value: tracking_number
-            });
+        if (cleanedSimCards[0]) {
+            addFieldValue(byApi.get('cf_sim_card_number') || byLabel.get('SIM Card Number'), cleanedSimCards[0]);
         }
-
-        if (cleanedSimCards[0] && !fieldNames.includes('cf_sim_card_number')) {
-            customFields.push({
-                label: 'SIM Card Number',
-                value: cleanedSimCards[0]
-            });
-        }
-
-        if (cleanedSimCards[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
-            customFields.push({
-                label: 'Secondary SIM Card Number',
-                value: cleanedSimCards[1]
-            });
+        if (cleanedSimCards[1]) {
+            addFieldValue(
+                byApi.get('cf_secondary_sim_card_number') || byLabel.get('Secondary SIM Card Number'),
+                cleanedSimCards[1]
+            );
         }
 
         for (let i = 3; i <= 30; i += 1) {
             const index = i - 1;
-            if (!cleanedSimCards[index]) {
-                continue;
-            }
+            const value = cleanedSimCards[index];
+            if (!value) continue;
             const apiName = `cf_sim_card_number_${i}`;
-            if (!fieldNames.includes(apiName)) {
-                customFields.push({
-                    label: `SIM Card Number ${i}`,
-                    value: cleanedSimCards[index]
-                });
-            }
+            const label = `SIM Card Number ${i}`;
+            addFieldValue(byApi.get(apiName) || byLabel.get(label), value);
         }
 
-        // Only update device SN if the field already exists on the subscription
+        if (device_sn) {
+            addFieldValue(byApi.get('cf_device_sn') || byApi.get('cf_device_s_n') || byLabel.get('Device SN'), device_sn);
+        }
 
-        await updateSubscriptionFields(subscriptionId, customFields);
+        if (payload.length === 0) {
+            throw new Error('No matching custom fields found to update.');
+        }
+
+        await updateSubscriptionFields(subscriptionId, payload);
 
         return res.status(200).json({
             success: true,
