@@ -352,7 +352,7 @@ function formatOrderForQueue(record) {
         subscription_status: record.status || record.subscription_status || '',
         active_on_tmobile: record.cf_active_on_tmobile || '',
         tmobile_line_number: record.cf_tmobile_line_number || '',
-        device_sn: record.cf_device_sn || '',
+        device_sn: record.cf_device_sn || record.cf_device_s_n || '',
         sim_card_quantity: record.cf_sim_card_quantity || '',
         device_quantity: record.cf_device_quantity || '',
         created_date: record.created_time,

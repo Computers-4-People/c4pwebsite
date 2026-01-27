@@ -720,6 +720,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                   Device Qty
                 </th>
               )}
+              {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Device SN
+                </th>
+              )}
               <th
                 className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                 onClick={() => sortOrders('created_date')}
@@ -780,6 +785,15 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                       <span className="text-gray-400 text-xs italic">N/A</span>
                     ) : (
                       order.device_quantity || '—'
+                    )}
+                  </td>
+                )}
+                {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                  <td className="px-4 py-3 text-sm text-gray-500 font-mono">
+                    {order.device_type?.toLowerCase() === 'sim card only' ? (
+                      <span className="text-gray-400 text-xs italic">N/A</span>
+                    ) : (
+                      order.device_sn || '—'
                     )}
                   </td>
                 )}
