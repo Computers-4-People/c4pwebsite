@@ -29,42 +29,65 @@ module.exports = async (req, res) => {
 
         const normalizedEmail = email.trim().toLowerCase();
         const shouldFindAll = String(findAll).toLowerCase() === 'true';
-        let page = 1;
-        let hasMore = true;
-        let subscriptions = [];
 
-        // Paginate through subscriptions and collect matching emails
-        while (hasMore) {
-            const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+        // Step 1: Find customer by email
+        let customerId = null;
+        let customerPage = 1;
+        let customerHasMore = true;
+
+        console.log('Step 1: Searching for customer with email:', email);
+
+        while (customerHasMore && !customerId) {
+            const customerResponse = await axios.get(`https://www.zohoapis.com/billing/v1/customers`, {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
                     'X-com-zoho-subscriptions-organizationid': orgId
                 },
                 params: {
                     per_page: 200,
-                    page
+                    page: customerPage
                 }
             });
 
-            const pageSubscriptions = response.data.subscriptions || [];
-            const pageMatches = pageSubscriptions.filter(sub => {
-                const subEmail = sub.email || sub.customer?.email || '';
-                return subEmail.toLowerCase() === normalizedEmail;
+            const customers = customerResponse.data.customers || [];
+            const matchingCustomer = customers.find(cust => {
+                const custEmail = cust.email || '';
+                return custEmail.toLowerCase() === normalizedEmail;
             });
 
-            if (pageMatches.length > 0) {
-                subscriptions = subscriptions.concat(pageMatches);
-                if (!shouldFindAll) {
-                    break;
-                }
+            if (matchingCustomer) {
+                customerId = matchingCustomer.customer_id;
+                console.log('Found customer:', customerId);
+                break;
             }
 
-            const pageContext = response.data.page_context || {};
-            hasMore = Boolean(pageContext.has_more_page);
-            page += 1;
+            const custPageContext = customerResponse.data.page_context || {};
+            customerHasMore = Boolean(custPageContext.has_more_page);
+            customerPage += 1;
         }
 
-        console.log(`Found ${subscriptions.length} subscriptions matching email ${email}`);
+        if (!customerId) {
+            console.log('No customer found for email:', email);
+            return res.status(404).json({ success: false, error: 'No subscription found' });
+        }
+
+        // Step 2: Get subscriptions for this customer
+        console.log('Step 2: Fetching subscriptions for customer:', customerId);
+
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: {
+                customer_id: customerId,
+                per_page: 200
+            }
+        });
+
+        const subscriptions = subscriptionsResponse.data.subscriptions || [];
+
+        console.log(`Found ${subscriptions.length} subscriptions for customer ${customerId}`);
 
         if (subscriptions.length === 0) {
             console.log('No subscription found for email:', email);

@@ -152,14 +152,6 @@ export default function ShieldSimCardTwelveMonths() {
             </div>
 
             <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto relative">
-              <div className="absolute top-4 left-4 flex gap-2">
-                <span className="inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Fall Sale
-                </span>
-              </div>
-              <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                Ends Oct 31st
-              </span>
               <img src={selectedImage} alt="SIM Card" className="max-h-full max-w-full object-contain" />
             </div>
           </div>
