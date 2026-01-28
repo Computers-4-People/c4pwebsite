@@ -6,7 +6,7 @@ export default function ZohoCheckoutFrame({
   baseUrl,
   params = {},
   height = "1300px",
-  mobileHeight = "140vh",
+  mobileHeight = "130vh",
   scrolling = "no",
   mobileScrolling = "yes",
 }) {
@@ -41,7 +41,7 @@ export default function ZohoCheckoutFrame({
     border: "none",
     backgroundColor: "#fff",
     display: "block",
-    ...(isMobile ? { minHeight: "900px" } : null),
+    ...(isMobile ? { minHeight: "1000px" } : null),
   };
 
   return (

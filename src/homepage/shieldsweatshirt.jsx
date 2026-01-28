@@ -1,38 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { shieldFaqs } from "./shieldFaqs";
 
-const faqs = [
-  {
-    question: "What sizes are available?",
-    answer:
-      "We offer sizes from S to XXL. Please check the size chart on the checkout page for detailed measurements.",
-  },
-  {
-    question: "When will my sweatshirt arrive?",
-    answer:
-      "Orders typically ship within 3-5 business days and arrive within 7-10 business days depending on your location.",
-  },
-  {
-    question: "What is the sweatshirt made of?",
-    answer:
-      "Our Shield sweatshirts are made from high-quality, comfortable cotton-blend fabric designed for everyday wear.",
-  },
-  {
-    question: "Can I return or exchange my sweatshirt?",
-    answer:
-      "Yes! We accept returns and exchanges within 30 days of purchase. Items must be unworn and in original condition. Contact us at info@computers4people.org to initiate a return.",
-  },
-  {
-    question: "Where does my money go?",
-    answer:
-      "100% of profits go to Computers 4 People, a nonprofit working to close the digital divide by giving away free computers and internet access to people who need them. Your purchase directly supports someone getting connected.",
-  },
-  {
-    question: "Is this a limited edition item?",
-    answer:
-      "Yes! This is a limited quantity release. Once they're gone, they're gone. Get yours while supplies last.",
-  },
-];
+const faqs = shieldFaqs;
 
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
