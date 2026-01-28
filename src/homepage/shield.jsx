@@ -356,7 +356,7 @@ export default function ShieldHeader() {
       >
         <a href="#plans">
           <motion.button
-            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(0, 214, 78, 0.3)' }}
+            whileHover={{ scale: 1.01, boxShadow: '0 0 24px rgba(0, 214, 78, 0.24)' }}
             whileTap={{ scale: 0.98 }}
             className="font-semibold py-3 px-6 lg:py-4 lg:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-200"
             style={{ backgroundColor: '#00d64e', color: '#00280e' }}
@@ -367,7 +367,7 @@ export default function ShieldHeader() {
 
         <a href="/shield-auth">
           <motion.button
-            whileHover={{ scale: 1.02, backgroundColor: 'rgba(244, 249, 246, 0.1)' }}
+            whileHover={{ scale: 1.01, backgroundColor: 'rgba(244, 249, 246, 0.08)' }}
             whileTap={{ scale: 0.98 }}
             className="py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 border backdrop-blur-sm"
             style={{
@@ -584,7 +584,7 @@ export default function ShieldHeader() {
                           key={plan.key}
                           type="button"
                           onClick={() => setBillingCycle(plan.key)}
-                          className={`relative text-left rounded-2xl border px-6 py-6 min-h-[190px] transition-transform duration-200 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(15,23,42,0.14)] ${
+                          className={`relative text-left rounded-2xl border px-6 py-6 min-h-[190px] transition-shadow duration-200 hover:shadow-[0_18px_40px_rgba(15,23,42,0.14)] ${
                             selected
                               ? "border-emerald-500 bg-emerald-50/40 shadow-[0_14px_30px_rgba(34,197,94,0.25)]"
                               : "border-gray-200 bg-white hover:border-gray-300"
