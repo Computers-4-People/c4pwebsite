@@ -117,67 +117,89 @@ module.exports = async (req, res) => {
         // Update subscription with shipping info
         const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
 
-        // Clean up SIM card inputs - support both single sim_card and sim_cards array
-        const cleanedSimCards = Array.isArray(sim_cards)
-            ? sim_cards.map((value) => String(value || '').trim()).filter(Boolean)
+        // Support both single sim_card and sim_cards array
+        const simCardValues = Array.isArray(sim_cards)
+            ? sim_cards.map(v => String(v || '').trim()).filter(Boolean)
             : (sim_card ? [String(sim_card).trim()] : []);
 
-        // Build a map of api_name -> new value for fields we want to update
-        const updates = new Map();
-        updates.set('cf_shipping_status', 'Shipped');
-        updates.set('cf_shipping_date', currentDate);
-        if (tracking_number) {
-            updates.set('cf_tracking_number', tracking_number);
-        }
-        if (cleanedSimCards[0]) {
-            updates.set('cf_sim_card_number', cleanedSimCards[0]);
-        }
-        if (cleanedSimCards[1]) {
-            updates.set('cf_secondary_sim_card_number', cleanedSimCards[1]);
-        }
-        // SIM cards 3-30
-        for (let i = 3; i <= 30; i++) {
-            const value = cleanedSimCards[i - 1];
-            if (value) {
-                updates.set(`cf_sim_card_number_${i}`, value);
-            }
-        }
-        if (device_sn) {
-            updates.set('cf_device_sn', device_sn);
-        }
-
-        // Map over ALL existing custom fields, updating the ones we need
+        // Start with existing custom fields and update matching ones
         const customFields = fullSubscription.custom_fields.map(field => {
-            if (field.api_name && updates.has(field.api_name)) {
-                return { ...field, value: updates.get(field.api_name) };
+            // Match by api_name (cf_*) which is more reliable than label
+            if (field.api_name === 'cf_shipping_status') {
+                return { ...field, value: 'Shipped' };
+            }
+            if (field.api_name === 'cf_shipping_date') {
+                return { ...field, value: currentDate };
+            }
+            if (field.api_name === 'cf_tracking_number' && tracking_number) {
+                return { ...field, value: tracking_number };
+            }
+            // Primary SIM card
+            if (field.api_name === 'cf_sim_card_number' && simCardValues[0]) {
+                return { ...field, value: simCardValues[0] };
+            }
+            // Secondary SIM card
+            if (field.api_name === 'cf_secondary_sim_card_number' && simCardValues[1]) {
+                return { ...field, value: simCardValues[1] };
+            }
+            // SIM cards 3-30
+            for (let i = 3; i <= 30; i++) {
+                if (field.api_name === `cf_sim_card_number_${i}` && simCardValues[i - 1]) {
+                    return { ...field, value: simCardValues[i - 1] };
+                }
+            }
+            // Device serial number
+            if ((field.api_name === 'cf_device_sn' || field.api_name === 'cf_device_s_n') && device_sn) {
+                return { ...field, value: device_sn };
             }
             return field;
         });
 
-        // Check which fields already exist by api_name
-        const existingApiNames = new Set(customFields.map(f => f.api_name).filter(Boolean));
+        // Check if fields exist, if not add them
+        const fieldNames = customFields.map(f => f.api_name);
 
-        // Add any fields that don't exist yet
-        if (!existingApiNames.has('cf_shipping_date')) {
-            customFields.push({ label: 'Shipping Date', value: currentDate });
+        if (!fieldNames.includes('cf_shipping_date')) {
+            customFields.push({
+                label: 'Shipping Date',
+                value: currentDate
+            });
         }
-        if (tracking_number && !existingApiNames.has('cf_tracking_number')) {
-            customFields.push({ label: 'Tracking Number', value: tracking_number });
+
+        if (tracking_number && !fieldNames.includes('cf_tracking_number')) {
+            customFields.push({
+                label: 'Tracking Number',
+                value: tracking_number
+            });
         }
-        if (cleanedSimCards[0] && !existingApiNames.has('cf_sim_card_number')) {
-            customFields.push({ label: 'SIM Card Number', value: cleanedSimCards[0] });
+
+        if (simCardValues[0] && !fieldNames.includes('cf_sim_card_number')) {
+            customFields.push({
+                label: 'SIM Card Number',
+                value: simCardValues[0]
+            });
         }
-        if (cleanedSimCards[1] && !existingApiNames.has('cf_secondary_sim_card_number')) {
-            customFields.push({ label: 'Secondary SIM Card Number', value: cleanedSimCards[1] });
+
+        if (simCardValues[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
+            customFields.push({
+                label: 'Secondary SIM Card Number',
+                value: simCardValues[1]
+            });
         }
+
         for (let i = 3; i <= 30; i++) {
-            const value = cleanedSimCards[i - 1];
-            if (value && !existingApiNames.has(`cf_sim_card_number_${i}`)) {
-                customFields.push({ label: `SIM Card Number ${i}`, value });
+            if (simCardValues[i - 1] && !fieldNames.includes(`cf_sim_card_number_${i}`)) {
+                customFields.push({
+                    label: `SIM Card Number ${i}`,
+                    value: simCardValues[i - 1]
+                });
             }
         }
-        if (device_sn && !existingApiNames.has('cf_device_sn')) {
-            customFields.push({ label: 'Device SN', value: device_sn });
+
+        if (device_sn && !fieldNames.includes('cf_device_sn') && !fieldNames.includes('cf_device_s_n')) {
+            customFields.push({
+                label: 'Device SN',
+                value: device_sn
+            });
         }
 
         await updateSubscriptionFields(subscriptionId, customFields);
