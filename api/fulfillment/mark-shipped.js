@@ -122,9 +122,13 @@ module.exports = async (req, res) => {
             ? sim_cards.map(v => String(v || '').trim()).filter(Boolean)
             : (sim_card ? [String(sim_card).trim()] : []);
 
-        // Start with existing custom fields and update matching ones
-        const customFields = fullSubscription.custom_fields.map(field => {
-            // Match by api_name (cf_*) which is more reliable than label
+        // Build the custom fields payload
+        // We need to include ALL existing fields plus any new ones we want to set
+        const existingFields = fullSubscription.custom_fields || [];
+        const existingApiNames = new Set(existingFields.map(f => f.api_name).filter(Boolean));
+
+        // Start with existing fields, updating values where needed
+        const customFields = existingFields.map(field => {
             if (field.api_name === 'cf_shipping_status') {
                 return { ...field, value: 'Shipped' };
             }
@@ -134,30 +138,45 @@ module.exports = async (req, res) => {
             if (field.api_name === 'cf_tracking_number' && tracking_number) {
                 return { ...field, value: tracking_number };
             }
-            // Primary SIM card
             if (field.api_name === 'cf_sim_card_number' && simCardValues[0]) {
                 return { ...field, value: simCardValues[0] };
             }
-            // Secondary SIM card
             if (field.api_name === 'cf_secondary_sim_card_number' && simCardValues[1]) {
                 return { ...field, value: simCardValues[1] };
             }
-            // SIM cards 3-30
             for (let i = 3; i <= 30; i++) {
                 if (field.api_name === `cf_sim_card_number_${i}` && simCardValues[i - 1]) {
                     return { ...field, value: simCardValues[i - 1] };
                 }
             }
-            // Device serial number
             if ((field.api_name === 'cf_device_sn' || field.api_name === 'cf_device_s_n') && device_sn) {
                 return { ...field, value: device_sn };
             }
             return field;
         });
 
-        // Note: We can only update fields that already exist in Zoho.
-        // We cannot add new custom fields via API - they must be created in Zoho first.
-        // The map above already handles updating existing fields.
+        // Add fields that weren't in the subscription but exist in Zoho schema
+        // These will be set for the first time on this subscription
+        if (!existingApiNames.has('cf_shipping_date')) {
+            customFields.push({ api_name: 'cf_shipping_date', value: currentDate });
+        }
+        if (tracking_number && !existingApiNames.has('cf_tracking_number')) {
+            customFields.push({ api_name: 'cf_tracking_number', value: tracking_number });
+        }
+        if (simCardValues[0] && !existingApiNames.has('cf_sim_card_number')) {
+            customFields.push({ api_name: 'cf_sim_card_number', value: simCardValues[0] });
+        }
+        if (simCardValues[1] && !existingApiNames.has('cf_secondary_sim_card_number')) {
+            customFields.push({ api_name: 'cf_secondary_sim_card_number', value: simCardValues[1] });
+        }
+        for (let i = 3; i <= 30; i++) {
+            if (simCardValues[i - 1] && !existingApiNames.has(`cf_sim_card_number_${i}`)) {
+                customFields.push({ api_name: `cf_sim_card_number_${i}`, value: simCardValues[i - 1] });
+            }
+        }
+        if (device_sn && !existingApiNames.has('cf_device_s_n') && !existingApiNames.has('cf_device_sn')) {
+            customFields.push({ api_name: 'cf_device_s_n', value: device_sn });
+        }
 
         await updateSubscriptionFields(subscriptionId, customFields);
 
