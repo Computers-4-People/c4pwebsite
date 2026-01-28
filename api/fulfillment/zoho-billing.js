@@ -215,10 +215,41 @@ async function getPendingTmobileActivations() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions pending T-Mobile activation`);
 
-        return filteredSubscriptions.map(sub => ({
-            ...sub,
-            _source: 'subscription'
-        }));
+        // Fetch full details for each subscription to get all SIM card fields
+        const detailedSubscriptions = [];
+        for (const sub of filteredSubscriptions) {
+            try {
+                const detailResponse = await axios.get(
+                    `https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`,
+                    {
+                        headers: {
+                            'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                            'X-com-zoho-subscriptions-organizationid': orgId
+                        }
+                    }
+                );
+                const fullSub = detailResponse.data.subscription;
+                // Extract custom field values from the custom_fields array
+                const customFieldValues = {};
+                if (fullSub.custom_fields) {
+                    fullSub.custom_fields.forEach(field => {
+                        if (field.api_name) {
+                            customFieldValues[field.api_name] = field.value;
+                        }
+                    });
+                }
+                detailedSubscriptions.push({
+                    ...fullSub,
+                    ...customFieldValues,
+                    _source: 'subscription'
+                });
+            } catch (err) {
+                console.error(`Failed to fetch details for subscription ${sub.subscription_id}:`, err.message);
+                detailedSubscriptions.push({ ...sub, _source: 'subscription' });
+            }
+        }
+
+        return detailedSubscriptions;
     } catch (error) {
         console.error('Error fetching pending T-Mobile activations:', error.response?.data || error.message);
         throw error;
