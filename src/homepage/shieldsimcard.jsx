@@ -86,7 +86,7 @@ function FAQSection() {
 
   return (
     <div className="bg-white py-20 px-6 border-t border-gray-200">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
           Frequently Asked Questions
         </h2>
@@ -95,9 +95,9 @@ function FAQSection() {
             <div key={index} className="border-b border-gray-200 pb-4">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center"
+                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center gap-3 min-w-0"
               >
-                {faq.question}
+                <span className="truncate">{faq.question}</span>
                 <span>{openIndex === index ? "−" : "+"}</span>
               </button>
               <AnimatePresence initial={false}>
@@ -131,7 +131,7 @@ export default function Shieldsimcard() {
       {/* Back Button */}
       <div className="max-w-7xl mx-auto mb-10">
         <a
-          href="/shield"
+          href="/shield#plans"
           className="inline-block text-c4p hover:underline font-medium text-sm"
         >
           ← Back to Shield
@@ -143,8 +143,14 @@ export default function Shieldsimcard() {
         {/* Left: Product Display */}
         <div className="w-full">
           <div className="flex flex-col sm:flex-row gap-6 w-full">
-            {/* Thumbnails: left on desktop, below on mobile */}
-            <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 sm:pt-2">
+            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto order-1 sm:order-2">
+              <img
+                src={selectedImage}
+                alt="SIM Card"
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
+            <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 order-2 sm:order-1">
               {images.map((img, index) => (
                 <img
                   key={index}
@@ -157,53 +163,71 @@ export default function Shieldsimcard() {
                 />
               ))}
             </div>
-
-            {/* Main Image */}
-            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto">
-              <img
-                src={selectedImage}
-                alt="SIM Card"
-                className="max-h-full max-w-full object-contain"
-              />
-            </div>
           </div>
 
-          {/* Title & Description */}
-          <div className="pt-4 sm:pl-[4.5rem]">
+          <div className="pt-4 sm:pl-[4.5rem] hidden lg:block">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Unlimited Internet Plan – SIM Card Only (No Device Included)
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-Already have your own device? This plan gives you unlimited 4G and 5G internet for only $14.89/month.
+              Already have your own device? This plan gives you unlimited 4G and 5G internet for only $14.89/month.
 
-<br /><br />
-<b>This does not include a device.</b><br />
-You need to use your own hotspot, tablet, or wearable. It must be unlocked and work with T-Mobile or GSM SIM cards.
+              <br /><br />
+              <b>This does not include a device.</b><br />
+              You need to use your own hotspot, tablet, or wearable. It must be unlocked and work with T-Mobile or GSM SIM cards.
 
-<br /><br />
-<b>How it works:</b><br />
-- We ship you a free SIM card (1-2 weeks)<br />
-- Put it into your device<br />
-- Turn it on and start using the internet
+              <br /><br />
+              <b>How it works:</b><br />
+              - We ship you a free SIM card (1-2 weeks)<br />
+              - Put it into your device<br />
+              - Turn it on and start using the internet
 
-<br /><br />
-No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
-<br/><br/>
-Prepaid Service<br />
-Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
-            
-</p>
-<p className="text-sm text-gray-600 mt-10">
-  <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
-</p>
+              <br /><br />
+              No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
+              <br/><br/>
+              Prepaid Service<br />
+              Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
+            </p>
+            <p className="text-sm text-gray-600 mt-10">
+              <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
+            </p>
           </div>
         </div>
 
-        {/* Right: Zoho Checkout Embed (aligned to image top) */}
+        {/* Right: Checkout (mobile title/description) */}
         <div className="w-full mt-0 lg:-mt-20">
+          <div className="lg:hidden mb-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              Unlimited Internet Plan – SIM Card Only (No Device Included)
+            </h1>
+            <p className="text-gray-700 text-base">
+              Already have your own device? This plan gives you unlimited 4G and 5G internet for only $14.89/month.
+            </p>
+          </div>
         <ZohoCheckoutFrame
   baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
 />
+          <div className="mt-4 lg:hidden">
+            <p className="text-gray-700 text-base max-w-xl">
+              <b>This does not include a device.</b><br />
+              You need to use your own hotspot, tablet, or wearable. It must be unlocked and work with T-Mobile or GSM SIM cards.
+
+              <br /><br />
+              <b>How it works:</b><br />
+              - We ship you a free SIM card (1-2 weeks)<br />
+              - Put it into your device<br />
+              - Turn it on and start using the internet
+
+              <br /><br />
+              No contracts. No hidden fees. No internet slowdowns. Just fast, simple internet that works nationwide.
+              <br/><br/>
+              Prepaid Service<br />
+              Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
+            </p>
+            <p className="text-sm text-gray-600 mt-10">
+              <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
+            </p>
+          </div>
         </div>
       </div>
 

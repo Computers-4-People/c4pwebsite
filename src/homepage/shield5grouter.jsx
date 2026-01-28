@@ -87,7 +87,7 @@ function FAQSection() {
 
   return (
     <div className="bg-white py-20 px-6 border-t border-gray-200">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
           Frequently Asked Questions
         </h2>
@@ -96,9 +96,9 @@ function FAQSection() {
             <div key={index} className="border-b border-gray-200 pb-4">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center"
+                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center gap-3 min-w-0"
               >
-                {faq.question}
+                <span className="truncate">{faq.question}</span>
                 <span>{openIndex === index ? "−" : "+"}</span>
               </button>
               <AnimatePresence initial={false}>
@@ -133,7 +133,7 @@ export default function Shield5grouter() {
       {/* Back Button */}
       <div className="max-w-7xl mx-auto mb-10">
         <a
-          href="/shield"
+          href="/shield#plans"
           className="inline-block text-c4p hover:underline font-medium text-sm"
         >
           ← Back to Shield
@@ -145,8 +145,14 @@ export default function Shield5grouter() {
         {/* Left: Product Display */}
         <div className="w-full">
           <div className="flex flex-col sm:flex-row gap-6 w-full">
-            {/* Thumbnails: left on desktop, below on mobile */}
-            <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 sm:pt-2">
+            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto order-1 sm:order-2">
+              <img
+                src={selectedImage}
+                alt="SIM Card"
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
+            <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 order-2 sm:order-1">
               {images.map((img, index) => (
                 <img
                   key={index}
@@ -159,22 +165,76 @@ export default function Shield5grouter() {
                 />
               ))}
             </div>
-
-            {/* Main Image */}
-            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto">
-              <img
-                src={selectedImage}
-                alt="SIM Card"
-                className="max-h-full max-w-full object-contain"
-              />
-            </div>
           </div>
 
-          {/* Title & Description */}
-          <div className="pt-4 sm:pl-[4.5rem]">
+          <div className="pt-4 sm:pl-[4.5rem] hidden lg:block">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Shield 5G Home Hotspot + Unlimited Internet
             </h1>
+            <p className="text-gray-700 text-base max-w-xl">
+              Home router included. Unlimited internet for $14.89/month.
+            </p>
+            <p className="text-gray-700 text-base max-w-xl mt-6">
+              Need stronger Wi-Fi for your whole home? This is it.
+              The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
+
+              <br /><br />
+              <b>What’s included:</b><br />
+              - Shield 5G Home Router<br />
+              - Unlimited 4G/5G Internet<br />
+              - SIM card shipped seperately<br />
+              - Connect multiple devices simultaneously<br />
+
+              <br />
+              <b>Features:</b><br />
+              - Stronger and faster signal than standard mobile hotspots<br />
+              - Built-in battery lasts up to 4 hours when unplugged<br />
+              - Fully portable, use it at home, work, or on the go<br />
+              - Simple plug-and-play setup, just power on and connect<br />
+              - Integrated VPN for secure browsing<br />
+              - Customizable Wi-Fi name (SSID) and password<br />
+              - Dual-band 2.4 GHz + 5 GHz networks, combine or separate as needed<br />
+              - Dedicated guest network for visitors<br />
+              - Smart “best placement” signal test to find the strongest spot in your home<br />
+              - And more advanced features available<br />
+
+              <br />
+              <b>Plan Details:</b><br />
+              - $14.89/month for truly unlimited internet<br />
+              - No data caps, no throttling, no surprise fees<br />
+              - Cancel anytime - no contracts<br />
+
+              <br />
+              Free shipping anywhere in the U.S. Your device arrives pre-configured and ready to use.
+              <br /><br />
+              <b>Return & Service Policy</b><br />
+14-Day Return Policy<br />
+You may return your Shield device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
+
+Prepaid Service<br />
+Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
+            </p>
+            <p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
+</p>
+          </div>
+        </div>
+
+        {/* Right: Checkout (mobile title/description) */}
+        <div className="w-full mt-0 lg:-mt-20">
+          <div className="lg:hidden mb-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              Shield 5G Home Hotspot + Unlimited Internet
+            </h1>
+            <p className="text-gray-700 text-base">
+              Home router included. Unlimited internet for $14.89/month.
+            </p>
+          </div>
+        <ZohoCheckoutFrame
+  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
+  params={{ "addon_code[0]": "5", "addon_quantity[0]": "1" }}
+/>
+          <div className="mt-4 lg:hidden">
             <p className="text-gray-700 text-base max-w-xl">
               Need stronger Wi-Fi for your whole home? This is it.
               The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
@@ -216,17 +276,9 @@ Prepaid Service<br />
 Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
             </p>
             <p className="text-sm text-gray-600 mt-10">
-  <b>Looking to buy in bulk?</b> We offer custom partnerships for schools, nonprofits, and community programs. Reach out to discuss large orders: <a href="https://www.computers4people.org/contact" className="text-c4p underline">computers4people.org/contact</a>.
+  <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
 </p>
           </div>
-        </div>
-
-        {/* Right: Zoho Checkout Embed (aligned to image top) */}
-        <div className="w-full mt-0 lg:-mt-20">
-        <ZohoCheckoutFrame
-  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
-  params={{ "addon_code[0]": "5", "addon_quantity[0]": "1" }}
-/>
         </div>
       </div>
 

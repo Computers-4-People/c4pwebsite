@@ -42,7 +42,7 @@ function FAQSection() {
 
   return (
     <div className="bg-white py-20 px-6 border-t border-gray-200">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
           Frequently Asked Questions
         </h2>
@@ -51,9 +51,9 @@ function FAQSection() {
             <div key={index} className="border-b border-gray-200 pb-4">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center"
+                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center gap-3 min-w-0"
               >
-                {faq.question}
+                <span className="truncate">{faq.question}</span>
                 <span>{openIndex === index ? "−" : "+"}</span>
               </button>
               <AnimatePresence initial={false}>
@@ -89,7 +89,7 @@ export default function ShieldSweatshirt() {
       {/* Back Button */}
       <div className="max-w-7xl mx-auto mb-10">
         <a
-          href="/shield"
+          href="/shield#plans"
           className="inline-block text-c4p hover:underline font-medium text-sm"
         >
           ← Back to Shield

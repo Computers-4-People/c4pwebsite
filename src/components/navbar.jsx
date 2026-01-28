@@ -91,11 +91,18 @@ export default function Navbar() {
         }
     ];
 
+    // Check if we're on a Shield page
+    const isShieldPage = location.pathname.toLowerCase().includes('shield');
+
     return (
-        <div className={`fixed z-50 w-full text-white ${scrollPosition > 750 ? 'bg-black opacity-80' : 'bg-gradient-to-b from-black'}`} onMouseLeave={() => setActiveDropdown(null)}>
+        <div className={`fixed z-50 w-full text-white ${isShieldPage ? 'bg-[#00280e]' : (scrollPosition > 750 ? 'bg-black opacity-80' : 'bg-gradient-to-b from-black')}`} onMouseLeave={() => setActiveDropdown(null)}>
             <div className="flex justify-between items-center h-16 px-5 md:px-10">
-                <Link to='/' className="flex-shrink-0">
-                    <img src='/c4plogo.png' className='h-10 w-auto' alt='C4P Logo'></img>
+                <Link to={isShieldPage ? '/shield' : '/'} className="flex-shrink-0">
+                    <img
+                        src={isShieldPage ? '/Hotspot/shieldw.png' : '/c4plogo.png'}
+                        className='h-10 w-auto'
+                        alt={isShieldPage ? 'Shield Logo' : 'C4P Logo'}
+                    />
                 </Link>
 
                 <button onClick={() => setMenuVisible(!isMenuVisible)} className="md:hidden">

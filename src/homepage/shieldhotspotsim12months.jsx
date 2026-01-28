@@ -1,8 +1,8 @@
-// pages/shieldsimcard6months.jsx
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
 import ZohoCheckoutFrame from "../components/ZohoCheckoutFrame";
+
 
 const faqs = [
   {
@@ -14,7 +14,7 @@ const faqs = [
     question: "Who can get Shield Internet?",
     answer:
       "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
-  },
+  },  
   {
     question: "See Shield Internet's Broadband Label",
     answer: (
@@ -46,7 +46,7 @@ const faqs = [
         </a>.
       </>
     ),
-  },
+  },  
   {
     question: "When will my order arrive?",
     answer:
@@ -61,7 +61,7 @@ const faqs = [
     question: "Is the router locked or restricted?",
     answer:
       "The Shield 5G Home Router is fully unlocked and portable. It works with most SIM cards and supports 5G, 4G, and 3G networks. The Shield 5G Hotspot, however, is locked to work only with our Shield Internet plan.",
-  },
+  },  
   {
     question: "What if I have technical issues?",
     answer:
@@ -76,12 +76,14 @@ const faqs = [
     question: "Can I buy in bulk?",
     answer:
       "Yes! If you're looking to provide internet access for a group, organization, or program, please reach out to us to explore a custom partnership: info@computers4people.org",
-  },
+  }  
 ];
 
 function FAQSection() {
   const [openIndex, setOpenIndex] = useState(null);
-  const toggleFAQ = (index) => setOpenIndex(openIndex === index ? null : index);
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <div className="bg-white py-20 px-6 border-t border-gray-200">
@@ -120,40 +122,41 @@ function FAQSection() {
   );
 }
 
-export default function ShieldSimCardSixMonths() {
-  const images = ["/Hotspot/simcard.png", "/Hotspot/tmobilesimside.png"];
+export default function Shieldhotspotsim12Months() {
+  const images = ["/Hotspot/hotspotsim.png","/Hotspot/hotspot.png", "/Hotspot/simcard.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   useAffiliatePrefill();
 
   return (
     <div className="bg-white py-20 px-4 sm:px-8">
+      {/* Back Button */}
       <div className="max-w-7xl mx-auto mb-10">
-        <a href="/shield#plans" className="inline-block text-c4p hover:underline font-medium text-sm">
+        <a
+          href="/shield#plans"
+          className="inline-block text-c4p hover:underline font-medium text-sm"
+        >
           ← Back to Shield
         </a>
       </div>
 
+      {/* Main Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        {/* Left: product */}
+        {/* Left: Product Display */}
         <div className="w-full">
           <div className="flex flex-col sm:flex-row gap-6 w-full">
-            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto relative order-1 sm:order-2">
-              <div className="absolute top-4 left-4 flex gap-2">
-                <span className="inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Back to School Sale
-                </span>
-              </div>
-              <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                Ends Sept 14
-              </span>
-              <img src={selectedImage} alt="SIM Card" className="max-h-full max-w-full object-contain" />
+            <div className="w-full sm:w-[640px] bg-gray-100 rounded-xl flex items-center justify-center p-8 min-h-[300px] max-h-[440px] mx-auto order-1 sm:order-2">
+              <img
+                src={selectedImage}
+                alt="SIM Card"
+                className="max-h-full max-w-full object-contain"
+              />
             </div>
             <div className="flex flex-row sm:flex-col justify-center sm:justify-start gap-2 order-2 sm:order-1">
-              {images.map((img, i) => (
+              {images.map((img, index) => (
                 <img
-                  key={i}
+                  key={index}
                   src={img}
-                  alt={`Thumb ${i + 1}`}
+                  alt={`Thumb ${index + 1}`}
                   onClick={() => setSelectedImage(img)}
                   className={`w-22 h-14 object-cover rounded-md cursor-pointer border ${
                     selectedImage === img ? "border-c4p" : "border-transparent"
@@ -165,108 +168,121 @@ export default function ShieldSimCardSixMonths() {
 
           <div className="pt-4 sm:pl-[4.5rem] hidden lg:block">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              6-Month Prepaid Internet — SIM Card Only (No Device)
+              T10 Mobile Hotspot + 12-Month Prepaid Internet
             </h1>
-            <p className="text-gray-700 text-base max-w-xl mb-6">
-              Internet service only (no device). SIM included — just insert and go. $84 one-time for 6 months.
+            <p className="text-gray-700 text-base max-w-xl">
+              Portable hotspot included. 12-month prepaid internet for $156/year.
             </p>
+            <p className="text-gray-700 text-base max-w-xl mt-6">
+Take fast internet with you anywhere.  
+This small, rechargeable device fits in your bag or pocket and gives you unlimited internet you can use at home, in the car, at work, or on the move.  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">What’s Included in Every Bundle</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Unlimited data (no caps, no slowdowns)</li>
-              <li>Nationwide coverage on T-Mobile’s 4G & 5G network</li>
-              <li>SIM card included – just insert and go</li>
-              <li>One-time payment, no monthly billing hassles</li>
-            </ul>
+<br /><br />
+<b>What’s included:</b><br />
+- Unlimited 4G/5G Internet<br />
+- T10 hotspot device 4G LTE only (SIM card already inside)<br />
+- Connect up to 10 devices at the same time<br />
+- Just turn it on and connect - no setup needed  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">How It Works</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>We ship you a SIM card (delivery takes 1–2 weeks)</li>
-              <li>Insert it into your unlocked hotspot, tablet, or GSM-compatible phone</li>
-              <li>Power on and start browsing, streaming, learning, and connecting</li>
-            </ul>
+<br /><br />
+<b>How to charge it:</b><br />
+- Comes with a USB-C charger<br />
+- Plug into any outlet or USB port<br />
+- A full charge lasts about 8 hours  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">No Contracts, No Hidden Fees</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Prepaid — pay once per 6-month term</li>
-              <li>No cancellation fees</li>
-              <li>Plan automatically renews at the end of each term unless cancelled</li>
-            </ul>
+<br /><br />
+<b>Perfect for:</b><br />
+- Doing school or work from anywhere<br />
+- Watching videos or using apps<br />
+- Road trips or travel<br />
+- Sharing internet with your family  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">Perfect for Back-to-School</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Students learning from home</li>
-              <li>Families needing affordable internet</li>
-              <li>Job seekers and remote workers</li>
-              <li>Anyone who wants reliable, nationwide connectivity</li>
-            </ul>
+<br /><br />
+<b>No surprises:</b><br />
+- 12-month prepaid plan<br />
+- No hidden fees<br />
+- No throttling<br />
+- You keep the device forever  
 
-            <p className="mt-4 text-sm font-medium text-red-600">Act fast! This Back-to-School Flash Sale ends September 14th.</p>
+<br /><br />
+Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
+<br/><br/>Return & Service Policy<br/>
+14-Day Return Policy<br />
+You may return your T10 device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
 
-            <p className="text-xs text-gray-500 mt-6">
-              Your payment includes shipping and processing. Service begins about 10 days after subscribing.
-              Shield Internet is a prepaid service. Bundles automatically renew at the end of each term unless cancelled before the renewal date.
-              No partial refunds are provided for unused days.
-            </p>
+Prepaid Service<br />
+Shield Internet service is prepaid and billed yearly. If you cancel, your service will remain active until the end of your current 12-month term, then automatically stop. No partial refunds are provided for unused days.
+            
+</p>
+<p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
+</p>
           </div>
         </div>
 
-        {/* Right: checkout (mobile title/description) */}
+        {/* Right: Checkout (mobile title/description) */}
         <div className="w-full mt-0 lg:-mt-20">
           <div className="lg:hidden mb-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              6-Month Prepaid Internet — SIM Card Only (No Device)
+              T10 Mobile Hotspot + 12-Month Prepaid Internet
             </h1>
             <p className="text-gray-700 text-base">
-              Internet service only (no device). SIM included — just insert and go. $84 one-time for 6 months.
+              Portable hotspot included. 12-month prepaid internet for $156/year.
             </p>
           </div>
         <ZohoCheckoutFrame
-  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/60"
+  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/1000?addon_code%5B0%5D=t10&addon_quantity%5B0%5D=1"
 />
           <div className="mt-4 lg:hidden">
-            <h2 className="text-lg font-semibold text-gray-900 mt-4 mb-3">What’s Included in Every Bundle</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Unlimited data (no caps, no slowdowns)</li>
-              <li>Nationwide coverage on T-Mobile’s 4G & 5G network</li>
-              <li>SIM card included – just insert and go</li>
-              <li>One-time payment, no monthly billing hassles</li>
-            </ul>
+            <p className="text-gray-700 text-base max-w-xl">
+Take fast internet with you anywhere.  
+This small, rechargeable device fits in your bag or pocket and gives you unlimited internet you can use at home, in the car, at work, or on the move.  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">How It Works</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>We ship you a SIM card (delivery takes 1–2 weeks)</li>
-              <li>Insert it into your unlocked hotspot, tablet, or GSM-compatible phone</li>
-              <li>Power on and start browsing, streaming, learning, and connecting</li>
-            </ul>
+<br /><br />
+<b>What’s included:</b><br />
+- Unlimited 4G/5G Internet<br />
+- T10 hotspot device 4G LTE only (SIM card already inside)<br />
+- Connect up to 10 devices at the same time<br />
+- Just turn it on and connect - no setup needed  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">No Contracts, No Hidden Fees</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Prepaid — pay once per 6-month term</li>
-              <li>No cancellation fees</li>
-              <li>Plan automatically renews at the end of each term unless cancelled</li>
-            </ul>
+<br /><br />
+<b>How to charge it:</b><br />
+- Comes with a USB-C charger<br />
+- Plug into any outlet or USB port<br />
+- A full charge lasts about 8 hours  
 
-            <h2 className="text-lg font-semibold text-gray-900 mt-8 mb-3">Perfect for Back-to-School</h2>
-            <ul className="list-disc pl-5 text-gray-700 space-y-1 text-sm">
-              <li>Students learning from home</li>
-              <li>Families needing affordable internet</li>
-              <li>Job seekers and remote workers</li>
-              <li>Anyone who wants reliable, nationwide connectivity</li>
-            </ul>
+<br /><br />
+<b>Perfect for:</b><br />
+- Doing school or work from anywhere<br />
+- Watching videos or using apps<br />
+- Road trips or travel<br />
+- Sharing internet with your family  
 
-            <p className="mt-4 text-sm font-medium text-red-600">Act fast! This Back-to-School Flash Sale ends September 14th.</p>
+<br /><br />
+<b>No surprises:</b><br />
+- 12-month prepaid plan<br />
+- No hidden fees<br />
+- No throttling<br />
+- You keep the device forever  
 
-            <p className="text-xs text-gray-500 mt-6">
-              Your payment includes shipping and processing. Service begins about 10 days after subscribing.
-              Shield Internet is a prepaid service. Bundles automatically renew at the end of each term unless cancelled before the renewal date.
-              No partial refunds are provided for unused days.
-            </p>
+<br /><br />
+Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
+<br/><br/>Return & Service Policy<br/>
+14-Day Return Policy<br />
+You may return your T10 device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
+
+Prepaid Service<br />
+Shield Internet service is prepaid and billed yearly. If you cancel, your service will remain active until the end of your current 12-month term, then automatically stop. No partial refunds are provided for unused days.
+            
+</p>
+<p className="text-sm text-gray-600 mt-10">
+  <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
+</p>
           </div>
         </div>
       </div>
 
-      <FAQSection />
+      <FAQSection/>
     </div>
   );
 }

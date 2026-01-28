@@ -1,8 +1,25 @@
 // src/components/ZohoCheckoutFrame.jsx
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getRefSource } from "../utils/refSource";
 
-export default function ZohoCheckoutFrame({ baseUrl, params = {}, height = "1300px" }) {
+export default function ZohoCheckoutFrame({
+  baseUrl,
+  params = {},
+  height = "1300px",
+  mobileHeight = "220vh",
+  scrolling = "no",
+  mobileScrolling = "yes",
+}) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const handleChange = (event) => setIsMobile(event.matches);
+    setIsMobile(media.matches);
+    media.addEventListener("change", handleChange);
+    return () => media.removeEventListener("change", handleChange);
+  }, []);
+
   const src = useMemo(() => {
     const url = new URL(baseUrl);
     Object.entries(params).forEach(([k, v]) => {
@@ -18,14 +35,23 @@ export default function ZohoCheckoutFrame({ baseUrl, params = {}, height = "1300
     return url.toString();
   }, [baseUrl, params]);
 
+  const frameHeight = isMobile ? mobileHeight : height;
+  const frameScrolling = isMobile ? mobileScrolling : scrolling;
+  const frameStyle = {
+    border: "none",
+    backgroundColor: "#fff",
+    display: "block",
+    ...(isMobile ? { minHeight: "520px" } : null),
+  };
+
   return (
     <iframe
       src={src}
       width="100%"
-      height={height}
+      height={frameHeight}
       frameBorder="0"
-      scrolling="no"
-      style={{ border: "none", backgroundColor: "#fff" }}
+      scrolling={frameScrolling}
+      style={frameStyle}
       title="Zoho Checkout"
     />
   );

@@ -16,22 +16,6 @@ const faqs = [
       "Shield Internet is built for people who need affordable, reliable service - including students, families focused on education, and those working toward new career opportunities. If you’re looking for a low-cost way to stay connected, Shield may be the right fit. Just verify you meet the eligibility requirements by checking a box when you order. No documentation. No paperwork. No stress.",
   },  
   {
-    question: "See Shield Internet's Broadband Label",
-    answer: (
-      <div>
-        <p>
-          Here is Shield Internet&apos;s Broadband Facts label, showing key details
-          about pricing, speeds, and terms in a simple, transparent format.
-        </p>
-        <img
-          src="/Hotspot/shieldbroadbandfacts.png"
-          alt="Shield Internet Broadband Facts Label"
-          className="mt-4 w-full max-w-xl rounded-lg shadow-md border border-gray-200"
-        />
-      </div>
-    ),
-  },
-  {
     question: "What is the coverage of Shield Internet?",
     answer: (
       <>
@@ -46,11 +30,27 @@ const faqs = [
         </a>.
       </>
     ),
-  },  
+  }, 
+  {
+    question: "See Shield Internet's Broadband Label",
+    answer: (
+      <div>
+        <p>
+          Here is Shield Internet&apos;s Broadband Facts label, showing key details
+          about pricing, speeds, and terms in a simple, transparent format.
+        </p>
+        <img
+          src="/Hotspot/shieldbroadbandfacts.png"
+          alt="Shield Internet Broadband Facts Label"
+          className="mt-4 w-full max-w-xl rounded-lg shadow-md border border-gray-200"
+        />
+      </div>
+    ),
+  }, 
   {
     question: "When will my order arrive?",
     answer:
-      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Router (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",
+      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. The Shield 5G Home Router is currently in stock and will ship in 1-2 weeks.",
   },
   {
     question: "What does the internet plan include?",
@@ -122,8 +122,9 @@ function FAQSection() {
   );
 }
 
-export default function Shieldsimcard() {
-  const images = ["/Hotspot/hotspotsim.png","/Hotspot/hotspot.png", "/Hotspot/simcard.png"];
+
+export default function Shield5grouter12Months() {
+  const images = ["/Hotspot/shieldrouterfront.png", "/Hotspot/shieldrouterside.png", "/Hotspot/shieldrouterside1.png", "/Hotspot/shieldrouterback.png", "/Hotspot/simcard.png"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   useAffiliatePrefill();
 
@@ -168,53 +169,52 @@ export default function Shieldsimcard() {
 
           <div className="pt-4 sm:pl-[4.5rem] hidden lg:block">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              T10 Mobile Hotspot with Unlimited Nationwide Internet
+              Shield 5G Home Hotspot + 12-Month Prepaid Internet
             </h1>
             <p className="text-gray-700 text-base max-w-xl">
-              Portable hotspot included. Unlimited 4G/5G internet for $14.89/month.
+              Home router included. 12-month prepaid internet for $156/year.
             </p>
             <p className="text-gray-700 text-base max-w-xl mt-6">
-Take fast internet with you anywhere.  
-This small, rechargeable device fits in your bag or pocket and gives you unlimited internet you can use at home, in the car, at work, or on the move.  
+              Need stronger Wi-Fi for your whole home? This is it.
+              The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
 
-<br /><br />
-<b>What’s included:</b><br />
-- Unlimited 4G/5G Internet<br />
-- T10 hotspot device 4G LTE only (SIM card already inside)<br />
-- Connect up to 10 devices at the same time<br />
-- Just turn it on and connect - no setup needed  
+              <br /><br />
+              <b>What’s included:</b><br />
+              - Shield 5G Home Router<br />
+              - Unlimited 4G/5G Internet<br />
+              - SIM card shipped seperately<br />
+              - Connect multiple devices simultaneously<br />
 
-<br /><br />
-<b>How to charge it:</b><br />
-- Comes with a USB-C charger<br />
-- Plug into any outlet or USB port<br />
-- A full charge lasts about 8 hours  
+              <br />
+              <b>Features:</b><br />
+              - Stronger and faster signal than standard mobile hotspots<br />
+              - Built-in battery lasts up to 4 hours when unplugged<br />
+              - Fully portable, use it at home, work, or on the go<br />
+              - Simple plug-and-play setup, just power on and connect<br />
+              - Integrated VPN for secure browsing<br />
+              - Customizable Wi-Fi name (SSID) and password<br />
+              - Dual-band 2.4 GHz + 5 GHz networks, combine or separate as needed<br />
+              - Dedicated guest network for visitors<br />
+              - Smart “best placement” signal test to find the strongest spot in your home<br />
+              - And more advanced features available<br />
 
-<br /><br />
-<b>Perfect for:</b><br />
-- Doing school or work from anywhere<br />
-- Watching videos or using apps<br />
-- Road trips or travel<br />
-- Sharing internet with your family  
+              <br />
+              <b>Plan Details:</b><br />
+              - $156 one-time for 12 months of unlimited internet<br />
+              - No data caps, no throttling, no surprise fees<br />
+              - Plan renews every 12 months unless cancelled<br />
 
-<br /><br />
-<b>No surprises:</b><br />
-- No contracts - cancel anytime<br />
-- No hidden fees<br />
-- No throttling<br />
-- You keep the device forever  
-
-<br /><br />
-Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
-<br/><br/>Return & Service Policy<br/>
+              <br />
+              Free shipping anywhere in the U.S. Your device arrives pre-configured and ready to use.
+              <br /><br />
+              <b>Return & Service Policy</b><br />
 14-Day Return Policy<br />
-You may return your T10 device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
+You may return your Shield device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
 
 Prepaid Service<br />
-Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
-            
-</p>
-<p className="text-sm text-gray-600 mt-10">
+Shield Internet service is prepaid and billed yearly. If you cancel, your service will remain active until the end of your current 12-month term, then automatically stop. No partial refunds are provided for unused days.
+            </p>
+            <p className="text-sm text-gray-600 mt-10">
   <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
 </p>
           </div>
@@ -224,66 +224,64 @@ Shield Internet service is prepaid and billed monthly on the 1st. If you cancel,
         <div className="w-full mt-0 lg:-mt-20">
           <div className="lg:hidden mb-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              T10 Mobile Hotspot with Unlimited Nationwide Internet
+              Shield 5G Home Hotspot + 12-Month Prepaid Internet
             </h1>
             <p className="text-gray-700 text-base">
-              Portable hotspot included. Unlimited 4G/5G internet for $14.89/month.
+              Home router included. 12-month prepaid internet for $156/year.
             </p>
           </div>
         <ZohoCheckoutFrame
-  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/105"
-  params={{ "addon_code[0]": "t10", "addon_quantity[0]": "1" }}
+  baseUrl="https://mobile.computers4people.org/subscribe/d98e62cf656eb2344296c67863c94b77835d327f877b7e75ad482bf477cf719e/1000?addon_code%5B0%5D=5&addon_quantity%5B0%5D=1"
 />
           <div className="mt-4 lg:hidden">
             <p className="text-gray-700 text-base max-w-xl">
-Take fast internet with you anywhere.  
-This small, rechargeable device fits in your bag or pocket and gives you unlimited internet you can use at home, in the car, at work, or on the move.  
+              Need stronger Wi-Fi for your whole home? This is it.
+              The Shield 5G Home Hotspot is a powerful, portable device that delivers fast, reliable internet throughout your house – perfect for families, schoolwork, video calls, and streaming.
 
-<br /><br />
-<b>What’s included:</b><br />
-- Unlimited 4G/5G Internet<br />
-- T10 hotspot device 4G LTE only (SIM card already inside)<br />
-- Connect up to 10 devices at the same time<br />
-- Just turn it on and connect - no setup needed  
+              <br /><br />
+              <b>What’s included:</b><br />
+              - Shield 5G Home Router<br />
+              - Unlimited 4G/5G Internet<br />
+              - SIM card shipped seperately<br />
+              - Connect multiple devices simultaneously<br />
 
-<br /><br />
-<b>How to charge it:</b><br />
-- Comes with a USB-C charger<br />
-- Plug into any outlet or USB port<br />
-- A full charge lasts about 8 hours  
+              <br />
+              <b>Features:</b><br />
+              - Stronger and faster signal than standard mobile hotspots<br />
+              - Built-in battery lasts up to 4 hours when unplugged<br />
+              - Fully portable, use it at home, work, or on the go<br />
+              - Simple plug-and-play setup, just power on and connect<br />
+              - Integrated VPN for secure browsing<br />
+              - Customizable Wi-Fi name (SSID) and password<br />
+              - Dual-band 2.4 GHz + 5 GHz networks, combine or separate as needed<br />
+              - Dedicated guest network for visitors<br />
+              - Smart “best placement” signal test to find the strongest spot in your home<br />
+              - And more advanced features available<br />
 
-<br /><br />
-<b>Perfect for:</b><br />
-- Doing school or work from anywhere<br />
-- Watching videos or using apps<br />
-- Road trips or travel<br />
-- Sharing internet with your family  
+              <br />
+              <b>Plan Details:</b><br />
+              - $156 one-time for 12 months of unlimited internet<br />
+              - No data caps, no throttling, no surprise fees<br />
+              - Plan renews every 12 months unless cancelled<br />
 
-<br /><br />
-<b>No surprises:</b><br />
-- No contracts - cancel anytime<br />
-- No hidden fees<br />
-- No throttling<br />
-- You keep the device forever  
-
-<br /><br />
-Free shipping to anywhere in the U.S. Your device arrives ready to go - just turn it on and connect.
-<br/><br/>Return & Service Policy<br/>
+              <br />
+              Free shipping anywhere in the U.S. Your device arrives pre-configured and ready to use.
+              <br /><br />
+              <b>Return & Service Policy</b><br />
 14-Day Return Policy<br />
-You may return your T10 device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
+You may return your Shield device within 14 days of delivery for a full refund, provided it is in its original condition. To start a return, please contact us at info@computers4people.org. Shipping costs for returns are the responsibility of the customer.<br/><br/>
 
 Prepaid Service<br />
-Shield Internet service is prepaid and billed monthly on the 1st. If you cancel, your service will remain active until the end of your current billing cycle, then automatically stop. No partial refunds are provided for unused days.
-            
-</p>
-<p className="text-sm text-gray-600 mt-10">
+Shield Internet service is prepaid and billed yearly. If you cancel, your service will remain active until the end of your current 12-month term, then automatically stop. No partial refunds are provided for unused days.
+            </p>
+            <p className="text-sm text-gray-600 mt-10">
   <b>Looking to buy in bulk?</b> Over 30 SIMs? Reach out. Otherwise, buy online as normal.
 </p>
           </div>
         </div>
       </div>
 
-      <FAQSection/>
+      <FAQSection />
     </div>
   );
 }

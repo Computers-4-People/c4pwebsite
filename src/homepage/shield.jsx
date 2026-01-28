@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useAffiliatePrefill from "../hooks/useAffiliatePrefill";
-import { TikTokEmbed } from "react-social-media-embed";
+import { FiCheck, FiHome, FiWifi, FiUser } from "react-icons/fi";
 
 const faqs = [
   {
@@ -75,7 +75,7 @@ const faqs = [
   {
     question: "Can I buy in bulk?",
     answer:
-      "Yes! If you're looking to provide internet access for a group, organization, or program, please reach out to us to explore a custom partnership: info@computers4people.org",
+      "If you need over 30 SIMs, reach out and we’ll help. Otherwise, please buy online as normal.",
   },
   {
     question: "How do I manage my subscription?",
@@ -102,7 +102,7 @@ function FAQSection() {
 
   return (
     <div className="bg-white py-20 border-t border-gray-200">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 text-center">
           Frequently Asked Questions
         </h2>
@@ -111,9 +111,9 @@ function FAQSection() {
             <div key={index} className="border-b border-gray-200 pb-4">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center"
+                className="w-full text-left text-lg font-semibold text-gray-800 flex justify-between items-center gap-3 min-w-0"
               >
-                {faq.question}
+                <span className="truncate">{faq.question}</span>
                 <span>{openIndex === index ? "−" : "+"}</span>
               </button>
               <AnimatePresence initial={false}>
@@ -211,6 +211,84 @@ function FAQSection() {
 
 export default function ShieldHeader() {
   useAffiliatePrefill();
+  const [billingCycle, setBillingCycle] = useState("yearly");
+  const [deviceChoice, setDeviceChoice] = useState("home");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [zipCode, setZipCode] = useState("");
+  const [zipStatus, setZipStatus] = useState("");
+  const isYearly = billingCycle === "yearly";
+  const subscriptionPrice = isYearly ? "$156/year" : "$14.89/mo";
+  const internetOnlyHref = isYearly ? "/shieldsimcard12months" : "/shieldsimcard";
+  const checkoutHref = (() => {
+    if (deviceChoice === "home") {
+      return isYearly ? "/shield5grouter12months" : "/shield5grouter";
+    }
+    if (deviceChoice === "portable") {
+      return isYearly ? "/shieldhotspotsim12months" : "/shieldhotspotsim";
+    }
+    return isYearly ? "/shieldsimcard12months" : "/shieldsimcard";
+  })();
+
+  const handleZipCheck = (event) => {
+    event.preventDefault();
+    const trimmedZip = zipCode.trim();
+    if (!/^\d{5}$/.test(trimmedZip)) {
+      setZipStatus("Enter a valid 5-digit ZIP code.");
+      return;
+    }
+    setZipStatus(`Great news — Shield is available in ${trimmedZip}. Expected speeds: 100–300 Mbps.`);
+  };
+
+  useEffect(() => {
+    const savedPlan = localStorage.getItem("shield_plan");
+    const savedDevice = localStorage.getItem("shield_device");
+    if (savedPlan === "monthly" || savedPlan === "yearly") {
+      setBillingCycle(savedPlan);
+    }
+    if (savedDevice === "none" || savedDevice === "portable" || savedDevice === "home") {
+      setDeviceChoice(savedDevice);
+    }
+    if (savedPlan || savedDevice) {
+      setCurrentStep(2);
+    }
+  }, []);
+
+  useEffect(() => {
+    const scrollToPlans = () => {
+      if (window.location.hash === "#plans") {
+        const plansSection = document.getElementById("plans");
+        if (plansSection) {
+          plansSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    };
+
+    scrollToPlans();
+    window.addEventListener("hashchange", scrollToPlans);
+
+    // Retry once in case layout hasn't finished.
+    const t = setTimeout(scrollToPlans, 200);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("hashchange", scrollToPlans);
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("shield_plan", billingCycle);
+  }, [billingCycle]);
+
+  useEffect(() => {
+    localStorage.setItem("shield_device", deviceChoice);
+  }, [deviceChoice]);
+  const devicePrices = {
+    none: 0,
+    portable: 60,
+    home: 175,
+  };
+  const devicePrice = devicePrices[deviceChoice] || 0;
+  const checkoutLabel = isYearly ? "$156/yr" : "$14.89/mo";
+  const checkoutDeviceAddon = devicePrice > 0 ? ` + $${devicePrice} device` : "";
 
   // state for promo popup - COMMENTED OUT - SNAP DEAL ENDED
   // const [showPromo, setShowPromo] = useState(false);
@@ -234,373 +312,450 @@ export default function ShieldHeader() {
 
   return (
     <>
-     {/* First Viewport: Hero + Media Logos */}
+     {/* First Viewport: Hero */}
 <div
-  className={`
-    relative
-    min-h-screen
-    flex flex-col
-    text-center
-    bg-no-repeat bg-cover
-    bg-[position:90%_60%]
-    sm:bg-[position:85%_65%]
-    md:bg-[position:80%_80%]
-  `}
-  style={{
-    backgroundImage: "url('/Hotspot/shieldheader.png')",
-    backgroundColor: "#f5f5f5",
-  }}
+  className="min-h-screen flex flex-col justify-center px-5 py-12 sm:py-16 lg:py-20 sm:px-8 lg:px-16 relative"
+  style={{ backgroundColor: '#00280e' }}
 >
-  {/* overlay for readability */}
-  <div className="absolute inset-0 bg-white/70 sm:bg-white/60 md:bg-white/50 pointer-events-none" />
+  <div className="max-w-7xl mx-auto w-full">
+    <div className="flex flex-col lg:flex-row lg:items-center lg:gap-16">
 
-  {/* Main hero content (Shield wordmark, tagline, CTA, mission) */}
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8 }}
-    className={`
-      relative z-10 flex flex-col items-center
-      px-4
-      pt-24 pb-32               /* was pb-20, now more bottom space so it sits lower overall */
-      sm:pt-28 sm:pb-40
-      md:pt-32 md:pb-48         /* on desktop, nudges the block downward */
-      lg:pt-36 lg:pb-48
-      flex-grow
-    `}
-  >
-    {/* Shield icon / wordmark */}
-    <div className="flex flex-col items-center justify-center mb-8">
-      <div className="w-full max-w-[320px] sm:max-w-[400px] md:max-w-[500px]">
-        <img
-          src="/Hotspot/shield.png"
-          alt="Shield Text"
-          className="w-full h-auto"
-        />
-      </div>
-    </div>
+      {/* Left side - Content */}
+      <div className="flex flex-col flex-1 max-w-3xl">
 
-    {/* Subheadline */}
-    <p
-      className={`
-        text-lg sm:text-xl text-gray-800 font-medium leading-snug
-        max-w-[42rem] px-2
-        lg:max-w-none lg:px-0
-        text-center
-      `}
-    >
-      Unlimited Internet. Lowest Monthly Price in America. Zero Strings Attached.
-    </p>
-
-    {/* CTA */}
-    <a href="#features" className="mt-8">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="
-          bg-c4p hover:bg-c4p text-white font-semibold
-          py-3 px-6
-          rounded-lg
-          shadow-lg shadow-black/30
-          transition
-        "
+      {/* Headline */}
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-3 mt-4 sm:mt-0"
+        style={{ color: '#f4f9f6' }}
       >
-        Get Connected Now
-      </motion.button>
-    </a>
+        The Most Affordable
+        <br />
+        <span style={{ color: '#00d64e' }}>Internet in America.</span>
+      </motion.h1>
 
-    {/* Subscriber Portal Link */}
-    <a
-      href="/shield-auth"
-      className="mt-4 text-sm text-gray-700 hover:text-c4p-dark underline transition"
-    >
-      Already a subscriber? Manage your subscription
-    </a>
+      {/* Social proof */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="text-sm sm:text-base mb-4 lg:mb-6"
+        style={{ color: 'rgba(244, 249, 246, 0.6)' }}
+      >
+        Powering 1,000+ households everyday.
+      </motion.p>
 
-    {/* Mission Telecom */}
-    <div className="mt-8">
-      <img
-        src="/Hotspot/missiontelecom.png"
-        alt="Mission Telecom"
-        className="
-          mx-auto
-          h-12
-          sm:h-12
-          md:h-16
-          object-contain
-        "
-      />
-    </div>
-  </motion.div>
+      {/* CTA Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+        className="flex flex-col sm:flex-row items-start sm:items-center gap-3 lg:gap-4 mb-6 lg:mb-10"
+      >
+        <a href="#plans">
+          <motion.button
+            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(0, 214, 78, 0.3)' }}
+            whileTap={{ scale: 0.98 }}
+            className="font-semibold py-3 px-6 lg:py-4 lg:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-200"
+            style={{ backgroundColor: '#00d64e', color: '#00280e' }}
+          >
+            Get Internet for $14.89
+          </motion.button>
+        </a>
 
-  {/* Press / Seen on bar pinned to bottom of hero */}
-  <div className="absolute bottom-0 left-0 right-0 z-10 w-full bg-white/80 backdrop-blur-[2px] border-t border-gray-200 py-6">
-    <div className="max-w-7xl mx-auto flex flex-col items-center gap-y-4 px-4">
-      <div className="text-gray-700 text-sm font-medium uppercase tracking-wide">
-        Seen on:
-      </div>
-      <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-        {[
-          { src: "/logos/forbes.png", alt: "Forbes" },
-          { src: "/logos/nbc.png", alt: "NBC" },
-          { src: "/logos/abc7.png", alt: "ABC 7" },
-          { src: "/logos/yahoonews.png", alt: "Yahoo News" },
-          { src: "/logos/bloomberg.png", alt: "Bloomberg" },
-        ].map((logo) => (
-          <img
-            key={logo.alt}
-            src={logo.src}
-            alt={logo.alt}
-            className="h-8 sm:h-12 md:h-14 object-contain grayscale hover:grayscale-0 transition duration-300"
-          />
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
+        <a href="/shield-auth">
+          <motion.button
+            whileHover={{ scale: 1.02, backgroundColor: 'rgba(244, 249, 246, 0.1)' }}
+            whileTap={{ scale: 0.98 }}
+            className="py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 border backdrop-blur-sm"
+            style={{
+              color: 'rgba(244, 249, 246, 0.8)',
+              borderColor: 'rgba(244, 249, 246, 0.2)',
+              backgroundColor: 'rgba(244, 249, 246, 0.05)'
+            }}
+          >
+            Subscriber Portal →
+          </motion.button>
+        </a>
+      </motion.div>
 
-      {/* Second Viewport: Features */}
-      <div id="features" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center gap-10">
-          {/* TikTok video - simple + responsive */}
-          <div className="flex-1 w-full flex justify-center">
-            <div className="w-full max-w-[420px] sm:max-w-[500px] md:max-w-[600px]">
-              <TikTokEmbed
-                url="https://www.tiktok.com/@thebishoptutu/video/7564004968823295246"
-                width="100%"
-                height="100%"
+      {/* Credibility Strip - Glassmorphism */}
+      <motion.div
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.4, ease: "easeOut" }}
+        className="relative rounded-xl px-4 py-3 lg:px-6 lg:py-3 mb-4 lg:mb-8 overflow-hidden w-full lg:w-auto lg:inline-flex lg:self-start group"
+        style={{
+          backgroundColor: 'rgba(244, 249, 246, 0.03)',
+          border: '1px solid rgba(244, 249, 246, 0.08)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)'
+        }}
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-6">
+          <span
+            className="text-[10px] uppercase tracking-[0.12em] font-medium"
+            style={{ color: 'rgba(244, 249, 246, 0.45)' }}
+          >
+            As featured on
+          </span>
+
+          {/* Logo container with subtle hover drift */}
+          <div className="flex-1 overflow-hidden">
+            <div className="flex items-center justify-between lg:justify-start gap-6 sm:gap-10 md:gap-12 lg:gap-14 transition-transform duration-[3000ms] ease-linear group-hover:translate-x-1">
+              <img
+                src="/logos/forbes.png"
+                alt="Forbes"
+                className="h-12 sm:h-12 md:h-14 lg:h-16 w-auto object-contain"
+                style={{ filter: 'brightness(0) invert(1)', opacity: 0.7 }}
+              />
+              <img
+                src="/logos/nbc.png"
+                alt="NBC"
+                className="h-10 sm:h-10 md:h-12 lg:h-14 w-auto object-contain"
+                style={{ filter: 'brightness(0) invert(1)', opacity: 0.7 }}
+              />
+              <img
+                src="/logos/kellyclarksonshow.png"
+                alt="The Kelly Clarkson Show"
+                className="h-12 sm:h-12 md:h-14 lg:h-16 w-auto object-contain"
+                style={{ filter: 'brightness(0) invert(1)', opacity: 0.7 }}
+              />
+              <img
+                src="/logos/entrepreneur.png"
+                alt="Entrepreneur"
+                className="h-12 sm:h-12 md:h-14 lg:h-16 w-auto object-contain hidden md:block"
+                style={{ filter: 'brightness(0) invert(1)', opacity: 0.7 }}
               />
             </div>
           </div>
-
-          {/* Text content */}
-          <div className="flex-1 w-full text-left ml-10">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-              Take Back Control of <br />
-              Your Internet
-            </h2>
-            <ul className="text-gray-800 space-y-3 text-lg">
-              <li>No contract. No credit check.</li>
-              <li>Fast speeds for school and work.</li>
-              <li>Truly unlimited - use it as much as you want.</li>
-              <li>Only $14.89/month.</li>
-              <li>100% of profits are donated to charity</li>
-            </ul>
-            <a href="#plans">
-              <button className="mt-8 bg-c4p hover:bg-c4p text-white font-semibold rounded-lg shadow-lg transition">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-c4p hover:bg-c4p text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition"
-                >
-                  Buy Now
-                </motion.button>
-              </button>
-            </a>
-          </div>
         </div>
+      </motion.div>
+
+      {/* Mobile: Photo + Testimonial side by side */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+        className="lg:hidden flex items-center gap-4"
+      >
+        <div className="flex-shrink-0 w-28 sm:w-32">
+          <img
+            src="/Hotspot/shieldclient.png"
+            alt="Shield Internet Customer"
+            className="w-full h-auto rounded-xl shadow-lg"
+          />
+        </div>
+        <div
+          className="border-l-2 pl-3 flex-1"
+          style={{ borderColor: 'rgba(244, 249, 246, 0.2)' }}
+        >
+          <p
+            className="text-sm leading-snug italic mb-1"
+            style={{ color: 'rgba(244, 249, 246, 0.75)' }}
+          >
+            "I was paying $85/month with Verizon. Switched to Shield and it just works."
+          </p>
+          <p
+            className="text-xs"
+            style={{ color: 'rgba(244, 249, 246, 0.45)' }}
+          >
+            — Luke B., college student
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Desktop: Testimonial */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.45, ease: "easeOut" }}
+        className="hidden lg:block border-l-2 pl-4 max-w-md"
+        style={{ borderColor: 'rgba(244, 249, 246, 0.2)' }}
+      >
+        <p
+          className="text-base italic mb-2"
+          style={{ color: 'rgba(244, 249, 246, 0.75)' }}
+        >
+          "I was paying $85/month with Verizon. Switched to Shield and it just works. Wish I found this sooner."
+        </p>
+        <p
+          className="text-sm"
+          style={{ color: 'rgba(244, 249, 246, 0.45)' }}
+        >
+          — Luke B., college student
+        </p>
+      </motion.div>
+
       </div>
 
-      {/* How It Works Section */}
-      <div className="bg-gray-100 py-20 px-6 border-t border-gray-200">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-10">
-            How it Works
-          </h2>
-          <div className="flex justify-center">
-            <img
-              src="/Hotspot/howitworks.png"
-              alt="How it Works"
-              className="rounded-2xl shadow-lg w-full max-w-2xl"
-            />
-          </div>
-        </div>
-      </div>
+      {/* Right side - Image */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        className="hidden lg:block flex-shrink-0 lg:w-[380px] xl:w-[420px]"
+      >
+        <img
+          src="/Hotspot/shieldclient.png"
+          alt="Shield Internet Customer"
+          className="w-full h-auto rounded-3xl shadow-2xl"
+          style={{
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.4)'
+          }}
+        />
+      </motion.div>
+
+    </div>
+  </div>
+
+  {/* Scroll indicator */}
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 0.4, y: [0, 8, 0] }}
+    transition={{
+      opacity: { duration: 0.5, delay: 1.2 },
+      y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+    }}
+    className="absolute bottom-8 left-1/2 -translate-x-1/2"
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4f9f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </motion.div>
+</div>
 
       {/* Plans Section */}
       <div id="plans" className="bg-gray-100 py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-left">
-            Choose What You Need
+        <div className="max-w-7xl mx-auto px-0 lg:px-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 text-left">
+            Get Internet in Minutes
           </h2>
-
-          {/* Highlighted products */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
-            <a href="/shieldsimcard" className="block">
-              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                {/* Badges */}
-                {/* <span className="absolute top-4 left-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                 1 Month Free for SNAP
-                </span>
-                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Ends Nov 15th
-                </span> */}
-
-                {/* Title at Top */}
-                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  Internet Service only
-                </h4>
-
-                {/* Image */}
-                <div className="flex justify-center items-center">
-                  <img
-                    src="/Hotspot/simcard.png"
-                    alt="Shield SIM"
-                    className="h-40 object-contain"
-                  />
-                </div>
-
-                {/* Copy */}
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Monthly Subscription – Internet Only
-                  </h3>
-                  <p className="text-gray-900 text-sm font-medium mb-1">
-                    $14.89/Month
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                  Works with hotspots, tablets, or wearables that take a SIM
-                  card.
-                  </p>
-                </div>
-              </div>
-            </a>
-
-            {/* Yearly Subscription */}
-            <a href="/shieldsimcard12months" className="block">
-              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                {/* Title at Top */}
-                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  I already have a device, but need internet service
-                </h4>
-
-                {/* Image */}
-                <div className="flex justify-center items-center">
-                  <img
-                    src="/Hotspot/simcard.png"
-                    alt="SIM Card"
-                    className="h-40 object-contain"
-                  />
-                </div>
-
-                {/* Copy */}
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Yearly Subscription – Internet Only
-                  </h3>
-                  <p className="text-gray-900 text-sm font-medium mb-1">
-                    $156/year
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    Unlimited 4G & 5G internet service only (no device). SIM
-                    included, just insert and go. Perfect to cover your entire
-                    school year.
-                  </p>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          {/* MAIN PRODUCTS ROW (3 cards) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {/* Card 1: Hotspot + Internet */}
-            <a href="/shieldhotspotsim" className="block">
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  I need internet on the go
-                </h4>
-
-                <div className="flex justify-center items-center">
-                  <img
-                    src="/Hotspot/hotspotsim.png"
-                    alt="Shield Hotspot"
-                    className="h-40 object-contain"
-                  />
-                </div>
-
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Shield 4G Hotspot + Internet
-                  </h3>
-                  <p className="text-gray-900 text-sm font-medium mb-1">
-  $60 Device + $14.89/Month
-</p>
-
-                  <p className="text-gray-600 text-sm">
-                    Portable Wi-Fi you can take anywhere. Up to 10 devices!
-                  </p>
-                </div>
-              </div>
-            </a>
-
-            {/* Card 2: 5G Home Router */}
-            <a href="/shield5grouter" className="block">
-              <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  I need internet at home
-                </h4>
-
-                <div className="flex justify-center items-center">
-                  <img
-                    src="/Hotspot/shieldrouterfront.png"
-                    alt="Shield Router"
-                    className="h-40 object-contain"
-                  />
-                </div>
-
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Shield 5G Home + Internet
-                  </h3>
-                  <p className="text-gray-900 text-sm font-medium mb-1">
-                    $175 Device + $14.89/Month
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    Stronger signal and great for shared spaces. Up to 32
-                    devices!
-                  </p>
-                </div>
-              </div>
-            </a>
-
-            {/* Card 3: Shield Sweatshirt */}
-            <a href="/shieldsweatshirt" className="block">
-              <div className="relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 flex flex-col justify-between h-[440px]">
-                {/* Limited Quantity Badge */}
-                <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wide shadow">
-                  Limited Quantity
-                </span>
-
-                <h4 className="text-sm font-medium text-center text-gray-500 mb-2">
-                  Internet that gives back
-                </h4>
-
-                <div className="flex justify-center items-center">
-                  <img
-                    src="/Hotspot/sweatshirtfront.png"
-                    alt="Shield Sweatshirt"
-                    className="h-64 object-contain"
-                  />
-                </div>
-
-                <div className="pt-6 text-left">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    Shield Sweatshirt
-                  </h3>
-                  <p className="text-gray-900 text-sm font-medium mb-1">
-                    $45 + Free Shipping
-                  </p>
-                  <p className="text-gray-600 text-sm">
-                    Wear your support. 100% of profits provide internet to those in need.
-                  </p>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          <p className="mt-40 text-sm text-gray-400 font-medium text-center">
-            100% of profit supports closing the digital divide
+          <p className="text-gray-600 mb-8 max-w-2xl">
+            No contracts. No credit checks. Cancel anytime.
           </p>
+
+          {/* Guided Purchase */}
+          <div className="max-w-[960px] mx-auto">
+            <div
+              className="rounded-[22px] bg-white/70 p-6 lg:px-8 lg:py-7 mb-10 relative overflow-hidden"
+              style={{
+                boxShadow: "0 12px 30px rgba(15, 23, 42, 0.06)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                minHeight: "380px",
+              }}
+            >
+              <div className="text-xs text-gray-400 mb-5">Step {currentStep} of 2</div>
+
+              <motion.div
+                className="flex w-[200%]"
+                animate={{ x: currentStep === 1 ? "0%" : "-50%" }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              >
+                {/* Step 1 */}
+                <div className="w-1/2 pr-6 lg:pr-10">
+                  <h3 className="text-2xl font-semibold text-gray-900 text-center">
+                    Choose how you want to pay
+                  </h3>
+
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                  {[
+                      {
+                        key: "monthly",
+                        title: "Monthly",
+                        price: "$14.89 / mo",
+                        subtext: "Billed monthly · Cancel anytime",
+                      },
+                      {
+                        key: "yearly",
+                        title: "Yearly",
+                        price: "$13.00 / mo",
+                        subtext1: "$156 billed yearly",
+                        subtext2: "Save $22 per year",
+                        badge: "Most popular",
+                      },
+                    ].map((plan) => {
+                      const selected = billingCycle === plan.key;
+                      return (
+                        <button
+                          key={plan.key}
+                          type="button"
+                          onClick={() => setBillingCycle(plan.key)}
+                          className={`relative text-left rounded-2xl border px-6 py-6 min-h-[190px] transition-transform duration-200 hover:-translate-y-2 hover:shadow-[0_18px_40px_rgba(15,23,42,0.14)] ${
+                            selected
+                              ? "border-emerald-500 bg-emerald-50/40 shadow-[0_14px_30px_rgba(34,197,94,0.25)]"
+                              : "border-gray-200 bg-white hover:border-gray-300"
+                          }`}
+                        >
+                          {plan.badge && (
+                            <span className="absolute -top-3 left-6 inline-flex items-center rounded-full bg-emerald-600 text-white text-[10px] font-semibold px-2.5 py-1 shadow">
+                              {plan.badge}
+                            </span>
+                          )}
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-semibold text-gray-900">{plan.title}</span>
+                          </div>
+                          <p className="text-3xl font-semibold text-emerald-700 mt-3">{plan.price}</p>
+                          {plan.subtext ? (
+                            <p className="text-xs text-gray-500 mt-2">{plan.subtext}</p>
+                          ) : (
+                            <>
+                              <p className="text-xs text-gray-500 mt-2">{plan.subtext1}</p>
+                              <p className="text-xs text-emerald-700 mt-1">{plan.subtext2}</p>
+                            </>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-8 flex justify-center sm:justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(2)}
+                      className="bg-c4p hover:bg-c4p-hover text-white font-semibold py-3 px-8 rounded-lg transition w-full sm:w-auto"
+                    >
+                      Next: Choose a device
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="w-1/2 pl-6 lg:pl-10 flex flex-col">
+                  <div className="text-xs text-gray-400 mb-4">Step 2 of 2</div>
+                  <div className="grid gap-4 sm:grid-cols-3">
+                    {[
+                      {
+                        key: "home",
+                        title: "Home Router",
+                        subtitle: "Best for families and shared spaces",
+                        price: "+$175 one-time",
+                        badge: "Recommended",
+                        icon: FiHome,
+                      },
+                      {
+                        key: "portable",
+                        title: "Portable Hotspot",
+                        subtitle: "Take your internet anywhere",
+                        price: "+$60 one-time",
+                        icon: FiWifi,
+                      },
+                      {
+                        key: "none",
+                        title: "Use my own device",
+                        subtitle: "Works with most 4G/5G routers & hotspots",
+                        price: "$0",
+                        icon: FiUser,
+                      },
+                    ].map((option) => {
+                      const selected = deviceChoice === option.key;
+                      const Icon = option.icon;
+                      return (
+                        <button
+                          key={option.key}
+                          type="button"
+                          onClick={() => setDeviceChoice(option.key)}
+                          className={`relative flex flex-col items-start rounded-2xl border px-5 py-5 text-sm transition ${
+                            selected
+                              ? "border-emerald-500 text-gray-900 bg-emerald-50/50 shadow-[0_16px_34px_rgba(34,197,94,0.18)]"
+                              : "border-gray-200 text-gray-600 hover:border-gray-300 hover:shadow-[0_14px_28px_rgba(15,23,42,0.08)]"
+                          }`}
+                        >
+                          {selected && (
+                            <span className="absolute top-3 right-3 h-6 w-6 rounded-full bg-c4p flex items-center justify-center">
+                              <FiCheck className="text-white text-xs" />
+                            </span>
+                          )}
+                          <span className="h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500">
+                            <Icon className="text-base" />
+                          </span>
+                          <div className="mt-4 text-left">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">{option.title}</span>
+                              {option.badge && (
+                                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                  {option.badge}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">{option.subtitle}</p>
+                          </div>
+                          <span className="text-xs text-gray-500 mt-4">{option.price}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-6 text-xs text-gray-500">
+                    <p>Today: {deviceChoice === "home" ? "$175 device" : deviceChoice === "portable" ? "$60 device" : "$0 device"}</p>
+                    <p>Recurring: {isYearly ? "$13.00 / month" : "$14.89 / month"}</p>
+                  </div>
+
+                  <div className="mt-auto pt-4 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(1)}
+                      className="text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      ← Back
+                    </button>
+                    <a href={checkoutHref}>
+                      <button className="bg-c4p hover:bg-c4p-hover text-white font-semibold py-3 px-8 rounded-lg transition">
+                        Continue to checkout
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Availability Section */}
+      <div className="bg-gray-100 py-16 px-6 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div className="flex justify-center md:justify-start">
+            <img
+              src="/Hotspot/shieldlaserfast.png"
+              alt="Shield Internet speed"
+              className="w-full max-w-md rounded-2xl shadow-sm"
+            />
+          </div>
+          <div className="rounded-2xl border border-gray-200 bg-white/80 p-6 shadow-sm">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+              What you need to know
+            </h3>
+            <div className="grid gap-4 text-gray-700">
+              <div className="flex items-start gap-3">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-c4p" />
+                <p>Available in 49 states (not Alaska), plus Puerto Rico and the U.S. Virgin Islands.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-c4p" />
+                <p>Truly unlimited internet.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-c4p" />
+                <p>100% of profits donated to charity.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-c4p" />
+                <p>Fast delivery.</p>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-3 text-sm text-gray-500">
+              <span>Powered by</span>
+              <img
+                src="/Hotspot/missiontelecomlogo.png"
+                alt="Mission Telecom"
+                className="h-6 w-auto object-contain"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
