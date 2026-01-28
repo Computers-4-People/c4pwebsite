@@ -155,52 +155,9 @@ module.exports = async (req, res) => {
             return field;
         });
 
-        // Check if fields exist, if not add them
-        const fieldNames = customFields.map(f => f.api_name);
-
-        if (!fieldNames.includes('cf_shipping_date')) {
-            customFields.push({
-                label: 'Shipping Date',
-                value: currentDate
-            });
-        }
-
-        if (tracking_number && !fieldNames.includes('cf_tracking_number')) {
-            customFields.push({
-                label: 'Tracking Number',
-                value: tracking_number
-            });
-        }
-
-        if (simCardValues[0] && !fieldNames.includes('cf_sim_card_number')) {
-            customFields.push({
-                label: 'SIM Card Number',
-                value: simCardValues[0]
-            });
-        }
-
-        if (simCardValues[1] && !fieldNames.includes('cf_secondary_sim_card_number')) {
-            customFields.push({
-                label: 'Secondary SIM Card Number',
-                value: simCardValues[1]
-            });
-        }
-
-        for (let i = 3; i <= 30; i++) {
-            if (simCardValues[i - 1] && !fieldNames.includes(`cf_sim_card_number_${i}`)) {
-                customFields.push({
-                    label: `SIM Card Number ${i}`,
-                    value: simCardValues[i - 1]
-                });
-            }
-        }
-
-        if (device_sn && !fieldNames.includes('cf_device_sn') && !fieldNames.includes('cf_device_s_n')) {
-            customFields.push({
-                label: 'Device SN',
-                value: device_sn
-            });
-        }
+        // Note: We can only update fields that already exist in Zoho.
+        // We cannot add new custom fields via API - they must be created in Zoho first.
+        // The map above already handles updating existing fields.
 
         await updateSubscriptionFields(subscriptionId, customFields);
 
