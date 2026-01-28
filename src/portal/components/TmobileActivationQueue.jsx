@@ -129,9 +129,13 @@ export default function TmobileActivationQueue({ apiBase }) {
   };
 
   const handleDownloadCsv = () => {
-    const simNumbers = orders
-      .map((order) => (order.assigned_sim || '').trim())
-      .filter(Boolean);
+    // Collect all SIM cards from all orders (including multiple SIMs per order)
+    const simNumbers = orders.flatMap((order) => {
+      if (Array.isArray(order.sim_card_numbers) && order.sim_card_numbers.length > 0) {
+        return order.sim_card_numbers.map((sim) => (sim || '').trim()).filter(Boolean);
+      }
+      return [(order.assigned_sim || '').trim()].filter(Boolean);
+    });
 
     if (simNumbers.length === 0) {
       window.alert('No SIM card numbers available to export.');
@@ -205,7 +209,7 @@ export default function TmobileActivationQueue({ apiBase }) {
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">Customer</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">Subscription</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">SIM Card</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">SIM Cards</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">Active on T-Mobile</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">Status</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-c4p-dark uppercase tracking-wider">Email</th>
@@ -233,7 +237,20 @@ export default function TmobileActivationQueue({ apiBase }) {
                         {order.subscription_number || order.subscription_id || '—'}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 font-mono">
-                        {order.assigned_sim || '—'}
+                        {(() => {
+                          const sims = Array.isArray(order.sim_card_numbers) && order.sim_card_numbers.length > 0
+                            ? order.sim_card_numbers.filter(Boolean)
+                            : [order.assigned_sim].filter(Boolean);
+                          if (sims.length === 0) return '—';
+                          if (sims.length === 1) return sims[0];
+                          return (
+                            <div className="space-y-1">
+                              {sims.map((sim, idx) => (
+                                <div key={idx}>{sim}</div>
+                              ))}
+                            </div>
+                          );
+                        })()}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700">
                         <div className="flex items-center gap-2">
