@@ -276,9 +276,17 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
+        // Clean custom fields - only send label and value (Zoho rejects extra properties)
+        const cleanedFields = customFields.map(field => ({
+            label: field.label,
+            value: field.value
+        }));
+
+        console.log('Updating subscription', subscriptionId, 'with fields:', JSON.stringify(cleanedFields, null, 2));
+
         const response = await axios.put(
             `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
-            { custom_fields: customFields },
+            { custom_fields: cleanedFields },
             {
                 headers: {
                     'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -291,6 +299,7 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
         return response.data.subscription;
     } catch (error) {
         console.error('Error updating subscription:', error.response?.data || error.message);
+        console.error('Payload was:', JSON.stringify({ custom_fields: customFields }, null, 2));
         throw error;
     }
 }
