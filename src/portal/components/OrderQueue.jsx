@@ -13,7 +13,7 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   const [trackingInputs, setTrackingInputs] = useState({}); // Track tracking number for each order
   const [deviceSnInputs, setDeviceSnInputs] = useState({}); // Track device serial number for each order
   const [shipping, setShipping] = useState(false);
-  const simInputRefs = useRef({}); // Store refs for SIM input fields
+  const simInputRefs = useRef({}); // Store refs for SIM input fields: { `${orderId}-${index}`: element }
   const storageKey = 'shield_fulfillment_draft_v1';
 
   useEffect(() => {
@@ -302,25 +302,36 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
   };
 
   // Handle Enter key press on SIM input to jump to next field
-  const handleSimKeyDown = (e, currentOrderId) => {
+  const handleSimKeyDown = (e, currentOrderId, currentInputIndex) => {
     if (e.key === 'Enter') {
       e.preventDefault();
 
-      // Find the current order index
-      const currentIndex = filteredOrders.findIndex(order => order.invoice_id === currentOrderId);
+      const currentOrderIdx = filteredOrders.findIndex(order => order.invoice_id === currentOrderId);
+      const currentOrder = filteredOrders[currentOrderIdx];
 
-      // Find the next order that doesn't have a SIM assigned
-      let nextIndex = currentIndex + 1;
-      while (nextIndex < filteredOrders.length) {
-        const nextOrder = filteredOrders[nextIndex];
-        if (!nextOrder.assigned_sim) {
-          const nextInput = simInputRefs.current[nextOrder.invoice_id];
+      if (currentOrder) {
+        const required = getSimRequiredCount(currentOrder);
+        const existing = getExistingSimNumbers(currentOrder);
+        const remaining = Math.max(required - existing.length, 0);
+
+        // Try next input within same order
+        if (currentInputIndex < remaining - 1) {
+          const nextInput = simInputRefs.current[`${currentOrderId}-${currentInputIndex + 1}`];
           if (nextInput) {
             nextInput.focus();
             return;
           }
         }
-        nextIndex++;
+      }
+
+      // Move to first input of next order
+      for (let i = currentOrderIdx + 1; i < filteredOrders.length; i++) {
+        const nextOrder = filteredOrders[i];
+        const nextInput = simInputRefs.current[`${nextOrder.invoice_id}-0`];
+        if (nextInput) {
+          nextInput.focus();
+          return;
+        }
       }
     }
   };
@@ -786,12 +797,16 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Enter SIM Card #
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Enter Tracking # (if device)
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Enter Device S/N (if device)
-              </th>
+              {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Enter Tracking #
+                </th>
+              )}
+              {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Enter Device S/N
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -867,11 +882,11 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                             {inputs.map((value, index) => (
                               <input
                                 key={`${order.invoice_id}-sim-input-${index}`}
-                                ref={index === 0 ? (el) => { simInputRefs.current[order.invoice_id] = el; } : undefined}
+                                ref={(el) => { simInputRefs.current[`${order.invoice_id}-${index}`] = el; }}
                                 type="text"
                                 value={value}
                                 onChange={(e) => handleSimInput(order.invoice_id, index, e.target.value)}
-                                onKeyDown={(e) => index === 0 && handleSimKeyDown(e, order.invoice_id)}
+                                onKeyDown={(e) => handleSimKeyDown(e, order.invoice_id, index)}
                                 placeholder={`SIM ${existing.length + index + 1}`}
                                 className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
                               />
@@ -882,32 +897,36 @@ export default function OrderQueue({ apiBase, onStatsUpdate }) {
                     );
                   })()}
                 </td>
-                <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                  {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
-                    <input
-                      type="text"
-                      value={trackingInputs[order.invoice_id] || ''}
-                      onChange={(e) => handleTrackingInput(order.invoice_id, e.target.value)}
-                      placeholder="Enter tracking #"
-                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
-                    />
-                  ) : (
-                    <span className="text-gray-400 text-xs italic">N/A</span>
-                  )}
-                </td>
-                <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                  {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
-                    <input
-                      type="text"
-                      value={deviceSnInputs[order.invoice_id] || ''}
-                      onChange={(e) => handleDeviceSnInput(order.invoice_id, e.target.value)}
-                      placeholder="Enter device S/N"
-                      className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
-                    />
-                  ) : (
-                    <span className="text-gray-400 text-xs italic">N/A</span>
-                  )}
-                </td>
+                {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                  <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                    {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
+                      <input
+                        type="text"
+                        value={trackingInputs[order.invoice_id] || ''}
+                        onChange={(e) => handleTrackingInput(order.invoice_id, e.target.value)}
+                        placeholder="Enter tracking #"
+                        className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-xs italic">N/A</span>
+                    )}
+                  </td>
+                )}
+                {deviceTypeFilter.toLowerCase() !== 'sim card only' && (
+                  <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                    {order.device_type && order.device_type.toLowerCase() !== 'sim card only' ? (
+                      <input
+                        type="text"
+                        value={deviceSnInputs[order.invoice_id] || ''}
+                        onChange={(e) => handleDeviceSnInput(order.invoice_id, e.target.value)}
+                        placeholder="Enter device S/N"
+                        className="w-full px-2 py-1 text-sm border border-neutral-200 rounded focus:ring-2 focus:ring-c4p focus:border-c4p font-mono"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-xs italic">N/A</span>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
