@@ -45,7 +45,7 @@ export const shieldFaqs = [
   {
     question: "When will my order arrive?",
     answer:
-      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the hotspot, your SIM card will already be inside the device when it arrives. For the Shield 5G Home Device (pre-order), the shipping timeline is currently unknown - we’ll send you updates as soon as it’s on the way.",
+      "Most orders arrive in about 10 business days. If you order just the SIM card, it will ship on its own. If you order the T10 Hotspot or the Shield 5G Home Device, your SIM card will be inside the box when it arrives.",
   },
   {
     question: "What does the internet plan include?",

@@ -133,7 +133,7 @@ export default function ShieldHeader() {
   const internetOnlyHref = isYearly ? "/shieldsimcard12months" : "/shieldsimcard";
   const checkoutHref = (() => {
     if (deviceChoice === "home") {
-      return isYearly ? "/shield5g device12months" : "/shield5g device";
+      return isYearly ? "/shield5grouter12months" : "/shield5grouter";
     }
     if (deviceChoice === "portable") {
       return isYearly ? "/shieldhotspotsim12months" : "/shieldhotspotsim";
@@ -243,9 +243,9 @@ export default function ShieldHeader() {
         className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight mb-3 mt-4 sm:mt-0"
         style={{ color: '#f4f9f6' }}
       >
-        The Most Affordable
+        The Most Affordable,
         <br />
-        <span style={{ color: '#00d64e' }}>Internet in America.</span>
+        <span style={{ color: '#00d64e' }}>Hassle-Free Internet</span>
       </motion.h1>
 
       {/* Social proof */}
