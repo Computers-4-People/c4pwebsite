@@ -114,7 +114,7 @@ export default function Homepage() {
           titlePart2: "WITH TECHNOLOGY",
           links: [
             { text: "Donate Computers", url: "/donate" },
-            { text: "Support Our Growth", url: "/support" },
+            { text: "Get Affordable Internet", url: "/shield" },
           ],
         }}
       />

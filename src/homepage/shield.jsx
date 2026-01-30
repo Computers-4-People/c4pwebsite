@@ -273,7 +273,7 @@ export default function ShieldHeader() {
             className="font-semibold py-3 px-6 lg:py-4 lg:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-200"
             style={{ backgroundColor: '#00d64e', color: '#00280e' }}
           >
-            Get Internet for $14.89
+            Get Internet for $14.89/mo
           </motion.button>
         </a>
 
@@ -547,6 +547,12 @@ export default function ShieldHeader() {
                         price: "+$175 one-time",
                         badge: "Recommended",
                         icon: FiHome,
+                        details: [
+                          "Up to 5G speeds",
+                          "Whole home connectivity",
+                          "Up to 32 devices",
+                          "Up to 5 hours battery",
+                        ],
                       },
                       {
                         key: "portable",
@@ -554,6 +560,12 @@ export default function ShieldHeader() {
                         subtitle: "Take your internet anywhere",
                         price: "+$60 one-time",
                         icon: FiWifi,
+                        details: [
+                          "Up to 4G LTE speeds",
+                          "Replaceable battery",
+                          "Up to 10 devices",
+                          "Up to 10 hours battery",
+                        ],
                       },
                       {
                         key: "none",
@@ -561,6 +573,7 @@ export default function ShieldHeader() {
                         subtitle: "Works with most 4G/5G devices & hotspots",
                         price: "$0",
                         icon: FiUser,
+                        details: ["Works with hotspots, phones (non‑eSIM), and tablets"],
                       },
                     ].map((option) => {
                       const selected = deviceChoice === option.key;
@@ -594,6 +607,14 @@ export default function ShieldHeader() {
                               )}
                             </div>
                             <p className="text-xs text-gray-500 mt-1">{option.subtitle}</p>
+                            <ul className="mt-3 space-y-1">
+                              {option.details.map((detail) => (
+                                <li key={detail} className="flex items-start gap-2 text-[11px] text-gray-500">
+                                  <FiCheck className="mt-0.5 text-emerald-600" />
+                                  <span>{detail}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                           <span className="text-xs text-gray-500 mt-4">{option.price}</span>
                         </button>
@@ -602,8 +623,30 @@ export default function ShieldHeader() {
                   </div>
 
                   <div className="mt-6 text-xs text-gray-500">
-                    <p>Today: {deviceChoice === "home" ? "$175 device" : deviceChoice === "portable" ? "$60 device" : "$0 device"}</p>
-                    <p>Recurring: {isYearly ? "$13.00 / month" : "$14.89 / month"}</p>
+                    <p>
+                      Today:{" "}
+                      {isYearly
+                        ? `$156 plan${
+                            deviceChoice === "home"
+                              ? " + $175 device"
+                              : deviceChoice === "portable"
+                              ? " + $60 device"
+                              : ""
+                          }`
+                        : `$14.89 plan${
+                            deviceChoice === "home"
+                              ? " + $175 device"
+                              : deviceChoice === "portable"
+                              ? " + $60 device"
+                              : ""
+                          }`}
+                    </p>
+                    <p>
+                      Recurring:{" "}
+                      {isYearly
+                        ? "$156 / year"
+                        : "$14.89 / month (charged on the 1st)"}
+                    </p>
                   </div>
 
                   <div className="mt-auto pt-4 flex items-center justify-between">

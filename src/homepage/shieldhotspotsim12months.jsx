@@ -98,8 +98,8 @@ export default function Shieldhotspotsim12Months() {
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               T10 Mobile Hotspot + 12-Month Prepaid Internet
             </h1>
-            <p className="text-gray-700 text-base max-w-xl">
-              Portable hotspot included. 12-month prepaid internet for $156/year.
+          <p className="text-gray-700 text-base max-w-xl">
+              Portable hotspot included. The T10 device is 4G LTE (not 5G). The SIM is 5G-capable for use in other devices.
             </p>
             <p className="text-gray-700 text-base max-w-xl mt-6">
 Take fast internet with you anywhere.  
@@ -107,8 +107,9 @@ This small, rechargeable device fits in your bag or pocket and gives you unlimit
 
 <br /><br />
 <b>What’s included:</b><br />
-- Unlimited 4G/5G Internet<br />
-- T10 hotspot device 4G LTE only (SIM card already inside)<br />
+- Unlimited internet service<br />
+- T10 hotspot device (4G LTE only — not 5G)<br />
+- 5G-capable SIM card included (use in other compatible devices)<br />
 - Connect up to 10 devices at the same time<br />
 - Just turn it on and connect - no setup needed  
 
