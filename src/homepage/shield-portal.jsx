@@ -478,7 +478,7 @@ export default function ShieldPortal() {
 
                                     <div className="relative overflow-hidden bg-gradient-to-br from-white to-neutral-100 rounded-2xl shadow-lg p-6 border border-neutral-200">
                                         <div className="relative z-10">
-                                            <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Monthly Cost</p>
+                                            <p className="text-xs font-semibold text-c4p-dark uppercase tracking-wider mb-3">Recurring Cost</p>
                                             <p className="text-2xl sm:text-3xl font-black text-c4p-darker break-words leading-tight">
                                                 ${subscription?.amount || '0.00'}
                                             </p>
