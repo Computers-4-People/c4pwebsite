@@ -52,10 +52,18 @@ export default async function handler(req, res) {
 
                 // The HQ view should have Total Computers Donated and Total Pounds Saved
                 // Find these values in the response
+                console.log("Analytics response data:", JSON.stringify(data));
                 if (data.rows && data.rows.length > 0) {
                     const row = data.rows[0];
-                    computersDonated = parseInt(row[0]) || 5777; // First column
-                    totalWeight = parseInt(row[1]) || 64549; // Second column
+                    // Handle both array format [val1, val2] and object format {"Column Name": val}
+                    if (Array.isArray(row)) {
+                        computersDonated = parseInt(row[0]) || 6478;
+                        totalWeight = parseInt(row[1]) || 83780;
+                    } else if (typeof row === 'object') {
+                        // Try common column name variations
+                        computersDonated = parseInt(row['Total Computers Donated'] || row['computersDonated'] || row[Object.keys(row)[0]]) || 6478;
+                        totalWeight = parseInt(row['Total Pounds Saved'] || row['poundsRecycled'] || row[Object.keys(row)[1]]) || 83780;
+                    }
                 }
             }
 
@@ -67,8 +75,8 @@ export default async function handler(req, res) {
                 console.error("Analytics API error details:", error.response.status, error.response.data);
             }
             // Use fallback values if fetch fails
-            computersDonated = 5777;
-            totalWeight = 64549;
+            computersDonated = 6478;
+            totalWeight = 83780;
         }
 
         const stats = {
