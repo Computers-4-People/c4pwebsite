@@ -29,50 +29,78 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: 'Failed to obtain access token' });
         }
 
-        console.log("Fetching stats from Zoho Analytics...");
+        console.log("Fetching stats from Zoho Creator...");
 
         let computersDonated = 0;
         let totalWeight = 0;
 
         try {
-            // Use Zoho Analytics API for instant aggregated query
-            const analyticsUrl = 'https://analyticsapi.zoho.com/restapi/v2/bulk/workspaces/2989565000000006002/views/2989565000000032139/data';
+            const baseUrl = `https://creator.zoho.com/api/v2/${process.env.ZOHO_CREATOR_APP_OWNER}/${process.env.ZOHO_CREATOR_APP_NAME}/report/Portal`;
+            const headers = { Authorization: `Zoho-oauthtoken ${accessToken}` };
 
-            const response = await axios.get(analyticsUrl, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'Content-Type': 'application/json'
-                },
-                timeout: 10000
-            });
+            // Criteria for counting donated computers (excluding monitors, phones, misc)
+            const donatedCriteria = encodeURIComponent(
+                '(Status == "Donated") && (Computer_Type != "Monitor") && (Computer_Type != "Phone") && (Computer_Type != "Misc")'
+            );
+            // Criteria for weight (donated + recycled)
+            const weightCriteria = encodeURIComponent('(Status == "Donated") || (Status == "Recycled")');
 
-            // Parse Analytics response - it should have the aggregated stats
-            if (response.data && response.data.data) {
-                const data = response.data.data;
+            // Fetch pages in parallel batches for efficiency
+            const fetchAllPages = async (criteria, maxPages = 50) => {
+                const allRecords = [];
+                const batchSize = 10;
+                let page = 0;
+                let hasMore = true;
 
-                // The HQ view should have Total Computers Donated and Total Pounds Saved
-                // Find these values in the response
-                console.log("Analytics response data:", JSON.stringify(data));
-                if (data.rows && data.rows.length > 0) {
-                    const row = data.rows[0];
-                    // Handle both array format [val1, val2] and object format {"Column Name": val}
-                    if (Array.isArray(row)) {
-                        computersDonated = parseInt(row[0]) || 6478;
-                        totalWeight = parseInt(row[1]) || 83780;
-                    } else if (typeof row === 'object') {
-                        // Try common column name variations
-                        computersDonated = parseInt(row['Total Computers Donated'] || row['computersDonated'] || row[Object.keys(row)[0]]) || 6478;
-                        totalWeight = parseInt(row['Total Pounds Saved'] || row['poundsRecycled'] || row[Object.keys(row)[1]]) || 83780;
+                while (hasMore && page < maxPages) {
+                    const batchPromises = [];
+                    for (let i = 0; i < batchSize && page < maxPages; i++, page++) {
+                        const from = (page * 200) + 1;
+                        batchPromises.push(
+                            axios.get(
+                                `${baseUrl}?criteria=${criteria}&from=${from}&limit=200`,
+                                { headers, timeout: 8000 }
+                            ).catch(err => {
+                                if (err.response?.status !== 404) {
+                                    console.error(`Page ${page} error:`, err.message);
+                                }
+                                return null;
+                            })
+                        );
+                    }
+
+                    const batchResults = await Promise.all(batchPromises);
+                    const validResults = batchResults.filter(r => r && r.data && r.data.data);
+
+                    if (validResults.length === 0) {
+                        hasMore = false;
+                    } else {
+                        validResults.forEach(r => allRecords.push(...r.data.data));
+                        const hasPartialPage = validResults.some(r => r.data.data.length < 200);
+                        if (hasPartialPage) {
+                            hasMore = false;
+                        }
                     }
                 }
-            }
 
-            console.log(`Analytics Stats: ${computersDonated} computers, ${totalWeight} lbs`);
+                return allRecords;
+            };
+
+            // Fetch both counts in parallel
+            const [donatedRecords, weightRecords] = await Promise.all([
+                fetchAllPages(donatedCriteria),
+                fetchAllPages(weightCriteria)
+            ]);
+
+            computersDonated = donatedRecords.length;
+            totalWeight = weightRecords.reduce((sum, r) => sum + (parseFloat(r.Weight) || 0), 0);
+
+            console.log(`Creator Stats: ${computersDonated} computers, ${Math.round(totalWeight)} lbs`);
 
         } catch (error) {
             console.error("Error fetching stats:", error.message);
             if (error.response) {
-                console.error("Analytics API error details:", error.response.status, error.response.data);
+                console.error("Creator API error details:", error.response.status, error.response.data);
             }
             // Use fallback values if fetch fails
             computersDonated = 6478;
