@@ -3,6 +3,38 @@ const axios = require('axios');
 // In-memory cache with timestamp (works per serverless instance)
 let cachedAccessToken = null;
 let tokenExpiration = null;
+let tokenRefreshPromise = null;
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function refreshBillingAccessToken() {
+    // Use ZOHO_BILLING_* credentials (separate from portal credentials)
+    const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
+    const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
+    const clientSecret = process.env.ZOHO_BILLING_CLIENT_SECRET;
+
+    console.log('Billing credentials check:', {
+        hasRefreshToken: !!refreshToken,
+        hasClientId: !!clientId,
+        hasClientSecret: !!clientSecret
+    });
+
+    if (!refreshToken || !clientId || !clientSecret) {
+        throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
+    }
+
+    const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
+        params: {
+            refresh_token: refreshToken,
+            client_id: clientId,
+            client_secret: clientSecret,
+            grant_type: 'refresh_token',
+        },
+    });
+
+    console.log('Billing token response:', { hasAccessToken: !!response.data?.access_token });
+    return response.data;
+}
 
 // Get Zoho Billing access token with in-memory caching
 async function getZohoBillingAccessToken() {
@@ -14,32 +46,39 @@ async function getZohoBillingAccessToken() {
     }
 
     try {
-        // Use ZOHO_BILLING_* credentials (separate from portal credentials)
-        const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
-        const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
-        const clientSecret = process.env.ZOHO_BILLING_CLIENT_SECRET;
-
-        if (!refreshToken || !clientId || !clientSecret) {
-            throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
+        if (tokenRefreshPromise) {
+            return await tokenRefreshPromise;
         }
 
-        const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
-            params: {
-                refresh_token: refreshToken,
-                client_id: clientId,
-                client_secret: clientSecret,
-                grant_type: 'refresh_token',
-            },
-        });
+        tokenRefreshPromise = (async () => {
+            let attempt = 0;
+            while (attempt < 3) {
+                try {
+                    const data = await refreshBillingAccessToken();
+                    cachedAccessToken = data.access_token;
+                    const expiresIn = data.expires_in || 3600;
+                    tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
+                    return cachedAccessToken;
+                } catch (error) {
+                    const errorData = error.response?.data;
+                    const message = errorData?.error_description || error.message || '';
+                    const isRateLimit = message.toLowerCase().includes('too many requests');
+                    attempt += 1;
+                    if (!isRateLimit || attempt >= 3) {
+                        throw error;
+                    }
+                    await sleep(1000 * attempt);
+                }
+            }
+            throw new Error('Failed to refresh Zoho Billing access token');
+        })();
 
-        cachedAccessToken = response.data.access_token;
-        const expiresIn = response.data.expires_in || 3600;
-        tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
-
-        return cachedAccessToken;
+        return await tokenRefreshPromise;
     } catch (error) {
         console.error('Error obtaining Zoho Billing access token:', error.response?.data || error.message);
         throw new Error('Failed to get Zoho Billing access token');
+    } finally {
+        tokenRefreshPromise = null;
     }
 }
 
@@ -157,6 +196,76 @@ async function getShippedOrders() {
     }
 }
 
+// Get subscriptions pending T-Mobile activation
+async function getPendingTmobileActivations() {
+    const accessToken = await getZohoBillingAccessToken();
+    const orgId = process.env.ZOHO_ORG_ID;
+
+    try {
+        const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+            headers: {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId
+            },
+            params: { per_page: 200 }
+        });
+
+        const subscriptions = subscriptionsResponse.data.subscriptions || [];
+
+        const filteredSubscriptions = subscriptions.filter((subscription) => {
+            const simCard = (subscription.cf_sim_card_number || '').trim();
+            const activeOnTmobile = (subscription.cf_active_on_tmobile || '').trim().toLowerCase();
+            const status = (subscription.status || subscription.subscription_status || '').trim().toLowerCase();
+
+            return simCard !== '' && activeOnTmobile === 'no' && status === 'live';
+        });
+
+        console.log(`Found ${filteredSubscriptions.length} subscriptions pending T-Mobile activation`);
+
+        // Fetch full details for each subscription to get all SIM card fields
+        // Use Promise.all for parallel requests (faster than sequential)
+        const detailedSubscriptions = await Promise.all(
+            filteredSubscriptions.map(async (sub) => {
+                try {
+                    const detailResponse = await axios.get(
+                        `https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`,
+                        {
+                            headers: {
+                                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                                'X-com-zoho-subscriptions-organizationid': orgId
+                            }
+                        }
+                    );
+                    const fullSub = detailResponse.data.subscription;
+                    // Extract custom field values from the custom_fields array
+                    const customFieldValues = {};
+                    if (fullSub.custom_fields) {
+                        fullSub.custom_fields.forEach(field => {
+                            if (field.api_name) {
+                                customFieldValues[field.api_name] = field.value;
+                            }
+                        });
+                    }
+                    // Merge: keep original list data, add custom field values
+                    return {
+                        ...sub,
+                        ...customFieldValues,
+                        _source: 'subscription'
+                    };
+                } catch (err) {
+                    console.error(`Failed to fetch details for subscription ${sub.subscription_id}:`, err.message);
+                    return { ...sub, _source: 'subscription' };
+                }
+            })
+        );
+
+        return detailedSubscriptions;
+    } catch (error) {
+        console.error('Error fetching pending T-Mobile activations:', error.response?.data || error.message);
+        throw error;
+    }
+}
+
 // Get order details by invoice ID
 async function getOrderDetails(invoiceId) {
     const accessToken = await getZohoBillingAccessToken();
@@ -208,6 +317,8 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
+        console.log('Updating subscription', subscriptionId, 'with', customFields.length, 'custom fields');
+
         const response = await axios.put(
             `https://www.zohoapis.com/billing/v1/subscriptions/${subscriptionId}`,
             { custom_fields: customFields },
@@ -223,6 +334,7 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
         return response.data.subscription;
     } catch (error) {
         console.error('Error updating subscription:', error.response?.data || error.message);
+        console.error('Payload was:', JSON.stringify({ custom_fields: customFields }, null, 2));
         throw error;
     }
 }
@@ -230,6 +342,20 @@ async function updateSubscriptionFields(subscriptionId, customFields) {
 // Format order (subscription with custom field address) for queue display
 function formatOrderForQueue(record) {
     const shippingStatus = record.cf_shipping_status || '';
+    const simCardNumbers = [];
+
+    if (record.cf_sim_card_number) {
+        simCardNumbers.push(record.cf_sim_card_number);
+    }
+    if (record.cf_secondary_sim_card_number) {
+        simCardNumbers.push(record.cf_secondary_sim_card_number);
+    }
+    for (let i = 3; i <= 30; i += 1) {
+        const fieldName = `cf_sim_card_number_${i}`;
+        if (record[fieldName]) {
+            simCardNumbers.push(record[fieldName]);
+        }
+    }
 
     // Use subscription custom fields for address
     const shippingAddress = {
@@ -262,13 +388,15 @@ function formatOrderForQueue(record) {
         device_type: deviceType,
         status: shippingStatus === 'Shipped' ? 'shipped' : (record.cf_sim_card_number ? 'ready_to_ship' : 'pending_sim'),
         assigned_sim: record.cf_sim_card_number || '',
+        sim_card_numbers: simCardNumbers,
         tracking_number: record.cf_tracking_number || '',
         line_status: record.cf_line_status || '',
         device_status: record.cf_device_status || '',
         ordered_by: record.cf_ordered_by || '',
+        subscription_status: record.status || record.subscription_status || '',
         active_on_tmobile: record.cf_active_on_tmobile || '',
         tmobile_line_number: record.cf_tmobile_line_number || '',
-        device_sn: record.cf_device_sn || '',
+        device_sn: record.cf_device_sn || record.cf_device_s_n || '',
         sim_card_quantity: record.cf_sim_card_quantity || '',
         device_quantity: record.cf_device_quantity || '',
         created_date: record.created_time,
@@ -281,6 +409,7 @@ module.exports = {
     getZohoBillingAccessToken,
     getPendingOrders,
     getShippedOrders,
+    getPendingTmobileActivations,
     getOrderDetails,
     updateInvoiceFields,  // Backwards compatibility (points to updateSubscriptionFields)
     updateSubscriptionFields,
