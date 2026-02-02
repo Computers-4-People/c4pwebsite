@@ -56,45 +56,38 @@ async function getZohoBillingAccessToken() {
             let attempt = 0;
             while (attempt < 3) {
                 try {
-                    let data;
-                    try {
-                        data = await refreshBillingAccessTokenWithCreds(
-                            process.env.ZOHO_BILLING_REFRESH_TOKEN,
-                            process.env.ZOHO_BILLING_CLIENT_ID,
-                            process.env.ZOHO_BILLING_CLIENT_SECRET,
-                            'Billing'
-                        );
-                    } catch (billingError) {
-                        console.warn('Billing token refresh failed, attempting fallback credentials...');
-                        data = await refreshBillingAccessTokenWithCreds(
-                            process.env.ZOHO_REFRESH_TOKEN,
-                            process.env.ZOHO_CLIENT_ID,
-                            process.env.ZOHO_CLIENT_SECRET,
-                            'Shared'
-                        );
-                    }
+                    // Use ONLY ZOHO_BILLING_* credentials - these have the required Billing API scope
+                    // Do NOT fall back to ZOHO_* credentials as they don't have billing access
+                    const data = await refreshBillingAccessTokenWithCreds(
+                        process.env.ZOHO_BILLING_REFRESH_TOKEN,
+                        process.env.ZOHO_BILLING_CLIENT_ID,
+                        process.env.ZOHO_BILLING_CLIENT_SECRET,
+                        'Billing'
+                    );
                     cachedAccessToken = data.access_token;
                     const expiresIn = data.expires_in || 3600;
                     tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
+                    console.log('Successfully obtained Zoho Billing access token');
                     return cachedAccessToken;
                 } catch (error) {
                     const errorData = error.response?.data;
                     const message = errorData?.error_description || error.message || '';
                     const isRateLimit = message.toLowerCase().includes('too many requests');
                     attempt += 1;
+                    console.error(`Billing token refresh attempt ${attempt} failed:`, errorData || message);
                     if (!isRateLimit || attempt >= 3) {
                         throw error;
                     }
                     await sleep(1000 * attempt);
                 }
             }
-            throw new Error('Failed to refresh Zoho Billing access token');
+            throw new Error('Failed to refresh Zoho Billing access token after 3 attempts');
         })();
 
         return await tokenRefreshPromise;
     } catch (error) {
         console.error('Error obtaining Zoho Billing access token:', error.response?.data || error.message);
-        throw new Error('Failed to get Zoho Billing access token');
+        throw new Error('Failed to get Zoho Billing access token: ' + (error.response?.data?.error || error.message));
     } finally {
         tokenRefreshPromise = null;
     }
