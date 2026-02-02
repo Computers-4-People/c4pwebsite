@@ -39,11 +39,11 @@ function GenerateBillingToken() {
         localStorage.setItem('billing_creds_client_id', clientId);
         localStorage.setItem('billing_creds_client_secret', clientSecret);
 
-        // Only Billing scope needed
-        const scopes = 'ZohoSubscriptions.fullaccess.all';
+        // Billing scopes - subscriptions, customers, invoices
+        const scopes = 'ZohoSubscriptions.fullaccess.all,ZohoSubscriptions.subscriptions.ALL,ZohoSubscriptions.customers.ALL,ZohoSubscriptions.invoices.ALL';
 
         const redirectUri = 'https://computers4people.org/generate-billing-token';
-        const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=${encodeURIComponent(scopes)}&client_id=${clientId}&response_type=code&access_type=offline&redirect_uri=${encodeURIComponent(redirectUri)}`;
+        const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=${encodeURIComponent(scopes)}&client_id=${clientId}&response_type=code&access_type=offline&prompt=consent&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
         window.location.href = authUrl;
     };
@@ -158,7 +158,7 @@ function GenerateBillingToken() {
                     Authorize Zoho Billing Access
                 </button>
                 <p style={{ marginTop: '10px', fontSize: '14px', color: '#666' }}>
-                    Scope: ZohoSubscriptions.fullaccess.all
+                    Scopes: fullaccess, subscriptions, customers, invoices
                 </p>
             </div>
 
