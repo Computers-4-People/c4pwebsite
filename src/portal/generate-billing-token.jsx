@@ -42,7 +42,7 @@ function GenerateBillingToken() {
         // Only Billing scope needed
         const scopes = 'ZohoSubscriptions.fullaccess.all';
 
-        const redirectUri = 'http://computers4people.org/generate-billing-token';
+        const redirectUri = 'https://computers4people.org/generate-billing-token';
         const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=${encodeURIComponent(scopes)}&client_id=${clientId}&response_type=code&access_type=offline&redirect_uri=${encodeURIComponent(redirectUri)}`;
 
         window.location.href = authUrl;
@@ -93,7 +93,7 @@ function GenerateBillingToken() {
                     <li>Click "Add Client" → Choose "Server-based Applications"</li>
                     <li>Client Name: <strong>Shield Fulfillment</strong></li>
                     <li>Homepage URL: <strong>https://computers4people.org</strong></li>
-                    <li>Authorized Redirect URI: <strong>http://computers4people.org/generate-billing-token</strong></li>
+                    <li>Authorized Redirect URI: <strong>https://computers4people.org/generate-billing-token</strong></li>
                     <li>Click "Create" and copy the Client ID and Secret</li>
                 </ol>
             </div>

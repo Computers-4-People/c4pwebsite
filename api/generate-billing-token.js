@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'Code, clientId, and clientSecret are required' });
     }
 
-    const redirectUri = 'http://computers4people.org/generate-billing-token';
+    const redirectUri = 'https://computers4people.org/generate-billing-token';
 
     try {
         console.log('=== GENERATING BILLING REFRESH TOKEN ===');
