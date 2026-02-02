@@ -7,20 +7,15 @@ let tokenRefreshPromise = null;
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-async function refreshBillingAccessToken() {
-    // Use ZOHO_BILLING_* credentials (separate from portal credentials)
-    const refreshToken = process.env.ZOHO_BILLING_REFRESH_TOKEN;
-    const clientId = process.env.ZOHO_BILLING_CLIENT_ID;
-    const clientSecret = process.env.ZOHO_BILLING_CLIENT_SECRET;
-
-    console.log('Billing credentials check:', {
+async function refreshBillingAccessTokenWithCreds(refreshToken, clientId, clientSecret, label) {
+    console.log(`${label} credentials check:`, {
         hasRefreshToken: !!refreshToken,
         hasClientId: !!clientId,
         hasClientSecret: !!clientSecret
     });
 
     if (!refreshToken || !clientId || !clientSecret) {
-        throw new Error('Missing ZOHO_BILLING_* credentials in environment variables');
+        throw new Error(`Missing ${label} credentials in environment variables`);
     }
 
     const response = await axios.post('https://accounts.zoho.com/oauth/v2/token', null, {
@@ -32,7 +27,14 @@ async function refreshBillingAccessToken() {
         },
     });
 
-    console.log('Billing token response:', { hasAccessToken: !!response.data?.access_token });
+    const accessToken = response.data?.access_token;
+    console.log(`${label} token response:`, { hasAccessToken: !!accessToken, error: response.data?.error });
+
+    if (!accessToken) {
+        const errorMessage = response.data?.error_description || response.data?.error || 'No access token in response';
+        throw new Error(`${label} token error: ${errorMessage}`);
+    }
+
     return response.data;
 }
 
@@ -54,7 +56,23 @@ async function getZohoBillingAccessToken() {
             let attempt = 0;
             while (attempt < 3) {
                 try {
-                    const data = await refreshBillingAccessToken();
+                    let data;
+                    try {
+                        data = await refreshBillingAccessTokenWithCreds(
+                            process.env.ZOHO_BILLING_REFRESH_TOKEN,
+                            process.env.ZOHO_BILLING_CLIENT_ID,
+                            process.env.ZOHO_BILLING_CLIENT_SECRET,
+                            'Billing'
+                        );
+                    } catch (billingError) {
+                        console.warn('Billing token refresh failed, attempting fallback credentials...');
+                        data = await refreshBillingAccessTokenWithCreds(
+                            process.env.ZOHO_REFRESH_TOKEN,
+                            process.env.ZOHO_CLIENT_ID,
+                            process.env.ZOHO_CLIENT_SECRET,
+                            'Shared'
+                        );
+                    }
                     cachedAccessToken = data.access_token;
                     const expiresIn = data.expires_in || 3600;
                     tokenExpiration = Date.now() + (expiresIn - 60) * 1000; // Subtract 60s buffer
