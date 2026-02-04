@@ -1,6 +1,5 @@
-const { updateInvoiceFields, updateSubscriptionFields } = require('./zoho-billing');
+const { updateInvoiceFields, updateSubscriptionFields, getZohoBillingAccessToken, clearBillingTokenCache } = require('./zoho-billing');
 const axios = require('axios');
-const { getZohoBillingAccessToken } = require('./zoho-billing');
 const nodemailer = require('nodemailer');
 
 // Send error notification email
@@ -67,22 +66,24 @@ module.exports = async (req, res) => {
     }
 
     const body = req.body || {};
+    const orgId = process.env.ZOHO_ORG_ID;
 
-    try {
-        const { invoice_id, tracking_number, sim_card, sim_cards, device_sn } = body;
+    // Retry up to 2 times on auth errors
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            const { invoice_id, tracking_number, sim_card, sim_cards, device_sn } = body;
 
-        if (!invoice_id) {
-            return res.status(400).json({
-                success: false,
-                error: 'Missing invoice_id (subscription_id)'
-            });
-        }
+            if (!invoice_id) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Missing invoice_id (subscription_id)'
+                });
+            }
 
-        // invoice_id is actually customer_id now (since invoices don't have subscription_id)
-        // We need to find the subscription for this customer
-        const customerId = invoice_id;
-        const accessToken = await getZohoBillingAccessToken();
-        const orgId = process.env.ZOHO_ORG_ID;
+            // invoice_id is actually customer_id now (since invoices don't have subscription_id)
+            // We need to find the subscription for this customer
+            const customerId = invoice_id;
+            const accessToken = await getZohoBillingAccessToken();
 
         // Get all subscriptions for this customer
         const subsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
@@ -180,26 +181,37 @@ module.exports = async (req, res) => {
 
         await updateSubscriptionFields(subscriptionId, customFields);
 
-        return res.status(200).json({
-            success: true,
-            message: 'Order marked as shipped'
-        });
-    } catch (error) {
-        console.error('Error marking order as shipped:', error);
+            return res.status(200).json({
+                success: true,
+                message: 'Order marked as shipped'
+            });
+        } catch (error) {
+            const status = error.response?.status;
+            const code = error.response?.data?.code;
 
-        // Send error notification email
-        await sendErrorEmail({
-            invoice_id: body.invoice_id,
-            sim_card: body.sim_card,
-            sim_cards: Array.isArray(body.sim_cards) ? body.sim_cards : undefined,
-            tracking_number: body.tracking_number,
-            error: error.message || 'Failed to mark order as shipped',
-            stack: error.stack
-        });
+            // On 401 or code 57 (unauthorized), clear cache and retry once
+            if ((status === 401 || code === 57) && attempt === 0) {
+                console.warn('Got 401/unauthorized in mark-shipped, clearing cache and retrying...');
+                clearBillingTokenCache();
+                continue;
+            }
 
-        return res.status(500).json({
-            success: false,
-            error: error.message || 'Failed to mark order as shipped'
-        });
+            console.error('Error marking order as shipped:', error);
+
+            // Send error notification email
+            await sendErrorEmail({
+                invoice_id: body.invoice_id,
+                sim_card: body.sim_card,
+                sim_cards: Array.isArray(body.sim_cards) ? body.sim_cards : undefined,
+                tracking_number: body.tracking_number,
+                error: error.message || 'Failed to mark order as shipped',
+                stack: error.stack
+            });
+
+            return res.status(500).json({
+                success: false,
+                error: error.message || 'Failed to mark order as shipped'
+            });
+        }
     }
 };

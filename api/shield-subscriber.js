@@ -1,4 +1,4 @@
-const { getZohoBillingAccessToken } = require('./fulfillment/zoho-billing');
+const { getZohoBillingAccessToken, clearBillingTokenCache } = require('./fulfillment/zoho-billing');
 const axios = require('axios');
 
 module.exports = async (req, res) => {
@@ -21,69 +21,82 @@ module.exports = async (req, res) => {
         return res.status(400).json({ success: false, error: 'Email is required' });
     }
 
-    try {
-        const accessToken = await getZohoBillingAccessToken();
-        const orgId = process.env.ZOHO_ORG_ID;
+    const orgId = process.env.ZOHO_ORG_ID;
 
-        console.log('Searching for Shield subscription with email:', email);
+    // Retry up to 2 times on auth errors
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            const accessToken = await getZohoBillingAccessToken();
 
-        const normalizedEmail = email.trim().toLowerCase();
-        const shouldFindAll = String(findAll).toLowerCase() === 'true';
-        let page = 1;
-        let hasMore = true;
-        let subscriptions = [];
+            console.log('Searching for Shield subscription with email:', email);
 
-        // Paginate through subscriptions and collect matching emails
-        while (hasMore) {
-            const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
-                headers: {
-                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                    'X-com-zoho-subscriptions-organizationid': orgId
-                },
-                params: {
-                    per_page: 200,
-                    page
+            const normalizedEmail = email.trim().toLowerCase();
+            const shouldFindAll = String(findAll).toLowerCase() === 'true';
+            let page = 1;
+            let hasMore = true;
+            let subscriptions = [];
+
+            // Paginate through subscriptions and collect matching emails
+            while (hasMore) {
+                const response = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'X-com-zoho-subscriptions-organizationid': orgId
+                    },
+                    params: {
+                        per_page: 200,
+                        page
+                    }
+                });
+
+                const pageSubscriptions = response.data.subscriptions || [];
+                const pageMatches = pageSubscriptions.filter(sub => {
+                    const subEmail = sub.email || sub.customer?.email || '';
+                    return subEmail.toLowerCase() === normalizedEmail;
+                });
+
+                if (pageMatches.length > 0) {
+                    subscriptions = subscriptions.concat(pageMatches);
+                    if (!shouldFindAll) {
+                        break;
+                    }
                 }
-            });
 
-            const pageSubscriptions = response.data.subscriptions || [];
-            const pageMatches = pageSubscriptions.filter(sub => {
-                const subEmail = sub.email || sub.customer?.email || '';
-                return subEmail.toLowerCase() === normalizedEmail;
-            });
-
-            if (pageMatches.length > 0) {
-                subscriptions = subscriptions.concat(pageMatches);
-                if (!shouldFindAll) {
-                    break;
-                }
+                const pageContext = response.data.page_context || {};
+                hasMore = Boolean(pageContext.has_more_page);
+                page += 1;
             }
 
-            const pageContext = response.data.page_context || {};
-            hasMore = Boolean(pageContext.has_more_page);
-            page += 1;
+            console.log(`Found ${subscriptions.length} subscriptions matching email ${email}`);
+
+            if (subscriptions.length === 0) {
+                console.log('No subscription found for email:', email);
+                return res.status(404).json({ success: false, error: 'No subscription found' });
+            }
+
+            console.log('Returning subscription:', subscriptions[0].subscription_id);
+
+            return res.status(200).json({
+                success: true,
+                data: subscriptions
+            });
+
+        } catch (error) {
+            const status = error.response?.status;
+            const code = error.response?.data?.code;
+
+            // On 401 or code 57 (unauthorized), clear cache and retry once
+            if ((status === 401 || code === 57) && attempt === 0) {
+                console.warn('Got 401/unauthorized in shield-subscriber, clearing cache and retrying...');
+                clearBillingTokenCache();
+                continue;
+            }
+
+            console.error('Error fetching Shield subscriber:', error.response?.data || error.message);
+            return res.status(500).json({
+                success: false,
+                error: error.message || 'Failed to fetch subscriber'
+            });
         }
-
-        console.log(`Found ${subscriptions.length} subscriptions matching email ${email}`);
-
-        if (subscriptions.length === 0) {
-            console.log('No subscription found for email:', email);
-            return res.status(404).json({ success: false, error: 'No subscription found' });
-        }
-
-        console.log('Returning subscription:', subscriptions[0].subscription_id);
-
-        return res.status(200).json({
-            success: true,
-            data: subscriptions
-        });
-
-    } catch (error) {
-        console.error('Error fetching Shield subscriber:', error.response?.data || error.message);
-        console.error('Full error:', error);
-        return res.status(500).json({
-            success: false,
-            error: error.message || 'Failed to fetch subscriber'
-        });
     }
 };

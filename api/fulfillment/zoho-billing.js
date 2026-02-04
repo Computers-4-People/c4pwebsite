@@ -5,6 +5,57 @@ let cachedAccessToken = null;
 let tokenExpiration = null;
 let tokenRefreshPromise = null;
 
+// Force clear the token cache (call this on 401 errors)
+function clearBillingTokenCache() {
+    cachedAccessToken = null;
+    tokenExpiration = null;
+    tokenRefreshPromise = null;
+    console.log('Cleared Zoho Billing token cache');
+}
+
+// Make a Zoho Billing API request with automatic retry on 401
+async function makeBillingApiRequest(method, url, options = {}) {
+    const orgId = process.env.ZOHO_ORG_ID;
+
+    for (let attempt = 0; attempt < 2; attempt++) {
+        const accessToken = await getZohoBillingAccessToken();
+
+        try {
+            const config = {
+                method,
+                url,
+                headers: {
+                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                    'X-com-zoho-subscriptions-organizationid': orgId,
+                    ...options.headers
+                },
+                ...options
+            };
+            delete config.headers; // Remove from options to avoid duplication
+            config.headers = {
+                'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                'X-com-zoho-subscriptions-organizationid': orgId,
+                ...(options.headers || {})
+            };
+
+            const response = await axios(config);
+            return response;
+        } catch (error) {
+            const status = error.response?.status;
+            const code = error.response?.data?.code;
+
+            // On 401 or code 57 (unauthorized), clear cache and retry once
+            if ((status === 401 || code === 57) && attempt === 0) {
+                console.warn('Got 401/unauthorized, clearing token cache and retrying...');
+                clearBillingTokenCache();
+                continue;
+            }
+
+            throw error;
+        }
+    }
+}
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function refreshBillingAccessTokenWithCreds(refreshToken, clientId, clientSecret, label) {
@@ -233,42 +284,56 @@ async function getPendingTmobileActivations() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions pending T-Mobile activation`);
 
-        // Fetch full details for each subscription to get all SIM card fields
-        // Use Promise.all for parallel requests (faster than sequential)
-        const detailedSubscriptions = await Promise.all(
-            filteredSubscriptions.map(async (sub) => {
-                try {
-                    const detailResponse = await axios.get(
-                        `https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`,
-                        {
-                            headers: {
-                                'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                                'X-com-zoho-subscriptions-organizationid': orgId
+        // Fetch full details in small batches to avoid rate limiting (30 req/min)
+        const detailedSubscriptions = [];
+        const batchSize = 3;
+        const delayMs = 3000; // 3 seconds between batches
+
+        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
+            const batch = filteredSubscriptions.slice(i, i + batchSize);
+
+            const batchResults = await Promise.all(
+                batch.map(async (sub) => {
+                    try {
+                        const detailResponse = await axios.get(
+                            `https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`,
+                            {
+                                headers: {
+                                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                                    'X-com-zoho-subscriptions-organizationid': orgId
+                                }
                             }
+                        );
+                        const fullSub = detailResponse.data.subscription;
+                        // Extract custom field values from the custom_fields array
+                        const customFieldValues = {};
+                        if (fullSub.custom_fields) {
+                            fullSub.custom_fields.forEach(field => {
+                                if (field.api_name) {
+                                    customFieldValues[field.api_name] = field.value;
+                                }
+                            });
                         }
-                    );
-                    const fullSub = detailResponse.data.subscription;
-                    // Extract custom field values from the custom_fields array
-                    const customFieldValues = {};
-                    if (fullSub.custom_fields) {
-                        fullSub.custom_fields.forEach(field => {
-                            if (field.api_name) {
-                                customFieldValues[field.api_name] = field.value;
-                            }
-                        });
+                        // Merge: keep original list data, add custom field values
+                        return {
+                            ...sub,
+                            ...customFieldValues,
+                            _source: 'subscription'
+                        };
+                    } catch (err) {
+                        console.error(`Failed to fetch details for subscription ${sub.subscription_id}:`, err.message);
+                        return { ...sub, _source: 'subscription' };
                     }
-                    // Merge: keep original list data, add custom field values
-                    return {
-                        ...sub,
-                        ...customFieldValues,
-                        _source: 'subscription'
-                    };
-                } catch (err) {
-                    console.error(`Failed to fetch details for subscription ${sub.subscription_id}:`, err.message);
-                    return { ...sub, _source: 'subscription' };
-                }
-            })
-        );
+                })
+            );
+
+            detailedSubscriptions.push(...batchResults);
+
+            // Delay between batches to avoid rate limiting
+            if (i + batchSize < filteredSubscriptions.length) {
+                await delay(delayMs);
+            }
+        }
 
         return detailedSubscriptions;
     } catch (error) {
@@ -418,6 +483,8 @@ function formatOrderForQueue(record) {
 
 module.exports = {
     getZohoBillingAccessToken,
+    clearBillingTokenCache,
+    makeBillingApiRequest,
     getPendingOrders,
     getShippedOrders,
     getPendingTmobileActivations,
