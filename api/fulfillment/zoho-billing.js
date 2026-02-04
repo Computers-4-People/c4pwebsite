@@ -264,6 +264,7 @@ async function getPendingTmobileActivations() {
     const orgId = process.env.ZOHO_ORG_ID;
 
     try {
+        // Single API call - filter locally like other functions
         const subscriptionsResponse = await axios.get(`https://www.zohoapis.com/billing/v1/subscriptions`, {
             headers: {
                 'Authorization': `Zoho-oauthtoken ${accessToken}`,
@@ -284,58 +285,11 @@ async function getPendingTmobileActivations() {
 
         console.log(`Found ${filteredSubscriptions.length} subscriptions pending T-Mobile activation`);
 
-        // Fetch full details in small batches to avoid rate limiting (30 req/min)
-        const detailedSubscriptions = [];
-        const batchSize = 3;
-        const delayMs = 3000; // 3 seconds between batches
-
-        for (let i = 0; i < filteredSubscriptions.length; i += batchSize) {
-            const batch = filteredSubscriptions.slice(i, i + batchSize);
-
-            const batchResults = await Promise.all(
-                batch.map(async (sub) => {
-                    try {
-                        const detailResponse = await axios.get(
-                            `https://www.zohoapis.com/billing/v1/subscriptions/${sub.subscription_id}`,
-                            {
-                                headers: {
-                                    'Authorization': `Zoho-oauthtoken ${accessToken}`,
-                                    'X-com-zoho-subscriptions-organizationid': orgId
-                                }
-                            }
-                        );
-                        const fullSub = detailResponse.data.subscription;
-                        // Extract custom field values from the custom_fields array
-                        const customFieldValues = {};
-                        if (fullSub.custom_fields) {
-                            fullSub.custom_fields.forEach(field => {
-                                if (field.api_name) {
-                                    customFieldValues[field.api_name] = field.value;
-                                }
-                            });
-                        }
-                        // Merge: keep original list data, add custom field values
-                        return {
-                            ...sub,
-                            ...customFieldValues,
-                            _source: 'subscription'
-                        };
-                    } catch (err) {
-                        console.error(`Failed to fetch details for subscription ${sub.subscription_id}:`, err.message);
-                        return { ...sub, _source: 'subscription' };
-                    }
-                })
-            );
-
-            detailedSubscriptions.push(...batchResults);
-
-            // Delay between batches to avoid rate limiting
-            if (i + batchSize < filteredSubscriptions.length) {
-                await delay(delayMs);
-            }
-        }
-
-        return detailedSubscriptions;
+        // Return list data directly - no extra API calls for details
+        return filteredSubscriptions.map(sub => ({
+            ...sub,
+            _source: 'subscription'
+        }));
     } catch (error) {
         console.error('Error fetching pending T-Mobile activations:', error.response?.data || error.message);
         throw error;
